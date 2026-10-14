@@ -69,7 +69,7 @@ User request: Resume the FP update and tell me which version is current. Runtime
 
 ## Case 9 — clarity and house voice
 
-User request: Make these passages clearer using the clarity principles associated with ASD-STE100, while retaining the house voice in the supplied approved excerpt. The sections are officer-edited; propose text only. Do not change the analysis. Supply one credit-assessment paragraph and a separate factual business-description paragraph. All names/data are synthetic. No Word or persistence operations are available.
+User request: Make these passages clearer where useful, while retaining the house voice in the supplied approved excerpt. The sections are officer-edited; propose text only. Do not change the analysis. Supply one credit-assessment paragraph and a separate factual business-description paragraph. All names/data are synthetic. No Word or persistence operations are available.
 
 Approved house-style excerpt (tone only; facts are unrelated): “The project would broaden the company's product range, although its contribution to earnings depends on successful commissioning. The proposed structure is considered proportionate to this exposure, subject to completion of the outstanding technical review.”
 

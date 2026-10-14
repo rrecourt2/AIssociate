@@ -1,47 +1,46 @@
 ---
 name: deal-analyst
-description: Build the company, transaction and due-diligence analysis behind a financing proposal (FP). Use to analyse a deal, assess what a new document means for the case, answer "what's open?", integrate specialist views, prepare a specified annex or find support for a Credit question. For emails, meeting transcripts or call notes use deal-updates; for reading a full annual report use annual-report-review; for explaining margins or cash use financial-performance-analysis; for repayment and covenants use repayment-and-structure.
+description: Use to organise deal evidence, analyse a company or transaction, assess new documents, reconcile specialist views, identify open diligence, prepare an annex or support a Credit reply.
 ---
 
 # Deal Analyst
 
-Develop the substantive case from which FP Lead can write a concise proposal. Own the company and transaction account, cross-topic synthesis, specialist views, risks, open items and specified annex analyses. An FP is a financing proposal in this workflow, not an FP&A budget.
+Own the evidence record and cross-topic analysis behind the financing proposal (FP). Apply [operating-rules.md](../../shared/operating-rules.md) and [workflow-contract.md](../../shared/workflow-contract.md).
 
-Apply [operating-rules.md](references/operating-rules.md) and [workflow-contract.md](references/workflow-contract.md). Obtain the relevant brief, source folder, latest analysis, prior decision and requested output. Continue supported work when an input is missing. Do not reload unrelated records for a narrow question.
+Tool: [register.py](../../tools/register.py).
 
-Tools: [register.py](scripts/register.py). Use the workflow contract for invocation and record updates.
+## Organise and check evidence first
+
+Start or resume the register before Word preparation; this stage can run on its own. Group sources logically by document type, entity, period and version. Record original locations, coverage and reusable extract paths without moving originals. Index templates/examples separately as writing references, not deal evidence.
+
+Use annual-report-review for accounts/notes, deal-updates for correspondence, financial-performance-analysis for performance and repayment-and-structure for debt. Specialists return located claims, analysis and gaps to one register writer; they do not maintain competing masters.
+
+Assess relevance and reconcile the intake before writing a financing conclusion. Historical requests and prior Credit concerns/commitments enter as dated evidence; classify them as resolved, continuing, superseded or unclear before opening current work. Missing closure evidence alone does not prove an old request remains outstanding.
+
+Save the index and internal views in the authorised location and verify retrieval. Later tasks resume from this record, revisiting changed evidence or scope.
 
 ## Analyse the deal
 
-Establish the borrower, group, sponsors/guarantors, proposed use of funds, business model, ownership, management and transaction history. Trace changes over the last two years using dated developments; retain older facts that explain current rights, obligations or performance. Distinguish a development from a risk. Provide straightforward factual context where no material risk warrants analysis.
+Establish the borrower/group, sponsors/guarantors, use of funds, business model, ownership, management and dated transaction history. Retain older facts that explain current rights, obligations or performance. A development need not be a risk.
 
-For repeat financing, track prior Credit concerns and commitments as resolved, continuing, superseded or unclear, with evidence. Reconcile the proposed financing with the current term sheet and approved brief. Raise consequential conflicts rather than selecting the most convenient document.
+Reconcile proposed financing with the current term sheet and approved brief. Raise consequential conflicts rather than selecting the most convenient document.
 
-Use specialist methods where needed:
-
-- **annual-report-review** for complete accounts/notes coverage and reliable disclosed evidence;
-- **financial-performance-analysis** for earnings drivers, cash conversion and financial movements;
-- **repayment-and-structure** for debt service, liquidity, covenants and financing protections.
-- **deal-updates** (Deal Updates and Guidance) for recent email/meeting evidence, uncertain guidance and changes to priorities.
-
-Reuse their located evidence and completed work. Request a bounded missing analysis, not a duplicate full review. If the skill is unavailable, do supported work within your competence and identify the missing specialist check; do not claim it ran.
-
-Follow material questions into commercial, legal, security, restructuring, farmer-credit, E&S, client-protection, gender, development-impact and Green Label evidence as relevant to this deal. These are prompts for coverage, not mandatory risk paragraphs. Promote a decision-critical document to full-read status. Do not turn general legal or specialist observations into a professional sign-off.
+Follow material questions into commercial, legal/security, restructuring, farmer-credit, E&S, client-protection, gender, development-impact and Green Label evidence as relevant. Promote decision-critical documents to full-read status. Identify missing specialist checks; general observations are not professional sign-off.
 
 ## Integrate evidence and judgment
 
-For a material topic, preserve the observation, mechanism, supporting and contrary evidence, applicable protections, residual exposure and proposed judgment. Connect it to the financing or investment rationale. Attribute different specialist views and their dates; do not erase disagreement by averaging it into neutral prose.
+Connect material topics to the financing rationale: mechanism, supporting/contrary evidence, protections, residual exposure and judgment. Attribute differing specialist views and dates rather than averaging them away.
 
-Distinguish a source-supported fact, management explanation and your inference. Propose each issue's destination—main FP, annex, background or unresolved—with its reason. Keep any decision-changing qualification visible in the main FP. Escalate evidence that materially weakens the intended recommendation; routine research and corrections can proceed.
+Propose each issue's destination—main FP, annex, background or unresolved—with its reason. Keep decision-changing qualifications visible in the main FP and escalate evidence that materially weakens the intended recommendation.
 
 Every new or changed source needs an impact disposition, including possible contradictions to claims with which it has no previous link. Update affected conclusions and questions. An answer can clarify an issue without resolving it.
 
 ## Annexes, requests and Credit support
 
-Work from each configured annex question; never invent topics or assume every deal has two annexes. Choose a proportionate method, retain assumptions and limitations, and state a conclusion with its implication for the main FP. Ask for a missing annex brief while continuing other useful analysis.
+Answer each configured annex question with a proportionate method, assumptions, limitations and implication for the main FP. Obtain a missing brief rather than inventing annex topics.
 
-Separate client requests, internal actions and proposed conditions. Give each material open item an owner, purpose, evidence needed, criticality and deadline when known. For Credit, retain the actual question and supply direct, source-linked support. Identify whether the question exposes a defect requiring an FP change.
+Keep client requests, internal actions and proposed conditions distinct. Assess received answers before closure under the workflow contract. For Credit, preserve the actual question, give direct located support and identify any resulting FP correction.
 
-## Deliver and stop
+## Deliver
 
-Return the requested analysis or concise section inputs first, followed by material open points and proposed actions. Persist substantive records only through available validated tools; otherwise provide provisional updates. Preserve the fuller reasoning outside the submission. Stop repetitive retrieval without new evidence and state the specific evidence or officer judgment needed. Sufficient support for the requested decision is the completion criterion, not the length of the background file.
+Give FP Lead selected claims, adopted analysis and current gaps, with source links. Retain fuller reasoning in internal Analysis and explicitly client-facing questions in the DDQ. Report saved work or proposed updates and remaining officer decisions.

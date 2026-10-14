@@ -1,7 +1,7 @@
 {
-  "name": "fp-assistant",
-  "version": "0.3.0",
-  "description": "Financing proposal skills with local Word revision, evidence register and financial-table tools. Cowork tenant acceptance is required before operational use.",
+  "name": "aissociate",
+  "version": "0.5.2",
+  "description": "AIssociate: organise deal evidence, analyse the financing case and draft proposals. A supervised pilot for Copilot Cowork.",
   "author": {
     "name": "Rik Recourt"
   }

@@ -1,61 +1,89 @@
-# FP Assistant workflow contract
+# AIssociate workflow
 
-Read this contract and the operating rules once per task. Load only the material needed for the request. Use `--help` for exact tool arguments; run the shipped scripts rather than rewriting them.
+Use the shipped Python 3.9+ scripts. Deal Analyst owns the evidence record; FP Lead uses `fp.py` to prepare Word and package outputs. Read the stage needed now. Commands run inside the installed skill in the host workspace, not automatically on the officer's computer. The stage owner gives the confirmations below in brief updates; ask only about missing inputs or material ambiguity, otherwise continue.
 
-## Files and actual access
+## 1. Organise and save evidence
 
-Each skill carries its required scripts in `scripts/`. They use Python 3.9+ and the standard library, and operate on **local files**. Available authorised Cowork file tools must retrieve the current deal files and return outputs to the deal folder. Verify uploaded files by retrieving them again before claiming persistence. These scripts provide no OneDrive, SharePoint, email or Teams connector.
+Confirm the deal, source scope/cutoff and save location. Start here even when no FP or template exists. One task writes `register.json`; specialists return proposed changes against its revision. Generated views are `register.xlsx`, `Analysis.md` and `Client-DDQ.md`.
 
-`register.json` is the single record. `register.xlsx` and `Analysis.md` are generated views; use the JSON revision to identify the current state. Keep one writer per deal. A local revision check is not a remote lock. On a new task retrieve the current Word file and matching record, not merely whichever filename looks newest.
-
-| Need | Command, from the skill folder |
+| Need | Command |
 |---|---|
-| New register | `python3 scripts/register.py init FOLDER --deal KEY` |
-| Current state | `python3 scripts/register.py summary FOLDER --word CURRENT.docx` |
-| Selected records | `python3 scripts/register.py show FOLDER R-002 O-005` |
-| Apply updates | `python3 scripts/register.py apply FOLDER changes.json` |
-| Outstanding work | `python3 scripts/register.py lists FOLDER` |
-| Mechanical checks | `python3 scripts/register.py check FOLDER --word CURRENT.docx` |
-| Word text and comments | `python3 scripts/fp_docx.py inspect CURRENT.docx --markdown` |
-| Word ownership and edit status | `python3 scripts/fp_docx.py inspect CURRENT.docx` |
-| Find a renamed draft's original record | `python3 scripts/fp_docx.py find-record CURRENT.docx` |
-| Normal revision | `python3 scripts/fp_docx.py build --base CURRENT.docx --content DRAFT.md --out NEW.docx --template TEMPLATE.docx` |
-| Complete a genuine first-time draft | Add `--existing` to the build command |
-| Start from the configured blank template | Use that template as `--base`, adding `--first --template TEMPLATE.docx` |
-| Structure check | `python3 scripts/fp_docx.py check NEW.docx --template TEMPLATE.docx` |
-| Financial table | `python3 scripts/fin_table.py SPREAD.xlsx MAPPING.json --json TABLE.json` |
-| Runtime smoke test | `python3 scripts/TOOL.py selftest` |
+| Start | `python3 scripts/register.py init FOLDER --deal example` |
+| Reopen the index | `python3 scripts/register.py show FOLDER` |
+| Read selected records | `python3 scripts/register.py show FOLDER C-001 O-002` |
+| Read a section | `python3 scripts/register.py show FOLDER --section summary` |
+| Apply changes | `python3 scripts/register.py apply FOLDER changes.json` |
+| Open work / client questions | `python3 scripts/register.py lists FOLDER` / `ddq FOLDER` |
+| Restore views / upgrade an old register | `python3 scripts/register.py refresh FOLDER` / `migrate FOLDER` |
 
-When Python or file access is unavailable, continue supported analysis and drafting as labelled proposals. A failed mutation is not permission to edit Word/Excel another way. Report the actual error and unapplied work. A register update can be saved even if view generation fails: follow the reported recovery step and retry the same operation to regenerate views, without duplicating records.
+A change request has `base_revision`, unique `op_id`, `actor`, `summary` and `changes`. Changes use `{"sheet":"claims","add":{...}}`, `{"sheet":"claims","update":"C-001","set":{...}}` or `{"sheet":"control","set":{...}}`. Table fields are strings; omit unavailable values. Read the relevant `TABLES`/`ALLOWED` definitions for fields. Retry unchanged requests with their original ID; reconcile stale revisions. Migration keeps a backup and history.
 
-## Existing drafts and Word rounds
+Keep the record proportionate:
 
-The normal first test improves a **partially completed FP**, with a separate blank template. Use the existing paper as the base, the template for requirements, and the evidence for facts. Review the whole case before selecting revisions. A representative section is optional troubleshooting, never a prerequisite.
+- **Sources:** original cloud reference, version/hash, entity/period, coverage, reviewed scope and extract path. Reuse unchanged evidence within its reviewed scope. New versions get a new ID and `supersedes`; linked work reopens. Assess unlinked adverse evidence too.
+- **Claims:** material assertion, kind, entity/period, located sources, support, qualifications and section links. Figures add value, unit and definition; calculations add method and located inputs. Keep management attribution and conflicting evidence.
+- **Analysis:** reasoning, strategy, linked claims/sources and internal actions. Clear rechecks only after assessing the changed evidence. Check whether historical issues still apply before opening current work.
+- **Open items:** purpose, evidence needed, owner and explicit audience: `client`, `internal`, `restricted` or `unknown`. Only client-facing open/promised requests enter the DDQ. Received answers need assessment; closure requires an assessor, rationale and located evidence or an attributed officer decision.
 
-For a genuine first-time draft, the user's request to improve it permits `--existing` revisions of unprotected sections in a new copy. Retain useful prose and reasoning; do not start the analysis over unnecessarily. Keep comments, tracked changes, fixed objects and expressly protected sections. `--protect SECTION` can exclude named sections. Output records distinguish rewritten sections from retained officer content.
+Have FP Lead save an evidence-only delivery with `python3 scripts/fp.py bundle FOLDER --out DELIVERY`. No Word preparation is needed. Upload through the host, then reopen the index and follow a claim to its source in a fresh task. Bundles contain the register/views; they do not automatically copy source documents or extracts. Preserve authorised extract caches separately, or retrieve originals through their saved references. Local revision checks are not cloud locks.
 
-For a known assistant version, use a normal round and its original `.sections.json` record. After Save As, use `find-record` to look for the source record; no match or competing matches means provenance is unclear. If the original is known and there is no adjacent record, use `--record PATH` with that source record. Do not create a new baseline from the edited file or use `--existing` to evade protection. Ask which source version was used only when it cannot be established; for a genuine first draft, confirm that starting mode once.
+## 2. Prepare the paper
 
-Inspect the current Word file before every revision. Later officer text edits and supported formatting edits remain protected. Table grid, margins, indentation, row-property exceptions, automatic widths and proofing/paragraph-mark noise are normalised; explicitly protect a section when preserving edits only to those properties. Supply replacements in `NEW.proposals.md`. Review protected content for factual problems even when it cannot be edited automatically. Use `--fields FIELDS.json` only for specifically requested cover-cell changes; protected or ambiguous cells remain unchanged.
+Retrieve the current Word, matching record if assistant-written, separate template and approved examples. Run `python3 scripts/fp.py --version` and retain its version/hashes. Prepare with real local paths and the register's current revision:
 
-Draft Markdown uses `## section-id`, paragraphs, bullets, tables and `**bold**`. Source tags such as `[S-012 p.45]` are removed from submitted Word and associated IDs recorded by section. Preserve the source-located draft and detailed evidence in Analysis; the sidecar's IDs alone do not retain claim-level locators. `{{keep:N}}` positions a fixed object. Inspection exposes kept content as read-only evidence; do not duplicate it in replacement text.
+```sh
+python3 scripts/fp.py prepare FOLDER prepare.json
+python3 scripts/fp.py status FOLDER
+```
 
-Save a new Word version each round. Keep its `.sections.json` and any `.proposals.md` together. Record the Word name/hash and affected section links in the register after verifying output. `complete` means the requested supported build was applied and checked; it is not whole-FP readiness. Missing headings, protected proposals, unfilled fields or unsupported structures stay visible. The writer cannot insert entirely absent sections or fill predefined financial tables; report the required work. XML checks do not establish visual layout.
+```json
+{
+  "op_id": "prepare-01", "base_revision": 2, "deal": "example",
+  "base": "/work/partial.docx", "template": "/work/template.docx",
+  "examples": ["/work/approved-example.docx"],
+  "output_dir": "/work/deal/output", "mode": "existing",
+  "provenance": "Officer authorised improving this genuine imported draft"
+}
+```
 
-## Register updates and financial figures
+Prepare inspects structure and records input hashes. It does not read the examples or complete editorial preflight. Before drafting, the template/style reviewer reads them and records required headings, fields, tables and wording, permitted deviations, and one primary example's voice and density. Save this in Analysis key `preflight`, then set `run.preflight.editorial` to `complete` through a register update. **A `run.set` replaces the whole object:** retain its other fields.
 
-An update has `base_revision`, unique `op_id`, `actor`, concise `summary`, `next_step`, and `changes`. Get the revision from `summary`; keep the same operation ID when retrying the same payload. Changes use `{"sheet":"risks","add":{...}}`, `{"sheet":"risks","update":"R-002","set":{...}}` or `{"sheet":"control","set":{...}}`. Schemas and allowed values are in `register.py`; inspect only the needed definitions rather than loading every script. IDs are assigned for sources, risks, mitigants, open items and findings. Analysis uses meaningful keys such as `strategy`, `timeline`, `key-figures`, a risk ID or an annex name.
+FP Lead confirms the exact base FP, template and primary example with file links, the saved evidence revision, intended recommendation and output/annex scope. State material gaps or deviations; reuse settled choices on later rounds.
 
-Field values in `add`/`set` are strings; omit unavailable values instead of supplying JSON null. New questions stay `open`; an undertaking to send evidence is `promised`; a received answer needing assessment is `answered`. Only explicit, supported `closed` disposition finishes the item. Keep answered questions in the internal assessment list instead of asking the client again. New sources start with pending impact assessment. Findings remain unresolved until reviewed and dispositioned; `officer-judgment` means a decision is still pending.
+| Mode | Use |
+|---|---|
+| `existing` | Authorised first import of a genuine draft; revise a new copy |
+| `first` | Base is the configured blank template itself |
+| `normal` | Current assistant Word and its matching `.sections.json`; protect officer edits |
 
-Use an identified spreading export with checked entity, currency/unit and periods. `expect` cells can assert the agreed export layout. Duplicate label/period matches are refused: narrow the export or mapping rather than guess. Formula caches require an explicitly trusted recalculated export and a recorded basis; never turn that option on merely to bypass refusal. Preserve workbook identity/hash, copied cell references and derived formulas. This tool transfers checked figures and calculates bounded ratios; the finance skills supply interpretation.
+Missing records do not prove a first draft. For Save As, use `fp_docx.py find-record CURRENT.docx` and pass a confirmed `record` in prepare. Similar legacy records are candidates, not authority. Embedded identity prevents resetting protection. Ask only when provenance is unclear.
 
-## Evidence, strategy and readiness
+## 3. Write and build
 
-For consequential claims retain source/version, original page/passage/cell, entity, period/event date, units and support status. Keep facts, management explanations, inferences and calculations distinct. Source presence is not proof of a claim or an effective mitigant.
+Use selected evidence, the whole-paper plan and shared writing/review guidance. Keep decision-relevant uncertainty in the FP and internal workplans in Analysis. Continue supported drafting through gaps; required reading, pending impacts, blockers and rechecks prevent clean readiness. A proposed condition is not an existing protection.
 
-Deal Updates refreshes accessible emails/transcripts through an honest scope and cutoff. Update Sources, Analysis, open items and affected FP passages; keep private/legal material within its authorised audience. FP Lead owns adopted Deal Strategy; Deal Analyst owns substantive synthesis. A newer message can reopen an issue, but does not automatically supersede an executed agreement.
+Inspect the current Word with `fp_docx.py inspect CURRENT.docx --markdown` and JSON inspection. Draft Markdown uses `## section-id`, paragraphs, bullets, tables and `**bold**`. `{{keep:N}}` positions fixed content; do not repeat it. Located tags such as `[S-012 p.45]` are removed from Word and source IDs retained in its record; deliver the located draft too.
 
-Every new or changed source needs an impact disposition, including previously unlinked adverse evidence. Reopen affected findings/conclusions after material edits. Mechanical register checks do not assess evidence quality, credit judgment, template compliance or visual layout. Record readiness with the officer only after those reviews, identifying the actual decision-maker, current Word hash and register revision. Do not substitute an agent name for an officer decision. Changed evidence or Word requires a new assessment. Submission with exceptions stays distinct from clean readiness.
+```sh
+python3 scripts/fp.py build FOLDER build.json
+```
 
-Use the review protocol for consequential analysis, the complete FP and material revisions. One substantive round plus recheck is the default; a fresh arbiter addresses material disagreement when needed. Separate tasks are independent only if they actually ran. Return the result, changed case, unresolved decisions, actual saved files/checks and next useful action. Communications remain drafts.
+```json
+{
+  "op_id": "build-01", "base_revision": 4,
+  "content": "/work/deal/draft.md", "out": "FP-v01.docx",
+  "protect": ["recommendation"], "support": ["/work/deal/financial-table.json"]
+}
+```
+
+Build requires saved located claims and recorded preflight. `protect` and `support` are optional; optional `fields` holds expressly authorised cover-field replacements. Use a new output name. The writer preserves officer edits, comments, tracked changes and fixed content; unapplied replacements go to `.proposals.md`.
+
+Word/record share deal/build IDs. Follow the reported retry instructions after interrupted publication or register failure; keep published files. Never bypass refusal through blank reconstruction. Absent headings and predefined-table population are unsupported. Explicitly protect deliberate edits only to ignored Word save-noise properties. `built` means supported operations succeeded, not that the FP is ready.
+
+For figures, use `fin_table.py SPREAD.xlsx MAPPING.json --json TABLE.json`. Mapping requires `unit` and `identity` entries for `entity`, `perimeter` and `unit`, each with `value` and a matching selected-sheet `cell` or reviewed external `basis`/`reviewed_by`. Unit labels must agree; no conversion is inferred. Preserve workbook hashes, cells and formulas. Do not enable cached formulas merely to bypass a refusal.
+
+## 4. Deliver and verify
+
+Run `fp.py bundle FOLDER --out DELIVERY` again for the paper. It includes Word/record, register/views, client `DDQ.md`, located draft/support, proposals and a hash manifest. The bundle is internal and **local-only**. Host tools handle authorised upload; reopen saved bytes before claiming persistence. No email or storage connector is provided. If access or Python fails, return labelled proposals and the missing handoff.
+
+Review the whole FP against the examples and inspect actual Word layout. Record the officer's readiness decision against the current Word hash and evidence revision. Mechanical checks cannot certify house style, mandatory table content or investment judgment. Confirm delivery with links to the verified saved files, applied/unapplied changes, unperformed checks and open decisions. Communications remain drafts.

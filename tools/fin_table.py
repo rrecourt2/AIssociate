@@ -2,19 +2,23 @@
 """Turn the spreading export into the FP's financial table, with traceable sources.
 
   fin_table.py SPREAD.xlsx MAPPING.json [--json OUT.json]
-  fin_table.py selftest
 
 Prints a Markdown table for the FP text draft. Every value is either copied from a named
 cell or computed by one of four formulas: {A} / {B}, {A} - {B}, {A} + {B}, growth({A}).
-Use an identified export of the spreading tool: "expect" names cells that must hold given
-text (entity, unit, period headers). Labels or periods that appear twice are refused.
+Require "identity" for entity, reporting perimeter and currency/scale. Each entry is
+{value, cell} in the selected sheet, or {value, basis, reviewed_by} when metadata is absent.
+"unit" must agree with identity.unit.value; no currency or scale conversion is performed.
+Optional "expect" checks other cells. Labels or periods that appear twice are refused.
 Formula cells in the selected sheet are refused unless "trust_formula_values" is true
 and "recalculation_basis" records who recalculated and saved it, when, and with which tool.
 The output records the export path/hash, checked identity cells, and this trust basis.
 Standard library only. The mapping is set up once per spreading-export layout:
 
   {"sheet": "Spread", "label_column": "A", "header_row": 1, "unit": "EUR m",
-   "expect": {"A1": "EUR m", "B1": "FY2024"},
+   "identity": {"entity": {"value": "Example Group", "cell": "E1"},
+                "perimeter": {"value": "consolidated", "cell": "E2"},
+                "unit": {"value": "EUR m", "cell": "A1"}},
+   "expect": {"B1": "FY2024"},
    "periods": ["FY2024", "FY2025"],
    "rows": [{"label": "Revenue", "source": "Total revenue"},
             {"label": "EBITDA", "source": "EBITDA"},
@@ -114,7 +118,7 @@ def compute(expr, values):
 def build_table(spread, mapping):
     if not isinstance(mapping, dict):
         raise TableError("mapping must be a JSON object")
-    for key in ("sheet", "label_column", "header_row", "periods", "rows"):
+    for key in ("sheet", "label_column", "header_row", "periods", "rows", "identity", "unit"):
         if key not in mapping:
             raise TableError(f"mapping requires {key}")
     periods = mapping["periods"]
@@ -148,6 +152,24 @@ def build_table(spread, mapping):
                          "with a recorded recalculation_basis after recalculating and saving")
     if trust and (not isinstance(basis, str) or not basis.strip()):
         raise TableError("trust_formula_values requires a nonempty recalculation_basis")
+    identity = mapping["identity"]
+    if not isinstance(identity, dict) or set(identity) != {"entity", "perimeter", "unit"}:
+        raise TableError("identity requires exactly entity, perimeter and unit")
+    for field, entry in identity.items():
+        if not isinstance(entry, dict) or set(entry) not in ({"value", "cell"}, {"value", "basis", "reviewed_by"}):
+            raise TableError(f"identity.{field} requires {{value, cell}} or {{value, basis, reviewed_by}}")
+        if any(not isinstance(value, str) or not value.strip() for value in entry.values()):
+            raise TableError(f"identity.{field} fields must be nonempty strings")
+        if "cell" in entry:
+            ref = entry["cell"]
+            if not re.fullmatch(r"[A-Z]+[1-9]\d*", ref):
+                raise TableError(f"identity.{field} requires a cell reference in the selected sheet")
+            actual = cells.get(ref)
+            if not isinstance(actual, str) or not actual.strip() or norm(actual) != norm(entry["value"]):
+                raise TableError(f"identity.{field}: {sheet}!{ref} holds {actual!r}, expected {entry['value']!r}")
+    unit = mapping["unit"]
+    if not isinstance(unit, str) or not unit.strip() or norm(unit) != norm(identity["unit"]["value"]):
+        raise TableError("unit must agree with identity.unit.value, including currency and scale; no conversion is performed")
     wrong = [f"{ref} holds {cells.get(ref)!r}, expected {want!r}" for ref, want in mapping.get("expect", {}).items()
              if norm(cells.get(ref, "")) != norm(want)]
     if wrong:
@@ -189,7 +211,7 @@ def build_table(spread, mapping):
             row.update(values=compute(spec["formula"], values), formula=spec["formula"])
         values[spec["label"]] = row["values"]
         rows.append(row)
-    return {"unit": mapping.get("unit", ""), "periods": [str(p) for p in periods], "rows": rows,
+    return {"unit": unit, "identity": identity, "periods": [str(p) for p in periods], "rows": rows,
             "export": {"path": str(Path(spread).resolve()), "sha256": hashlib.sha256(export_bytes).hexdigest(),
                        "sheet": sheet, "expect": mapping.get("expect", {}), "formula_cells": sorted(formulas),
                        "trust_formula_values": trust, "recalculation_basis": basis if trust else ""},
@@ -214,35 +236,13 @@ def markdown(table):
     return "\n".join(lines)
 
 
-def selftest():
-    from register import write_xlsx  # shipped next to this script in every skill that uses it
-    with tempfile.TemporaryDirectory() as d:
-        spread = Path(d) / "spread.xlsx"
-        write_xlsx(spread, [("Spread", ["Line", "FY2024", "FY2025"],
-                             [["Total revenue", 100, 120], ["EBITDA", 20, 18]])])
-        table = build_table(spread, {"sheet": "Spread", "label_column": "A", "header_row": 1, "unit": "EUR m",
-                                     "periods": ["FY2024", "FY2025"], "rows": [
-                                         {"label": "Revenue", "source": "Total revenue"},
-                                         {"label": "EBITDA", "source": "EBITDA"},
-                                         {"label": "EBITDA margin", "formula": "{EBITDA} / {Revenue}", "format": "pct"},
-                                         {"label": "Revenue growth", "formula": "growth({Revenue})", "format": "pct"}]})
-        md = markdown(table)
-        assert "| EBITDA margin | 20.0% | 15.0% |" in md and "| Revenue growth | n/a | 20.0% |" in md, md
-    return f"PASS fin_table selftest (Python {sys.version.split()[0]})"
-
-
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("spread", help="spreading export (.xlsx), or 'selftest'")
-    ap.add_argument("mapping", nargs="?")
+    ap.add_argument("spread", help="spreading export (.xlsx)")
+    ap.add_argument("mapping")
     ap.add_argument("--json", help="also write the table with its sources to this file")
     args = ap.parse_args(argv)
     try:
-        if args.spread == "selftest":
-            print(selftest())
-            return 0
-        if not args.mapping:
-            raise TableError("give the mapping file after the spreading export")
         if args.json:
             out = Path(args.json)
             if out.resolve() in (Path(args.spread).resolve(), Path(args.mapping).resolve()):

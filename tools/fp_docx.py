@@ -2,17 +2,16 @@
 """Read, build and check FP Word files with the Python standard library only.
 
 document.xml is changed by splicing byte ranges; XML this tool did not generate is
-never re-serialised, and every other file inside the .docx is copied unchanged (only a
-.dotx template's main content type becomes a document's). Macro-enabled files are refused.
+never re-serialised. Other parts are copied unchanged except our two custom identity
+properties, their package metadata, and a .dotx main content type. Macro-enabled files are refused.
 A section is the body between one heading and the next heading of any level.
 
   fp_docx.py inspect DOCX [--markdown]
   fp_docx.py build --base BASE.docx --content CONTENT.md --out OUT.docx [--first | --existing]
                    [--template BLANK.docx] [--fields FIELDS.json] [--protect ID,ID]
-                   [--record SOURCE.sections.json]
+                   [--record SOURCE.sections.json] [--deal-id DEAL]
   fp_docx.py find-record DOCX [--folder DIR]
   fp_docx.py check DOCX [--template TEMPLATE.docx]
-  fp_docx.py selftest
 
 Build modes (a section with comments or tracked changes is never rewritten in any mode):
   --first     a new FP from the blank template; BASE must be byte-identical to --template.
@@ -26,9 +25,12 @@ import argparse
 import hashlib
 import json
 import os
+import posixpath
+import shutil
 import re
 import sys
 import tempfile
+import uuid
 import zipfile
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -40,8 +42,8 @@ W14 = "http://schemas.microsoft.com/office/word/2010/wordml"
 XML_SPACE = "http://www.w3.org/XML/1998/namespace space"
 AI_TAG = "fp-assistant"
 ILLEGAL = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f￾￿]")
-TAG = re.compile(r"\s*\[[SRMOGT]-\d+[^\]]*\]")
-TAG_ID = re.compile(r"\b[SRMOGT]-\d+\b")
+TAG = re.compile(r"\s*\[[SRMOGTC]-\d+[^\]]*\]")
+TAG_ID = re.compile(r"\b[SRMOGTC]-\d+\b")
 TRACKED = {"ins", "del", "moveFrom", "moveTo", "pPrChange", "rPrChange", "tblPrChange",
            "trPrChange", "tcPrChange", "sectPrChange", "cellIns", "cellDel"}
 COMMENT = {"commentRangeStart", "commentRangeEnd", "commentReference"}
@@ -52,7 +54,7 @@ TEMPLATE_MAIN, DOCUMENT_MAIN = b"wordprocessingml.template.main+xml", b"wordproc
 
 
 class Refuse(Exception):
-    """A requested change is unsafe or impossible; nothing was written."""
+    """A requested change is unsafe or impossible; existing files are preserved."""
 
 
 # ---------- reading: byte-exact element tree ----------
@@ -198,6 +200,11 @@ class Doc:
             raise Refuse("the Word main namespace has no prefix; refusing to guess")
         self.w = m.group(1).decode()
         self.styles, self.default_style, self.list_styles = style_info(self.parts.get("word/styles.xml"))
+        w = "{" + W + "}"
+        defaults = [s for s in ET.fromstring(self.parts.get("word/styles.xml", b"<styles/>"))
+                    if s.get(w + "type") == "table" and s.get(w + "default") in ("1", "true", "on")]
+        self.plain_default_table = all(s.find(w + "tblStylePr") is None and s.find(w + "basedOn") is None
+                                       for s in defaults)
         self.style_id = {name: sid for sid, (name, _) in self.styles.items()}
         self.body = self.root.find("body")
         if self.body is None:
@@ -298,8 +305,12 @@ def canon(n, doc, inc, masked=()):
            text if n.tag in ("t", "delText", "instrText") else text.strip(), []]
     for k in n.kids:
         default_style = k.tag == "pStyle" and k.wattr("val") == doc.default_style
-        default_look = (k.tag == "tblLook" and table_look(k) ==
-                        ((True, False, True, False, False, True) if n.find("tblStyle") is not None else (False,) * 6))
+        # Word 16.113 also writes 04A0 on unstyled tables; it has no effect without conditional styles.
+        default_look = (k.tag == "tblLook" and (
+            table_look(k) == ((True, False, True, False, False, True)
+                             if n.find("tblStyle") is not None else (False,) * 6)
+            or n.find("tblStyle") is None and doc.plain_default_table
+            and table_look(k) == (True, False, True, False, False, True)))
         if (k.tag in NOISE or harmless(k) or (n.tag == "rPr" and k.tag in ("lang", "noProof"))
                 or (k.tag, k.wattr("id")) in inc or default_look
                 or (n.tag == "pPr" and (k.tag == "rPr" or default_style))):
@@ -391,39 +402,155 @@ def sidecar_path(docx):
     return Path(docx).with_suffix(".sections.json")
 
 
-def read_record(p):
+CUSTOM = "http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"
+VT = "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"
+RELS = "http://schemas.openxmlformats.org/package/2006/relationships"
+CUSTOM_REL = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties"
+CONTENT_TYPES = "http://schemas.openxmlformats.org/package/2006/content-types"
+CUSTOM_TYPE = "application/vnd.openxmlformats-officedocument.custom-properties+xml"
+IDENTITY_NAMES = {"deal_id": "FPAssistantDealId", "build_id": "FPAssistantBuildId"}
+
+
+def custom_part(parts):
+    root = ET.fromstring(parts.get("_rels/.rels", f'<Relationships xmlns="{RELS}"/>'))
+    rels = [r for r in root if r.get("Type") == CUSTOM_REL]
+    if len(rels) > 1 or any(r.get("TargetMode") == "External" for r in rels):
+        raise Refuse("ambiguous Word custom-property relationship")
+    target = posixpath.normpath(rels[0].get("Target", "").lstrip("/")) if rels else "docProps/custom.xml"
+    if target in (".", "..") or target.startswith("../"):
+        raise Refuse("invalid Word custom-property relationship")
+    if rels and target not in parts:
+        raise Refuse("Word custom-property relationship has no target")
+    return target
+
+
+def read_identity(doc):
+    """Embedded identity, or {} for a legacy/imported file. Partial identity is unsafe."""
+    doc = doc if isinstance(doc, Doc) else Doc(doc)
+    data = doc.parts.get(custom_part(doc.parts))
+    found = {}
+    if data:
+        root = ET.fromstring(data)
+        for key, name in IDENTITY_NAMES.items():
+            props = [p for p in root if p.get("name") == name]
+            if props:
+                if (len(props) != 1 or len(props[0]) != 1 or props[0][0].tag != f"{{{VT}}}lpwstr"
+                        or not (props[0][0].text or "").strip()):
+                    raise Refuse("malformed Word assistant identity")
+                found[key] = props[0][0].text
+    if found and set(found) != set(IDENTITY_NAMES):
+        raise Refuse("incomplete Word assistant identity")
+    return found
+
+
+def append_xml(data, fragment):
+    """Append a child without reserialising the original package metadata."""
+    root = scan(data)
+    end = data.rfind(b"</", root.start, root.end)
+    if end < 0:  # empty self-closing root
+        head_end = tag_end(data, root.start)
+        head = data[root.start:head_end]
+        name = re.match(rb"<([^\s/>]+)", head).group(1)
+        return data[:head_end - 2] + b">" + fragment + b"</" + name + b">" + data[head_end:]
+    return data[:end] + fragment + data[end:]
+
+
+def identity_parts(parts, identity):
+    """Change only our two custom properties; retain other properties and relationships."""
+    parts = dict(parts)
+    target = custom_part(parts)
+    data = parts.get(target, f'<Properties xmlns="{CUSTOM}"/>'.encode())
+    root = scan(data)
+    pids = [int(p.attrs.get("pid", "1")) for p in root.kids]
+    for key, name in IDENTITY_NAMES.items():
+        root = scan(data)
+        old = next((p for p in root.kids if p.attrs.get("name") == name), None)
+        pid = old.attrs["pid"] if old else str(max(pids + [1]) + 1)
+        pids.append(int(pid))
+        prop = (f'<property xmlns="{CUSTOM}" fmtid="{{D5CDD505-2E9C-101B-9397-08002B2CF9AE}}" '
+                f'pid="{pid}" name="{name}"><vt:lpwstr xmlns:vt="{VT}">'
+                f'{escape(identity[key])}</vt:lpwstr></property>').encode()
+        data = splice(data, [(old.start, old.end, prop)]) if old else append_xml(data, prop)
+    parts[target] = data
+    rels = parts.get("_rels/.rels", f'<Relationships xmlns="{RELS}"/>'.encode())
+    root = ET.fromstring(rels)
+    if not any(r.get("Type") == CUSTOM_REL for r in root):
+        used = {r.get("Id") for r in root}
+        rid = next(f"fpAssistant{i}" for i in range(len(used) + 1) if f"fpAssistant{i}" not in used)
+        rels = append_xml(rels, (f'<Relationship xmlns="{RELS}" Id="{rid}" Type="{CUSTOM_REL}" '
+                                 f'Target="{target}"/>').encode())
+    parts["_rels/.rels"] = rels
+    types = parts["[Content_Types].xml"]
+    if not any(t.get("PartName") == "/" + target for t in ET.fromstring(types)):
+        types = append_xml(types, (f'<Override xmlns="{CONTENT_TYPES}" PartName="/{target}" '
+                                   f'ContentType="{CUSTOM_TYPE}"/>').encode())
+    parts["[Content_Types].xml"] = types
+    return parts
+
+
+def read_record(p, doc=None):
+    """Validate every ownership field before use, including records beside a Word file."""
     data = read_json(p)
-    if not (isinstance(data, dict) and isinstance(data.get("sections"), dict)
-            and all(isinstance(v, dict) for v in data["sections"].values())):
-        raise Refuse(f"{Path(p).name} is not an assistant record")
+    valid = isinstance(data, dict) and isinstance(data.get("sections"), dict)
+    if valid:
+        for sid, sec in data["sections"].items():
+            valid = (isinstance(sid, str) and bool(sid) and isinstance(sec, dict)
+                     and sec.get("owner") in ("ai", "other")
+                     and isinstance(sec.get("signature"), str)
+                     and re.fullmatch(r"[0-9a-f]{64}", sec["signature"]) is not None
+                     and isinstance(sec.get("ids"), list)
+                     and all(isinstance(i, str) for i in sec["ids"]))
+            if not valid:
+                break
+    version = data.get("schema_version") if isinstance(data, dict) else None
+    if isinstance(data, dict) and "schema_version" in data:
+        valid = (valid and type(version) is int and version == 1
+                 and all(isinstance(data.get(k), str) and data[k].strip() for k in IDENTITY_NAMES)
+                 and "parent_build_id" in data
+                 and (data["parent_build_id"] is None or
+                      isinstance(data["parent_build_id"], str) and bool(data["parent_build_id"].strip()))
+                 and isinstance(data.get("docx_sha256"), str)
+                 and re.fullmatch(r"[0-9a-f]{64}", data["docx_sha256"]) is not None)
+    if isinstance(data, dict) and "schema_version" not in data and any(k in data for k in IDENTITY_NAMES):
+        valid = False
+    if not valid:
+        raise Refuse(f"{Path(p).name} is not a valid assistant record")
+    if doc is not None:
+        identity = read_identity(doc)
+        if identity:
+            if version != 1 or any(data.get(k) != v for k, v in identity.items()):
+                raise Refuse(f"{Path(p).name}: record identity does not match the Word deal/build identity")
+        elif version is not None or data.get("docx_sha256") != file_sha256(doc.path):
+            raise Refuse(f"{Path(p).name}: legacy Word provenance is unverified; similarity cannot authorise "
+                         "replacement. Establish the actual source record or prepare proposals separately")
     return data
 
 
 def load_sidecar(docx):
     p = sidecar_path(docx)
-    return read_record(p) if p.exists() else {"sections": {}}
+    return read_record(p, Doc(docx)) if p.exists() else {"sections": {}}
 
 
 def find_record(docx, folder=None):
-    """Assistant records in folder (default: the docx's folder), best first by how many of the docx's
-    section signatures they match. Names a source only if exactly one record matches most sections, at
-    least one, with identical section ids. Only reads."""
+    """Similarity ranks candidates only. Only exact embedded identity can name a source."""
     folder = Path(folder) if folder else Path(docx).parent
-    sigs, candidates = signatures(Doc(docx)), []
+    doc = Doc(docx)
+    sigs, identity, candidates, exact = signatures(doc), read_identity(doc), [], []
     for p in sorted(folder.glob("*.sections.json")):
         try:
-            secs = read_record(p)["sections"]
+            data = read_record(p)
         except Refuse:
             continue
+        secs = data["sections"]
+        matches = bool(identity) and all(data.get(k) == v for k, v in identity.items())
+        if matches:
+            exact.append(str(p))
         candidates.append({"record": str(p), "matching": sum(secs.get(i, {}).get("signature") == sig
                                                              for i, sig in sigs.items()),
                            "total": len(sigs), "same_ids": list(secs) == list(sigs)})
-    candidates.sort(key=lambda c: (-c["matching"], not c["same_ids"]))
-    best = candidates[0] if candidates else {"matching": 0}
-    unique = (best["matching"] > 0 and best["same_ids"]
-              and (len(candidates) < 2 or candidates[1]["matching"] < best["matching"]))
+    candidates.sort(key=lambda c: (c["record"] not in exact, -c["matching"], not c["same_ids"]))
     return {"docx": str(docx), "folder": str(folder), "candidates": candidates,
-            "source": best["record"] if unique else None, "ambiguous": not unique}
+            "source": exact[0] if len(exact) == 1 else None, "ambiguous": len(exact) != 1}
 
 
 def read_text(path):
@@ -655,16 +782,21 @@ def verify(base, new, written, filled):
                      "changed; nothing written")
 
 
-def write_docx(doc, xml, out, written, filled):
+def write_docx(doc, xml, out, written, filled, identity=None):
     """Write the zip to a temp file, run the preservation check on it, then rename it into place."""
     parts = {**doc.parts, "word/document.xml": xml}
     if doc.template:  # a .dotx base gives a document
         parts["[Content_Types].xml"] = parts["[Content_Types].xml"].replace(TEMPLATE_MAIN, DOCUMENT_MAIN)
 
+    if identity:
+        parts = identity_parts(parts, identity)
+
     def write(tmp):
         with zipfile.ZipFile(tmp, "w") as z:
             for info in doc.infos:
                 z.writestr(info, parts[info.filename])
+            for name in parts.keys() - doc.parts.keys():
+                z.writestr(name, parts[name])
         verify(doc, Doc(tmp), written, filled)
 
     publish(out, write)
@@ -679,6 +811,8 @@ def check_mode(doc, base, mode, template, record=None):
         raise Refuse("--record is only for a normal round")
     if record and beside:
         raise Refuse(f"--record refused: {sidecar_path(base).name} already exists; use the base's own record")
+    if mode != "normal" and read_identity(doc):
+        raise Refuse("identified assistant output requires a normal round; identity cannot be reset")
     if doc.macro:
         raise Refuse("macro-enabled Word files (.docm, .dotm) are not supported")
     if doc.template and mode != "first":
@@ -718,7 +852,7 @@ def check_fields(doc, tpl, baseline):
                          "headings their Heading style in Word")
 
 
-def build(base, content, out, mode="normal", template=None, fields=None, protect=(), record=None):
+def _render_build(base, content, out, mode="normal", template=None, fields=None, protect=(), record=None, deal_id=None):
     out = Path(out)
     side, proposals = sidecar_path(out), out.with_suffix(".proposals.md")
     for p in (out, side, proposals):
@@ -730,7 +864,15 @@ def build(base, content, out, mode="normal", template=None, fields=None, protect
     inc = doc.incidental
     check_mode(doc, base, mode, template, record)
     # A renamed copy (Save As) is compared with its source version's record, never with a fresh one.
-    baseline = read_record(record or sidecar_path(base))["sections"] if mode == "normal" else {}
+    old_record = read_record(record or sidecar_path(base), doc) if mode == "normal" else {}
+    baseline = old_record.get("sections", {})
+    previous = read_identity(doc)
+    if deal_id is not None and (not isinstance(deal_id, str) or not deal_id.strip()):
+        raise Refuse("deal_id must be a non-empty string")
+    if previous and deal_id is not None and deal_id != previous["deal_id"]:
+        raise Refuse("requested deal identity does not match the base Word file")
+    identity = {"deal_id": deal_id or previous.get("deal_id") or str(uuid.uuid4()), "build_id": str(uuid.uuid4())}
+    parent_build_id = previous.get("build_id")
     wanted, warnings = parse_content(read_text(content))
     by_id = {s["id"]: s for s in doc.sections}
     unknown = sorted(set(protect) - set(by_id))
@@ -738,7 +880,9 @@ def build(base, content, out, mode="normal", template=None, fields=None, protect
         raise Refuse(f"--protect names no section of the document: {', '.join(unknown)}")
     # The writer cannot insert headings, so template sections absent from the base stay absent.
     tpl = Doc(template) if template else None
-    missing_sections = [s["id"] for s in tpl.sections if s["id"] not in by_id] if tpl else None
+    structure = compare_headings(doc, tpl)
+    missing_sections = structure["missing_sections"]
+    warnings.extend(structure["heading_problems"])
     if missing_sections is None:
         warnings.append("missing template sections were not checked: no --template was given")
     if fields:
@@ -773,7 +917,7 @@ def build(base, content, out, mode="normal", template=None, fields=None, protect
     filled, missing_fields, protected_fields = [], [], []
     if fields:
         xml, filled, missing_fields, protected_fields = fill_fields(doc, xml, fields, inc)
-    write_docx(doc, xml, out, written, filled)
+    write_docx(doc, xml, out, written, filled, identity)
     sections = {}
     for sid, sig in signatures(Doc(out)).items():
         old = baseline.get(sid, {})
@@ -783,7 +927,8 @@ def build(base, content, out, mode="normal", template=None, fields=None, protect
         sections[sid] = {"owner": "ai" if sid in written or untouched_ai else "other", "signature": sig,
                          "ids": wanted[sid]["ids"] if sid in written else old.get("ids", [])}
     write_text_file(side, json.dumps(
-        {"base": Path(base).name, "docx_sha256": file_sha256(out), "sections": sections}, indent=1))
+        {"schema_version": 1, **identity, "parent_build_id": parent_build_id,
+         "base": Path(base).name, "docx_sha256": file_sha256(out), "sections": sections}, indent=1))
     if frozen or unmatched:
         lines = [f"# Proposed text not applied to {out.name}", "",
                  "These sections were left exactly as they are. Copy what you want into Word.", ""]
@@ -791,12 +936,111 @@ def build(base, content, out, mode="normal", template=None, fields=None, protect
             reason = frozen.get(sid, "no section with this heading in the document")
             lines += [f"## {sid}", f"_Not applied: {reason}._", "", wanted[sid]["raw"], ""]
         write_text_file(proposals, "\n".join(lines))
-    return {"out": str(out), "written": written, "frozen": frozen, "unmatched": unmatched,
-            "missing_sections": missing_sections, "missing_fields": missing_fields,
+    return {"out": str(out), "sidecar": str(side), **identity, "parent_build_id": parent_build_id,
+            "written": written, "frozen": frozen, "unmatched": unmatched,
+            **structure, "missing_fields": missing_fields,
             "protected_fields": protected_fields, "proposals": str(proposals) if frozen or unmatched else None,
             "warnings": warnings,
             "complete": missing_sections == [] and not (warnings or unmatched or frozen or missing_fields or protected_fields),
             "sha256": file_sha256(out)}
+
+
+def receipt_path(out):
+    out = Path(out).resolve()
+    return out.parent / f".{out.name}.build" / "receipt.json"
+
+
+def request_digest(request):
+    return hashlib.sha256(json.dumps(request, sort_keys=True, separators=(",", ":"),
+                                    ensure_ascii=False).encode()).hexdigest()
+
+
+def publish_receipt(receipt, path, resumed):
+    """Check every staged byte and destination before repairing any published files."""
+    result = receipt.get("result")
+    out = Path(receipt["request"]["out"])
+    if (not isinstance(result, dict) or result.get("out") != str(out)
+            or result.get("sidecar") != str(sidecar_path(out))
+            or result.get("proposals") not in (None, str(out.with_suffix(".proposals.md")))):
+        raise Refuse("invalid build recovery receipt paths")
+    expected = [str(out), str(sidecar_path(out))] + ([result["proposals"]] if result["proposals"] else [])
+    outputs = receipt.get("outputs")
+    if (type(receipt.get("schema_version")) is not int or receipt["schema_version"] != 1
+            or not isinstance(outputs, list) or not all(isinstance(o, dict) for o in outputs)
+            or [o.get("path") for o in outputs] != expected):
+        raise Refuse("invalid build recovery receipt")
+    for item in outputs:
+        dest, stage = Path(item["path"]), Path(item["staged"])
+        if (dest.parent != path.parent.parent or stage != path.parent / dest.name
+                or not stage.is_file() or file_sha256(stage) != item["sha256"]):
+            raise Refuse("build recovery staged output is missing or corrupt")
+        if dest.exists() and (not dest.is_file() or file_sha256(dest) != item["sha256"]):
+            raise Refuse(f"{dest.name}: conflicting existing output; recovery will not overwrite it")
+    staged_doc = Doc(outputs[0]["staged"])
+    staged_record = read_record(outputs[1]["staged"], staged_doc)
+    if staged_record["docx_sha256"] != outputs[0]["sha256"] or result.get("sha256") != outputs[0]["sha256"]:
+        raise Refuse("build recovery receipt hashes do not match the staged record")
+    if any(read_identity(staged_doc).get(k) != receipt.get(k) or result.get(k) != receipt.get(k)
+           for k in IDENTITY_NAMES):
+        raise Refuse("build recovery identity does not match staged Word")
+    error = None
+    try:
+        for item in outputs:
+            dest = Path(item["path"])
+            if not dest.exists():
+                publish(dest, lambda tmp, src=item["staged"]: shutil.copyfile(src, tmp))
+    except OSError as exc:
+        error = str(exc)
+    published = [o["path"] for o in outputs if Path(o["path"]).is_file()
+                 and file_sha256(o["path"]) == o["sha256"]]
+    pending = [o["path"] for o in outputs if o["path"] not in published]
+    return {**result, "receipt": str(path), "resumed": resumed, "published": published, "pending": pending,
+            "status": "partial_publication" if pending else "published",
+            "complete": result["complete"] and not pending,
+            **({"error": error, "recovery": "retry the identical build request"} if error else {})}
+
+
+def build(base, content, out, mode="normal", template=None, fields=None, protect=(), record=None, deal_id=None):
+    """Stage the entire validated handoff, then publish or resume its exact bytes."""
+    out = Path(out).resolve()
+    path = receipt_path(out)
+    paths = {"base": base, "content": content}
+    if template:
+        paths["template"] = template
+    if record or mode == "normal" and sidecar_path(base).exists():
+        paths["record"] = record or sidecar_path(base)
+    request = {"out": str(out), "mode": mode, "fields": fields, "protect": sorted(protect), "deal_id": deal_id,
+               "record": str(Path(record).resolve()) if record else None,
+               "inputs": {key: {"path": str(Path(p).resolve()), "sha256": file_sha256(p)}
+                          for key, p in paths.items()}}
+    digest = request_digest(request)
+    if path.exists():
+        receipt = read_json(path)
+        if (not isinstance(receipt, dict) or receipt.get("request_sha256") != digest
+                or receipt.get("request") != request):
+            raise Refuse("build recovery request differs; choose a new version name")
+        return publish_receipt(receipt, path, resumed=True)
+    for p in (out, sidecar_path(out), out.with_suffix(".proposals.md"), path.parent):
+        if p.exists():
+            raise Refuse(f"{p.name} already exists; choose a new version name")
+    with tempfile.TemporaryDirectory(dir=out.parent, prefix=f".{out.name}.") as tmp:
+        staged = Path(tmp) / out.name
+        result = _render_build(base, content, staged, mode, template, fields, protect, record, deal_id)
+        # The record and proposals are checked before any user-facing output is published.
+        read_record(sidecar_path(staged), Doc(staged))
+        names = [staged.name, sidecar_path(staged).name]
+        if result["proposals"]:
+            read_text(result["proposals"])
+            names.append(Path(result["proposals"]).name)
+        result.update(out=str(out), sidecar=str(sidecar_path(out)),
+                      proposals=str(out.with_suffix(".proposals.md")) if result["proposals"] else None)
+        receipt = {"schema_version": 1, "request_sha256": digest, "request": request,
+                   **{key: result[key] for key in (*IDENTITY_NAMES, "parent_build_id")}, "result": result,
+                   "outputs": [{"path": str(out.parent / name), "staged": str(path.parent / name),
+                                "sha256": file_sha256(Path(tmp) / name)} for name in names]}
+        write_text_file(Path(tmp) / "receipt.json", json.dumps(receipt, indent=1))
+        os.rename(tmp, path.parent)
+    return publish_receipt(receipt, path, resumed=False)
 
 
 # ---------- inspect and check ----------
@@ -816,7 +1060,7 @@ def inspect(path):
                 **flags(sec, inc)}
         sections.append(info)
     where = {cid: s["id"] for s in doc.sections for cid in section_comment_ids(s)}
-    return {"file": str(path), "sha256": file_sha256(path), "sections": sections,
+    return {"file": str(path), "sha256": file_sha256(path), "identity": read_identity(doc), "sections": sections,
             "comments": [{"id": cid, "section": where.get(cid), **c} for cid, c in comments.items()]}
 
 
@@ -856,6 +1100,22 @@ def to_markdown(path):
     return "\n".join(lines).rstrip() + "\n"
 
 
+def compare_headings(doc, tpl):
+    missing, order, levels, problems = None, None, None, []
+    if tpl:
+        actual = {s["id"]: s["level"] for s in doc.sections}
+        expected = {s["id"]: s["level"] for s in tpl.sections}
+        missing = [sid for sid in expected if sid not in actual]
+        order = [sid for sid in actual if sid in expected] == [sid for sid in expected if sid in actual]
+        levels = [sid for sid in expected if sid in actual and expected[sid] != actual[sid]]
+        if not order:
+            problems.append("template heading order differs")
+        if levels:
+            problems.append("template heading levels differ: " + ", ".join(levels))
+    return {"missing_sections": missing, "heading_order_matches": order,
+            "heading_level_mismatches": levels, "heading_problems": problems}
+
+
 def check(path, template=None):
     problems = []
     doc = Doc(path)
@@ -864,11 +1124,11 @@ def check(path, template=None):
         problems.append("source tags left in the text")
     if "{{keep:" in text:
         problems.append("unplaced {{keep:N}} markers left in the text")
-    missing = None  # not checked without a template
-    if template:
-        tpl = Doc(template)
-        ids = [s["id"] for s in doc.sections]
-        missing = [s["id"] for s in tpl.sections if s["id"] not in ids]
+    tpl = Doc(template) if template else None
+    structure = compare_headings(doc, tpl)
+    problems.extend(structure["heading_problems"])
+    if tpl:
+        missing = structure["missing_sections"]
         if missing:
             problems.append(f"template sections missing or renamed: {', '.join(missing)}")
         by_id = {s["id"]: s for s in doc.sections}
@@ -878,102 +1138,15 @@ def check(path, template=None):
             if guidance and mine and " ".join(k.plain() for k in mine["body"]).strip() == guidance:
                 problems.append(f"{s['id']}: still contains the template's guidance text")
     info = inspect(path)
-    return {"file": str(path), "problems": problems, "missing_sections": missing,
+    return {"file": str(path), "problems": problems, **structure,
+            "writer_limits": ["missing headings are not inserted", "predefined tables are preserved, not populated",
+                              "comments, tracked changes and fixed structures are preserved"],
+            "protected_structures": [{"section": s["id"], "fixed_objects": s["fixed_objects"],
+                                      "comments": s["has_comments"], "tracked_changes": s["has_tracked_changes"]}
+                                     for s in info["sections"] if s["fixed_objects"] or s["has_comments"]
+                                     or s["has_tracked_changes"]],
             "sections_with_comments": [s["id"] for s in info["sections"] if s["has_comments"]],
             "sections_with_tracked_changes": [s["id"] for s in info["sections"] if s["has_tracked_changes"]]}
-
-
-# ---------- self-test (also used by the unit tests) ----------
-
-def make_template(path, comment_on=None):
-    """A small but realistic FP template: cover table, headings, guidance, a fixed table."""
-    w = f'xmlns:w="{W}"'
-    style = lambda sid, name, lvl=None: (  # noqa: E731
-        f'<w:style w:type="paragraph" w:styleId="{sid}"><w:name w:val="{name}"/>'
-        + (f'<w:pPr><w:outlineLvl w:val="{lvl}"/></w:pPr>' if lvl is not None else "") + "</w:style>")
-    styles = (f'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles {w}>'
-              + style("Normal", "Normal") + style("Heading1", "heading 1", 0) + style("Heading2", "heading 2", 1)
-              + style("ListBullet", "List Bullet")
-              + '<w:style w:type="table" w:styleId="TableGrid"><w:name w:val="Table Grid"/></w:style></w:styles>')
-    p = lambda text, sid="Normal": (  # noqa: E731
-        f'<w:p><w:pPr><w:pStyle w:val="{sid}"/></w:pPr><w:r><w:t xml:space="preserve">{text}</w:t></w:r></w:p>')
-    cell = lambda text: f"<w:tc><w:p><w:r><w:t>{text}</w:t></w:r></w:p></w:tc>"  # noqa: E731
-    cover = ("<w:tbl><w:tblPr><w:tblW w:w=\"0\" w:type=\"auto\"/></w:tblPr><w:tblGrid><w:gridCol w:w=\"3000\"/>"
-             "<w:gridCol w:w=\"6000\"/></w:tblGrid>"
-             f"<w:tr>{cell('Borrower:')}{cell('[name]')}</w:tr><w:tr>{cell('Amount:')}{cell('[amount]')}</w:tr></w:tbl>")
-    fin = ("<w:tbl><w:tblPr><w:tblW w:w=\"0\" w:type=\"auto\"/></w:tblPr><w:tblGrid><w:gridCol w:w=\"4500\"/>"
-           f"<w:gridCol w:w=\"4500\"/></w:tblGrid><w:tr>{cell('EUR m')}{cell('FY2025 (template)')}</w:tr></w:tbl>")
-    risk_guidance = p("[Describe market risks]")
-    if comment_on == "market-risk":
-        risk_guidance = ('<w:p><w:commentRangeStart w:id="1"/><w:r><w:t>[Describe market risks]</w:t></w:r>'
-                         '<w:commentRangeEnd w:id="1"/><w:r><w:commentReference w:id="1"/></w:r></w:p>')
-    body = (cover + p("1. Summary", "Heading1") + p("[Summarise the proposal]")
-            + p("2. Financial analysis", "Heading1") + p("[Explain the figures]") + fin
-            + p("2.1 Market risk", "Heading2") + risk_guidance
-            + p("3. Recommendation", "Heading1") + p("[State the recommendation]")
-            + '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/></w:sectPr>')
-    document = (f'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document {w}>'
-                f"<w:body>{body}</w:body></w:document>")
-    rels = ('<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/'
-            'package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/'
-            'officeDocument/2006/relationships/styles" Target="styles.xml"/>'
-            + ('<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/'
-               'relationships/comments" Target="comments.xml"/>' if comment_on else "") + "</Relationships>")
-    types = ('<?xml version="1.0" encoding="UTF-8"?><Types xmlns="http://schemas.openxmlformats.org/package/'
-             '2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.'
-             'relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>'
-             '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.'
-             'wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/'
-             'vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/>'
-             + ('<Override PartName="/word/comments.xml" ContentType="application/vnd.openxmlformats-officedocument.'
-                'wordprocessingml.comments+xml"/>' if comment_on else "") + "</Types>")
-    root_rels = ('<?xml version="1.0" encoding="UTF-8"?><Relationships xmlns="http://schemas.openxmlformats.org/'
-                 'package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/'
-                 'officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>')
-    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
-        z.writestr("[Content_Types].xml", types)
-        z.writestr("_rels/.rels", root_rels)
-        z.writestr("word/document.xml", document)
-        z.writestr("word/styles.xml", styles)
-        z.writestr("word/_rels/document.xml.rels", rels)
-        if comment_on:
-            z.writestr("word/comments.xml", f'<?xml version="1.0" encoding="UTF-8"?><w:comments {w}>'
-                       '<w:comment w:id="1" w:author="Officer" w:date="2026-10-01T09:00:00Z"><w:p><w:r>'
-                       "<w:t>Check the FX exposure</w:t></w:r></w:p></w:comment></w:comments>")
-
-
-def edit_text(path, old, new):
-    """Simulate an officer editing text in Word (test helper)."""
-    with zipfile.ZipFile(path) as z:
-        parts = {i.filename: z.read(i.filename) for i in z.infolist()}
-    if old.encode() not in parts["word/document.xml"]:
-        raise ValueError(f"not in word/document.xml: {old}")
-    parts["word/document.xml"] = parts["word/document.xml"].replace(old.encode(), new.encode(), 1)
-    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
-        for name, data in parts.items():
-            z.writestr(name, data)
-
-
-def selftest():
-    with tempfile.TemporaryDirectory() as d:
-        d = Path(d)
-        make_template(d / "template.docx")
-        (d / "v1.md").write_text(
-            "## summary\nCedar Foods seeks EUR 12m. [S-001 p.2]\n\n## financial-analysis\n"
-            "Revenue rose 20% on a restated basis. [S-002 p.20]\n\n{{keep:1}}\n\n## market-risk\n"
-            "- Milk prices rose. [S-003]\n\n## recommendation\nApprove, subject to conditions.\n", encoding="utf-8")
-        r1 = build(d / "template.docx", d / "v1.md", d / "FP-v01.docx", mode="first", template=d / "template.docx",
-                   fields={"Borrower": "Cedar Foods", "Amount": "EUR 12m"})
-        assert r1["written"] == ["summary", "financial-analysis", "market-risk", "recommendation"], r1
-        assert not check(d / "FP-v01.docx", d / "template.docx")["problems"]
-        edit_text(d / "FP-v01.docx", "Approve, subject to conditions.", "Approve, subject to two conditions.")
-        (d / "v2.md").write_text("## summary\nCedar Foods seeks EUR 12m of working capital.\n\n"
-                                 "## recommendation\nApprove.\n", encoding="utf-8")
-        r2 = build(d / "FP-v01.docx", d / "v2.md", d / "FP-v02.docx")
-        assert r2["written"] == ["summary"] and "recommendation" in r2["frozen"], r2
-        assert "two conditions" in to_markdown(d / "FP-v02.docx")
-        assert "EUR 12m of working capital" in to_markdown(d / "FP-v02.docx")
-    return f"PASS fp_docx selftest (Python {sys.version.split()[0]})"
 
 
 def main(argv=None):
@@ -992,6 +1165,7 @@ def main(argv=None):
     b.add_argument("--template")
     b.add_argument("--fields")
     b.add_argument("--protect", default="", help="comma-separated section ids to keep as they are")
+    b.add_argument("--deal-id", help="deal identity for a first/imported build; inherited on revisions")
     b.add_argument("--record", help="the source version's record, for a renamed copy (normal rounds)")
     f = sub.add_parser("find-record")
     f.add_argument("docx")
@@ -999,7 +1173,6 @@ def main(argv=None):
     c = sub.add_parser("check")
     c.add_argument("docx")
     c.add_argument("--template")
-    sub.add_parser("selftest")
     args = ap.parse_args(argv)
     try:
         if args.cmd == "inspect":
@@ -1008,16 +1181,16 @@ def main(argv=None):
             fields = read_json(args.fields) if args.fields else None
             mode = "first" if args.first else "existing" if args.existing else "normal"
             protect = [s.strip() for s in args.protect.split(",") if s.strip()]
-            result = build(args.base, args.content, args.out, mode, args.template, fields, protect, args.record)
+            result = build(args.base, args.content, args.out, mode, args.template, fields, protect, args.record, args.deal_id)
             print(json.dumps(result, indent=1))
+            if result["status"] == "partial_publication":
+                return 2
         elif args.cmd == "find-record":
             print(json.dumps(find_record(args.docx, args.folder), indent=1))
         elif args.cmd == "check":
             result = check(args.docx, args.template)
             print(json.dumps(result, indent=1))
             return 1 if result["problems"] else 0
-        else:
-            print(selftest())
     except (Refuse, KeyError, ValueError, zipfile.BadZipFile, expat.ExpatError, ET.ParseError, OSError) as e:
         print(f"REFUSED: {e}", file=sys.stderr)
         return 3

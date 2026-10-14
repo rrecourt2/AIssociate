@@ -1,67 +1,41 @@
-# FP Assistant
+# AIssociate
 
-A **financing proposal (FP)** sets out the case for a loan or investment. It explains the business, financial performance, repayment capacity and risks. Credit or investment teams use it to support an approval decision.
+AIssociate helps a deal team turn scattered documents into a reusable evidence index, then use that record to write a financing proposal (FP).
 
-Preparing this paper takes information from financial statements, transaction documents, interviews and emails. New evidence arrives during due diligence. Sources can conflict. The team must reconcile the information and write a clear paper in its own template and style.
+Financial statements, contracts, interviews and emails often contain conflicting or outdated information. Asking AI to read the folder again for each draft costs time and loses earlier work. AIssociate stores material facts with their sources, review status and open questions so the next task can continue from them.
 
-AI can help, but clear wording alone is not enough. Each material figure needs a source. Management expectations must remain distinct from verified facts. Open questions and analyst edits must survive each revision.
+## How the pilot works
 
-**FP Assistant helps with this work.** It combines AI skills for analysis and writing with local tools that manage evidence, financial tables and Word revisions. It can improve an existing draft or start from a template. The investment officer controls the recommendation and approval decisions.
+1. **Organise evidence.** Deal Analyst indexes sources by type, entity, period and version. Report-reading and correspondence specialists extract located facts and gaps. Originals stay in place.
+2. **Check and analyse.** Financial specialists explain performance, debt and repayment. Deal Analyst reconciles claims and checks whether historical issues still matter. The index can be used and saved before any FP exists.
+3. **Write and review.** FP Lead selects the financing argument from that record. Approved examples set the voice; the template sets required content. Separate reviewers challenge the case and check presentation. The officer decides.
 
-## How it works
+Use specialists only for relevant work. A new email should update affected facts and passages, not restart the archive review. This is a supervised pilot: faster drafting and lower cost are outcomes to measure, not promises.
 
-The assistant reviews sources, analyses the financing case and drafts the paper. It challenges important claims and identifies missing evidence. New emails and interview notes update the analysis and the affected sections.
+## What's in the package
 
-Approved proposals guide the house style. ASD-STE100 (Simplified Technical English) guides clarity. Financial terms, necessary qualifications and natural paragraph flow take priority where strict simplification would reduce accuracy or readability.
+Eight skills cover evidence organisation, correspondence, annual reports, financial performance, repayment, drafting, challenge and presentation. A skill is a method; it does not require its own agent on every run.
 
-Eight skills define the work. Each skill has a `SKILL.md` instruction file, references and tools. The assistant loads a skill when it needs that task.
-
-| Skill | Responsibility |
+| Tool | Purpose |
 |---|---|
-| `fp-lead` | Develop the financing case, draft the paper and coordinate revisions |
-| `deal-analyst` | Explain the company and transaction; maintain the diligence analysis |
-| `deal-updates` | Assess emails, interviews and informal guidance; update evidence and open questions |
-| `annual-report-review` | Read financial statements and notes, retaining source locations and coverage gaps |
-| `financial-performance-analysis` | Explain earnings, working capital and cash movements |
-| `repayment-and-structure` | Assess debt service, liquidity, covenants and financing terms |
-| `investment-grill` | Challenge consequential claims, assumptions and conclusions |
-| `fp-template-style-reviewer` | Check the template, house style and final document presentation |
+| `register.py` | Stores sources, claims, analysis and gaps in `register.json`; generates an internal workbook, Analysis and client DDQ |
+| `fp.py` | Prepares Word inputs, builds controlled revisions and bundles evidence or the full paper for delivery |
+| `fp_docx.py` | Preserves officer edits and protected content; retains unapplied revisions as proposals |
+| `fin_table.py` | Transfers checked figures with entity, period, unit and cell references |
 
-FP Lead coordinates the work. The host must support separate tasks to run an independent reviewer. The plugin does not run its own agent service.
+The tools use Python 3.9+ and the standard library. Development tests and synthetic fixtures stay outside the install package. The host supplies the model, authorised connectors and execution environment. No database service or hosted backend is required.
 
-## Technical implementation
+## Install and test
 
-Three Python 3.9+ tools use only the standard library:
+Download **`aissociate-0.5.2.zip`** from the [0.5.2 pilot release](https://github.com/rrecourt2/AIssociate/releases/tag/v0.5.2). Follow [INSTALL.md](INSTALL.md) and the [whole-workflow pilot](evaluations/pilot-acceptance.md).
 
-| Tool | What it does |
-|---|---|
-| `register.py` | Maintains a JSON record of sources, risks, questions, findings and analysis. Generates Excel and Markdown views. Revision checks reject stale updates; retry IDs prevent duplicate changes. Promised or received-but-unassessed answers remain outstanding. |
-| `fp_docx.py` | Reads Word document structure and writes revisions to a new file. Section signatures and a companion `.sections.json` record detect officer edits. Protected sections remain intact and unapplied replacements go into a proposals file. |
-| `fin_table.py` | Reads an identified spreadsheet export, transfers selected figures and performs limited calculations. Records workbook hashes, cell references and formulas; refuses ambiguous labels or periods and requires an explicit basis for trusting cached formula values. |
+AIssociate replaces FP Assistant as the package and repository name. Keep existing deal registers and Word records; disable the older plugin to avoid duplicate skills. Word compatibility identifiers are unchanged.
 
-The AI interprets evidence and writes the paper. The Python tools perform repeatable file and record operations.
+## Data security
 
-The package targets Microsoft Copilot Cowork. The host must provide the model, authorised file access and Python execution. It must also retrieve and save the outputs. The plugin includes no email connector, database or hosted backend.
-
-## Try it
-
-Download `fp-assistant-0.3.0.zip` from the [release page](https://github.com/rrecourt2/fp-assistant/releases/tag/v0.3.0), under **Assets**. Follow the [installation steps](INSTALL.md). Choose the plugin ZIP, not GitHub's source-code archive.
-
-Start with a partially completed FP. Supply the separate blank template, original evidence, a checked financial spreadsheet export and approved writing examples. Ask:
-
-> Improve this financing proposal as a whole. Check the existing analysis. Explain the financial movements and repayment case. Follow the supplied template and writing examples. Save a new Word version and preserve protected content. Identify missing evidence and proposed changes that could not be applied.
-
-**Version 0.3.0 is available for a supervised pilot.** `main` contains the latest implementation.
-
-[Installation and pilot instructions](INSTALL.md) · [Design](docs/design.md) · [Validation results](evaluations/results.md)
-
-Local tests cover the tools and synthetic files saved in Microsoft Word. The pilot must still check Cowork operation, the actual template and the quality of the complete paper.
-
-The Word tool preserves predefined financial tables but cannot fill them. It also cannot add missing section headings. A person must review the facts, analysis, writing and final layout.
+The plugin contains instructions and code, not deal data. Use approved accounts and storage. Host services process authorised files, and session copies may be created; the plugin does not control tenant access or retention. Treat the index and analysis bundle as internal. Share only reviewed, intended outputs. See the short [operating rules](shared/operating-rules.md).
 
 ## Development
-
-Run the checks and build the upload packages:
 
 ```sh
 uv run pytest -q
@@ -69,10 +43,6 @@ python3 scripts/package.py
 python3 scripts/package.py --check
 ```
 
-Edit the original files in `shared/` and `tools/`. The package script copies them into each skill that needs them. It builds a plugin ZIP and individual skill ZIPs in `dist/`.
+`skills/` holds only skill instructions. `shared/` and `tools/` hold one copy of each reference and processor. The builder makes self-contained upload ZIPs in `dist/`; it never writes generated copies back into the source tree. [Design](docs/design.md) · [Validation](evaluations/results.md).
 
-The repository includes tests and reusable synthetic cases. Git ignores local plans, run logs and generated outputs. Keep confidential deal material in its approved work environment.
-
-## Toward Bankability
-
-This project tests ways to make financing analysis and proposal writing more consistent, traceable and useful. If the methods work across deals and institutions, they could contribute to **Bankability**: a shared standard for evidence-based financing workflows. This is a possible direction for the experiment. It is not yet an established standard.
+Client-prepared deal folders and reuse across lenders are future possibilities. If this pilot works, its evidence format could contribute to a wider **Bankability** standard.

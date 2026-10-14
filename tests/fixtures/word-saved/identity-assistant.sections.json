@@ -1,0 +1,30 @@
+{
+ "schema_version": 1,
+ "deal_id": "synthetic-word-identity-2026",
+ "build_id": "76ca240a-153f-45e9-b099-f47523e13ab0",
+ "parent_build_id": null,
+ "base": "synthetic-template.docx",
+ "docx_sha256": "6c2be2e2422f632bfbde784ab4193bfceb0c1c4b60335cfb0715e8b04ab32f39",
+ "sections": {
+  "summary": {
+   "owner": "ai",
+   "signature": "2dc2282dc4c2b92ac5b9a0c4df76d044f153719d3df51d470465742e45688c5c",
+   "ids": []
+  },
+  "financial-analysis": {
+   "owner": "ai",
+   "signature": "43aa0f4dfd67abcb09006474b34f68c792c0f24b26d70b6a31801b6e11218062",
+   "ids": []
+  },
+  "market-risk": {
+   "owner": "ai",
+   "signature": "6b941a28e19f7a7ae23f5d0a0ebdbb6ad666c456e55a30c507c9ea6ae62e49a7",
+   "ids": []
+  },
+  "recommendation": {
+   "owner": "ai",
+   "signature": "57180b74560535690c31a1e2697187adcf41dfeec342e9ef412e9168eb0334e6",
+   "ids": []
+  }
+ }
+}

@@ -3,11 +3,14 @@
 
   register.py init FOLDER --deal KEY
   register.py summary FOLDER [--word DOCX]
-  register.py show FOLDER ID [ID ...]
+  register.py show FOLDER [ID ...]
+  register.py show FOLDER --section SECTION
   register.py apply FOLDER CHANGES.json
   register.py lists FOLDER
+  register.py ddq FOLDER
+  register.py migrate FOLDER
+  register.py refresh FOLDER
   register.py check FOLDER [--word DOCX]
-  register.py selftest
 
 FOLDER is a local copy of the deal's "FP assistant" folder. register.json is the record.
 register.xlsx and Analysis.md are rewritten from it after every change; they are read-only views.
@@ -29,15 +32,19 @@ from xml.sax.saxutils import escape
 
 TABLES = {  # name: (id prefix, columns)
     "sources": ("S", ["id", "title", "link", "type", "entity", "period", "event_date", "tier",
-                      "coverage", "impact", "notes"]),
+                      "coverage", "impact", "notes", "version", "sha256", "extract_path", "reviewed_scope", "supersedes"]),
     "risks": ("R", ["id", "title", "topic", "raised_by", "rating", "residual", "destination",
                     "reason", "status", "officer_decision"]),
     "mitigants": ("M", ["id", "risk", "text", "type", "verified", "source", "raised_by", "status"]),
     "open_items": ("O", ["id", "kind", "text", "link", "addressee", "raised_by", "owner",
-                         "criticality", "status", "answer", "answer_source", "due", "officer_ok"]),
+                         "criticality", "status", "answer", "answer_source", "due", "officer_ok",
+                         "audience", "purpose", "assessment", "assessed_by", "officer_decision"]),
     "findings": ("", ["id", "by", "version", "section", "issue", "priority", "status", "resolution"]),
-    "analysis": ("", ["id", "title", "text", "sources", "updated"]),
-    "fp_map": ("", ["id", "version", "section", "owner", "ids"]),
+    "analysis": ("", ["id", "title", "text", "sources", "updated", "claims", "recheck"]),
+    "fp_map": ("", ["id", "version", "section", "owner", "ids", "recheck"]),
+    "claims": ("C", ["id", "assertion", "kind", "entity", "period", "sources", "support",
+                     "qualifications", "sections", "value", "unit", "definition", "inputs", "method",
+                     "attributed_to", "adoption", "recheck"]),
 }
 CONTROL = ["deal", "officer", "decision_sought", "recommendation", "audience", "annexes", "deadline",
            "template", "word", "word_sha256", "status", "ready_for", "ready_by", "updated"]
@@ -55,16 +62,23 @@ ALLOWED = {
     ("open_items", "criticality"): {"blocker", "material", "later"},
     ("open_items", "status"): {"open", "promised", "answered", "closed"},  # only closed is finished
     ("open_items", "officer_ok"): {"yes", "no"},
+    ("open_items", "audience"): {"unknown", "client", "internal", "restricted"},
+    ("claims", "recheck"): {"yes", "no", "unknown"},
+    ("analysis", "recheck"): {"yes", "no", "unknown"},
+    ("fp_map", "recheck"): {"yes", "no", "unknown"},
     ("findings", "by"): {"grill", "style"},
     ("findings", "priority"): {"blocker", "material", "minor"},
     ("findings", "status"): {"open", "resolved", "officer-judgment"},
     ("control", "status"): {"draft", "ready", "submitted"},
 }
-ID_RE = re.compile(r"\b[SRMOGT]-\d+\b")
+ID_RE = re.compile(r"\b[SRMOGTC]-\d+\b")
+SOURCE_RE = re.compile(r"\bS-\d+\b")
 ILLEGAL = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f￾￿]")
-CLIENT = ("client", "borrower", "sponsor", "company")
-DEFAULTS = {"open_items": {"status": "open"}, "sources": {"impact": "pending", "coverage": "unread"},
-            "risks": {"status": "open"}, "findings": {"status": "open"}}
+DEFAULTS = {"open_items": {"status": "open", "audience": "unknown"},
+            "sources": {"impact": "pending", "coverage": "unread"},
+            "risks": {"status": "open"}, "findings": {"status": "open"},
+            "claims": {"support": "unknown", "adoption": "unknown", "recheck": "no"},
+            "analysis": {"recheck": "no"}, "fp_map": {"recheck": "no"}}
 
 
 class ChangeError(Exception):
@@ -86,7 +100,7 @@ def sha256(path):
 # ---------- storage ----------
 
 def new_register(deal):
-    reg = {"revision": 0, "control": {k: "" for k in CONTROL}, "log": []}
+    reg = {"schema_version": 1, "revision": 0, "control": {k: "" for k in CONTROL}, "log": [], "run": {}}
     reg["control"].update(deal=deal, status="draft", updated=now())
     reg.update({name: [] for name in TABLES})
     return reg
@@ -96,7 +110,44 @@ def load(folder):
     path = Path(folder) / "register.json"
     if not path.exists():
         raise ChangeError(f"no register.json in {folder}; run init first")
-    return json.loads(path.read_text(encoding="utf-8"))
+    reg = json.loads(path.read_text(encoding="utf-8"))
+    if reg.get("schema_version") != 1:
+        raise ChangeError("unsupported register schema; run register.py migrate FOLDER explicitly")
+    return reg
+
+
+def migrate(folder):
+    """Upgrade once, retaining the exact legacy bytes and all IDs/history."""
+    path = Path(folder) / "register.json"
+    raw = path.read_bytes()
+    reg = json.loads(raw)
+    if reg.get("schema_version") == 1:
+        refresh_views(folder, reg)
+        return {"status": "already-migrated", "revision": reg["revision"]}
+    if reg.get("schema_version", 0) != 0:
+        raise ChangeError("cannot migrate an unknown schema version")
+    backup = path.with_name("register.schema-0.backup.json")
+    if backup.exists() and backup.read_bytes() != raw:
+        raise ChangeError(f"refusing to replace a different migration backup: {backup}")
+    if not backup.exists():
+        with backup.open("xb") as f:
+            f.write(raw)
+    for name, (_, cols) in TABLES.items():
+        for row in reg.setdefault(name, []):
+            for col in cols:
+                row.setdefault(col, "unknown" if col in {"audience", "recheck"} else "")
+    reg.setdefault("run", {})
+    reg["schema_version"] = 1
+    if reg["control"]["status"] == "ready" and open_checks(reg, recorded_word(folder, reg)):
+        reg["control"]["status"] = "draft"  # Keep the historical decision fields and log intact.
+    save(folder, reg)
+    return {"status": "migrated", "revision": reg["revision"], "backup": str(backup)}
+
+
+def refresh(folder):
+    reg = load(folder)
+    refresh_views(folder, reg)
+    return {"status": "refreshed", "revision": reg["revision"]}
 
 
 def save(folder, reg):
@@ -134,8 +185,8 @@ def write_views(folder, reg):
     for name, (_, cols) in TABLES.items():
         sheets.append((name.replace("_", " ").capitalize(), cols, [[r.get(c, "") for c in cols] for r in reg[name]]))
     sheets.append(("Check", ["severity", "rule", "item", "detail"], [list(p) for p in problems(reg)]))
-    sheets.append(("Log", ["at", "revision", "actor", "op_id", "summary", "next_step"],
-                   [[e.get(c, "") for c in ("at", "revision", "actor", "op_id", "summary", "next_step")]
+    sheets.append(("Log", ["at", "revision", "actor", "op_id", "summary", "next_step", "request_sha256"],
+                   [[e.get(c, "") for c in ("at", "revision", "actor", "op_id", "summary", "next_step", "request_sha256")]
                     for e in reg["log"]]))
     fd, tmp = tempfile.mkstemp(dir=folder, suffix=".xlsx.tmp")
     os.close(fd)
@@ -149,6 +200,7 @@ def write_views(folder, reg):
         if os.path.exists(tmp):
             os.unlink(tmp)
     atomic_text(folder / "Analysis.md", analysis_md(reg))
+    atomic_text(folder / "Client-DDQ.md", ddq(reg))
 
 
 def write_xlsx(path, sheets):
@@ -219,7 +271,10 @@ def write_xlsx(path, sheets):
         f'officedocument.spreadsheetml.styles+xml"/>{sheet_types}</Types>')
     with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
         for name in ["[Content_Types].xml", "_rels/.rels"] + sorted(n for n in files if n.startswith("xl/")):
-            z.writestr(name, files[name])
+            info = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.create_system, info.external_attr = 3, 0o600 << 16
+            z.writestr(info, files[name])
 
 
 def analysis_md(reg):
@@ -229,6 +284,9 @@ def analysis_md(reg):
            f"_Generated from register revision {reg['revision']}. Do not edit this file; changes go through the register._", ""]
     for r in rows:
         out += [f"## {r['title'] or r['id']} ({r['id']})", "", r["text"].strip(), ""]
+        out += [f"{label}: {r[key]}" for key, label in (("sources", "Sources"), ("claims", "Claims"),
+                ("updated", "Updated"), ("recheck", "Recheck")) if r.get(key)]
+        out.append("")
     return "\n".join(out)
 
 
@@ -239,11 +297,60 @@ def next_id(rows, prefix):
     return f"{prefix}-{max(nums, default=0) + 1:03d}"
 
 
+def validate_file_ref(value):
+    if (not isinstance(value, dict) or set(value) != {"path", "sha256"}
+            or not isinstance(value["path"], str) or not value["path"].strip()
+            or not isinstance(value["sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", value["sha256"])):
+        raise ChangeError("run file references require path and a SHA-256 digest")
+
+
+def validate_run(fields):
+    strings = {"output_dir", "mode", "provenance", "build_id", "parent_build_id", "status", "build_request_sha256"}
+    if not isinstance(fields, dict) or set(fields) - strings - {"base", "template", "draft", "record", "examples", "support", "preflight", "artifacts"}:
+        raise ChangeError("run contains an unknown field")
+    for key, value in fields.items():
+        if key in strings and not isinstance(value, str):
+            raise ChangeError(f"run {key} must be a string")
+        if key in {"base", "template", "draft", "record"}:
+            validate_file_ref(value)
+        if key in {"examples", "support"}:
+            if not isinstance(value, list):
+                raise ChangeError(f"run {key} must be a list of file references")
+            for item in value:
+                validate_file_ref(item)
+        if key == "artifacts":
+            if not isinstance(value, dict) or set(value) - {"word", "record", "proposals"}:
+                raise ChangeError("run artifacts must contain word, record or proposals file references")
+            for item in value.values():
+                validate_file_ref(item)
+        if key == "preflight":
+            if not isinstance(value, dict) or set(value) - {"word", "template", "editorial"}:
+                raise ChangeError("run preflight must contain word, template or editorial")
+            if any(not isinstance(value[k], dict) for k in ("word", "template") if k in value):
+                raise ChangeError("run preflight word/template must be inspection objects")
+            if "editorial" in value and value["editorial"] not in ("pending", "complete"):
+                raise ChangeError("run editorial preflight must be pending or complete")
+    for key, allowed in (("mode", {"existing", "first", "normal"}), ("status", {"prepared", "built", "partial"})):
+        if key in fields and fields[key] not in allowed:
+            raise ChangeError(f"run {key} must be one of {sorted(allowed)}")
+    for key in {"output_dir", "provenance", "build_id"} & fields.keys():
+        if not fields[key].strip():
+            raise ChangeError(f"run {key} cannot be blank")
+    if "build_request_sha256" in fields and not re.fullmatch(r"[0-9a-f]{64}", fields["build_request_sha256"]):
+        raise ChangeError("run build_request_sha256 must be a SHA-256 digest")
+
+
 def apply_change(reg, ch):
     if not isinstance(ch, dict):
         raise ChangeError("each change must be an object")
     sheet = ch.get("sheet")
     fields = ch.get("add", ch.get("set", {}))
+    if sheet == "run":
+        if set(ch) != {"sheet", "set"}:
+            raise ChangeError("run changes require sheet and set")
+        validate_run(fields)
+        reg["run"] = copy.deepcopy(fields)
+        return None
     if not isinstance(fields, dict) or any(not isinstance(v, str) for v in fields.values()):
         raise ChangeError("add/set fields must be an object of strings; omit unavailable fields")
     if sheet == "control":
@@ -278,41 +385,104 @@ def apply_change(reg, ch):
             raise ChangeError("ids are assigned by the register; leave id empty when adding")
         else:
             row["id"] = next_id(rows, prefix)
+        if sheet == "analysis":
+            row["updated"] = now()
         rows[:] = [r for r in rows if r["id"] != row["id"]] + [row]
         return row["id"]
     if "update" in ch:
         target = ch["update"]
         for r in rows:
             if r["id"] == target:
+                if sheet == "sources" and any(k in fields and r[k] and fields[k] != r[k]
+                                              for k in ("sha256", "version", "supersedes")):
+                    raise ChangeError(f"{target}: changed source content/version needs a new source ID")
                 for k, v in fields.items():
                     if (sheet, k) in ALLOWED and r.get(k) and not str(v).strip():
                         raise ChangeError(f"{target}: {k} cannot be blank; choose an explicit state")
                 r.update({k: str(v) for k, v in fields.items() if k != "id"})
+                if sheet == "analysis":
+                    r["updated"] = now()
                 return target
         if sheet == "analysis":
             row = {c: "" for c in cols}
+            row.update(DEFAULTS.get(sheet, {}))
             row.update({k: str(v) for k, v in fields.items()}, id=target)
+            row["updated"] = now()
             rows.append(row)
             return target
         raise ChangeError(f"{target} not found in {sheet}")
     raise ChangeError("each change needs 'add', 'update' (with 'set') or, for control, 'set'")
 
 
+def request_sha256(changes):
+    try:
+        raw = json.dumps(changes, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False)
+    except (TypeError, ValueError) as e:
+        raise ChangeError(f"request must contain JSON values: {e}") from e
+    return hashlib.sha256(raw.encode("utf-8")).hexdigest()
+
+
+def invalidate_links(reg, old):
+    """Follow only explicit register links; whole-case source impact remains separate."""
+    old_sources = {r["id"]: r for r in old["sources"]}
+    source_fields = set(TABLES["sources"][1]) - {"coverage", "impact", "reviewed_scope", "extract_path"}
+    changed_sources = {r["id"] for r in reg["sources"] if r["id"] in old_sources
+                       and any(r[k] != old_sources[r["id"]][k] for k in source_fields)}
+    changed_sources.update(r["supersedes"] for r in reg["sources"] if r["supersedes"]
+                           and r["supersedes"] != old_sources.get(r["id"], {}).get("supersedes"))
+    old_claims = {r["id"]: r for r in old["claims"]}
+    changed_claims = {r["id"] for r in reg["claims"] if r["id"] in old_claims
+                     and any(r[k] != old_claims[r["id"]][k] for k in r if k != "recheck")}
+    for row in reg["claims"]:
+        if changed_sources.intersection(SOURCE_RE.findall(row["sources"] + " " + row["inputs"])):
+            row["recheck"] = "yes"
+            changed_claims.add(row["id"])
+    for _ in reg["claims"]:  # At most one pass per claim, including forward references and cycles.
+        affected = {r["id"] for r in reg["claims"] if changed_claims.intersection(ID_RE.findall(r["inputs"]))}
+        if affected <= changed_claims:
+            break
+        changed_claims.update(affected)
+        for row in reg["claims"]:
+            if row["id"] in affected:
+                row["recheck"] = "yes"
+    old_analysis = {r["id"]: r for r in old["analysis"]}
+    changed_analysis = {r["id"] for r in reg["analysis"] if r["id"] in old_analysis
+                        and any(r[k] != old_analysis[r["id"]][k] for k in r if k not in {"updated", "recheck"})}
+    for row in reg["analysis"]:
+        if (changed_sources.intersection(SOURCE_RE.findall(row["sources"]))
+                or changed_claims.intersection(ID_RE.findall(row["claims"]))):
+            row.update(recheck="yes", updated=now())
+            changed_analysis.add(row["id"])
+    sections = {s.strip() for row in reg["claims"] if row["id"] in changed_claims
+                for s in re.split(r"[,;\n]", row["sections"]) if s.strip()}
+    affected = changed_sources | changed_claims | changed_analysis
+    for row in reg["fp_map"]:
+        if affected.intersection(link_ids(row["ids"])) or row["section"] in sections:
+            row["recheck"] = "yes"
+
+
 def apply(folder, changes):
     if not isinstance(changes, dict) or not isinstance(changes.get("changes", []), list):
         raise ChangeError("a change set must be an object with a changes list")
     reg = load(folder)
-    if any(e.get("op_id") == changes.get("op_id") for e in reg["log"]):
-        refresh_views(folder, reg)  # repairs views an interrupted run may have left stale
-        return {"status": "already-applied", "revision": reg["revision"]}
+    if not isinstance(changes.get("op_id"), str) or not changes["op_id"].strip():
+        raise ChangeError("op_id is required so that a retry cannot apply the same change twice")
+    digest = request_sha256(changes)
+    for entry in reg["log"]:
+        if entry.get("op_id") == changes["op_id"]:
+            if not entry.get("request_sha256"):
+                raise ChangeError("legacy operation has no digest; use refresh to repair views without replay")
+            if entry["request_sha256"] != digest:
+                raise ChangeError("op_id already used with a different payload; use a new operation ID")
+            refresh_views(folder, reg)
+            return {"status": "already-applied", "revision": reg["revision"]}
     if changes.get("base_revision") != reg["revision"]:
         raise ChangeError(f"stale: change set is based on revision {changes.get('base_revision')}, "
                           f"the register is at {reg['revision']}; re-read with summary and retry")
-    if not isinstance(changes.get("op_id"), str) or not changes["op_id"].strip():
-        raise ChangeError("op_id is required so that a retry cannot apply the same change twice")
     before = {(p[1], p[2]) for p in problems(reg) if p[0] == "error"}
     new = copy.deepcopy(reg)
     touched = [apply_change(new, ch) for ch in changes.get("changes", [])]
+    invalidate_links(new, reg)
     introduced = [p for p in problems(new) if p[0] == "error" and (p[1], p[2]) not in before]
     rank = {"low": 0, "medium": 1, "high": 2}
     old = {r["id"]: r for r in reg["risks"]}
@@ -343,7 +513,7 @@ def apply(folder, changes):
         c["ready_for"] = f"{c['word']} at register revision {new['revision'] + 1}"
     elif reg["control"]["status"] == "ready":
         reasons = open_checks(new, word)
-        if any(new[name] != reg[name] for name in TABLES):
+        if any(new[name] != reg[name] for name in list(TABLES) + ["run"]):
             reasons.append("evidence or analysis changed since readiness was recorded")
         if any(c[k] != reg["control"][k] for k in CONTROL if k != "updated"):
             reasons.append("the Word record or control details changed since readiness was recorded")
@@ -356,7 +526,7 @@ def apply(folder, changes):
     new["control"]["updated"] = now()
     new["log"].append({"at": now(), "revision": new["revision"], "actor": changes.get("actor", ""),
                        "op_id": changes["op_id"], "summary": changes.get("summary", ""),
-                       "next_step": changes.get("next_step", "")})
+                       "next_step": changes.get("next_step", ""), "request_sha256": digest})
     save(folder, new)
     return {"status": "applied", "revision": new["revision"], "ids": [t for t in touched if t],
             "warnings": notes + [f"{p[2]}: {p[3]}" for p in problems(new) if p[0] == "warning"]}
@@ -374,10 +544,35 @@ def gates(reg):
     pending = [s["id"] for s in reg["sources"] if s["impact"] == "pending"]
     if pending:
         out.append("source impact not assessed: " + ", ".join(pending))
+    unread = [s["id"] for s in reg["sources"] if s["tier"] == "A" and s["coverage"] != "read"]
+    if unread:
+        out.append("critical sources not fully read: " + ", ".join(unread))
     recheck = [r["id"] for r in reg["risks"] if r["status"] == "recheck"]
     if recheck:
         out.append("risks to recheck: " + ", ".join(recheck))
+    for name in ("claims", "analysis", "fp_map"):
+        pending = [r["id"] for r in reg[name] if r.get("recheck") in {"yes", "unknown"}]
+        if pending:
+            out.append(f"{name} to recheck: " + ", ".join(pending))
     return out
+
+
+def link_ids(text):
+    return set(ID_RE.findall(text)) | {s.strip() for s in re.split(r"[,;\s]+", text) if s.strip()}
+
+
+def source_errors(text, sources):
+    matches = list(SOURCE_RE.finditer(text))
+    if not matches:
+        return ["needs an existing source ID and locator"]
+    errors = []
+    for i, match in enumerate(matches):
+        if match.group() not in sources:
+            errors.append(f"unknown source {match.group()}")
+        end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        if not re.search(r"\w", text[match.end():end]):
+            errors.append(f"{match.group()} needs a locator")
+    return errors
 
 
 def problems(reg, today=None):
@@ -399,7 +594,8 @@ def problems(reg, today=None):
     if status not in ALLOWED[("control", "status")]:
         err("allowed-value", "control", f"status={status!r}")
     risks = {r["id"]: r for r in reg["risks"]}
-    verified = {m["risk"] for m in reg["mitigants"] if m["verified"] == "yes"}
+    sources = {s["id"]: s for s in reg["sources"]}
+    verified = {m["risk"] for m in reg["mitigants"] if m["verified"] == "yes" and m["type"] == "existing"}
     for r in reg["risks"]:
         if not r["raised_by"].strip():
             err("raised-by", r["id"], "record who raised this risk")
@@ -414,19 +610,40 @@ def problems(reg, today=None):
             err("raised-by", m["id"], "record who raised this mitigant")
         if m["verified"] == "yes" and not m["source"].strip():
             err("evidence", m["id"], "a verified mitigant needs a source")
+        elif m["source"].strip():
+            for message in source_errors(m["source"], sources):
+                err("evidence", m["id"], message)
     for o in reg["open_items"]:
         if o["link"].startswith("R-") and o["link"] not in risks:
             err("link", o["id"], f"open item points to unknown risk {o['link']!r}")
         if not o["raised_by"].strip():
             err("raised-by", o["id"], "record who raised this item")
-        if o["status"] in ("answered", "closed") and not o["answer_source"].strip():
-            err("evidence", o["id"], "an answered or closed item needs an answer source")
+        decision = o.get("officer_decision", "").strip()
+        if o["status"] == "answered" or (o["status"] == "closed" and not decision):
+            if not o["answer_source"].strip():
+                err("evidence", o["id"], "an answered or closed item needs an answer source")
+        if o["answer_source"].strip():
+            for message in source_errors(o["answer_source"], sources):
+                err("evidence", o["id"], message)
+        if o["status"] == "closed":
+            if not o.get("assessment", "").strip():
+                err("assessment", o["id"], "closure needs an assessment of the answer or remaining gap")
+            if not o.get("assessed_by", "").strip():
+                err("assessor", o["id"], "closure needs an assessor in assessed_by")
+            if decision and (":" not in decision or not decision.split(":", 1)[0].strip()
+                             or not decision.split(":", 1)[1].strip()):
+                err("officer-decision", o["id"], "attribute officer_decision as 'Officer, date: decision'")
         r = risks.get(o["link"])
         if (o["criticality"] == "later" and r and r["destination"] == "main" and r["id"] not in verified
                 and o["officer_ok"] != "yes"):
-            err("later-diligence", o["id"], f"{r['id']} is in the main FP without a verified mitigant; "
+            err("later-diligence", o["id"], f"{r['id']} is in the main FP without an existing verified mitigant; "
                                             "'later' needs officer_ok=yes")
     for s in reg["sources"]:
+        if s["sha256"] and not re.fullmatch(r"[0-9a-f]{64}", s["sha256"]):
+            err("source-hash", s["id"], "sha256 must be a SHA-256 digest")
+        if s["supersedes"] and (s["supersedes"] not in sources
+                or int(s["supersedes"].split("-")[1]) >= int(s["id"].split("-")[1])):
+            err("source-version", s["id"], "supersedes must identify an earlier source ID")
         if s["tier"] == "A" and s["coverage"] != "read":
             warn("tier-a-read", s["id"], f"tier A source is {s['coverage'] or 'unread'}")
         if s["impact"] == "pending":
@@ -435,13 +652,37 @@ def problems(reg, today=None):
         if r["status"] == "recheck":
             warn("recheck", r["id"], "recheck this risk against the latest evidence")
     known = {r["id"] for name in TABLES for r in reg[name]}
+    claims = {r["id"] for r in reg["claims"]}
+    for name in ("claims", "analysis"):
+        for row in reg[name]:
+            if row["sources"].strip():
+                for message in source_errors(row["sources"], sources):
+                    err("evidence", row["id"], message)
+            if name == "claims":
+                if not row["assertion"].strip() or not row["kind"].strip():
+                    err("claim", row["id"], "a material claim needs an assertion and kind")
+                if row["value"].strip() or row["kind"] == "calculation":
+                    required = ["value", "unit", "entity", "period", "definition"]
+                    if row["kind"] == "calculation":
+                        required += ["inputs", "method"]
+                    missing = [k for k in required if not row[k].strip()]
+                    if missing:
+                        err("numeric-claim", row["id"], "numeric/calculation claim needs " + ", ".join(missing))
+                linked = ID_RE.findall(row["inputs"])
+                if any(i not in known for i in linked):
+                    err("claim-link", row["id"], "inputs cite unknown IDs")
+                if SOURCE_RE.search(row["inputs"]):
+                    for message in source_errors(row["inputs"], sources):
+                        err("evidence", row["id"], message)
+            elif any(i not in claims for i in link_ids(row["claims"])):
+                err("claim-link", row["id"], "analysis cites unknown claims")
     dates = {s["id"]: s["event_date"] for s in reg["sources"] if s["event_date"]}
     cutoff = ((today or datetime.date.today()) - datetime.timedelta(days=365)).isoformat()
     for f in reg["fp_map"]:
-        cited = ID_RE.findall(f["ids"])
+        cited = link_ids(f["ids"])
         unknown = [i for i in cited if i not in known]
         if unknown:
-            warn("fp-map-link", f["id"], "cites unknown ids " + ", ".join(unknown))
+            err("fp-map-link", f["id"], "cites unknown ids " + ", ".join(unknown))
         src = [dates[i] for i in cited if i in dates]
         if src and max(src) < cutoff:
             warn("stale-sources", f["id"], "every cited source is more than 12 months old")
@@ -525,7 +766,50 @@ def summary(reg, word=None):
     return "\n".join(lines)
 
 
-def show(reg, ids):
+def show(reg, ids, section=None):
+    if section:
+        mapped = [r for r in reg["fp_map"] if r["section"] == section]
+        selected = set(ids) | {i for row in mapped for i in link_ids(row["ids"])}
+        selected.update(i for row in reg["analysis"] if row["id"] in selected
+                        for i in ID_RE.findall(row["claims"]))
+        selected.update(r["id"] for r in reg["claims"]
+                        if section in {s.strip() for s in re.split(r"[,;\n]", r["sections"])})
+        for _ in reg["claims"]:
+            linked = {i for r in reg["claims"] if r["id"] in selected
+                      for i in ID_RE.findall(r["inputs"] + " " + r["qualifications"])}
+            linked.update(r["id"] for r in reg["claims"]
+                          if selected.intersection(ID_RE.findall(r["qualifications"])))
+            if linked <= selected:
+                break
+            selected.update(linked)
+        claims = [r for r in reg["claims"] if r["id"] in selected]
+        analyses = [r for r in reg["analysis"] if r["id"] in selected
+                    or selected.intersection(ID_RE.findall(r["claims"]))]
+        selected.update(r["id"] for r in analyses + mapped)
+        selected.update(i for r in claims + analyses for i in SOURCE_RE.findall(r["sources"] + " " + r.get("inputs", "")))
+        selected.update(r["id"] for r in reg["sources"] if r["supersedes"] in selected)
+        selected.update(r["supersedes"] for r in reg["sources"] if r["id"] in selected and r["supersedes"])
+        strategy = next((r["text"] for r in reg["analysis"] if r["id"] == "strategy"), "not recorded")
+        return (f"Section: {section}\nThis selection is not a complete substantive review.\n"
+                f"Strategy: {short(strategy, 800)}\n\n" + (show(reg, sorted(selected)) if selected else ""))
+    if not ids:
+        out = [f"{reg['control']['deal']} · evidence index · register revision {reg['revision']}"]
+        for name, title in (("sources", "title"), ("claims", "assertion")):
+            entries = reg[name]
+            out.append(f"{name.capitalize()}: {len(entries)}"
+                       + (" (first 20 shown; full index in register.json)" if len(entries) > 20 else ""))
+            for row in entries[:20]:
+                context = f"{short(row['entity'] or '-', 32)} / {short(row['period'] or '-', 24)}"
+                if name == "sources":
+                    state = f"coverage {row['coverage']}; impact {row['impact']}"
+                    reference = row["link"] or row["extract_path"]
+                else:
+                    state = f"support {short(row['support'] or 'unknown', 32)}; recheck {row['recheck']}"
+                    reference = row["sources"] or row["inputs"]
+                out.append(f"  {row['id']}: {short(row[title], 72)} | {context} | {state}"
+                           f" | {short(reference or 'no located reference', 120)}")
+        out.append("Use show FOLDER ID [ID ...] for full records; this index is not a substantive review.")
+        return "\n".join(out)
     rows = {r["id"]: (name, r) for name in TABLES if name != "analysis" for r in reg[name]}
     for r in reg["analysis"]:
         rows.setdefault(r["id"], ("analysis", r))
@@ -541,14 +825,33 @@ def show(reg, ids):
             out += [f"  mitigant {m['id']}: {m['text']} [{m['type']}, verified {m['verified'] or '-'}]"
                     for m in reg["mitigants"] if m["risk"] == i]
             out += [f"  open item {o['id']}: {o['text']} [{o['status']}]" for o in reg["open_items"] if o["link"] == i]
-            out += [f"  analysis: {a['text']}" for a in reg["analysis"] if a["id"] == i and name != "analysis"]
+        for analysis in reg["analysis"]:
+            if analysis["id"] == i and name != "analysis":
+                out.append(f"{i} (analysis)")
+                out += [f"  {k}: {v}" for k, v in analysis.items() if v and k != "id"]
     return "\n".join(out)
+
+
+def client_requests(reg):
+    return [o for o in reg["open_items"] if o.get("audience") == "client" and o["status"] in {"open", "promised"}]
+
+
+def ddq(reg):
+    """Only explicitly client-facing requests; no internal assessments or risk links."""
+    lines = [f"# {reg['control']['deal']} — client requests", "",
+             f"Register revision {reg['revision']}", ""]
+    for row in client_requests(reg):
+        lines += [f"## {row['id']}", "", row["text"], ""]
+        lines += [f"{label}: {row[key]}" for key, label in (("purpose", "Purpose"), ("due", "Due")) if row[key]]
+        if row["status"] == "promised":
+            lines.append("Promised; awaiting evidence.")
+        lines.append("")
+    return "\n".join(lines if client_requests(reg) else lines + ["No open client requests."])
 
 
 def lists(reg):
     opened = [o for o in reg["open_items"] if o["status"] != "closed"]
-    client = [o for o in opened if o["status"] != "answered"
-              and any(w in o["addressee"].lower() for w in CLIENT)]
+    client = client_requests(reg)
     internal = [o for o in opened if o not in client]
     state = {"promised": " — promised, awaiting evidence", "answered": " — answered, awaiting assessment"}
     item = lambda o: (f"- {o['id']} [{o['criticality'] or '-'}] {o['text']}"  # noqa: E731
@@ -560,35 +863,6 @@ def lists(reg):
     out += ["", "## Proposed conditions", ""] + ([f"- {m['id']} ({m['risk']}) {m['text']}" for m in conditions]
                                                   or ["- none"])
     return "\n".join(out)
-
-
-# ---------- self-test ----------
-
-def selftest():
-    with tempfile.TemporaryDirectory() as d:
-        save(d, new_register("TestDeal"))
-        r = apply(d, {"base_revision": 0, "op_id": "t1", "actor": "selftest", "summary": "first", "changes": [
-            {"sheet": "sources", "add": {"title": "AR 2025", "tier": "A", "coverage": "read", "impact": "assessed"}},
-            {"sheet": "risks", "add": {"title": "FX mismatch", "raised_by": "E&S call", "rating": "high",
-                                       "destination": "main", "reason": "decision-relevant", "status": "open"}},
-            {"sheet": "open_items", "add": {"text": "Revenue split by currency", "link": "R-001",
-                                            "addressee": "client", "raised_by": "officer", "criticality": "blocker",
-                                            "status": "open"}}]})
-        assert r["status"] == "applied" and r["ids"] == ["S-001", "R-001", "O-001"], r
-        assert apply(d, {"base_revision": 0, "op_id": "t1"})["status"] == "already-applied"
-        for bad in ({"base_revision": 0, "op_id": "t2", "changes": []},
-                    {"base_revision": 1, "op_id": "t3", "changes": [
-                        {"sheet": "mitigants", "add": {"risk": "R-001", "verified": "yes", "raised_by": "x"}}]}):
-            try:
-                apply(d, bad)
-                raise AssertionError("change should have been rejected")
-            except ChangeError:
-                pass
-        reg = load(d)
-        assert "Register checks: not passed" in summary(reg) and "O-001" in lists(reg)
-        with zipfile.ZipFile(Path(d) / "register.xlsx") as z:
-            assert z.testzip() is None
-    return f"PASS register selftest (Python {sys.version.split()[0]})"
 
 
 def main(argv=None):
@@ -603,13 +877,14 @@ def main(argv=None):
         p.add_argument("--word")
     p = sub.add_parser("show")
     p.add_argument("folder")
-    p.add_argument("ids", nargs="+")
+    p.add_argument("ids", nargs="*")
+    p.add_argument("--section")
     p = sub.add_parser("apply")
     p.add_argument("folder")
     p.add_argument("changes")
-    p = sub.add_parser("lists")
-    p.add_argument("folder")
-    sub.add_parser("selftest")
+    for name in ("lists", "ddq", "migrate", "refresh"):
+        p = sub.add_parser(name)
+        p.add_argument("folder")
     args = ap.parse_args(argv)
     try:
         if args.cmd == "init":
@@ -622,12 +897,18 @@ def main(argv=None):
             reg = load(args.folder)
             print(summary(reg, args.word or recorded_word(args.folder, reg)))
         elif args.cmd == "show":
-            print(show(load(args.folder), args.ids))
+            print(show(load(args.folder), args.ids, args.section))
         elif args.cmd == "apply":
             result = apply(args.folder, json.loads(Path(args.changes).read_text(encoding="utf-8")))
             print(json.dumps(result, indent=1))
         elif args.cmd == "lists":
             print(lists(load(args.folder)))
+        elif args.cmd == "ddq":
+            print(ddq(load(args.folder)))
+        elif args.cmd == "migrate":
+            print(json.dumps(migrate(args.folder), indent=1))
+        elif args.cmd == "refresh":
+            print(json.dumps(refresh(args.folder), indent=1))
         elif args.cmd == "check":
             reg = load(args.folder)
             probs = problems(reg)
@@ -635,8 +916,6 @@ def main(argv=None):
             reasons = open_checks(reg, args.word or recorded_word(args.folder, reg))
             print("Register checks: passed" if not reasons else "Register checks: not passed — " + "; ".join(reasons))
             return 1 if reasons else 0
-        else:
-            print(selftest())
     except ViewsIncompleteError as e:
         print(f"SAVED: {e}", file=sys.stderr)
         return 4

@@ -1,6 +1,6 @@
 [project]
-name = "fp-assistant"
-version = "0.3.0"
+name = "aissociate"
+version = "0.5.2"
 requires-python = ">=3.9"
 dependencies = []  # tools/ use the Python standard library only
 

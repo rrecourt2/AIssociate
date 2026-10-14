@@ -1,50 +1,26 @@
 ---
 name: investment-grill
-description: Challenge the evidence and reasoning in a financing proposal or Credit reply. Use to grill an FP, test the financing thesis, interview the officer about the case, recheck findings or arbitrate a disputed finding in a fresh task. For wording and layout use fp-template-style-reviewer.
+description: Challenge the evidence and reasoning in an FP or Credit reply, interview the officer, recheck repairs, or arbitrate a material disagreement in a fresh task.
 ---
 
 # Investment Grill
 
-Test whether the presented financing case is defensible. The officer's intended recommendation is a hypothesis to examine, not a conclusion to validate. Challenge reasoning without taking over authorship or manufacturing weaknesses.
+Test whether the financing case is defensible. The intended recommendation is a hypothesis to examine; neither approval, rejection nor finding a fault is the target.
 
-Apply [operating-rules.md](references/operating-rules.md) and [workflow-contract.md](references/workflow-contract.md). Identify the exact draft/reply, review scope, annexes, brief, previous findings and accessible original evidence. Scope the review honestly when evidence is unavailable.
+Apply [operating rules](../../shared/operating-rules.md) and the [review protocol](../../shared/review-protocol.md). Use the named version, brief, relevant analysis, original evidence and earlier findings. For recording results, use the relevant [workflow](../../shared/workflow-contract.md) stage. Tools: [register.py](../../tools/register.py), [fp_docx.py](../../tools/fp_docx.py).
 
-Tools: [register.py](scripts/register.py), [fp_docx.py](scripts/fp_docx.py). Use the workflow contract for invocation and record updates.
+Review the case by default; use recheck for repairs and a fresh context for arbitration. In interview mode, ask one material question at a time. Otherwise batch essential gaps.
 
-## Select the mode
+## Challenge what matters
 
-Use substantive draft review by default; recheck for repaired findings; interview for eliciting the officer's reasoning; response review for a Credit reply. In interview mode ask one material question at a time. Otherwise batch essential gaps and return usable findings without unnecessary interruption.
+Test the financing purpose, business drivers, borrower/group boundaries, cash generation, repayment/downside, structure and effective protections. Examine development rationale and prior commitments where relevant. Inspect originals for decisive claims, including contrary evidence.
 
-For checkpoint reviews or arbiter mode, apply [review-protocol.md](references/review-protocol.md). An arbiter is a fresh third task that independently assesses a disputed claim against original evidence and returns a scoped resolution or unresolved evidence/judgment need. The author or critic must not relabel its same-context response as independent arbitration.
+Watch for mismatched periods, units or ratio definitions; explanations presented as proven causes; unsupported earnings adjustments; restricted/group cash or conditional refinancing treated as available; and proposed conditions presented as existing protections. Check whether the main FP lost material limitations from the analysis or annexes. A source tag or balanced calculation does not establish a sound conclusion.
 
-## Test the case against evidence
+Assess the whole paper as well as consequential issue batches. State whether an uncertainty needs evidence, an appropriate condition or officer judgment. Do not turn factual descriptions or wording preferences into risk findings.
 
-Examine the financing purpose, borrower/group boundaries, business drivers, cash generation, repayment source, downside, refinancing dependence, covenants and the timing/effectiveness of protections. Review development rationale and prior-financing commitments where relevant. Seek the strongest plausible contrary explanation. Use the specialist analyses as inputs, then inspect original evidence for decisive claims rather than only accepting their summaries.
+## Return and recheck
 
-Look especially for:
+Give each material finding an ID, version/location, concern, financing consequence, evidence/gap and specific resolution. Classify it as blocker, material improvement or later diligence, with a reason. Findings are proposals for the lead to assess and rewrite.
 
-- a cited passage that does not support the assertion, or a recent document quoting outdated facts;
-- wrong entity, period, currency, units, ratio definition or restated comparative;
-- a management explanation presented as reconciled causation;
-- recurring costs removed from earnings without support, or earnings treated as available cash;
-- group/restricted cash, conditional facilities or unsigned refinancing treated as borrower liquidity;
-- proposed protections presented as implemented, or conditions that do not address the risk when it arises;
-- decision-changing evidence or limitations lost between the background, annex and main FP.
-
-A balanced calculation is not proof of cause; a source tag is not proof of verification. Inspect the required disclosure and contrary evidence, not just the passage cited in favour. An unreadable or inaccessible note limits the conclusion. Assess new sources even when the old evidence map has no link to them.
-
-Check whether uncertainty changes the decision or requires a condition, further evidence or explicit officer judgment. Do not assume approval or rejection is always preferable. Do not require a risk paragraph when the factual description is sufficient.
-
-## Return actionable findings
-
-For each finding give a stable ID when available, exact version/location and assertion, concern, financing consequence, evidence or gap, priority and a specific resolution. Priorities are FP blocker, material improvement or later diligence; explain why. A mere preference about wording is not a material finding.
-
-Check proposed Credit replies against the actual question and identify whether the FP itself needs correction. A request for supporting detail need not imply a defect in the recommendation.
-
-If no material finding remains, say so for the reviewed scope and describe the decisive checks and their limits. Do not fill a quota or claim the entire transaction is approved.
-
-## Recheck and finish
-
-Read the revised passage and response against original evidence. Mark resolved, open or officer judgment, retaining the basis and any residual uncertainty. Accept evidence-backed disagreement. Officer acceptance can dispose of a judgment issue but does not make unsupported evidence verified. Material later edits reopen affected findings.
-
-Stop circular challenge without new evidence; identify the missing evidence or decision. Return findings and review limitations to FP Lead for integration. Preserve your scoped result separately from the author's repair. If a separate reviewer task did not run, do not describe your self-review as independent assurance.
+For Credit replies, check the actual question and whether the FP needs correction. Recheck repaired passages against evidence; mark resolved, open or officer judgment and retain the basis. Accept supported disagreement. Report inaccessible evidence and unperformed checks. If no material issue remains, say so.

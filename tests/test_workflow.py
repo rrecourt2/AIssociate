@@ -5,20 +5,24 @@ import docx
 
 import fin_table
 import fp_docx
+from word_fixtures import edit_text, make_template
 import register
 
 
 def test_partial_fp_financial_table_register_and_later_update(tmp_path):
     template, partial = (tmp_path / name for name in ('template.docx', 'partial.docx'))
-    fp_docx.make_template(template)
-    fp_docx.make_template(partial)
-    fp_docx.edit_text(partial, '[Summarise the proposal]', 'Existing company account.')
+    make_template(template)
+    make_template(partial)
+    edit_text(partial, '[Summarise the proposal]', 'Existing company account.')
     original = partial.read_bytes()
     spread = tmp_path / 'checked-export.xlsx'
     register.write_xlsx(spread, [('Spread', ['EUR m', 'FY2024', 'FY2025'],
                                 [['Revenue', 100, 120], ['EBITDA', 20, 18]])])
     table = fin_table.build_table(spread, {
         'sheet': 'Spread', 'label_column': 'A', 'header_row': 1, 'unit': 'EUR m',
+        'identity': {'entity': {'value': 'Synthetic borrower', 'basis': 'Synthetic fixture', 'reviewed_by': 'test'},
+                     'perimeter': {'value': 'Consolidated', 'basis': 'Synthetic fixture', 'reviewed_by': 'test'},
+                     'unit': {'value': 'EUR m', 'cell': 'A1'}},
         'expect': {'A1': 'EUR m', 'B1': 'FY2024', 'C1': 'FY2025'},
         'periods': ['FY2024', 'FY2025'], 'rows': [
             {'label': 'Revenue', 'source': 'Revenue'}, {'label': 'EBITDA', 'source': 'EBITDA'},
@@ -50,7 +54,7 @@ def test_partial_fp_financial_table_register_and_later_update(tmp_path):
     assert 'Spread!B2:C3' in (tmp_path / 'Analysis.md').read_text()
     apply('record-synthetic-decision', {'sheet': 'control', 'set': {
         'status': 'ready', 'ready_by': 'Synthetic officer'}})
-    fp_docx.edit_text(v1, 'Provisional case.', 'Officer wording: condition still required.')
+    edit_text(v1, 'Provisional case.', 'Officer wording: condition still required.')
     assert 'Status: draft' in register.summary(register.load(tmp_path), v1)
     apply('new-email', {'sheet': 'sources', 'add': {'title': 'Later CFO email', 'type': 'email'}},
         {'sheet': 'open_items', 'add': {'text': 'Deliver the updated forecast', 'raised_by': 'CFO email',

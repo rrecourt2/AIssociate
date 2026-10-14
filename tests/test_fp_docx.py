@@ -8,12 +8,13 @@ import docx  # dev-only independent reader; the tool itself uses the standard li
 import pytest
 
 import fp_docx
+from word_fixtures import edit_text, make_template
 
 
 @pytest.fixture
 def tpl(tmp_path):
     path = tmp_path / "template.docx"
-    fp_docx.make_template(path)
+    make_template(path)
     return path
 
 
@@ -49,7 +50,7 @@ def test_first_build_fills_sections_fields_and_keeps_fixed_table(tpl, tmp_path):
 def test_second_round_freezes_officer_edits_and_writes_proposals(tpl, tmp_path):
     v1 = tmp_path / "FP-v01.docx"
     fp_docx.build(tpl, write(tmp_path / "c1.md", FIRST), v1, mode="first", template=tpl)
-    fp_docx.edit_text(v1, "Approve.", "Approve, subject to two conditions.")
+    edit_text(v1, "Approve.", "Approve, subject to two conditions.")
     v2 = tmp_path / "FP-v02.docx"
     r = fp_docx.build(v1, write(tmp_path / "c2.md", "## summary\nNew summary.\n\n## recommendation\nDecline.\n"), v2)
     assert r["written"] == ["summary"]
@@ -63,7 +64,7 @@ def test_second_round_freezes_officer_edits_and_writes_proposals(tpl, tmp_path):
 
 def test_commented_section_is_never_replaced(tmp_path):
     tpl = tmp_path / "template.docx"
-    fp_docx.make_template(tpl, comment_on="market-risk")
+    make_template(tpl, comment_on="market-risk")
     r = fp_docx.build(tpl, write(tmp_path / "c.md", FIRST), tmp_path / "out.docx", mode="first", template=tpl)
     assert "market-risk" in r["frozen"]
     info = fp_docx.inspect(tmp_path / "out.docx")
@@ -89,7 +90,7 @@ def test_fields_in_a_later_round_change_only_the_requested_cover_value(tpl, tmp_
     v1, v2 = tmp_path / "v1.docx", tmp_path / "v2.docx"
     fp_docx.build(tpl, write(tmp_path / "c.md", FIRST), v1, mode="first", template=tpl,
                   fields={"Borrower": "Cedar Foods", "Amount": "EUR 12m"})
-    fp_docx.edit_text(v1, "Cedar Foods</w:t>", "Cedar Foods B.V.</w:t>")   # the officer's edit in Word
+    edit_text(v1, "Cedar Foods</w:t>", "Cedar Foods B.V.</w:t>")   # the officer's edit in Word
     r = fp_docx.build(v1, write(tmp_path / "c2.md", "## summary\nNew summary.\n"), v2, fields={"Amount": "EUR 15m"})
     cells = [c.text for t in docx.Document(v2).tables for row in t.rows for c in row.cells]
     assert "EUR 15m" in cells and "EUR 12m" not in cells
@@ -119,14 +120,12 @@ def test_signature_ignores_word_save_noise(tpl, tmp_path):
 def test_bold_change_counts_as_an_edit(tpl, tmp_path):
     v1 = tmp_path / "v1.docx"
     fp_docx.build(tpl, write(tmp_path / "c.md", FIRST), v1, mode="first", template=tpl)
-    fp_docx.edit_text(v1, '<w:r><w:t xml:space="preserve">Approve.</w:t>',
+    edit_text(v1, '<w:r><w:t xml:space="preserve">Approve.</w:t>',
                       '<w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">Approve.</w:t>')
     assert fp_docx.inspect(v1)["sections"][-1]["changed_since_build"] is True
 
 
-def test_cli_selftest_and_check_exit_codes(tpl, tmp_path, capsys):
-    assert fp_docx.main(["selftest"]) == 0
-    assert "PASS" in capsys.readouterr().out
+def test_cli_check_exit_code(tpl):
     assert fp_docx.main(["check", str(tpl), "--template", str(tpl)]) == 1   # template still has guidance
 
 
@@ -134,7 +133,7 @@ def test_officer_edit_survives_a_round_that_touched_another_section(tpl, tmp_pat
     # Review finding: officer edits A in v1; v2 updates B only; v3 must still refuse to overwrite A.
     v1, v2, v3 = (tmp_path / f"v{n}.docx" for n in (1, 2, 3))
     fp_docx.build(tpl, write(tmp_path / "c1.md", FIRST), v1, mode="first", template=tpl)
-    fp_docx.edit_text(v1, "Approve.", "Approve, in the officer's words.")
+    edit_text(v1, "Approve.", "Approve, in the officer's words.")
     fp_docx.build(v1, write(tmp_path / "c2.md", "## summary\nNew summary.\n"), v2)
     r = fp_docx.build(v2, write(tmp_path / "c3.md", "## recommendation\nDecline.\n"), v3)
     assert "recommendation" in r["frozen"]
@@ -151,7 +150,7 @@ def test_reviewer_can_read_kept_tables_and_reusing_the_text_does_not_duplicate_t
 
 
 def test_cover_fields_fill_only_unprotected_cover_cells(tpl, tmp_path):
-    fp_docx.edit_text(tpl, "<w:r><w:t>[amount]</w:t></w:r>",
+    edit_text(tpl, "<w:r><w:t>[amount]</w:t></w:r>",
                       '<w:ins w:id="9" w:author="Officer" w:date="2026-10-01T09:00:00Z"><w:r><w:t>[amount]</w:t></w:r></w:ins>')
     r = fp_docx.build(tpl, write(tmp_path / "c.md", FIRST), tmp_path / "v1.docx", mode="first", template=tpl,
                       fields={"Borrower": "Cedar Foods", "Amount": "EUR 12m", "EUR m": "overwritten?"})
@@ -169,7 +168,7 @@ def test_first_build_needs_the_blank_template_itself(tpl, tmp_path):
     with pytest.raises(fp_docx.Refuse, match="--template"):
         fp_docx.build(tpl, c, tmp_path / "a.docx", mode="first")
     other = tmp_path / "other.docx"
-    fp_docx.make_template(other, comment_on="market-risk")
+    make_template(other, comment_on="market-risk")
     with pytest.raises(fp_docx.Refuse, match="identical"):
         fp_docx.build(other, c, tmp_path / "b.docx", mode="first", template=tpl)
     write(tmp_path / "template.sections.json", '{"sections": {}}')
@@ -194,11 +193,11 @@ def test_existing_needs_the_template_and_no_record_and_a_normal_round_needs_one(
 
 def test_existing_draft_rewrites_unprotected_sections_then_normal_rounds_follow_ownership(tpl, tmp_path):
     draft = tmp_path / "Officer-draft.docx"
-    fp_docx.make_template(draft, comment_on="market-risk")
-    fp_docx.edit_text(draft, '<w:r><w:t xml:space="preserve">[Summarise the proposal]</w:t></w:r>',
+    make_template(draft, comment_on="market-risk")
+    edit_text(draft, '<w:r><w:t xml:space="preserve">[Summarise the proposal]</w:t></w:r>',
                       '<w:ins w:id="7" w:author="Officer" w:date="2026-10-01T09:00:00Z">'
                       "<w:r><w:t>Officer summary.</w:t></w:r></w:ins>")
-    fp_docx.edit_text(draft, "[State the recommendation]", "Approve, in the officer's words.")
+    edit_text(draft, "[State the recommendation]", "Approve, in the officer's words.")
     before = draft.read_bytes()
     v1 = tmp_path / "FP-v01.docx"
     r = fp_docx.build(draft, write(tmp_path / "c.md", FIRST), v1, mode="existing", template=tpl,
@@ -236,26 +235,19 @@ def test_real_word_save_changes_only_the_edited_section(version):
     assert [sid for sid in before if before[sid] != after[sid]] == ["recommendation"]
 
 
-def test_rounds_after_a_real_word_save_write_untouched_sections_and_keep_the_officers_text(tmp_path):
-    base, v2, v3 = (tmp_path / f"FP-v0{n}.docx" for n in (1, 2, 3))
+def test_legacy_real_word_save_requires_provenance_before_replacement(tmp_path):
+    # These historical fixtures test signatures; they predate embedded build identity.
+    base = tmp_path / "FP-v01.docx"
     shutil.copy(WORD / "word-saved-v1.docx", base)
     record = {sid: {"owner": "ai", "signature": sig, "ids": []}
               for sid, sig in fp_docx.signatures(fp_docx.Doc(WORD / "assistant-v1.docx")).items()}
-    write(tmp_path / "FP-v01.sections.json", json.dumps({"base": "template.docx", "sections": record}))
-    r = fp_docx.build(base, write(tmp_path / "c.md", "## summary\nNew summary.\n\n## recommendation\nDecline.\n"),
-                      v2, template=WORD / "template.docx", fields={"Amount": "EUR 15m"})
-    assert r["written"] == ["summary"]
-    assert r["frozen"] == {"recommendation": "edited since the assistant wrote it"}
-    md = fp_docx.to_markdown(v2)
-    assert "New summary." in md and "wow" in md and "Decline." not in md
-    assert "EUR 15m" in [c.text for t in docx.Document(v2).tables for row in t.rows for c in row.cells]
-    # The assistant tries the officer's section again in the next round: still frozen, "wow" still there.
-    r = fp_docx.build(v2, write(tmp_path / "c3.md", "## recommendation\nDecline.\n\n## market-risk\nPrices fell.\n"),
-                      v3, template=WORD / "template.docx")
-    assert r["written"] == ["market-risk"]
-    assert r["frozen"] == {"recommendation": "not written by the assistant in the base version"}
-    md = fp_docx.to_markdown(v3)
-    assert "wow" in md and "Prices fell." in md and "Decline." not in md
+    write(tmp_path / "FP-v01.sections.json", json.dumps({"base": "template.docx", "sections": record,
+          "docx_sha256": fp_docx.file_sha256(WORD / "assistant-v1.docx")}))
+    before = base.read_bytes()
+    with pytest.raises(fp_docx.Refuse, match="legacy Word provenance"):
+        fp_docx.build(base, write(tmp_path / "c.md", "## summary\nNew summary.\n"), tmp_path / "v2.docx",
+                      template=WORD / "template.docx")
+    assert base.read_bytes() == before and not (tmp_path / "v2.docx").exists()
 
 
 APPROVE = '<w:r><w:t xml:space="preserve">Approve.</w:t></w:r>'
@@ -275,7 +267,7 @@ FORMAT_EDITS = {
 def test_formatting_edit_freezes_the_section(tpl, tmp_path, edited):
     v1 = tmp_path / "v1.docx"
     fp_docx.build(tpl, write(tmp_path / "c.md", FIRST), v1, mode="first", template=tpl)
-    fp_docx.edit_text(v1, APPROVE, edited)
+    edit_text(v1, APPROVE, edited)
     r = fp_docx.build(v1, write(tmp_path / "c2.md", "## recommendation\nDecline.\n"), tmp_path / "v2.docx")
     assert r["frozen"] == {"recommendation": "edited since the assistant wrote it"}
 
@@ -293,10 +285,10 @@ def test_generated_paragraphs_have_no_explicit_default_style(tpl, tmp_path):
 
 def test_page_breaks_notes_and_bookmarks_in_a_written_section_survive(tpl, tmp_path):
     guidance = '<w:t xml:space="preserve">[Summarise the proposal]</w:t></w:r></w:p>'
-    fp_docx.edit_text(tpl, guidance, guidance + '<w:p><w:r><w:br w:type="page"/></w:r></w:p>'
+    edit_text(tpl, guidance, guidance + '<w:p><w:r><w:br w:type="page"/></w:r></w:p>'
                       '<w:p><w:r><w:t>Source</w:t></w:r><w:r><w:footnoteReference w:id="1"/></w:r></w:p>'
                       '<w:p><w:r><w:t>Anchor</w:t></w:r><w:bookmarkEnd w:id="3"/></w:p>')
-    fp_docx.edit_text(tpl, "<w:body>", '<w:body><w:p><w:bookmarkStart w:id="3" w:name="Cover"/></w:p>')
+    edit_text(tpl, "<w:body>", '<w:body><w:p><w:bookmarkStart w:id="3" w:name="Cover"/></w:p>')
     out = tmp_path / "v1.docx"
     r = fp_docx.build(tpl, write(tmp_path / "c.md", FIRST), out, mode="first", template=tpl)
     assert "summary" in r["written"]
@@ -308,7 +300,7 @@ def test_page_breaks_notes_and_bookmarks_in_a_written_section_survive(tpl, tmp_p
 
 
 def test_bookmark_in_a_cover_value_cell_protects_it(tpl, tmp_path):
-    fp_docx.edit_text(tpl, "<w:r><w:t>[name]</w:t></w:r>",
+    edit_text(tpl, "<w:r><w:t>[name]</w:t></w:r>",
                       '<w:bookmarkStart w:id="4" w:name="BorrowerName"/><w:r><w:t>[name]</w:t></w:r>'
                       '<w:bookmarkEnd w:id="4"/>')
     out = tmp_path / "v1.docx"
@@ -321,7 +313,7 @@ def test_bookmark_in_a_cover_value_cell_protects_it(tpl, tmp_path):
 
 def test_build_that_loses_a_kept_object_is_refused_and_writes_nothing(tmp_path, monkeypatch):
     tpl = tmp_path / "template.docx"
-    fp_docx.make_template(tpl, comment_on="market-risk")      # a frozen section, so proposals would be due
+    make_template(tpl, comment_on="market-risk")      # a frozen section, so proposals would be due
     monkeypatch.setattr(fp_docx, "render", lambda doc, sec, items, inc: fp_docx.Gen(doc).p("Lost the table.", None))
     with pytest.raises(fp_docx.Refuse, match="nothing written"):
         fp_docx.build(tpl, write(tmp_path / "c.md", FIRST), tmp_path / "FP-v01.docx", mode="first", template=tpl)
@@ -330,7 +322,7 @@ def test_build_that_loses_a_kept_object_is_refused_and_writes_nothing(tmp_path, 
 
 def test_build_that_changes_a_section_it_did_not_write_is_refused(tmp_path, monkeypatch):
     tpl = tmp_path / "template.docx"
-    fp_docx.make_template(tpl, comment_on="market-risk")
+    make_template(tpl, comment_on="market-risk")
     real = fp_docx.splice
     monkeypatch.setattr(fp_docx, "splice", lambda xml, edits: real(xml, edits).replace(b"[Describe", b"[Rewrite"))
     with pytest.raises(fp_docx.Refuse, match="market-risk"):
@@ -359,9 +351,9 @@ def paragraph_xml(path, text):
 def test_prose_never_takes_a_list_style_from_the_section(tpl, tmp_path):
     edit_part(tpl, "word/styles.xml", "</w:styles>", '<w:style w:type="paragraph" w:styleId="Points">'
               '<w:name w:val="Points"/><w:pPr><w:numPr><w:numId w:val="3"/></w:numPr></w:pPr></w:style></w:styles>')
-    fp_docx.edit_text(tpl, '<w:pStyle w:val="Normal"/></w:pPr><w:r><w:t xml:space="preserve">[Describe',
+    edit_text(tpl, '<w:pStyle w:val="Normal"/></w:pPr><w:r><w:t xml:space="preserve">[Describe',
                       '<w:pStyle w:val="ListBullet"/></w:pPr><w:r><w:t xml:space="preserve">[Describe')
-    fp_docx.edit_text(tpl, '<w:pStyle w:val="Normal"/></w:pPr><w:r><w:t xml:space="preserve">[Summarise',
+    edit_text(tpl, '<w:pStyle w:val="Normal"/></w:pPr><w:r><w:t xml:space="preserve">[Summarise',
                       '<w:pStyle w:val="Points"/></w:pPr><w:r><w:t xml:space="preserve">[Summarise')
     out = tmp_path / "v1.docx"
     fp_docx.build(tpl, write(tmp_path / "c.md", "## summary\nCedar Foods seeks EUR 12m.\n\n"
@@ -388,10 +380,10 @@ def test_tables_next_to_a_generated_table_are_kept_apart(tpl, tmp_path):
 def test_missing_template_sections_are_reported_and_text_under_them_is_kept(tpl, tmp_path, heading):
     draft = tmp_path / "draft.docx"   # the officer typed a bold paragraph, not a heading
     shutil.copy(tpl, draft)
-    fp_docx.edit_text(draft, '<w:pStyle w:val="Heading1"/></w:pPr><w:r><w:t xml:space="preserve">3. Recommendation',
+    edit_text(draft, '<w:pStyle w:val="Heading1"/></w:pPr><w:r><w:t xml:space="preserve">3. Recommendation',
                       '<w:pStyle w:val="Normal"/></w:pPr><w:r><w:rPr><w:b/></w:rPr>'
                       f'<w:t xml:space="preserve">{heading}')
-    fp_docx.edit_text(draft, "[State the recommendation]", "Approve with two covenants (officer text).")
+    edit_text(draft, "[State the recommendation]", "Approve with two covenants (officer text).")
     out = tmp_path / "v1.docx"
     r = fp_docx.build(draft, write(tmp_path / "c.md", FIRST), out, mode="existing", template=tpl)
     assert r["missing_sections"] == ["recommendation"] and r["unmatched"] == ["recommendation"]
@@ -465,10 +457,10 @@ def test_outputs_are_never_overwritten_and_are_readable_by_others(tpl, tmp_path)
 
 
 def test_tabs_and_line_breaks_are_text_and_numbered_headings_keep_their_id(tpl):
-    fp_docx.edit_text(tpl, '<w:pStyle w:val="Heading1"/></w:pPr><w:r><w:t xml:space="preserve">1. Summary</w:t>',
+    edit_text(tpl, '<w:pStyle w:val="Heading1"/></w:pPr><w:r><w:t xml:space="preserve">1. Summary</w:t>',
                       '<w:pStyle w:val="Heading1"/><w:tabs><w:tab w:val="left" w:pos="720"/></w:tabs></w:pPr>'
                       "<w:r><w:t>1.</w:t><w:tab/><w:t>Summary</w:t>")
-    fp_docx.edit_text(tpl, '<w:t xml:space="preserve">[Explain the figures]</w:t>',
+    edit_text(tpl, '<w:t xml:space="preserve">[Explain the figures]</w:t>',
                       '<w:t>Line one</w:t><w:br/><w:t>Line</w:t><w:tab/><w:t>two</w:t><w:br w:type="page"/>')
     doc = fp_docx.Doc(tpl)
     assert doc.sections[0]["id"] == "summary" and doc.sections[0]["heading"] == "1.\tSummary"
@@ -477,7 +469,7 @@ def test_tabs_and_line_breaks_are_text_and_numbered_headings_keep_their_id(tpl):
 
 def test_markdown_shows_comments_in_a_read_only_note(tmp_path):
     tpl = tmp_path / "template.docx"
-    fp_docx.make_template(tpl, comment_on="market-risk")
+    make_template(tpl, comment_on="market-risk")
     edit_part(tpl, "word/comments.xml", "Check the FX exposure", "Check the FX exposure --> and hedging")
     v1 = tmp_path / "v1.docx"
     fp_docx.build(tpl, write(tmp_path / "c.md", FIRST), v1, mode="first", template=tpl)
@@ -490,7 +482,7 @@ def test_markdown_shows_comments_in_a_read_only_note(tmp_path):
 
 def test_dotx_template_builds_a_document_and_macro_files_are_refused(tmp_path):
     dotx = tmp_path / "template.dotx"
-    fp_docx.make_template(dotx)
+    make_template(dotx)
     edit_part(dotx, "[Content_Types].xml", "wordprocessingml.document.main+xml", "wordprocessingml.template.main+xml")
     out = tmp_path / "v1.docx"
     fp_docx.build(dotx, write(tmp_path / "c.md", FIRST), out, mode="first", template=dotx)
@@ -501,7 +493,7 @@ def test_dotx_template_builds_a_document_and_macro_files_are_refused(tmp_path):
     with pytest.raises(fp_docx.Refuse, match="--first"):
         fp_docx.build(dotx, tmp_path / "c.md", tmp_path / "v2.docx", mode="existing")
     docm = tmp_path / "draft.docm"
-    fp_docx.make_template(docm)
+    make_template(docm)
     edit_part(docm, "[Content_Types].xml", "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
               "application/vnd.ms-word.document.macroEnabled")
     with pytest.raises(fp_docx.Refuse, match="macro"):
@@ -510,7 +502,7 @@ def test_dotx_template_builds_a_document_and_macro_files_are_refused(tmp_path):
 
 def test_edit_text_raises_value_error_when_the_text_is_absent(tpl):
     with pytest.raises(ValueError):
-        fp_docx.edit_text(tpl, "not in the document", "x")
+        edit_text(tpl, "not in the document", "x")
 
 
 # ---------- fixes after the Task 2a review ----------
@@ -519,7 +511,7 @@ def unstyle_headings(path, *texts):
     for text in texts:
         for style in ("Heading1", "Heading2"):
             try:
-                fp_docx.edit_text(path, f'<w:pStyle w:val="{style}"/></w:pPr><w:r><w:t xml:space="preserve">{text}',
+                edit_text(path, f'<w:pStyle w:val="{style}"/></w:pPr><w:r><w:t xml:space="preserve">{text}',
                                   f'<w:pStyle w:val="Normal"/></w:pPr><w:r><w:t xml:space="preserve">{text}')
                 break
             except ValueError:
@@ -565,10 +557,10 @@ def template_table(text):
 
 def test_kept_tables_never_end_up_touching_unless_they_touched_in_the_base(tpl, tmp_path):
     fin_end = "<w:t>FY2025 (template)</w:t></w:r></w:p></w:tc></w:tr></w:tbl>"
-    fp_docx.edit_text(tpl, fin_end, fin_end + '<w:p><w:r><w:t>[Comment on the balance sheet]</w:t></w:r></w:p>'
+    edit_text(tpl, fin_end, fin_end + '<w:p><w:r><w:t>[Comment on the balance sheet]</w:t></w:r></w:p>'
                       + template_table("Balance sheet (template)"))
     guidance = '<w:t xml:space="preserve">[Summarise the proposal]</w:t></w:r></w:p>'
-    fp_docx.edit_text(tpl, guidance, guidance + template_table("Fees A") + template_table("Fees B"))
+    edit_text(tpl, guidance, guidance + template_table("Fees A") + template_table("Fees B"))
     out = tmp_path / "v1.docx"
     fp_docx.build(tpl, write(tmp_path / "c.md", "## summary\nS.\n\n## financial-analysis\nRevenue rose 20%.\n\n"
                              "The balance sheet is strong.\n"), out, mode="first", template=tpl)
@@ -591,7 +583,7 @@ def test_protected_section_belongs_to_the_officer_afterwards(tpl, tmp_path):
 
 
 def test_cover_field_fill_that_loses_its_formatting_is_refused(tpl, tmp_path, monkeypatch):
-    fp_docx.edit_text(tpl, "<w:r><w:t>[name]</w:t></w:r>", "<w:r><w:rPr><w:b/></w:rPr><w:t>[name]</w:t></w:r>")
+    edit_text(tpl, "<w:r><w:t>[name]</w:t></w:r>", "<w:r><w:rPr><w:b/></w:rPr><w:t>[name]</w:t></w:r>")
     real = fp_docx.fill_fields
 
     def lossy(doc, xml, fields, inc):
@@ -674,7 +666,7 @@ def add_part(path, name, data):
 
 def officer_draft_with_hidden_bookmark(tpl, path):
     shutil.copy(tpl, path)
-    fp_docx.edit_text(path, '<w:r><w:t xml:space="preserve">[Summarise the proposal]</w:t></w:r>',
+    edit_text(path, '<w:r><w:t xml:space="preserve">[Summarise the proposal]</w:t></w:r>',
                       f'<w:bookmarkStart w:id="5" w:name="{HLK}"/><w:r><w:t>Officer summary.</w:t></w:r>'
                       '<w:bookmarkEnd w:id="5"/>')
 
@@ -706,7 +698,7 @@ def test_paragraph_with_a_referenced_hidden_bookmark_stays(tpl, tmp_path, where)
     if where == "footnote":
         add_part(draft, "word/footnotes.xml", NOTES)
     else:
-        fp_docx.edit_text(draft, end, end + (FIELD if where == "field" else ANCHOR))
+        edit_text(draft, end, end + (FIELD if where == "field" else ANCHOR))
     fp_docx.build(draft, write(tmp_path / "c.md", "## summary\nNew summary.\n"), out, mode="existing", template=tpl)
     md = fp_docx.to_markdown(out)
     assert "New summary." in md and "Officer summary." in md          # the bookmark target is kept
@@ -718,16 +710,16 @@ def test_hidden_bookmark_markers_are_not_edits_but_text_changes_are(tpl, tmp_pat
     signature = lambda: fp_docx.signatures(fp_docx.Doc(v1))["recommendation"]  # noqa: E731
     before = signature()
     marked = f'<w:bookmarkStart w:id="8" w:name="{HLK}"/>{APPROVE}<w:bookmarkEnd w:id="8"/>'
-    fp_docx.edit_text(v1, APPROVE, marked)
+    edit_text(v1, APPROVE, marked)
     assert signature() == before
-    fp_docx.edit_text(v1, marked, APPROVE)
+    edit_text(v1, marked, APPROVE)
     assert signature() == before
-    fp_docx.edit_text(v1, APPROVE, marked.replace("Approve.", "Approve now."))
+    edit_text(v1, APPROVE, marked.replace("Approve.", "Approve now."))
     assert signature() != before
 
 
 def test_cover_cell_with_an_unreferenced_hidden_bookmark_can_be_filled(tpl, tmp_path):
-    fp_docx.edit_text(tpl, "<w:r><w:t>[name]</w:t></w:r>",
+    edit_text(tpl, "<w:r><w:t>[name]</w:t></w:r>",
                       f'<w:bookmarkStart w:id="6" w:name="{HLK}"/><w:r><w:t>[name]</w:t></w:r><w:bookmarkEnd w:id="6"/>')
     r = fp_docx.build(tpl, write(tmp_path / "c.md", FIRST), tmp_path / "v1.docx", mode="first", template=tpl,
                       fields={"Borrower": "Cedar Foods"})
@@ -743,8 +735,8 @@ def test_save_as_copy_is_matched_to_its_record_and_keeps_the_officers_edits(tpl,
     (tmp_path / "officer").mkdir()
     copy = tmp_path / "officer" / "FP final.docx"                   # Save As: no record next to it
     shutil.copy(v2, copy)
-    fp_docx.edit_text(copy, "Revenue rose 20%.", "Revenue rose 20% (officer).")
-    fp_docx.edit_text(copy, "Approve.", "Approve, subject to covenants.")
+    edit_text(copy, "Revenue rose 20%.", "Revenue rose 20% (officer).")
+    edit_text(copy, "Approve.", "Approve, subject to covenants.")
     found = fp_docx.find_record(copy, folder=tmp_path)
     assert found["source"] == str(tmp_path / "FP-v02.sections.json") and found["ambiguous"] is False
     assert found["candidates"][0] == {"record": found["source"], "matching": 2, "total": 4, "same_ids": True}
@@ -779,7 +771,7 @@ def test_first_draft_without_records_is_ambiguous_and_can_explicitly_use_existin
     deal.mkdir()
     draft = deal / "Officer draft.docx"
     shutil.copy(tpl, draft)
-    fp_docx.edit_text(draft, "[State the recommendation]", "Approve (officer).")
+    edit_text(draft, "[State the recommendation]", "Approve (officer).")
     assert fp_docx.find_record(draft) == {"docx": str(draft), "folder": str(deal), "candidates": [],
                                           "source": None, "ambiguous": True}
     r = fp_docx.build(draft, write(deal / "c.md", "## summary\nS.\n"), deal / "FP-v01.docx", mode="existing",
@@ -820,8 +812,8 @@ def test_hidden_bookmark_across_two_sections_lets_each_be_rewritten_without_dupl
     fp_docx.build(tpl, write(tmp_path / "c.md", FIRST), v1, mode="first", template=tpl)
     summary, revenue = (f'<w:r><w:t xml:space="preserve">{t}</w:t></w:r>'
                         for t in ("Cedar Foods seeks EUR 12m.", "Revenue rose 20%."))
-    fp_docx.edit_text(v1, summary, f'<w:bookmarkStart w:id="9" w:name="{HLK}"/>{summary}')
-    fp_docx.edit_text(v1, revenue, f'{revenue}<w:bookmarkEnd w:id="9"/>')
+    edit_text(v1, summary, f'<w:bookmarkStart w:id="9" w:name="{HLK}"/>{summary}')
+    edit_text(v1, revenue, f'{revenue}<w:bookmarkEnd w:id="9"/>')
     assert fp_docx.build(v1, write(tmp_path / "c2.md", "## summary\nNew summary.\n"), v2)["written"] == ["summary"]
     r = fp_docx.build(v2, write(tmp_path / "c3.md", "## financial-analysis\nRevenue rose 25%.\n\n{{keep:1}}\n"), v3)
     assert r["written"] == ["financial-analysis"]
@@ -833,9 +825,9 @@ def test_link_into_another_section_does_not_block_rewriting_its_own_section(tpl,
     # X1: the summary links to a hidden bookmark in the recommendation; only the summary is redrafted.
     draft, v1, v2 = tmp_path / "draft.docx", tmp_path / "v1.docx", tmp_path / "v2.docx"
     shutil.copy(tpl, draft)
-    fp_docx.edit_text(draft, REC_RUN, f'<w:bookmarkStart w:id="5" w:name="{HLK}"/><w:r><w:t>Officer recommendation.'
+    edit_text(draft, REC_RUN, f'<w:bookmarkStart w:id="5" w:name="{HLK}"/><w:r><w:t>Officer recommendation.'
                       '</w:t></w:r><w:bookmarkEnd w:id="5"/>')
-    fp_docx.edit_text(draft, SUM_RUN, '<w:r><w:t xml:space="preserve">Officer summary, </w:t></w:r>'
+    edit_text(draft, SUM_RUN, '<w:r><w:t xml:space="preserve">Officer summary, </w:t></w:r>'
                       f'<w:hyperlink w:anchor="{HLK}"><w:r><w:t>see the recommendation</w:t></w:r></w:hyperlink>')
     r = fp_docx.build(draft, write(tmp_path / "c.md", "## summary\nNew summary.\n"), v1, mode="existing", template=tpl)
     assert r["written"] == ["summary"]
@@ -853,14 +845,284 @@ def test_render_that_drops_a_referenced_bookmark_is_still_refused(tpl, tmp_path,
     draft = tmp_path / "draft.docx"
     shutil.copy(tpl, draft)
     end = '<w:bookmarkEnd w:id="5"/>'
-    fp_docx.edit_text(draft, SUM_RUN, f'<w:bookmarkStart w:id="5" w:name="{HLK}"/><w:r><w:t>Officer summary.</w:t></w:r>'
+    edit_text(draft, SUM_RUN, f'<w:bookmarkStart w:id="5" w:name="{HLK}"/><w:r><w:t>Officer summary.</w:t></w:r>'
                       + (end if end_in == "summary" else ""))
     if end_in == "financial-analysis":       # the end survives in a section the build does not touch
-        fp_docx.edit_text(draft, FIG_RUN, FIG_RUN + end)
+        edit_text(draft, FIG_RUN, FIG_RUN + end)
     rec = "[State the recommendation]</w:t></w:r></w:p>"
-    fp_docx.edit_text(draft, rec, rec + ANCHOR)   # the link that makes the bookmark functional
+    edit_text(draft, rec, rec + ANCHOR)   # the link that makes the bookmark functional
     monkeypatch.setattr(fp_docx, "render", lambda doc, *rest: fp_docx.Gen(doc).p("Lost the bookmark.", None))
     with pytest.raises(fp_docx.Refuse, match="fixed objects"):
         fp_docx.build(draft, write(tmp_path / "c.md", "## summary\nNew summary.\n"), tmp_path / "v1.docx",
                       mode="existing", template=tpl)
     assert not (tmp_path / "v1.docx").exists()
+
+# ---------- pilot repair: identity and recoverable publication ----------
+
+def test_build_identity_survives_save_as_and_prevents_record_reset(tpl, tmp_path):
+    out, copy = tmp_path / 'v1.docx', tmp_path / 'renamed.docx'
+    result = fp_docx.build(tpl, write(tmp_path / 'c.md', FIRST), out, mode='first', template=tpl,
+                           deal_id='cedar')
+    identity = fp_docx.read_identity(out)
+    assert identity == {'deal_id': 'cedar', 'build_id': result['build_id']}
+    record = fp_docx.read_record(fp_docx.sidecar_path(out))
+    assert record['schema_version'] == 1 and record['parent_build_id'] is None
+    shutil.copy(out, copy)
+    edit_text(copy, 'Approve.', 'Officer recommendation.')
+    for mode in ('existing', 'first'):
+        with pytest.raises(fp_docx.Refuse, match='identified.*normal round'):
+            fp_docx.build(copy, tmp_path / 'c.md', tmp_path / 'reset.docx', mode=mode,
+                          template=copy if mode == 'first' else tpl)
+    next_result = fp_docx.build(copy, tmp_path / 'c.md', tmp_path / 'v2.docx', record=fp_docx.sidecar_path(out))
+    assert next_result['parent_build_id'] == result['build_id']
+    assert 'recommendation' in next_result['frozen']
+
+
+def test_stale_ancestor_cannot_authorise_a_similar_save_as(tpl, tmp_path):
+    v1, v2, copy = (tmp_path / n for n in ('v1.docx', 'v2.docx', 'renamed.docx'))
+    fp_docx.build(tpl, write(tmp_path / 'c.md', FIRST), v1, mode='first', template=tpl)
+    fp_docx.build(v1, write(tmp_path / 'c2.md', '## summary\nSecond round.\n'), v2)
+    shutil.copy(v2, copy)
+    edit_text(copy, 'Second round.', 'Officer rewrite.')
+    fp_docx.sidecar_path(v2).unlink()
+    found = fp_docx.find_record(copy)
+    assert found['candidates'][0]['matching'] == 3
+    assert found['source'] is None
+    with pytest.raises(fp_docx.Refuse, match='identity'):
+        fp_docx.build(copy, tmp_path / 'c.md', tmp_path / 'bad.docx', record=fp_docx.sidecar_path(v1))
+    shutil.copy(fp_docx.sidecar_path(v1), fp_docx.sidecar_path(copy))
+    with pytest.raises(fp_docx.Refuse, match='identity'):
+        fp_docx.inspect(copy)
+
+
+@pytest.mark.parametrize('field,value', [('owner', 'trusted'), ('owner', True), ('signature', 'bad'), ('ids', 'S-1')])
+def test_malformed_ownership_records_are_refused(tpl, tmp_path, field, value):
+    out = tmp_path / 'v1.docx'
+    fp_docx.build(tpl, write(tmp_path / 'c.md', FIRST), out, mode='first', template=tpl)
+    side = fp_docx.sidecar_path(out)
+    record = json.loads(side.read_text())
+    record['sections']['summary'][field] = value
+    side.write_text(json.dumps(record))
+    with pytest.raises(fp_docx.Refuse, match='record'):
+        fp_docx.build(out, tmp_path / 'c.md', tmp_path / 'v2.docx')
+
+
+def test_identical_build_retry_reuses_bytes_and_identity(tpl, tmp_path, monkeypatch):
+    c, out = write(tmp_path / 'c.md', FIRST), tmp_path / 'v1.docx'
+    first = fp_docx.build(tpl, c, out, mode='first', template=tpl)
+    before = out.read_bytes(), fp_docx.sidecar_path(out).read_bytes()
+    monkeypatch.setattr(fp_docx, 'render', lambda *a: pytest.fail('retry rendered again'))
+    again = fp_docx.build(tpl, c, out, mode='first', template=tpl)
+    assert again['resumed'] and again['status'] == 'published'
+    assert again['build_id'] == first['build_id'] and before == (out.read_bytes(), fp_docx.sidecar_path(out).read_bytes())
+    receipt = json.loads(Path(first['receipt']).read_text())
+    assert receipt['request_sha256'] and receipt['request']['inputs']['base']['sha256'] == fp_docx.file_sha256(tpl)
+    assert all(fp_docx.file_sha256(item['path']) == item['sha256'] for item in receipt['outputs'])
+    write(c, '## summary\nChanged request.\n')
+    with pytest.raises(fp_docx.Refuse, match='request'):
+        fp_docx.build(tpl, c, out, mode='first', template=tpl)
+
+
+@pytest.mark.parametrize('fail_at', [1, 2, 3])
+def test_publication_failure_reports_partial_and_retry_finishes(tpl, tmp_path, monkeypatch, fail_at):
+    c, out = write(tmp_path / 'c.md', FIRST + '\n## absent\nProposal.\n'), tmp_path / 'v1.docx'
+    real, calls = fp_docx.publish, []
+    def interrupted(path, writer):
+        if Path(path).parent == tmp_path and Path(path).suffix in ('.docx', '.json', '.md'):
+            calls.append(str(path))
+            if len(calls) == fail_at:
+                raise OSError('injected publication failure')
+        return real(path, writer)
+    monkeypatch.setattr(fp_docx, 'publish', interrupted)
+    result = fp_docx.build(tpl, c, out, mode='first', template=tpl)
+    assert result['status'] == 'partial_publication' and not result['complete']
+    assert len(result['published']) == fail_at - 1 and len(result['pending']) == 4 - fail_at
+    receipt = json.loads(Path(result['receipt']).read_text())
+    assert len(receipt['outputs']) == 3 and all(Path(o['staged']).exists() for o in receipt['outputs'])
+    monkeypatch.setattr(fp_docx, 'publish', real)
+    monkeypatch.setattr(fp_docx, 'render', lambda *a: pytest.fail('retry rendered again'))
+    retry = fp_docx.build(tpl, c, out, mode='first', template=tpl)
+    assert retry['status'] == 'published' and retry['build_id'] == result['build_id']
+    assert not retry['pending']
+
+
+def test_retry_refuses_conflicting_published_output(tpl, tmp_path):
+    c, out = write(tmp_path / 'c.md', FIRST), tmp_path / 'v1.docx'
+    fp_docx.build(tpl, c, out, mode='first', template=tpl)
+    out.write_bytes(b'officer replacement')
+    with pytest.raises(fp_docx.Refuse, match='conflict'):
+        fp_docx.build(tpl, c, out, mode='first', template=tpl)
+    assert out.read_bytes() == b'officer replacement'
+
+
+def test_preflight_exposes_heading_order_level_and_writer_limits(tpl, tmp_path):
+    draft = tmp_path / 'draft.docx'
+    shutil.copy(tpl, draft)
+    edit_text(draft, '1. Summary', '1. Recommendation')
+    edit_text(draft, '3. Recommendation', '3. Summary')
+    edit_text(draft, '<w:pStyle w:val="Heading2"/>', '<w:pStyle w:val="Heading1"/>')
+    checked = fp_docx.check(draft, tpl)
+    assert checked['heading_order_matches'] is False
+    assert checked['heading_level_mismatches'] == ['market-risk']
+    assert checked['writer_limits'] and checked['protected_structures']
+
+
+def test_existing_custom_properties_and_relationships_survive_identity_updates(tpl, tmp_path):
+    custom = ('<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties" '
+              'xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">'
+              '<property fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}" pid="7" name="OfficerNote">'
+              '<vt:lpwstr>Keep &amp; review</vt:lpwstr></property></Properties>')
+    add_part(tpl, 'docProps/custom.xml', custom)
+    rel = ('<Relationship Id="custom" Type="http://schemas.openxmlformats.org/officeDocument/2006/'
+           'relationships/custom-properties" Target="docProps/custom.xml"/>')
+    edit_part(tpl, '_rels/.rels', '</Relationships>', rel + '</Relationships>')
+    original = fp_docx.Doc(tpl).parts
+    first = fp_docx.build(tpl, write(tmp_path / 'c.md', FIRST), tmp_path / 'v1.docx', mode='first', template=tpl,
+                          deal_id='cedar & sons')
+    second = fp_docx.build(tmp_path / 'v1.docx', tmp_path / 'c.md', tmp_path / 'v2.docx')
+    for n in (1, 2):
+        parts = fp_docx.Doc(tmp_path / f'v{n}.docx').parts
+        assert parts['_rels/.rels'] == original['_rels/.rels']
+        assert b'<vt:lpwstr>Keep &amp; review</vt:lpwstr>' in parts['docProps/custom.xml']
+        assert parts['docProps/custom.xml'].count(b'name="FPAssistantDealId"') == 1
+        assert fp_docx.read_identity(tmp_path / f'v{n}.docx')['deal_id'] == 'cedar & sons'
+    assert first['build_id'] != second['build_id']
+
+
+@pytest.mark.parametrize('field,value', [('schema_version', None), ('schema_version', True), ('schema_version', 2),
+                                        ('deal_id', ''), ('build_id', []), ('parent_build_id', 5)])
+def test_record_identity_fields_are_typed(tpl, tmp_path, field, value):
+    out = tmp_path / 'v1.docx'
+    fp_docx.build(tpl, write(tmp_path / 'c.md', FIRST), out, mode='first', template=tpl)
+    side = fp_docx.sidecar_path(out)
+    record = json.loads(side.read_text())
+    record[field] = value
+    side.write_text(json.dumps(record))
+    with pytest.raises(fp_docx.Refuse, match='record'):
+        fp_docx.read_record(side)
+
+
+def test_wrong_deal_is_refused_with_matching_build_id(tpl, tmp_path):
+    out = tmp_path / 'v1.docx'
+    fp_docx.build(tpl, write(tmp_path / 'c.md', FIRST), out, mode='first', template=tpl, deal_id='cedar')
+    with pytest.raises(fp_docx.Refuse, match='deal identity'):
+        fp_docx.build(out, tmp_path / 'c.md', tmp_path / 'v2.docx', deal_id='other')
+    side = fp_docx.sidecar_path(out)
+    record = json.loads(side.read_text())
+    record['deal_id'] = 'other'
+    side.write_text(json.dumps(record))
+    with pytest.raises(fp_docx.Refuse, match='identity'):
+        fp_docx.build(out, tmp_path / 'c.md', tmp_path / 'v2.docx')
+
+
+@pytest.mark.parametrize('failure', ['word', 'sidecar', 'proposals', 'receipt'])
+def test_staging_failure_publishes_nothing(tpl, tmp_path, monkeypatch, failure):
+    c = write(tmp_path / 'c.md', FIRST + '\n## absent\nProposal.\n')
+    real = fp_docx.publish
+    suffix = {'word': '.docx', 'sidecar': '.sections.json', 'proposals': '.proposals.md', 'receipt': 'receipt.json'}
+    def interrupted(path, writer):
+        if str(path).endswith(suffix[failure]):
+            raise OSError('staging interrupted')
+        return real(path, writer)
+    monkeypatch.setattr(fp_docx, 'publish', interrupted)
+    with pytest.raises(OSError, match='staging interrupted'):
+        fp_docx.build(tpl, c, tmp_path / 'v1.docx', mode='first', template=tpl)
+    assert sorted(p.name for p in tmp_path.iterdir()) == ['c.md', 'template.docx']
+
+
+def test_corrupt_staged_bytes_cannot_repair_missing_output(tpl, tmp_path):
+    out, c = tmp_path / 'v1.docx', write(tmp_path / 'c.md', FIRST)
+    result = fp_docx.build(tpl, c, out, mode='first', template=tpl)
+    fp_docx.sidecar_path(out).unlink()
+    receipt = json.loads(Path(result['receipt']).read_text())
+    Path(receipt['outputs'][1]['staged']).write_text('corrupted staging')
+    with pytest.raises(fp_docx.Refuse, match='staged.*corrupt'):
+        fp_docx.build(tpl, c, out, mode='first', template=tpl)
+    assert not fp_docx.sidecar_path(out).exists()
+
+
+def test_claim_references_are_recorded_and_removed_from_paper(tpl, tmp_path):
+    out = tmp_path / 'v1.docx'
+    fp_docx.build(tpl, write(tmp_path / 'c.md', '## summary\nRevenue rose. [C-001 p.4]\n'), out,
+                  mode='first', template=tpl)
+    assert '[C-001' not in fp_docx.to_markdown(out)
+    assert fp_docx.read_record(fp_docx.sidecar_path(out))['sections']['summary']['ids'] == ['C-001']
+
+
+def test_legacy_unedited_hash_match_can_start_identified_revision(tmp_path):
+    source = WORD / 'assistant-v1.docx'
+    base = tmp_path / 'legacy.docx'
+    shutil.copy(source, base)
+    old = {'docx_sha256': fp_docx.file_sha256(source), 'sections':
+           {sid: {'owner': 'ai', 'signature': sig, 'ids': []}
+            for sid, sig in fp_docx.signatures(fp_docx.Doc(source)).items()}}
+    write(fp_docx.sidecar_path(base), json.dumps(old))
+    out = tmp_path / 'v2.docx'
+    result = fp_docx.build(base, write(tmp_path / 'c.md', '## summary\nNew summary.\n'), out, deal_id='legacy-deal')
+    assert result['written'] == ['summary'] and fp_docx.read_identity(out)['deal_id'] == 'legacy-deal'
+
+
+def test_receipt_cannot_redirect_recovery_to_another_output(tpl, tmp_path):
+    out, c = tmp_path / 'v1.docx', write(tmp_path / 'c.md', FIRST)
+    result = fp_docx.build(tpl, c, out, mode='first', template=tpl)
+    path = Path(result['receipt'])
+    receipt = json.loads(path.read_text())
+    redirect = tmp_path / 'different.docx'
+    receipt['result']['out'] = str(redirect)
+    receipt['outputs'][0]['path'] = str(redirect)
+    receipt['outputs'][0]['staged'] = str(path.parent / redirect.name)
+    shutil.copy(path.parent / out.name, path.parent / redirect.name)
+    path.write_text(json.dumps(receipt))
+    with pytest.raises(fp_docx.Refuse, match='receipt'):
+        fp_docx.build(tpl, c, out, mode='first', template=tpl)
+    assert not redirect.exists()
+
+
+def test_heading_mismatch_keeps_supported_build_but_reports_incomplete(tpl, tmp_path):
+    base, out = tmp_path / 'draft.docx', tmp_path / 'v1.docx'
+    shutil.copy(tpl, base)
+    edit_text(base, '<w:pStyle w:val="Heading2"/>', '<w:pStyle w:val="Heading1"/>')
+    result = fp_docx.build(base, write(tmp_path / 'c.md', '## summary\nNew summary.\n'), out,
+                           mode='existing', template=tpl)
+    assert result['written'] == ['summary'] and not result['complete']
+    assert result['heading_level_mismatches'] == ['market-risk']
+    assert any('heading levels' in w for w in result['warnings'])
+
+
+@pytest.mark.parametrize('saved_name', ['identity-word-saved.docx', 'identity-word-save-as.docx'])
+def test_real_word_save_and_save_as_preserve_identity_and_edit_detection(saved_name, tmp_path):
+    original, saved = WORD / 'identity-assistant.docx', WORD / saved_name
+    record = WORD / 'identity-assistant.sections.json'
+    identity = fp_docx.read_identity(original)
+    assert fp_docx.read_identity(saved) == identity
+    fp_docx.read_record(record, fp_docx.Doc(saved))  # Word's file hash changed; identity still binds ownership.
+    before, after = (fp_docx.signatures(fp_docx.Doc(p)) for p in (original, saved))
+    assert [sid for sid in before if before[sid] != after[sid]] == ['recommendation']
+    assert fp_docx.find_record(saved, WORD)['source'] == str(record)
+    content = write(tmp_path / 'next.md', '## summary\nUpdated synthetic summary.\n\n'
+                    '## financial-analysis\nRevenue rose again.\n\n'
+                    '| EUR m | FY2025 |\n|---|---|\n| Revenue | 144 |\n\n{{keep:1}}\n\n'
+                    '## recommendation\nDecline.\n')
+    result = fp_docx.build(saved, content, tmp_path / 'next.docx', record=record,
+                           template=WORD / 'template.docx', deal_id=identity['deal_id'])
+    assert result['written'] == ['summary', 'financial-analysis']
+    assert result['frozen'] == {'recommendation': 'edited since the assistant wrote it'}
+    assert result['parent_build_id'] == identity['build_id']
+    text = fp_docx.to_markdown(tmp_path / 'next.docx')
+    assert 'Approve cautiously.' in text and 'Decline.' not in text and '144' in text
+    assert 'FY2025 (template)' in text
+
+
+def test_word_default_table_look_does_not_hide_conditional_style_edits(tpl, tmp_path):
+    edit_part(tpl, 'word/styles.xml', '</w:styles>', '<w:style w:type="table" w:default="1" w:styleId="Conditional">'
+              '<w:name w:val="Conditional"/><w:tblStylePr w:type="firstRow"><w:tcPr>'
+              '<w:shd w:val="clear" w:fill="FFFF00"/></w:tcPr></w:tblStylePr></w:style></w:styles>')
+    first = tmp_path / 'v1.docx'
+    fp_docx.build(tpl, write(tmp_path / 'c.md', FIRST), first, mode='first', template=tpl)
+    # Only the unstyled fixed table: applying firstRow can visibly activate its conditional style.
+    edit_text(first, '<w:tblPr><w:tblW w:w="0" w:type="auto"/></w:tblPr><w:tblGrid><w:gridCol w:w="4500"/>',
+                      '<w:tblPr><w:tblW w:w="0" w:type="auto"/>' + WORD_LOOK +
+                      '</w:tblPr><w:tblGrid><w:gridCol w:w="4500"/>')
+    result = fp_docx.build(first, write(tmp_path / 'next.md', '## financial-analysis\nNew figures.\n'),
+                           tmp_path / 'v2.docx')
+    assert result['frozen'] == {'financial-analysis': 'edited since the assistant wrote it'}

@@ -1,10 +1,10 @@
 """Check the skills and build the Cowork upload ZIPs (standard library only).
 
-  python3 scripts/package.py          # sync shared files into skills, check, build dist/
+  python3 scripts/package.py          # check sources and build dist/
   python3 scripts/package.py --check  # check only
 
-shared/*.md and tools/*.py are the maintained originals. A skill gets a copy of one when its
-SKILL.md links to references/<name> or scripts/<name>; the copies must stay byte-identical.
+Source skills contain only SKILL.md. Canonical links become self-contained references/scripts
+inside the archives; building never generates or updates companion files in the source tree.
 """
 import json
 import re
@@ -15,7 +15,7 @@ from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 ROOT = Path(__file__).resolve().parents[1]
 STAMP = (2026, 1, 1, 0, 0, 0)  # fixed timestamps: the same sources always give the same ZIP bytes
-LINK = re.compile(r"\]\((?:\./)?((?:references|scripts)/[^)#\s]+)(?:#[^)\s]+)?\)")
+LINK = re.compile(r"\]\(([^)]+)\)")
 
 
 class PackageError(Exception):
@@ -50,25 +50,15 @@ def frontmatter(text):
 
 
 def originals(root):
-    return {f"references/{p.name}": p for p in (root / "shared").glob("*.md")} | \
-           {f"scripts/{p.name}": p for p in (root / "tools").glob("*.py")}
-
-
-def sync(root):
-    """Copy maintained originals into each skill that links to them."""
-    canon = originals(root)
-    for skill in sorted((root / "skills").iterdir()):
-        if not skill.is_dir():
-            continue
-        for rel in LINK.findall((skill / "SKILL.md").read_text(encoding="utf-8")):
-            if rel in canon:
-                target = skill / rel
-                target.parent.mkdir(exist_ok=True)
-                target.write_bytes(canon[rel].read_bytes())
+    return {f"../../shared/{p.name}": (f"references/{p.name}", p) for p in (root / "shared").glob("*.md")} | \
+           {f"../../tools/{p.name}": (f"scripts/{p.name}", p) for p in (root / "tools").glob("*.py")} | \
+           {"../../.claude-plugin/plugin.json": ("scripts/plugin.json", root / ".claude-plugin/plugin.json")}
 
 
 def check_skill(skill, canon):
-    """Microsoft's upload rules plus our copy and link rules. Returns {zip path: bytes}."""
+    """Validate a source skill and resolve its canonical links into {zip path: bytes}."""
+    if not skill.is_dir() or sorted(p.name for p in skill.iterdir()) != ["SKILL.md"]:
+        raise PackageError(f"{skill.name}: source skills must contain only SKILL.md")
     text = (skill / "SKILL.md").read_text(encoding="utf-8")
     fm = frontmatter(text)
     name, desc = fm.get("name", ""), fm.get("description", "")
@@ -78,21 +68,20 @@ def check_skill(skill, canon):
         raise PackageError(f"{skill.name}: name must be kebab-case, at most 64 characters")
     if not 1 <= len(desc) <= 1024:
         raise PackageError(f"{skill.name}: description must be 1-1024 characters (has {len(desc)})")
-    for rel in LINK.findall(text):
-        if not (skill / rel).is_file():
-            raise PackageError(f"{skill.name}: SKILL.md links to missing {rel}")
     files = {}
-    for path in sorted(skill.rglob("*")):
-        if path.is_symlink():
-            raise PackageError(f"{path}: symlinks are not allowed")
-        if not path.is_file() or "__pycache__" in path.parts:
-            continue
-        rel = path.relative_to(skill).as_posix()
-        if any(part.startswith(".") for part in Path(rel).parts):
-            raise PackageError(f"{skill.name}: hidden file {rel} (delete it)")
-        if rel in canon and path.read_bytes() != canon[rel].read_bytes():
-            raise PackageError(f"{skill.name}: {rel} differs from its original; run package.py to sync")
-        files[rel] = path.read_bytes()
+
+    def resolve_link(match):
+        target = match[1]
+        if target.startswith(("https://", "http://", "#")):
+            return match[0]
+        path, separator, anchor = target.partition("#")
+        if path not in canon:
+            raise PackageError(f"{skill.name}: unknown canonical link {target}")
+        local, source = canon[path]
+        files[local] = source.read_bytes()
+        return f"]({local}{separator}{anchor})"
+
+    files["SKILL.md"] = LINK.sub(resolve_link, text).encode("utf-8")
     companions = {k: v for k, v in files.items() if k != "SKILL.md"}
     if len(companions) > 20:
         raise PackageError(f"{skill.name}: {len(companions)} companion files (maximum 20)")
@@ -117,13 +106,16 @@ def archive(files):
 
 
 def build(root=ROOT, dest=None, check_only=False):
+    for name in ("skills", "shared", "tools", ".claude-plugin", "INSTALL.md"):
+        source = root / name
+        for path in [source, *source.rglob("*")]:
+            if path.is_symlink():
+                raise PackageError(f"{path}: symlinks are not allowed")
     manifest = json.loads((root / ".claude-plugin/plugin.json").read_text())
-    if manifest.get("name") != "fp-assistant" or not re.fullmatch(r"\d+\.\d+\.\d+", manifest.get("version", "")):
-        raise PackageError("plugin.json needs name 'fp-assistant' and a version like 0.3.0")
-    if not check_only:
-        sync(root)
+    if manifest.get("name") != "aissociate" or not re.fullmatch(r"\d+\.\d+\.\d+", manifest.get("version", "")):
+        raise PackageError("plugin.json needs name 'aissociate' and a version like 0.5.0")
     canon = originals(root)
-    skills = {s.name: check_skill(s, canon) for s in sorted((root / "skills").iterdir()) if s.is_dir()}
+    skills = {s.name: check_skill(s, canon) for s in sorted((root / "skills").iterdir())}
     if check_only:
         return {name: len(files) for name, files in skills.items()}
     package = {".claude-plugin/plugin.json": (root / ".claude-plugin/plugin.json").read_bytes(),
@@ -135,8 +127,8 @@ def build(root=ROOT, dest=None, check_only=False):
     dest = Path(dest or root / "dist")
     dest.mkdir(exist_ok=True)
     out = {}
-    for name, files in ((f"fp-assistant-{manifest['version']}.zip", package),
-                        (f"fp-assistant-individual-skills-{manifest['version']}.zip", individual)):
+    for name, files in ((f"aissociate-{manifest['version']}.zip", package),
+                        (f"aissociate-individual-skills-{manifest['version']}.zip", individual)):
         (dest / name).write_bytes(archive(files))
         out[name] = len(files)
     return out
