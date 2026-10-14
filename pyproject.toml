@@ -1,6 +1,6 @@
 [project]
 name = "aissociate"
-version = "0.5.2"
+version = "0.5.3"
 requires-python = ">=3.9"
 dependencies = []  # tools/ use the Python standard library only
 

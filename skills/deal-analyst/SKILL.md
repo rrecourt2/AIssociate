@@ -1,6 +1,6 @@
 ---
 name: deal-analyst
-description: Use to organise deal evidence, analyse a company or transaction, assess new documents, reconcile specialist views, identify open diligence, prepare an annex or support a Credit reply.
+description: Use to organise deal evidence, assess knowledge gaps and what still needs to be understood or done, analyse a transaction, reconcile specialist views, prepare an annex or support a Credit reply.
 ---
 
 # Deal Analyst

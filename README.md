@@ -7,7 +7,7 @@ Financial statements, contracts, interviews and emails often contain conflicting
 ## How the pilot works
 
 1. **Organise evidence.** Deal Analyst indexes sources by type, entity, period and version. Report-reading and correspondence specialists extract located facts and gaps. Originals stay in place.
-2. **Check and analyse.** Financial specialists explain performance, debt and repayment. Deal Analyst reconciles claims and checks whether historical issues still matter. The index can be used and saved before any FP exists.
+2. **Check and analyse.** Financial specialists explain performance, debt and repayment. Deal Analyst reconciles claims and checks whether historical issues still matter. Ask for a standalone gap assessment: what remains unknown, why it matters and what would resolve it. No FP is required.
 3. **Write and review.** FP Lead selects the financing argument from that record. Approved examples set the voice; the template sets required content. Separate reviewers challenge the case and check presentation. The officer decides.
 
 Use specialists only for relevant work. A new email should update affected facts and passages, not restart the archive review. This is a supervised pilot: faster drafting and lower cost are outcomes to measure, not promises.
@@ -27,7 +27,7 @@ The tools use Python 3.9+ and the standard library. Development tests and synthe
 
 ## Install and test
 
-Download **`aissociate-0.5.2.zip`** from the [0.5.2 pilot release](https://github.com/rrecourt2/AIssociate/releases/tag/v0.5.2). Follow [INSTALL.md](INSTALL.md) and the [whole-workflow pilot](evaluations/pilot-acceptance.md).
+Download **`aissociate-0.5.3.zip`** from the [0.5.3 pilot release](https://github.com/rrecourt2/AIssociate/releases/tag/v0.5.3). Follow [INSTALL.md](INSTALL.md) and the [whole-workflow pilot](evaluations/pilot-acceptance.md).
 
 AIssociate replaces FP Assistant as the package and repository name. Keep existing deal registers and Word records; disable the older plugin to avoid duplicate skills. Word compatibility identifiers are unchanged.
 

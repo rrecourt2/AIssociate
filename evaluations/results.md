@@ -1,11 +1,11 @@
-# Validation results — AIssociate 0.5.2
+# Validation results — AIssociate 0.5.3
 
-Checked locally on 14 October 2026. Version 0.5.2 refines instructions for the planned GPT-6.1 Sol pilot; runtime code is unchanged from 0.5.1. These results establish tool behaviour, not model improvement, financing judgment or writing quality.
+Checked locally on 14 October 2026. Version 0.5.3 adds explicit gap-assessment guidance and a small first Cowork test; runtime code is unchanged from 0.5.1. These results establish tool behaviour, not model improvement, financing judgment or writing quality.
 
 | Check | Result |
 |---|---|
 | Current package checks | `uv run pytest -q tests/test_package.py -W error`: 20 passed, including both extracted workflows below |
-| Prior 0.5.1 full regression suite | `uv run pytest -q -W error`: 293 passed; runtime unchanged in 0.5.2 |
+| Prior 0.5.1 full regression suite | `uv run pytest -q -W error`: 293 passed; runtime unchanged in 0.5.3 |
 | Extracted plugin and individual-skill ZIPs | Fresh processes outside repository imports: index → evidence-only bundle → reopen index → preflight → Word → full bundle → new evidence and protected revision |
 | Prior 0.5.0 check: actual Microsoft Word 16.113.4 save | Old FP Assistant identity/record accepted; officer edited Summary in Word; the next revision preserved Summary and Recommendation while updating the untouched financial table |
 | Partial changes and retry | Protected replacements returned as proposals with `partial` status; Word and bundle retries preserved identical bytes |
@@ -13,7 +13,7 @@ Checked locally on 14 October 2026. Version 0.5.2 refines instructions for the p
 | Package review | Both archives built; canonical references resolved into standalone companions; building left source files unchanged |
 | Source checks | No broken relative Markdown links or confidential-name matches; `git diff --check` clean |
 
-Version 0.5.2 adds brief stage confirmations, removes repeated instructions and a fixed drafting order, and clarifies reusable calculations and protection of approved assumptions. Independent review found no lost requirements or new approval gates. Unique skill/reference text fell from 5,731 to 5,698 words. No code, test cases, dependencies or model-routing layer were added.
+Gap assessments use the existing register and follow the user's scope and stage. Instructions distinguish unread evidence, unresolved knowledge and accepted residual uncertainty. The first Cowork test uses two short real documents and verifies saving and fresh-task retrieval before FP drafting. No runtime code, skills, tests or dependencies were added.
 
 The prior 0.5.1 cleanup removed 33.1% of instruction text and 166 runtime lines. Tests and fixture generators stay in development and are not loaded during FP work. All eight skills remain available. Actual Word was not rerun because document-processing behaviour was unchanged.
 
