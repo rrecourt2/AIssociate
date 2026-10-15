@@ -60,7 +60,7 @@ ALLOWED = {
     ("mitigants", "verified"): {"yes", "no"},
     ("open_items", "kind"): {"question", "action", "credit-question", "prior-issue"},
     ("open_items", "criticality"): {"blocker", "material", "later"},
-    ("open_items", "status"): {"open", "promised", "answered", "closed"},  # only closed is finished
+    ("open_items", "status"): {"open", "promised", "answered", "recheck", "closed"},  # only closed is finished
     ("open_items", "officer_ok"): {"yes", "no"},
     ("open_items", "audience"): {"unknown", "client", "internal", "restricted"},
     ("claims", "recheck"): {"yes", "no", "unknown"},
@@ -430,6 +430,13 @@ def invalidate_links(reg, old):
                        and any(r[k] != old_sources[r["id"]][k] for k in source_fields)}
     changed_sources.update(r["supersedes"] for r in reg["sources"] if r["supersedes"]
                            and r["supersedes"] != old_sources.get(r["id"], {}).get("supersedes"))
+    reopened = []
+    old_answers = {r["id"]: r for r in old["open_items"]}
+    for row in reg["open_items"]:
+        if (row["status"] in {"closed", "answered"}
+                and changed_sources.intersection(SOURCE_RE.findall(row["answer_source"]))):
+            reopened.append(copy.deepcopy(old_answers.get(row["id"], row)))
+            row.update(status="recheck", assessment="", assessed_by="", officer_decision="")
     old_claims = {r["id"]: r for r in old["claims"]}
     changed_claims = {r["id"] for r in reg["claims"] if r["id"] in old_claims
                      and any(r[k] != old_claims[r["id"]][k] for k in r if k != "recheck")}
@@ -459,6 +466,7 @@ def invalidate_links(reg, old):
     for row in reg["fp_map"]:
         if affected.intersection(link_ids(row["ids"])) or row["section"] in sections:
             row["recheck"] = "yes"
+    return reopened
 
 
 def apply(folder, changes):
@@ -482,7 +490,7 @@ def apply(folder, changes):
     before = {(p[1], p[2]) for p in problems(reg) if p[0] == "error"}
     new = copy.deepcopy(reg)
     touched = [apply_change(new, ch) for ch in changes.get("changes", [])]
-    invalidate_links(new, reg)
+    reopened = invalidate_links(new, reg)
     introduced = [p for p in problems(new) if p[0] == "error" and (p[1], p[2]) not in before]
     rank = {"low": 0, "medium": 1, "high": 2}
     old = {r["id"]: r for r in reg["risks"]}
@@ -527,6 +535,8 @@ def apply(folder, changes):
     new["log"].append({"at": now(), "revision": new["revision"], "actor": changes.get("actor", ""),
                        "op_id": changes["op_id"], "summary": changes.get("summary", ""),
                        "next_step": changes.get("next_step", ""), "request_sha256": digest})
+    if reopened:
+        new["log"][-1]["reopened_answers"] = reopened
     save(folder, new)
     return {"status": "applied", "revision": new["revision"], "ids": [t for t in touched if t],
             "warnings": notes + [f"{p[2]}: {p[3]}" for p in problems(new) if p[0] == "warning"]}
@@ -541,6 +551,9 @@ def gates(reg):
     blockers += [f["id"] for f in reg["findings"] if f["priority"] == "blocker" and f["status"] != "resolved"]
     if blockers:
         out.append("open blockers: " + ", ".join(blockers))
+    answers = [o["id"] for o in reg["open_items"] if o["status"] == "recheck"]
+    if answers:
+        out.append("answers to reassess: " + ", ".join(answers))
     pending = [s["id"] for s in reg["sources"] if s["impact"] == "pending"]
     if pending:
         out.append("source impact not assessed: " + ", ".join(pending))
@@ -619,7 +632,7 @@ def problems(reg, today=None):
         if not o["raised_by"].strip():
             err("raised-by", o["id"], "record who raised this item")
         decision = o.get("officer_decision", "").strip()
-        if o["status"] == "answered" or (o["status"] == "closed" and not decision):
+        if o["status"] in {"answered", "recheck"} or (o["status"] == "closed" and not decision):
             if not o["answer_source"].strip():
                 err("evidence", o["id"], "an answered or closed item needs an answer source")
         if o["answer_source"].strip():
@@ -853,7 +866,8 @@ def lists(reg):
     opened = [o for o in reg["open_items"] if o["status"] != "closed"]
     client = client_requests(reg)
     internal = [o for o in opened if o not in client]
-    state = {"promised": " — promised, awaiting evidence", "answered": " — answered, awaiting assessment"}
+    state = {"promised": " — promised, awaiting evidence", "answered": " — answered, awaiting assessment",
+             "recheck": " — answer evidence changed, reassess before closure or a new client request"}
     item = lambda o: (f"- {o['id']} [{o['criticality'] or '-'}] {o['text']}"  # noqa: E731
                       + (f" ({o['link']})" if o["link"] else "") + state.get(o["status"], "")
                       + (f" — due {o['due']}" if o["due"] else ""))

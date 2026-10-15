@@ -461,6 +461,41 @@ def test_correction_retains_conflicts_and_marks_explicit_links_for_recheck(folde
     assert 'source impact not assessed: S-001, S-002' in reg_tool.gates(reg)
 
 
+@pytest.mark.parametrize('status', ['closed', 'answered'])
+def test_superseded_answer_needs_reassessment_and_retains_history(folder, status):
+    reg_tool.apply(folder, change(0, 'answer',
+        {'sheet': 'sources', 'add': {'title': 'Client response', 'impact': 'assessed'}},
+        {'sheet': 'open_items', 'add': {
+            'kind': 'question', 'text': 'Confirm the delivery date', 'raised_by': 'Analyst',
+            'audience': 'client', 'criticality': 'material', 'status': status,
+            'answer': 'Delivery in May', 'answer_source': 'S-001 paragraph 2',
+            'assessment': 'Date checked against the schedule', 'assessed_by': 'Analyst',
+            'officer_decision': 'Officer, 2026-10-01: timing accepted'}}))
+    original = reg_tool.load(folder)['open_items'][0]
+    reg_tool.apply(folder, change(1, 'correction', {'sheet': 'sources', 'add': {
+        'title': 'Corrected client response', 'supersedes': 'S-001', 'impact': 'assessed'}}))
+    reg = reg_tool.load(folder)
+    row = reg['open_items'][0]
+    assert row['status'] == 'recheck'
+    assert row['answer'] == original['answer'] and row['answer_source'] == original['answer_source']
+    assert row['assessment'] == row['assessed_by'] == row['officer_decision'] == ''
+    assert reg['log'][-1]['reopened_answers'] == [original]
+    assert reg_tool.gates(reg) == ['answers to reassess: O-001']
+    assert 'O-001' in reg_tool.lists(reg) and 'answer evidence changed' in reg_tool.lists(reg)
+    assert 'O-001' not in reg_tool.ddq(reg)
+    before = (folder / 'register.json').read_bytes()
+    with pytest.raises(reg_tool.ChangeError, match='assessment'):
+        reg_tool.apply(folder, change(2, 'stale-closure', {
+            'sheet': 'open_items', 'update': 'O-001', 'set': {'status': 'closed'}}))
+    assert (folder / 'register.json').read_bytes() == before
+    reg_tool.apply(folder, change(2, 'reassessed', {'sheet': 'open_items', 'update': 'O-001', 'set': {
+        'status': 'closed', 'answer': 'Delivery in June', 'answer_source': 'S-002 paragraph 2',
+        'assessment': 'Revised timing checked and accepted', 'assessed_by': 'Analyst'}}))
+    reg = reg_tool.load(folder)
+    assert reg_tool.gates(reg) == []
+    assert reg['log'][-2]['reopened_answers'] == [original]
+
+
 def test_new_unlinked_adverse_source_still_has_pending_whole_case_impact(folder):
     reg_tool.apply(folder, change(0, 'adverse', {'sheet': 'sources', 'add': {'title': 'Covenant breach email'}}))
     assert 'source impact not assessed: S-001' in reg_tool.gates(reg_tool.load(folder))

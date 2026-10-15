@@ -27,7 +27,7 @@ The tools use Python 3.9+ and the standard library. Development tests and synthe
 
 ## Install and test
 
-Download **`aissociate-0.5.3.zip`** from the [0.5.3 pilot release](https://github.com/rrecourt2/AIssociate/releases/tag/v0.5.3). Follow [INSTALL.md](INSTALL.md) and the [whole-workflow pilot](evaluations/pilot-acceptance.md).
+Download **`aissociate-0.5.4.zip`** from the [0.5.4 pilot release](https://github.com/rrecourt2/AIssociate/releases/tag/v0.5.4). Follow [INSTALL.md](INSTALL.md) and the [whole-workflow pilot](evaluations/pilot-acceptance.md).
 
 AIssociate replaces FP Assistant as the package and repository name. Keep existing deal registers and Word records; disable the older plugin to avoid duplicate skills. Word compatibility identifiers are unchanged.
 

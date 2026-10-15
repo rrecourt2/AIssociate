@@ -1,6 +1,6 @@
 # AIssociate pilot design
 
-Version 0.5.3. Build reusable deal evidence first, then analyse and write. Keep one local JSON master and one writer; the host provides authorised retrieval, model execution, separate tasks and remote delivery.
+Version 0.5.4. Build reusable deal evidence first, then analyse and write. Keep one local JSON master and one writer; the host provides authorised retrieval, model execution, separate tasks and remote delivery.
 
 ## Evidence → analysis → paper
 

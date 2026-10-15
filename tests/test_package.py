@@ -119,6 +119,7 @@ def test_extracted_lead_workflow_without_repository_imports(root, tmp_path, layo
         result = json.loads(run("fp.py", "bundle", folder, "--out", delivery))
         assert result["status"] == "bundled"
         manifest = json.loads((delivery / "manifest.json").read_text())
+        assert manifest["version"] == version
         assert manifest["register_revision"] == json.loads(master.read_text())["revision"]
         expected = {"register.json", "Analysis.md", "register.xlsx", "DDQ.md"}
         if current:

@@ -1,11 +1,12 @@
-# Validation results — AIssociate 0.5.3
+# Validation results — AIssociate 0.5.4
 
-Checked locally on 14 October 2026. Version 0.5.3 adds explicit gap-assessment guidance and a small first Cowork test; runtime code is unchanged from 0.5.1. These results establish tool behaviour, not model improvement, financing judgment or writing quality.
+Checked locally on 15 October 2026. Version 0.5.4 fixes answer reassessment after source changes. These results establish tool behaviour, not model improvement, financing judgment or writing quality.
 
 | Check | Result |
 |---|---|
-| Current package checks | `uv run pytest -q tests/test_package.py -W error`: 20 passed, including both extracted workflows below |
-| Prior 0.5.1 full regression suite | `uv run pytest -q -W error`: 293 passed; runtime unchanged in 0.5.3 |
+| Full regression suite | `uv run pytest -q -W error`: 295 passed, including 20 package checks and both extracted workflows below |
+| Superseded answer evidence | Closed and answered items reopen for internal reassessment; prior assessment retained in the register log, readiness blocked, status-only closure rejected, new assessed closure accepted |
+| Release version | Extracted plugin and individual-skill tests verify canonical metadata, processor output and delivery-manifest versions agree |
 | Extracted plugin and individual-skill ZIPs | Fresh processes outside repository imports: index → evidence-only bundle → reopen index → preflight → Word → full bundle → new evidence and protected revision |
 | Prior 0.5.0 check: actual Microsoft Word 16.113.4 save | Old FP Assistant identity/record accepted; officer edited Summary in Word; the next revision preserved Summary and Recommendation while updating the untouched financial table |
 | Partial changes and retry | Protected replacements returned as proposals with `partial` status; Word and bundle retries preserved identical bytes |
@@ -13,7 +14,7 @@ Checked locally on 14 October 2026. Version 0.5.3 adds explicit gap-assessment g
 | Package review | Both archives built; canonical references resolved into standalone companions; building left source files unchanged |
 | Source checks | No broken relative Markdown links or confidential-name matches; `git diff --check` clean |
 
-Gap assessments use the existing register and follow the user's scope and stage. Instructions distinguish unread evidence, unresolved knowledge and accepted residual uncertainty. The first Cowork test uses two short real documents and verifies saving and fresh-task retrieval before FP drafting. No runtime code, skills, tests or dependencies were added.
+The answer lifecycle regression failed before the fix and passes after it. Independent review found no blocking issue. No new skill, dependency or shipped selftest was added. The public 0.5.3 ZIP was also checked: both manifests said 0.5.3. The reported installed 1.5.3 discrepancy was not reproduced; its cause remains unknown.
 
 The prior 0.5.1 cleanup removed 33.1% of instruction text and 166 runtime lines. Tests and fixture generators stay in development and are not loaded during FP work. All eight skills remain available. Actual Word was not rerun because document-processing behaviour was unchanged.
 
