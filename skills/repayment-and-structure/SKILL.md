@@ -31,4 +31,4 @@ Distinguish effective protections, conditions that must be satisfied before reli
 
 ## Deliver
 
-Give FP Lead a located conclusion covering repayment dependencies, scenario assumptions, maturity/refinancing exposure, covenant results, effective protections and unresolved inputs. Reassess changed lender/legal/cash-flow evidence. Analysis, officer acceptance and Credit approval remain distinct.
+Return a located conclusion covering repayment dependencies, scenario assumptions, maturity/refinancing exposure, covenant results, effective protections and unresolved inputs for the evidence owner to integrate. Reassess changed lender/legal/cash-flow evidence. Analysis, officer acceptance and Credit approval remain distinct.

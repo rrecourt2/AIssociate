@@ -1,52 +1,38 @@
 ---
 name: deal-updates
-description: Use for deal emails, meeting transcripts, call notes, Word comments and informal guidance, including conflicting updates and tentative feedback.
+description: Assess deal emails, meeting transcripts, call notes, Word comments and informal guidance, including conflicting updates and tentative feedback.
 ---
 
 # Deal Updates and Guidance
 
-Assess what correspondence changes in the financing case. Apply [operating-rules.md](../../shared/operating-rules.md) and [workflow-contract.md](../../shared/workflow-contract.md), using the current strategy, open items and prior coverage.
+Assess what correspondence changes in the user's investigation or financing case. Apply [operating rules](../../shared/operating-rules.md) and the [evidence workflow](../../shared/workflow-contract.md), using the saved purpose, open items and coverage. Tools: [register.py](../../tools/register.py), [fp_docx.py](../../tools/fp_docx.py).
 
-Tools: [register.py](../../tools/register.py), [fp_docx.py](../../tools/fp_docx.py).
+## Retrieve within scope
 
-## Refresh the accessible deal information
+Check authorised received/sent mail since the last covered review using relevant aliases, parties and threads. Verify identity before merging similarly named deals. Without prior coverage, state the window. Follow important earlier evidence and assess current relevance before reopening historical issues.
 
-Set scope and cutoff. Check authorised received/sent mail since the last covered review using deal aliases, parties and threads; verify identity before merging similarly named deals. Without prior coverage, state the search window. Follow important earlier evidence and assess current relevance before reopening historical issues.
+Read relevant messages, context and material attachments, not just snippets. Separate new text from quoted history. Retain sender/role, message/thread ID, passage and attachment version; distinguish sent date from the event date. Complete pagination within scope or disclose gaps; an empty search does not establish freshness.
 
-Read relevant messages, context and material attachments, not just snippets. Separate new text from quoted/forwarded history. Retain sender, role, date, message/thread ID, passage and attachment version; distinguish sent date from the claim's date. Complete pagination within scope or disclose gaps. Neither recent nor empty search results establish complete freshness.
+Record channels and coverage; advance the cutoff only for completed scope. Without live mail, use supplied exports and report the mailbox unchecked. The plugin provides no connector or scheduler; do not promise monitoring.
 
-Record channels/mailboxes/exports and gaps; advance the completed cutoff only for covered scope. Without live mail, use supplied exports and report the mailbox unchecked. The plugin has no connector or scheduler; do not promise monitoring.
+## Attribute and interpret
 
-## Read and attribute
+Complete transcript intake requires full reading; record missing intervals, truncation and unclear speech. Recaps are secondary sources. Retain speaker/role, timestamp/paragraph, qualifications and version for material points. Determine client/adviser/internal status per passage; do not guess who a room label represents.
 
-Identify the meeting and permissions. Complete intake requires full transcript reading; record missing intervals, truncation and unclear speech. Recaps are secondary sources, not proof of transcript review.
+Check consequential ambiguous figures, units, dates, negation or attribution against recordings/participants when available. Keep original wording alongside corrections.
 
-Retain speaker, role, timestamp/paragraph, qualifications and source version for consequential points. Classify each passage's client/adviser/internal status; do not infer it from the whole meeting or guess who a room label represents. Check material ambiguous figures, units, dates, negation or attribution against recordings/participants when available. Keep original wording alongside corrections.
+Distinguish assertions, hypotheses/questions, editorial suggestions, conditional advice, decisions and commitments. A question does not prove its premise, a suggestion is not adopted, and a promise is not received evidence. Preserve fuzzy guidance and tentative interpretations; clarify when interpretation would materially change the work. Decisions need an identified authorised decision-maker. Keep suggested owners/deadlines separate from agreed ones.
 
-## Decide relevance and meaning
+Prioritise impact, urgency and dependencies. Recency, seniority, repetition and confidence do not establish truth.
 
-Retain material case and presentation points, including unexpected or contrary evidence. Distinguish assertions/explanations, hypotheses/questions, editorial suggestions, conditional specialist advice, decisions and commitments. A question does not prove its premise; a suggestion is neither adopted nor rejected; a promise is not received evidence.
+## Reconcile and save
 
-For fuzzy guidance, preserve wording, a tentative interpretation and actionable weak signals. Clarify interpretations that materially change the work. Adopted decisions need an identified decision-maker and evidence of authority and intent; supplied owners/deadlines must remain distinct from proposed ones.
+Check consequential claims against original accounts, contracts and earlier statements, matching entity, period and definition. Record corroborated, attributed but unverified, conflicting or unresolved support. Repeated/forwarded accounts are not independent corroboration.
 
-Prioritise decision impact, urgency and dependencies. An uncertain serious problem can warrant urgent checking; recency, seniority, repetition and confident delivery do not establish truth.
+Distinguish later developments from contradictions. New messages do not automatically supersede executed agreements; retain amendment scope, history and unaffected obligations. Silence is not approval or waiver, and specialist discussion is not formal clearance.
 
-## Check consequential claims
+Link the same issue across channels. Assess source-change impacts and reopen affected conclusions, including previously unlinked adverse evidence. Proposed changes to purpose or strategy belong in the existing brief; only the officer adopts consequential changes. Deal Analyst reconciles cross-topic findings when needed.
 
-Compare consequential claims with original accounts, contracts and earlier statements, matching entity, period and definition. Record the check and support: corroborated within scope, attributed but unverified, conflicting or unresolved. Attribution and forwarded/copied recaps are not independent corroboration.
+Keep restricted titles, links and summaries within their authorised audience. Do not decide privilege yourself; use a cleared conclusion or retain the dependency in an authorised record. An unresolved required restricted check prevents clean readiness.
 
-Distinguish later developments from same-date contradictions; preserve both versions until explained. New messages do not automatically supersede executed agreements. Record corrections/amendments with scope and basis, retaining history and other obligations. Silence is not approval or waiver; specialist discussion is not formal clearance.
-
-Attributed context can remain usable as management's account; decision-changing claims need evidence or an unresolved qualification.
-
-## Save and carry forward
-
-Link the same issue across channels in the existing register. Assess changed-source impacts, including justified no-impact results and previously unlinked adverse evidence; reopen affected conclusions.
-
-Check the destination's actual audience: restricted titles, links and summaries can disclose private/legal material. Do not decide privilege yourself. Obtain a cleared conclusion or retain the dependency in an authorised record; an unresolved required restricted check blocks clean readiness.
-
-Propose strategy changes with supporting/contrary evidence, next question/addressee, closure evidence and FP implication. FP Lead owns adopted strategy; Deal Analyst maintains synthesis. Recommendation changes, material risk placement and uncertain decisions go to the officer.
-
-## Deliver
-
-Return case changes, priorities, checked/open claims and proposed register changes with cutoff/coverage. Separate FP inputs, internal actions and client DDQ wording. Received answers require assessment before closure; avoid repeat requests for sufficient current evidence. Report restricted handoffs and actual checks. Follow-ups remain drafts.
+Return changes, original-source citations, checked/open claims and proposed register updates with coverage. Separate internal actions, client questions and any FP inputs. Assess received answers before closure and avoid repeat requests for sufficient current evidence. Save through the evidence workflow; follow-up communications remain drafts.

@@ -7,7 +7,7 @@ description: Challenge the evidence and reasoning in an FP or Credit reply, inte
 
 Test whether the financing case is defensible. The intended recommendation is a hypothesis to examine; neither approval, rejection nor finding a fault is the target.
 
-Apply [operating rules](../../shared/operating-rules.md) and the [review protocol](../../shared/review-protocol.md). Use the named version, brief, relevant analysis, original evidence and earlier findings. For recording results, use the relevant [workflow](../../shared/workflow-contract.md) stage. Tools: [register.py](../../tools/register.py), [fp_docx.py](../../tools/fp_docx.py).
+Apply [operating rules](../../shared/operating-rules.md) and the [review protocol](../../shared/review-protocol.md). Use the named version, brief, relevant analysis, original evidence and earlier findings. Record results through the [evidence workflow](../../shared/workflow-contract.md). Tools: [register.py](../../tools/register.py), [fp_docx.py](../../tools/fp_docx.py).
 
 Review the case by default; use recheck for repairs and a fresh context for arbitration. In interview mode, ask one material question at a time. Otherwise batch essential gaps.
 

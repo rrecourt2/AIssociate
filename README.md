@@ -1,16 +1,18 @@
 # AIssociate
 
-AIssociate helps a deal team turn scattered documents into a reusable evidence index, then use that record to write a financing proposal (FP).
+AIssociate helps a deal team investigate a transaction and keep a reusable record of its purpose, evidence, decisions and open questions. That record can later support a financing proposal (FP).
 
 Financial statements, contracts, interviews and emails often contain conflicting or outdated information. Asking AI to read the folder again for each draft costs time and loses earlier work. AIssociate stores material facts with their sources, review status and open questions so the next task can continue from them.
 
 ## How the pilot works
 
-1. **Organise evidence.** Deal Analyst indexes sources by type, entity, period and version. Report-reading and correspondence specialists extract located facts and gaps. Originals stay in place.
+1. **Start or resume.** Deal Analyst retains the purpose and current direction, keeping hypotheses separate from decisions. It indexes relevant sources by type, entity, period and version. Originals stay in place.
 2. **Check and analyse.** Financial specialists explain performance, debt and repayment. Deal Analyst reconciles claims and checks whether historical issues still matter. Ask for a standalone gap assessment: what remains unknown, why it matters and what would resolve it. No FP is required.
-3. **Write and review.** FP Lead selects the financing argument from that record. Approved examples set the voice; the template sets required content. Separate reviewers challenge the case and check presentation. The officer decides.
+3. **Write when requested.** FP Lead selects the financing argument from that record. Approved examples set the voice; the template sets required content. Separate reviewers challenge the case and check presentation. The officer decides.
 
 Use specialists only for relevant work. A new email should update affected facts and passages, not restart the archive review. This is a supervised pilot: faster drafting and lower cost are outcomes to measure, not promises.
+
+For a small investigation, deliver a concise answer with original-source links and save the register plus its readable Analysis view in one approved location. Include other exports when useful. A later task resumes from the saved record, with its coverage and remaining gaps visible.
 
 ## What's in the package
 
@@ -27,7 +29,7 @@ The tools use Python 3.9+ and the standard library. Development tests and synthe
 
 ## Install and test
 
-Download **`aissociate-0.5.4.zip`** from the [0.5.4 pilot release](https://github.com/rrecourt2/AIssociate/releases/tag/v0.5.4). Follow [INSTALL.md](INSTALL.md) and the [whole-workflow pilot](evaluations/pilot-acceptance.md).
+Download **`aissociate-0.5.5.zip`** from the [0.5.5 pilot release](https://github.com/rrecourt2/AIssociate/releases/tag/v0.5.5). Follow [INSTALL.md](INSTALL.md) and the [whole-workflow pilot](evaluations/pilot-acceptance.md).
 
 AIssociate replaces FP Assistant as the package and repository name. Keep existing deal registers and Word records; disable the older plugin to avoid duplicate skills. Word compatibility identifiers are unchanged.
 

@@ -52,12 +52,17 @@ def test_extracted_lead_workflow_without_repository_imports(root, tmp_path, layo
         with ZipFile(packages / f"aissociate-{version}.zip") as archive:
             archive.extractall(extracted)
         scripts = extracted / "skills/fp-lead/scripts"
+        evidence_tool = extracted / "skills/deal-analyst/scripts/register.py"
     else:
         with ZipFile(packages / f"aissociate-individual-skills-{version}.zip") as archive:
             archive.extract("fp-lead.zip", extracted)
+            archive.extract("deal-analyst.zip", extracted)
         with ZipFile(extracted / "fp-lead.zip") as archive:
             archive.extractall(extracted / "fp-lead")
+        with ZipFile(extracted / "deal-analyst.zip") as archive:
+            archive.extractall(extracted / "deal-analyst")
         scripts = extracted / "fp-lead/scripts"
+        evidence_tool = extracted / "deal-analyst/scripts/register.py"
     assert (scripts / "plugin.json").read_bytes() == (root / ".claude-plugin/plugin.json").read_bytes()
     for skill in (root / "skills").iterdir():
         assert sorted(p.name for p in skill.iterdir()) == ["SKILL.md"]
@@ -97,7 +102,7 @@ def test_extracted_lead_workflow_without_repository_imports(root, tmp_path, layo
     example.write_text("Approved example: explain the business and the financing case.")
     folder = work / "deal"
     master = folder / "register.json"
-    run("register.py", "init", folder, "--deal", "synthetic")
+    run(evidence_tool, "init", folder, "--deal", "synthetic")
     evidence = work / "company-account.txt"
     evidence.write_text("Synthetic company account: the business provides maintenance services. "
                         "FY2025 revenue: scheduled work EUR6m; emergency work EUR4m.")
@@ -108,11 +113,27 @@ def test_extracted_lead_workflow_without_repository_imports(root, tmp_path, layo
                      value="10", unit="EURm", entity="Synthetic company", period="FY2025",
                      definition="Scheduled and emergency maintenance revenue", method="6 + 4",
                      inputs="S-001 paragraph 1: scheduled 6, emergency 4", sections="summary")
-    command("register.py", "apply", folder,
+    purpose = "Explore a possible loan; no structure selected. Next: assess cash conversion."
+    command(evidence_tool, "apply", folder,
             dict(op_id="evidence-1", base_revision=0, actor="Synthetic officer", changes=[
                 {"sheet": "sources", "add": {"title": "Company account", "link": str(evidence),
                                                 "coverage": "read", "impact": "assessed"}},
-                {"sheet": "claims", "add": claim}]))
+                {"sheet": "claims", "add": claim},
+                {"sheet": "analysis", "add": {"id": "strategy", "text": purpose}},
+                {"sheet": "analysis", "add": {"id": "performance", "text": "Revenue reviewed; contracts not yet reviewed.",
+                                                  "claims": "C-001"}}]))
+
+    # Only the canonical record and readable view are needed to resume an investigation.
+    saved = work / "saved-investigation"
+    saved.mkdir()
+    for name in ("register.json", "Analysis.md"):
+        shutil.copyfile(folder / name, saved / name)
+        assert (saved / name).read_bytes() == (folder / name).read_bytes()
+    assert purpose in run(evidence_tool, "show", saved)
+    assert str(evidence) in run(evidence_tool, "show", saved, "C-001")
+    analysis = (saved / "Analysis.md").read_text()
+    assert purpose in analysis and "contracts not yet reviewed" in analysis and str(evidence) in analysis
+    assert "S-001 paragraph 1" in analysis
 
     def check_bundle(name, current=None):
         delivery = work / name

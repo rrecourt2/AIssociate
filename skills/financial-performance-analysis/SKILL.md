@@ -29,4 +29,4 @@ Test management explanations against notes, operating data and later evidence, p
 
 ## Deliver
 
-Give FP Lead located conclusions about earning power, cash conversion and financing implications, with checked calculations, contrary/unexplained evidence and the basis for recurring/temporary assessments or recovery assumptions. Retain detailed calculations internally. Pass liquidity, maturities, covenants and forward repayment questions to repayment-and-structure; historical EBITDA alone does not establish debt-service capacity.
+Return located conclusions about earning power, cash conversion and implications for the current question, with checked calculations, contrary/unexplained evidence and the basis for recurring/temporary assessments or recovery assumptions. The evidence owner integrates them into the register; retain detailed calculations internally. Use repayment-and-structure for material liquidity, maturity or forward repayment questions. Historical EBITDA alone does not establish debt-service capacity.

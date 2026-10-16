@@ -121,7 +121,7 @@ def test_excel_view_opens_in_an_independent_reader(folder):
 def test_summary_lists_show_and_cli(folder, tmp_path, capsys):
     reg_tool.apply(folder, change(0, "a", RISK, {"sheet": "open_items", "add": {
         "text": "Revenue split by currency", "raised_by": "officer", "link": "R-001", "criticality": "blocker",
-        "status": "open", "addressee": "client", "due": "2026-10-10"}},
+        "status": "open", "addressee": "client", "due": "2026-10-10", "purpose": "Size the currency mismatch"}},
         {"sheet": "mitigants", "add": {"risk": "R-001", "text": "Hedging covenant", "type": "proposed-condition",
                                        "raised_by": "credit"}}, next_step="Grill v01 in a new task"))
     reg = reg_tool.load(folder)
@@ -130,6 +130,8 @@ def test_summary_lists_show_and_cli(folder, tmp_path, capsys):
     assert len(text.splitlines()) <= 40
     assert "Revenue split by currency" in reg_tool.lists(reg) and "M-001 (R-001)" in reg_tool.lists(reg)
     assert "mitigant M-001" in reg_tool.show(reg, ["R-001"])
+    md = (folder / "Analysis.md").read_text()
+    assert "O-001 [open; blocker]: Revenue split by currency — Size the currency mismatch" in md
     changes = tmp_path / "c.json"
     changes.write_text(json.dumps(change(1, "cli", {"sheet": "control", "set": {"officer": "Rik"}})))
     assert reg_tool.main(["apply", str(folder), str(changes)]) == 0
@@ -385,12 +387,17 @@ def test_unread_critical_evidence_allows_draft_but_blocks_readiness(folder):
 
 
 def test_analysis_export_retains_provenance_and_update_metadata(folder):
-    reg_tool.apply(folder, change(0, 'analysis', {'sheet': 'sources', 'add': {'title': 'Accounts'}},
-        {'sheet': 'analysis', 'add': {'id': 'liquidity', 'text': 'Cash is constrained.', 'sources': 'S-001 p.8'}}))
+    reg_tool.apply(folder, change(0, 'analysis', {'sheet': 'sources', 'add': {
+        'title': 'Accounts', 'link': 'https://example.org/accounts', 'version': '2025'}},
+        {'sheet': 'claims', 'add': {'assertion': 'Cash is pledged.', 'kind': 'fact', 'sources': 'S-001 p.8'}},
+        {'sheet': 'analysis', 'add': {'id': 'liquidity', 'text': 'Cash is constrained.', 'claims': 'C-001'}}))
     row = reg_tool.load(folder)['analysis'][0]
     assert row['updated']
     md = (folder / 'Analysis.md').read_text()
     assert 'S-001 p.8' in md and row['updated'] in md and 'Cash is constrained.' in md
+    assert '[Accounts](<https://example.org/accounts>) · version 2025' in md
+    assert 'https://example.org/accounts' in reg_tool.show(reg_tool.load(folder), ['C-001'])
+    assert 'S-001 p.8' in reg_tool.show(reg_tool.load(folder), ['liquidity'])
 
 
 def test_explicit_migration_preserves_bytes_ids_history_and_refuses_legacy_replay(folder):
@@ -488,12 +495,51 @@ def test_superseded_answer_needs_reassessment_and_retains_history(folder, status
         reg_tool.apply(folder, change(2, 'stale-closure', {
             'sheet': 'open_items', 'update': 'O-001', 'set': {'status': 'closed'}}))
     assert (folder / 'register.json').read_bytes() == before
+    with pytest.raises(reg_tool.ChangeError, match='superseded'):
+        reg_tool.apply(folder, change(2, 'restore-old-assessment', {
+            'sheet': 'open_items', 'update': 'O-001',
+            'set': {**original, 'status': 'closed'}}))
+    assert (folder / 'register.json').read_bytes() == before
     reg_tool.apply(folder, change(2, 'reassessed', {'sheet': 'open_items', 'update': 'O-001', 'set': {
-        'status': 'closed', 'answer': 'Delivery in June', 'answer_source': 'S-002 paragraph 2',
+        'status': 'closed', 'answer': 'Delivery in June',
+        'answer_source': 'S-001 paragraph 2; S-002 paragraph 2',
         'assessment': 'Revised timing checked and accepted', 'assessed_by': 'Analyst'}}))
     reg = reg_tool.load(folder)
     assert reg_tool.gates(reg) == []
     assert reg['log'][-2]['reopened_answers'] == [original]
+    reg_tool.apply(folder, change(3, 'new-correction', {'sheet': 'sources', 'add': {
+        'title': 'Further amendment', 'supersedes': 'S-002', 'impact': 'assessed'}}))
+    reg_tool.apply(folder, change(4, 'accepted-exception', {'sheet': 'open_items', 'update': 'O-001', 'set': {
+        'status': 'closed', 'assessment': 'Historical date sufficient for this question; amendment reviewed separately',
+        'assessed_by': 'Analyst', 'officer_decision': 'Officer, 2026-10-15: accept this limited historical basis'}}))
+    assert reg_tool.load(folder)['open_items'][0]['status'] == 'closed'
+
+
+def test_changed_calculation_reopens_its_answer_and_preserves_assessment(folder):
+    reg_tool.apply(folder, change(0, 'original',
+        {'sheet': 'sources', 'add': {'title': 'Accounts'}},
+        {'sheet': 'claims', 'add': {'assertion': 'Margin', 'kind': 'calculation', 'value': '20',
+            'unit': '%', 'entity': 'Cedar', 'period': '2025', 'definition': 'EBITDA margin',
+            'inputs': 'S-001 p.3: EBITDA 20 / revenue 100', 'method': 'EBITDA / revenue * 100'}},
+        {'sheet': 'open_items', 'add': {'text': 'Is margin sufficient?', 'raised_by': 'Analyst',
+            'status': 'closed', 'answer_source': 'C-001; S-001 p.3',
+            'assessment': '20% is sufficient', 'assessed_by': 'Analyst'}}))
+    original = reg_tool.load(folder)['open_items'][0]
+    reg_tool.apply(folder, change(1, 'correct-calculation', {'sheet': 'claims', 'update': 'C-001', 'set': {
+        'value': '10', 'inputs': 'S-001 p.3: adjusted EBITDA 10 / revenue 100'}}))
+    reg = reg_tool.load(folder)
+    assert reg['open_items'][0]['status'] == 'recheck'
+    assert reg['open_items'][0]['assessment'] == ''
+    assert reg['log'][-1]['reopened_answers'] == [original]
+    before = (folder / 'register.json').read_bytes()
+    with pytest.raises(reg_tool.ChangeError, match='new assessment'):
+        reg_tool.apply(folder, change(2, 'restore-old-answer', {
+            'sheet': 'open_items', 'update': 'O-001', 'set': original}))
+    assert (folder / 'register.json').read_bytes() == before
+    reg_tool.apply(folder, change(2, 'reassessed', {'sheet': 'open_items', 'update': 'O-001', 'set': {
+        'status': 'closed', 'answer': 'Margin is 10%', 'assessment': '10% remains sufficient',
+        'assessed_by': 'Analyst'}}))
+    assert reg_tool.load(folder)['open_items'][0]['status'] == 'closed'
 
 
 def test_new_unlinked_adverse_source_still_has_pending_whole_case_impact(folder):
