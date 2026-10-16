@@ -1,20 +1,20 @@
 # AIssociate
 
-AIssociate helps Investment Officers build a reusable deal record: what is known, assumed, still to be verified, and how it connects. Each material fact or conclusion retains its source and review status so work can continue across tasks.
+Investment teams keep their documents. Keeping track of what those documents mean is harder. A number comes from a spreadsheet, its explanation from a call, and a later email changes an assumption behind it. Before the next decision, someone has to put the pieces together again.
 
-Financial statements, contracts, interviews and emails often contain conflicting or outdated information. Asking AI to read the folder again for each draft costs time and loses earlier work. AIssociate links source evidence, assumptions, calculations, conclusions and open questions in one record.
+AI can help read the material and write the next paper. The work behind that paper is worth keeping: which facts were checked, which assumptions were adopted, what remains uncertain, and why a decision was made. AIssociate is a small plugin that helps Investment Officers save this in a reusable deal record, linked to the original evidence.
 
-That record supports investigations and documents: a two-page opportunity scan, Clearance in Principle, Term Sheet, contracting support, Financial Proposal (FP) or external Investment Memorandum. Later, its structured data could populate institutional systems through agreed field mappings and validation. No system integration is included in this pilot.
+Documents become outputs of that record: a two-page opportunity scan, Clearance in Principle, Term Sheet, contracting support, Financial Proposal (FP) or external Investment Memorandum. Later, the same data could populate institutional systems through agreed field mappings and validation. That integration is outside this pilot.
 
 ## How the pilot works
 
-1. **Start or resume.** Deal Analyst retains the purpose and current direction, keeping facts, assumptions and decisions distinct. It indexes sources by type, entity, period and version. Originals stay in place.
-2. **Check and analyse.** Financial specialists explain performance, debt and repayment. Deal Analyst reconciles claims and checks whether historical issues still matter. Ask for a standalone gap assessment: what remains unknown, why it matters and what would resolve it. No FP is required.
-3. **Write when requested.** Document Lead uses the Investment Officer's brief to match purpose, audience and depth. Approved examples set the voice; the applicable template sets required content. Reviewers challenge material conclusions and check presentation. Approval stays with authorised decision-makers.
+1. **Build on what is known.** Deal Analyst records the purpose, sources and earlier decisions. Facts and assumptions stay distinct. Each source keeps its entity, period and version; originals stay in place.
+2. **Work through what is unclear.** Relevant specialists analyse the evidence. Deal Analyst reconciles their findings and identifies what still needs to be learned, why it matters and what would resolve it.
+3. **Write when needed.** Document Lead follows the Investment Officer's brief, template and examples. Reviewers challenge material conclusions and check presentation. Approval stays with authorised decision-makers.
 
-Use specialists only for relevant work. A new email should update affected facts and passages, not restart the archive review. This is a supervised pilot: faster drafting and lower cost are outcomes to measure, not promises.
+The scope can be small. A new email may change one assumption and the conclusion that depends on it. The assistant should follow those links and update the affected work. A question about a deal need not turn into a full proposal.
 
-For a small investigation, deliver a concise answer with original-source links and save the register plus its readable Analysis view in one approved location. Include other exports when useful. A later task resumes from the saved record, with its coverage and remaining gaps visible.
+For a short investigation, the result is an answer with source links, the saved register and a readable Analysis view. The next task resumes from that record. This pilot tests whether that continuity saves Investment Officer time and reduces repeated work.
 
 ## What's in the package
 
