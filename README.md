@@ -1,16 +1,16 @@
 # AIssociate
 
-Investment teams keep their documents. Keeping track of what those documents mean is harder. A number comes from a spreadsheet, its explanation from a call, and a later email changes an assumption behind it. Before the next decision, someone has to put the pieces together again.
+An Investment Officer may spend months taking a transaction from screening to approval and contracting. The team checks financials, tests assumptions, negotiates terms and resolves questions. Much of this work ends up scattered across files, correspondence and successive drafts. When a new AI task starts, it can repeat the research, miss a decision or rely on a figure that has since changed.
 
-AI can help read the material and write the next paper. The work behind that paper is worth keeping: which facts were checked, which assumptions were adopted, what remains uncertain, and why a decision was made. AIssociate is a small plugin that helps Investment Officers save this in a reusable deal record, linked to the original evidence.
+AIssociate is a Copilot Cowork plugin for carrying this work forward. It maintains a deal record of facts, assumptions, calculations, decisions and open questions, linked to their sources and to each other. If a forecast changes, the record helps identify which conclusions and document sections need to be reassessed.
 
 Documents become outputs of that record: a two-page opportunity scan, Clearance in Principle, Term Sheet, contracting support, Financial Proposal (FP) or external Investment Memorandum. Later, the same data could populate institutional systems through agreed field mappings and validation. That integration is outside this pilot.
 
 ## How the pilot works
 
-1. **Build on what is known.** Deal Analyst records the purpose, sources and earlier decisions. Facts and assumptions stay distinct. Each source keeps its entity, period and version; originals stay in place.
-2. **Work through what is unclear.** Relevant specialists analyse the evidence. Deal Analyst reconciles their findings and identifies what still needs to be learned, why it matters and what would resolve it.
-3. **Write when needed.** Document Lead follows the Investment Officer's brief, template and examples. Reviewers challenge material conclusions and check presentation. Approval stays with authorised decision-makers.
+1. **Record the evidence.** Deal Analyst records the purpose, sources and earlier decisions. Facts and assumptions stay distinct. Each source keeps its entity, period and version; originals stay in place.
+2. **Analyse and identify gaps.** Relevant specialists analyse the evidence. Deal Analyst reconciles their findings and identifies what still needs to be learned, why it matters and what would resolve it.
+3. **Prepare the requested output.** Document Lead follows the Investment Officer's brief, template and examples. Reviewers challenge material conclusions and check presentation. Approval stays with authorised decision-makers.
 
 The scope can be small. A new email may change one assumption and the conclusion that depends on it. The assistant should follow those links and update the affected work. A question about a deal need not turn into a full proposal.
 
