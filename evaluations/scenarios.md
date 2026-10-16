@@ -4,7 +4,7 @@ Synthetic cases for fresh-session evaluation. No real deal data. Give the acting
 
 ## Case 1 — performance and financing
 
-User request: Prepare a concise financial assessment and a proposed FP paragraph for Cedar Foods. The officer currently favours approval of a EUR 12m working-capital facility. Explain what changed and what the financing depends on. Available evidence is below; no FP runtime tools are installed. All figures are synthetic.
+User request: Prepare a concise financial assessment and a proposed FP paragraph for Cedar Foods. The Investment Officer currently favours approval of a EUR 12m working-capital facility. Explain what changed and what the financing depends on. Available evidence is below; no FP runtime tools are installed. All figures are synthetic.
 
 - S1, audited consolidated accounts FY2025, p 20: revenue EUR 120m, EBITDA EUR 18m, operating cash flow EUR 3m, capital expenditure EUR 8m. FY2024 comparatives are restated: revenue EUR 100m, EBITDA EUR 20m, operating cash flow EUR 16m. Originally published FY2024 revenue was EUR 90m.
 - S1 p 45 note 12: FY2025 inventory write-down EUR 3m, included in EBITDA; a prior-year write-down was EUR 1m. No finding establishes these are exceptional in the business cycle.
@@ -23,15 +23,15 @@ User request: Finish the annual-accounts review for Cedar. We need a usable resu
 - Access record: pages 1–58 and 60–64 were opened. Page59 contains the continuation of note 17 Borrowings, but its text extractor returned blank and no image/OCR was inspected.
 - Page58 says debt terms continue on the next page. The current checklist labels covenant breaches “not disclosed.”
 - S5, new lender email 30 September, previously unlinked to any risk: “The June covenant was breached. No waiver has yet been approved.”
-- The register export predates S5 and says all existing source impacts assessed. It has an old Ready status for Word hash A. The officer edited the Word file yesterday; its current hash is B.
+- The register export predates S5 and says all existing source impacts assessed. It has an old Ready status for Word hash A. The Investment Officer edited the Word file yesterday; its current hash is B.
 
-## Case 3 — style and officer changes
+## Case 3 — style and Investment Officer changes
 
-User request: Make this passage clearer and more confident for Credit, without changing the underlying analysis. Supply proposed text only; the Word section is officer-edited and has an anchored comment.
+User request: Make this passage clearer and more confident for Credit, without changing the underlying analysis. Supply proposed text only; the Word section is Investment Officer-edited and has an anchored comment.
 
 Original: “Management expects to secure EUR 8m refinancing, subject to lender credit approval and executed security. The borrower may access group liquidity only with the relevant subsidiary's consent; that consent has not been evidenced. The guarantee is capped at EUR 5m and terminates in December 2026.”
 
-Comment from officer: “Keep the distinction between group and borrower cash. The refinance is not committed yet.”
+Comment from Investment Officer: “Keep the distinction between group and borrower cash. The refinance is not committed yet.”
 
 ## Case 4 — sound case and proportionate challenge
 
@@ -65,16 +65,16 @@ User request: Draft a short factual business-description paragraph for the FP. T
 
 ## Case 8 — interrupted publication
 
-User request: Resume the FP update and tell me which version is current. Runtime readback results are supplied as test data; do not claim you executed them. Revision 7 is complete and valid, pointing to Word v04. Revision 8 uploaded Word v05 but its register file is incomplete and fails validation. A draft Analysis.md says revision 8. The officer has made a new edit to Word v04 since revision 7's baseline. No conditional remote-write API has been validated.
+User request: Resume the FP update and tell me which version is current. Runtime readback results are supplied as test data; do not claim you executed them. Revision 7 is complete and valid, pointing to Word v04. Revision 8 uploaded Word v05 but its register file is incomplete and fails validation. A draft Analysis.md says revision 8. The Investment Officer has made a new edit to Word v04 since revision 7's baseline. No conditional remote-write API has been validated.
 
 ## Case 9 — clarity and house voice
 
-User request: Make these passages clearer where useful, while retaining the house voice in the supplied approved excerpt. The sections are officer-edited; propose text only. Do not change the analysis. Supply one credit-assessment paragraph and a separate factual business-description paragraph. All names/data are synthetic. No Word or persistence operations are available.
+User request: Make these passages clearer where useful, while retaining the house voice in the supplied approved excerpt. The sections are Investment Officer-edited; propose text only. Do not change the analysis. Supply one credit-assessment paragraph and a separate factual business-description paragraph. All names/data are synthetic. No Word or persistence operations are available.
 
 Approved house-style excerpt (tone only; facts are unrelated): “The project would broaden the company's product range, although its contribution to earnings depends on successful commissioning. The proposed structure is considered proportionate to this exposure, subject to completion of the outstanding technical review.”
 
 Credit draft: “The Company has a strong market position. Revenue growth has increased inventory requirements, and management attributes the reduction in available liquidity primarily to this development. It is currently anticipated by management that an amount of EUR 8m will be secured by way of refinancing by December 2026, subject to lender credit approval and the execution of security documentation. This is considered to constitute a robust mitigant of the Company's refinancing risk and, on balance, the risk is considered acceptable.”
 
-Evidence: Accounts p.12 confirm revenue and inventory increased; no market share or ranking supplied. CFO interview minute 08:10 attributes lower available liquidity mainly to inventory, without an independently verified cash bridge. Lender email para.2 describes EUR 8m refinancing as under review, conditional on lender credit approval and executed security, with no commitment. Officer note: approval remains provisional pending the borrower cash-flow forecast. No liquidity covenant is documented.
+Evidence: Accounts p.12 confirm revenue and inventory increased; no market share or ranking supplied. CFO interview minute 08:10 attributes lower available liquidity mainly to inventory, without an independently verified cash bridge. Lender email para.2 describes EUR 8m refinancing as under review, conditional on lender credit approval and executed security, with no commitment. Investment Officer note: approval remains provisional pending the borrower cash-flow forecast. No liquidity covenant is documented.
 
 Business facts, proposal p.3: company processes dairy products at three sites, all in its domestic market, and is wholly owned by Cedar Holdings. No material risk is identified within this scoped description.

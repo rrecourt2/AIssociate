@@ -27,8 +27,8 @@ Assess covenants under their contractual definitions and record actual complianc
 
 Assess whether security/guarantees, covenants, reserves, information undertakings, staged disbursement and proposed conditions address the risk when needed. Use specialist evidence for legal conclusions.
 
-Distinguish effective protections, conditions that must be satisfied before reliance and monitoring of continuing exposure. Preserve residual risk and identify conditions for officer adoption.
+Distinguish effective protections, conditions that must be satisfied before reliance and monitoring of continuing exposure. Preserve residual risk and identify conditions for Investment Officer adoption.
 
 ## Deliver
 
-Return a located conclusion covering repayment dependencies, scenario assumptions, maturity/refinancing exposure, covenant results, effective protections and unresolved inputs for the evidence owner to integrate. Reassess changed lender/legal/cash-flow evidence. Analysis, officer acceptance and Credit approval remain distinct.
+Return a located conclusion covering repayment dependencies, scenario assumptions, maturity/refinancing exposure, covenant results, effective protections and unresolved inputs for the evidence owner to integrate. Reassess changed lender/legal/cash-flow evidence. Analysis, Investment Officer acceptance and Credit approval remain distinct.

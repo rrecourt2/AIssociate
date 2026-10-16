@@ -205,7 +205,7 @@ def test_existing_draft_rewrites_unprotected_sections_then_normal_rounds_follow_
     assert r["written"] == ["financial-analysis"]
     assert r["frozen"] == {"summary": "has comments or tracked changes",
                            "market-risk": "has comments or tracked changes",
-                           "recommendation": "protected at the officer's request"}
+                           "recommendation": "protected at the Investment Officer's request"}
     md = fp_docx.to_markdown(v1)
     assert "Revenue rose 20%." in md and "FY2025 (template)" in md        # rewritten; fixed table kept
     assert "Officer summary." in md and "officer's words" in md and "[Describe market risks]" in md

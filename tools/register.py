@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""The FP deal register: one JSON file of record plus generated Excel and Markdown views.
+"""The AIssociate deal register: one JSON file of record plus generated Excel and Markdown views.
 
   register.py init FOLDER --deal KEY
   register.py summary FOLDER [--word DOCX]
@@ -180,10 +180,13 @@ def refresh_views(folder, reg):
 
 def write_views(folder, reg):
     folder = Path(folder)
-    sheets = [("Control", ["field", "value"], [[k, reg["control"].get(k, "")] for k in CONTROL]
+    labels = {"officer": "Investment Officer", "officer_decision": "Investment Officer decision",
+              "officer_ok": "Investment Officer agreement"}
+    sheets = [("Control", ["field", "value"], [[labels.get(k, k), reg["control"].get(k, "")] for k in CONTROL]
                + [["register_revision", reg["revision"]]])]
     for name, (_, cols) in TABLES.items():
-        sheets.append((name.replace("_", " ").capitalize(), cols, [[r.get(c, "") for c in cols] for r in reg[name]]))
+        sheets.append((name.replace("_", " ").capitalize(), [labels.get(c, c) for c in cols],
+                       [[r.get(c, "") for c in cols] for r in reg[name]]))
     sheets.append(("Check", ["severity", "rule", "item", "detail"], [list(p) for p in problems(reg)]))
     sheets.append(("Log", ["at", "revision", "actor", "op_id", "summary", "next_step", "request_sha256"],
                    [[e.get(c, "") for c in ("at", "revision", "actor", "op_id", "summary", "next_step", "request_sha256")]
@@ -515,7 +518,7 @@ def apply(folder, changes):
                 and (not r["officer_decision"].strip()
                      or r["officer_decision"] == o["officer_decision"])):
             introduced.append(("error", "officer-decision", r["id"],
-                               f"downgrading {o['rating']} to {r['rating'] or 'unrated'} needs the officer's "
+                               f"downgrading {o['rating']} to {r['rating'] or 'unrated'} needs the Investment Officer's "
                                "decision in officer_decision"))
     if introduced:
         raise ChangeError("rejected, nothing saved:\n" + "\n".join(f"  {p[2]}: {p[3]}" for p in introduced))
@@ -528,7 +531,7 @@ def apply(folder, changes):
     if requested_ready:
         reasons = open_checks(new, word)
         if not str(control_changes.get("ready_by", "")).strip():
-            reasons.append("explicit officer ready_by is required")
+            reasons.append("explicit Investment Officer attribution in ready_by is required")
         if not c["word"].strip() or not c["word_sha256"].strip():
             reasons.append("a current Word file and word_sha256 are required")
         if reasons:
@@ -560,7 +563,7 @@ def apply(folder, changes):
 # ---------- rules ----------
 
 def gates(reg):
-    """Reasons the FP cannot be called Ready, apart from rule errors and the Word check."""
+    """Reasons the current document cannot be called Ready, apart from rule errors and the Word check."""
     out = []
     blockers = [o["id"] for o in reg["open_items"] if o["criticality"] == "blocker" and o["status"] != "closed"]
     blockers += [f["id"] for f in reg["findings"] if f["priority"] == "blocker" and f["status"] != "resolved"]
@@ -659,7 +662,7 @@ def problems(reg, today=None):
         if not r["raised_by"].strip():
             err("raised-by", r["id"], "record who raised this risk")
         if r["rating"] == "high" and r["destination"] == "background" and not r["officer_decision"].strip():
-            err("officer-decision", r["id"], "a high-rated risk moves to background only with the officer's decision")
+            err("officer-decision", r["id"], "a high-rated risk moves to background only with the Investment Officer's decision")
         if r["destination"] and not r["reason"].strip():
             warn("destination-reason", r["id"], "give a reason for the destination")
     for m in reg["mitigants"]:
@@ -700,7 +703,7 @@ def problems(reg, today=None):
                         covered.add(source_id)
                 if (cited & superseded) - covered:
                     err("answer-currentness", o["id"], "superseded answer evidence needs its current replacement "
-                        "in answer_source or a new attributed officer exception")
+                        "in answer_source or a new attributed Investment Officer exception")
                 if any(claims[i]["recheck"] != "no" for i in cited if i in claims):
                     err("answer-currentness", o["id"], "cited claims need reassessment before answer closure")
             if not o.get("assessment", "").strip():
@@ -709,11 +712,11 @@ def problems(reg, today=None):
                 err("assessor", o["id"], "closure needs an assessor in assessed_by")
             if decision and (":" not in decision or not decision.split(":", 1)[0].strip()
                              or not decision.split(":", 1)[1].strip()):
-                err("officer-decision", o["id"], "attribute officer_decision as 'Officer, date: decision'")
+                err("officer-decision", o["id"], "attribute officer_decision as 'Investment Officer name, date: decision'")
         r = risks.get(o["link"])
         if (o["criticality"] == "later" and r and r["destination"] == "main" and r["id"] not in verified
                 and o["officer_ok"] != "yes"):
-            err("later-diligence", o["id"], f"{r['id']} is in the main FP without an existing verified mitigant; "
+            err("later-diligence", o["id"], f"{r['id']} is in the main document without an existing verified mitigant; "
                                             "'later' needs officer_ok=yes")
     for s in reg["sources"]:
         if s["sha256"] and not re.fullmatch(r"[0-9a-f]{64}", s["sha256"]):

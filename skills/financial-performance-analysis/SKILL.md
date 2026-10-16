@@ -1,6 +1,6 @@
 ---
 name: financial-performance-analysis
-description: Use for financial trends, revenue or margin changes, earnings adjustments, profit versus cash, working capital and the FP financial table.
+description: Use for financial trends, revenue or margin changes, earnings adjustments, profit versus cash, working capital and checked financial tables.
 ---
 
 # Financial Performance Analysis

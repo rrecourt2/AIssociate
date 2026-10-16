@@ -1,7 +1,7 @@
 {
   "name": "aissociate",
-  "version": "0.5.5",
-  "description": "AIssociate: organise deal evidence, analyse the financing case and draft proposals. A supervised pilot for Copilot Cowork.",
+  "version": "0.5.6",
+  "description": "AIssociate: a reusable deal record of evidence, assumptions, decisions and verification gaps for investment work and documents. A supervised Copilot Cowork pilot.",
   "author": {
     "name": "Rik Recourt"
   }

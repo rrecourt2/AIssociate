@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""FP Lead's local entry: prepare, status, build and bundle. No cloud access."""
+"""Document Lead's local Word workflow: prepare, status, build and bundle. No cloud access."""
 import argparse
 import json
 import shutil
@@ -76,7 +76,7 @@ def prepare(folder, request):
         register.save(folder, register.new_register(request['deal']))
     # Full run replacement clears an old explicit record and old delivery artifacts.
     result = register.apply(folder, dict(base_revision=request['base_revision'], op_id=request['op_id'],
-        actor='FP Lead', summary='Prepare the current input versions', changes=[
+        actor='Document Lead', summary='Prepare the current input versions', changes=[
             {'sheet': 'run', 'set': run}]))
     return dict(status='prepared', revision=result['revision'], folder=str(folder),
                 preflight=run['preflight'], next_action='Read template/examples and record editorial preflight')
@@ -148,7 +148,7 @@ def build(folder, request):
     run_update = dict(artifacts=artifacts, draft=draft, support=support,
                       build_id=result['build_id'], parent_build_id=result['parent_build_id'] or '',
                       build_request_sha256=digest, status=state)
-    changes = dict(base_revision=request['base_revision'], op_id=request['op_id'], actor='FP Lead',
+    changes = dict(base_revision=request['base_revision'], op_id=request['op_id'], actor='Document Lead',
         summary=f'Build {name}', changes=[{'sheet': 'run', 'set': dict(run, **run_update)},
             {'sheet': 'control', 'set': {'word': str(out), 'word_sha256': artifacts['word']['sha256']}}])
     try:

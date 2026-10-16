@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read, build and check FP Word files with the Python standard library only.
+"""Read, build and check Word documents with the Python standard library only.
 
 document.xml is changed by splicing byte ranges; XML this tool did not generate is
 never re-serialised. Other parts are copied unchanged except our two custom identity
@@ -14,8 +14,8 @@ A section is the body between one heading and the next heading of any level.
   fp_docx.py check DOCX [--template TEMPLATE.docx]
 
 Build modes (a section with comments or tracked changes is never rewritten in any mode):
-  --first     a new FP from the blank template; BASE must be byte-identical to --template.
-  --existing  an officer's draft without an assistant record, checked against --template; every
+  --first     a new document from the blank template; BASE must be byte-identical to --template.
+  --existing  an Investment Officer's draft without an assistant record, checked against --template; every
               section named in the draft is rewritten except those listed in --protect and those
               holding a missing template heading as plain text.
   (neither)   a later round; needs BASE.sections.json (or --record for a renamed copy, found with
@@ -819,18 +819,18 @@ def check_mode(doc, base, mode, template, record=None):
         raise Refuse("a Word template (.dotx) can only be the base of --first")
     if mode == "first":
         if not template:
-            raise Refuse("--first needs --template: the configured blank FP template")
+            raise Refuse("--first needs --template: the configured blank document template")
         if file_sha256(base) != file_sha256(template):
             raise Refuse("--first builds only from the blank template: the base is not identical to it; "
-                         "for an officer's draft use --existing")
+                         "for an Investment Officer's draft use --existing")
         if beside:
-            raise Refuse(f"{sidecar_path(base).name} exists, so the base is an FP with an assistant record; "
+            raise Refuse(f"{sidecar_path(base).name} exists, so the base is a document with an assistant record; "
                          "use a normal round")
     elif mode == "existing":
         if beside:
             raise Refuse(f"{sidecar_path(base).name} exists; use a normal round instead of --existing")
         if not template:
-            raise Refuse("--existing needs --template: the blank FP template is used to check the draft's "
+            raise Refuse("--existing needs --template: the blank document template is used to check the draft's "
                          "headings")
     elif not (beside or record):
         raise Refuse(f"no assistant record ({sidecar_path(base).name}) next to the base. If it is a renamed copy "
@@ -901,7 +901,7 @@ def _render_build(base, content, out, mode="normal", template=None, fields=None,
         if f["has_comments"] or f["has_tracked_changes"]:
             frozen[sid] = "has comments or tracked changes"
         elif sid in protect:
-            frozen[sid] = "protected at the officer's request"
+            frozen[sid] = "protected at the Investment Officer's request"
         elif lost:
             frozen[sid] = (f"contains the missing template heading {', '.join(lost)} as plain text; "
                            "give it a Heading style in Word")
@@ -1094,7 +1094,7 @@ def to_markdown(path):
                 lines += [prefix + k.plain().strip(), ""]
     comments = inspect(path)["comments"]
     if comments:  # a read-only note, so feeding this text back to build adds no section
-        lines.append("<!-- comments, read-only (not part of the FP):")
+        lines.append("<!-- comments, read-only (not part of the document body):")
         lines += [f"- [{c['section']}] {c['author']}: {c['text']}".replace("-->", "- ->") for c in comments]
         lines.append("-->")
     return "\n".join(lines).rstrip() + "\n"

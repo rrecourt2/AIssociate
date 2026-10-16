@@ -41,7 +41,7 @@ def test_stale_and_duplicate_change_sets(folder):
     ({"sheet": "open_items", "add": {"text": "q", "raised_by": "x", "status": "answered"}}, "answer source"),
     ({"sheet": "risks", "add": {"title": "t", "rating": "high"}}, "who raised"),
     ({"sheet": "risks", "add": {"title": "t", "raised_by": "x", "rating": "huge"}}, "rating"),
-    ({"sheet": "risks", "update": "R-001", "set": {"destination": "background"}}, "officer's decision"),
+    ({"sheet": "risks", "update": "R-001", "set": {"destination": "background"}}, "Investment Officer's decision"),
     ({"sheet": "open_items", "add": {"text": "q", "raised_by": "x", "link": "R-001", "criticality": "later"}},
      "officer_ok"),
     ({"sheet": "nonsense", "add": {}}, "unknown sheet"),
@@ -116,6 +116,9 @@ def test_excel_view_opens_in_an_independent_reader(folder):
     assert wb.sheetnames[:3] == ["Control", "Sources", "Risks"]
     assert wb["Risks"]["A2"].value == "R-001" and wb["Risks"]["B2"].value == "FX mismatch"
     assert wb["Control"]["B2"].value == "Cedar"
+    assert wb["Control"]["A3"].value == "Investment Officer"
+    assert "Investment Officer decision" in [cell.value for cell in wb["Risks"][1]]
+    assert "Investment Officer agreement" in [cell.value for cell in wb["Open items"][1]]
 
 
 def test_summary_lists_show_and_cli(folder, tmp_path, capsys):
@@ -288,7 +291,7 @@ def test_views_have_revision_and_partial_save_is_honest(folder, monkeypatch, cap
     ({'sheet': 'risks', 'add': {'title': 'risk', 'raised_by': '  '}}, 'who raised'),
     ({'sheet': 'mitigants', 'add': {'risk': 'R-001', 'raised_by': 'x', 'verified': 'yes', 'source': '  '}}, 'needs a source'),
     ({'sheet': 'open_items', 'add': {'text': 'q', 'raised_by': 'x', 'status': 'closed', 'answer_source': '  '}}, 'answer source'),
-    ({'sheet': 'risks', 'update': 'R-001', 'set': {'rating': 'medium', 'officer_decision': '  '}}, "officer's decision"),
+    ({'sheet': 'risks', 'update': 'R-001', 'set': {'rating': 'medium', 'officer_decision': '  '}}, "Investment Officer's decision"),
 ])
 def test_blank_required_evidence_and_decisions_are_refused(folder, bad, message):
     reg_tool.apply(folder, change(0, 'risk', RISK))

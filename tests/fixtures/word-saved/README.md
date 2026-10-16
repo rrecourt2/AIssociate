@@ -1,8 +1,8 @@
 # Synthetic Microsoft Word save fixtures
 
-The officer saved these files in Microsoft Word on 2 October 2026.
+The Investment Officer saved these files in Microsoft Word on 2 October 2026.
 
-- Pair v1: assistant draft and officer-saved copy; only Recommendation was edited.
+- Pair v1: assistant draft and Investment Officer-saved copy; only Recommendation was edited.
 - Pair v2: includes an assistant-generated financial table. Financial analysis was untouched; “Agreed” was added to Recommendation.
 - `template.docx`: the synthetic template used for the drafts.
 

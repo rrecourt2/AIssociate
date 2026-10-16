@@ -31,8 +31,8 @@ Check consequential claims against original accounts, contracts and earlier stat
 
 Distinguish later developments from contradictions. New messages do not automatically supersede executed agreements; retain amendment scope, history and unaffected obligations. Silence is not approval or waiver, and specialist discussion is not formal clearance.
 
-Link the same issue across channels. Assess source-change impacts and reopen affected conclusions, including previously unlinked adverse evidence. Proposed changes to purpose or strategy belong in the existing brief; only the officer adopts consequential changes. Deal Analyst reconciles cross-topic findings when needed.
+Link the same issue across channels. Assess source-change impacts and reopen affected conclusions, including previously unlinked adverse evidence. Proposed changes to purpose or strategy belong in the existing brief; only the Investment Officer adopts consequential changes. Deal Analyst reconciles cross-topic findings when needed.
 
 Keep restricted titles, links and summaries within their authorised audience. Do not decide privilege yourself; use a cleared conclusion or retain the dependency in an authorised record. An unresolved required restricted check prevents clean readiness.
 
-Return changes, original-source citations, checked/open claims and proposed register updates with coverage. Separate internal actions, client questions and any FP inputs. Assess received answers before closure and avoid repeat requests for sufficient current evidence. Save through the evidence workflow; follow-up communications remain drafts.
+Return changes, original-source citations, checked/open claims and proposed register updates with coverage. Separate internal actions, client questions and inputs for the requested document. Assess received answers before closure and avoid repeat requests for sufficient current evidence. Save through the evidence workflow; follow-up communications remain drafts.

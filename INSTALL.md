@@ -1,10 +1,10 @@
-# Install AIssociate 0.5.5
+# Install AIssociate 0.5.6
 
-Download `aissociate-0.5.5.zip` from the [0.5.5 pilot release](https://github.com/rrecourt2/AIssociate/releases/tag/v0.5.5). Choose the plugin ZIP, not GitHub's source archive.
+Download `aissociate-0.5.6.zip` from the [0.5.6 pilot release](https://github.com/rrecourt2/AIssociate/releases/tag/v0.5.6). Choose the plugin ZIP, not GitHub's source archive.
 
-In an approved Copilot Cowork environment, use **Customize → Plugins → Upload plugin**, initially **Only you**. If only individual skill upload is available, extract `aissociate-individual-skills-0.5.5.zip` and upload its inner ZIPs. Tenant policy determines availability; see [Microsoft's guidance](https://learn.microsoft.com/en-us/microsoft-365/copilot/cowork/cowork-customize).
+In an approved Copilot Cowork environment, use **Customize → Plugins → Upload plugin**, initially **Only you**. If only individual skill upload is available, extract `aissociate-individual-skills-0.5.6.zip` and upload its inner ZIPs. Tenant policy determines availability; see [Microsoft's guidance](https://learn.microsoft.com/en-us/microsoft-365/copilot/cowork/cowork-customize).
 
-Disable the older FP Assistant plugin to avoid duplicate skills. Existing registers and Word records remain usable; do not rename their internal identifiers. Confirm all eight skills appear and ask FP Lead to run `python3 scripts/fp.py --version`. It must report `aissociate`, `0.5.5` and script hashes. Python 3.9+ is required.
+Disable the older FP Assistant plugin to avoid duplicate skills. Existing registers and Word records remain usable; do not rename their internal identifiers. Confirm all eight skills appear and ask Document Lead (`fp-lead`) to run `python3 scripts/fp.py --version`. It must report `aissociate`, `0.5.6` and script hashes. Python 3.9+ is required.
 
 The ZIP manifest, processor and delivery manifest use one release version. If Cowork displays another version or the old plugin name, retrieve the installed manifest's path/content and the executed script's path/hashes. Compare those with the release; a chat-reported name alone does not identify the installed code.
 
@@ -26,4 +26,4 @@ If both steps work, follow the [whole-workflow pilot](https://github.com/rrecour
 
 The host must upload and independently retrieve outputs. A download link does not prove persistence in the deal folder. Keep internal records in approved storage; workbook and DDQ exports are optional for this small test.
 
-The Word writer cannot add wholly absent headings or populate predefined financial tables. Probe the actual template first. If unsupported work is needed, retain proposed content and report the gap rather than rebuilding a blank document. If tools or file access fail, preserve the last usable version and report what remains unapplied.
+The local Word route needs a base, template and approved example; it cannot add absent headings, fill predefined tables or author tracked revisions/comments. For a Term Sheet/contract pilot, use the actual template and request one tracked clause edit with an anchored comment. Reopen it in Word and check both. Without a capable host tool, expect located proposals and a stated limitation, not an untracked replacement. Preserve the last usable version when editing or access fails.
