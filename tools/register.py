@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""The AIssociate deal register: one JSON file of record plus generated Excel and Markdown views.
+"""The AIssociate deal register: one JSON file of record plus a generated Markdown view.
 
   register.py init FOLDER --deal KEY
-  register.py summary FOLDER [--word DOCX]
+  register.py summary FOLDER
   register.py show FOLDER [ID ...]
   register.py show FOLDER --section SECTION
   register.py apply FOLDER CHANGES.json
@@ -10,10 +10,10 @@
   register.py ddq FOLDER
   register.py migrate FOLDER
   register.py refresh FOLDER
-  register.py check FOLDER [--word DOCX]
+  register.py check FOLDER
 
 FOLDER is a local copy of the AIssociate case folder. register.json is the record.
-register.xlsx and Analysis.md are rewritten from it after every change; they are read-only views.
+Analysis.md is rewritten from it after every change; it is a read-only view.
 Standard library only.
 """
 import argparse
@@ -25,10 +25,8 @@ import os
 import re
 import sys
 import tempfile
-import zipfile
 from collections import Counter
 from pathlib import Path
-from xml.sax.saxutils import escape
 
 TABLES = {  # name: (id prefix, columns)
     "sources": ("S", ["id", "title", "link", "type", "entity", "period", "event_date", "tier",
@@ -47,7 +45,7 @@ TABLES = {  # name: (id prefix, columns)
                      "attributed_to", "adoption", "recheck"]),
 }
 CONTROL = ["deal", "officer", "decision_sought", "recommendation", "audience", "annexes", "deadline",
-           "template", "word", "word_sha256", "status", "ready_for", "ready_by", "updated"]
+           "template", "word", "status", "ready_for", "ready_by", "updated"]  # word: current document link and version
 ALLOWED = {
     ("sources", "tier"): {"A", "B", "C"},
     ("sources", "coverage"): {"unread", "partial", "read", "unreadable"},
@@ -73,7 +71,6 @@ ALLOWED = {
 }
 ID_RE = re.compile(r"\b[SRMOGTC]-\d+\b")
 SOURCE_RE = re.compile(r"\bS-\d+\b")
-ILLEGAL = re.compile("[\x00-\x08\x0b\x0c\x0e-\x1f￾￿]")
 DEFAULTS = {"open_items": {"status": "open", "audience": "unknown"},
             "sources": {"impact": "pending", "coverage": "unread"},
             "risks": {"status": "open"}, "findings": {"status": "open"},
@@ -100,7 +97,7 @@ def sha256(path):
 # ---------- storage ----------
 
 def new_register(deal):
-    reg = {"schema_version": 1, "revision": 0, "control": {k: "" for k in CONTROL}, "log": [], "run": {}}
+    reg = {"schema_version": 1, "revision": 0, "control": {k: "" for k in CONTROL}, "log": []}
     reg["control"].update(deal=deal, status="draft", updated=now())
     reg.update({name: [] for name in TABLES})
     return reg
@@ -136,9 +133,8 @@ def migrate(folder):
         for row in reg.setdefault(name, []):
             for col in cols:
                 row.setdefault(col, "unknown" if col in {"audience", "recheck"} else "")
-    reg.setdefault("run", {})
     reg["schema_version"] = 1
-    if reg["control"]["status"] == "ready" and open_checks(reg, recorded_word(folder, reg)):
+    if reg["control"]["status"] == "ready" and open_checks(reg):
         reg["control"]["status"] = "draft"  # Keep the historical decision fields and log intact.
     save(folder, reg)
     return {"status": "migrated", "revision": reg["revision"], "backup": str(backup)}
@@ -173,111 +169,19 @@ def atomic_text(path, text):
 def refresh_views(folder, reg):
     try:
         write_views(folder, reg)
-    except (OSError, ChangeError, zipfile.BadZipFile) as e:
+    except OSError as e:
         raise ViewsIncompleteError(f"register revision {reg['revision']} saved; views incomplete: {e}. "
                                    "Retry the same change set to regenerate the views.") from e
 
 
 def write_views(folder, reg):
-    folder = Path(folder)
-    labels = {"officer": "Investment Officer", "officer_decision": "Investment Officer decision",
-              "officer_ok": "Investment Officer agreement"}
-    sheets = [("Control", ["field", "value"], [[labels.get(k, k), reg["control"].get(k, "")] for k in CONTROL]
-               + [["register_revision", reg["revision"]]])]
-    for name, (_, cols) in TABLES.items():
-        sheets.append((name.replace("_", " ").capitalize(), [labels.get(c, c) for c in cols],
-                       [[r.get(c, "") for c in cols] for r in reg[name]]))
-    sheets.append(("Check", ["severity", "rule", "item", "detail"], [list(p) for p in problems(reg)]))
-    sheets.append(("Log", ["at", "revision", "actor", "op_id", "summary", "next_step", "request_sha256"],
-                   [[e.get(c, "") for c in ("at", "revision", "actor", "op_id", "summary", "next_step", "request_sha256")]
-                    for e in reg["log"]]))
-    fd, tmp = tempfile.mkstemp(dir=folder, suffix=".xlsx.tmp")
-    os.close(fd)
-    try:
-        write_xlsx(tmp, sheets)
-        with zipfile.ZipFile(tmp) as z:
-            if z.testzip() is not None:
-                raise ChangeError("generated register.xlsx failed its integrity check")
-        os.replace(tmp, folder / "register.xlsx")
-    finally:
-        if os.path.exists(tmp):
-            os.unlink(tmp)
-    atomic_text(folder / "Analysis.md", analysis_md(reg))
-    atomic_text(folder / "Client-DDQ.md", ddq(reg))
+    atomic_text(Path(folder) / "Analysis.md", analysis_md(reg))
 
 
-def write_xlsx(path, sheets):
-    """Minimal valid workbook: inline strings, bold header, wrapped text, frozen first row."""
-    main = "http://schemas.openxmlformats.org/spreadsheetml/2006/main"
-    rel = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-    pkg = "http://schemas.openxmlformats.org/package/2006/relationships"
-
-    def col(i):
-        s, i = "", i + 1
-        while i:
-            i, r = divmod(i - 1, 26)
-            s = chr(65 + r) + s
-        return s
-
-    def cell(ref, value, style):
-        if isinstance(value, (int, float)) and not isinstance(value, bool):
-            return f'<c r="{ref}" s="{style}"><v>{value}</v></c>'
-        text = escape(ILLEGAL.sub("", str(value))[:32000])
-        return f'<c r="{ref}" t="inlineStr" s="{style}"><is><t xml:space="preserve">{text}</t></is></c>'
-
-    files = {}
-    for n, (_, header, rows) in enumerate(sheets, 1):
-        widths = [min(60, max([len(str(h)) + 2] + [len(str(r[i])) + 2 for r in rows[:200]]))
-                  for i, h in enumerate(header)]
-        cols = "".join(f'<col min="{i + 1}" max="{i + 1}" width="{w}" customWidth="1"/>' for i, w in enumerate(widths))
-        data = [f'<row r="1">' + "".join(cell(f"{col(i)}1", h, 1) for i, h in enumerate(header)) + "</row>"]
-        for r, row in enumerate(rows, 2):
-            data.append(f'<row r="{r}">' + "".join(cell(f"{col(i)}{r}", v, 2)
-                                                   for i, v in enumerate(row) if v not in ("", None)) + "</row>")
-        files[f"xl/worksheets/sheet{n}.xml"] = (
-            f'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="{main}">'
-            '<sheetViews><sheetView workbookViewId="0"><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" '
-            f'state="frozen"/></sheetView></sheetViews><cols>{cols}</cols><sheetData>{"".join(data)}</sheetData>'
-            "</worksheet>")
-    names = "".join(f'<sheet name="{escape(name[:31])}" sheetId="{n}" r:id="rId{n}"/>'
-                    for n, (name, _, _) in enumerate(sheets, 1))
-    files["xl/workbook.xml"] = (f'<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-                                f'<workbook xmlns="{main}" xmlns:r="{rel}"><sheets>{names}</sheets></workbook>')
-    links = "".join(f'<Relationship Id="rId{n}" Type="{rel}/worksheet" Target="worksheets/sheet{n}.xml"/>'
-                    for n in range(1, len(sheets) + 1))
-    files["xl/_rels/workbook.xml.rels"] = (
-        f'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="{pkg}">{links}'
-        f'<Relationship Id="rId{len(sheets) + 1}" Type="{rel}/styles" Target="styles.xml"/></Relationships>')
-    files["xl/styles.xml"] = (
-        f'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><styleSheet xmlns="{main}">'
-        '<fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/>'
-        '<name val="Calibri"/></font></fonts><fills count="2"><fill><patternFill patternType="none"/></fill>'
-        '<fill><patternFill patternType="gray125"/></fill></fills><borders count="1"><border><left/><right/>'
-        '<top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" '
-        'fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" '
-        'borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="0" borderId="0" xfId="0" applyFont="1"/>'
-        '<xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0" applyAlignment="1"><alignment '
-        'wrapText="1" vertical="top"/></xf></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" '
-        'builtinId="0"/></cellStyles></styleSheet>')
-    files["_rels/.rels"] = (f'<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships '
-                            f'xmlns="{pkg}"><Relationship Id="rId1" Type="{rel}/officeDocument" '
-                            'Target="xl/workbook.xml"/></Relationships>')
-    sheet_types = "".join(f'<Override PartName="/xl/worksheets/sheet{n}.xml" ContentType="application/'
-                          'vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>'
-                          for n in range(1, len(sheets) + 1))
-    files["[Content_Types].xml"] = (
-        '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/'
-        'package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-'
-        'package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override '
-        'PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.'
-        'sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-'
-        f'officedocument.spreadsheetml.styles+xml"/>{sheet_types}</Types>')
-    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as z:
-        for name in ["[Content_Types].xml", "_rels/.rels"] + sorted(n for n in files if n.startswith("xl/")):
-            info = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
-            info.compress_type = zipfile.ZIP_DEFLATED
-            info.create_system, info.external_attr = 3, 0o600 << 16
-            z.writestr(info, files[name])
+def linked(reg, text):
+    """Turn source IDs into links to the original documents."""
+    links = {s["id"]: s["link"] for s in reg["sources"] if s["link"]}
+    return SOURCE_RE.sub(lambda m: f"[{m[0]}](<{links[m[0]]}>)" if m[0] in links else m[0], text)
 
 
 def analysis_md(reg):
@@ -285,12 +189,18 @@ def analysis_md(reg):
     rows = sorted(reg["analysis"], key=lambda r: (first.index(r["id"]) if r["id"] in first else len(first), r["id"]))
     out = [f"# {reg['control']['deal']} — analysis", "",
            f"_Generated from register revision {reg['revision']}. Do not edit this file; changes go through the register._", ""]
-    cited = set()
     for r in rows:
-        cited.update(evidence_ids(reg, r))
         out += [f"## {r['title'] or r['id']} ({r['id']})", "", r["text"].strip(), ""]
-        out += [f"{label}: {r[key]}" for key, label in (("sources", "Sources"), ("claims", "Claims"),
+        out += [f"{label}: {linked(reg, r[key])}" for key, label in (("sources", "Sources"), ("claims", "Claims"),
                 ("updated", "Updated"), ("recheck", "Recheck")) if r.get(key)]
+        out.append("")
+    if reg["claims"]:
+        out += ["## Evidence index", ""]
+        for c in reg["claims"]:
+            context = "; ".join(v for v in (c["kind"], c["entity"], c["period"], c["attributed_to"]) if v)
+            evidence = "; ".join(v for v in (c["sources"], c["inputs"]) if v) or "no located evidence"
+            status = (c["support"] or "unknown") + ("; recheck" if c["recheck"] != "no" else "")
+            out.append(f"- {c['id']} ({context}): {c['assertion']} — {linked(reg, evidence)} [{status}]")
         out.append("")
     rank = {"blocker": 0, "material": 1}
     opened = sorted((o for o in reg["open_items"] if o["status"] != "closed"),
@@ -298,13 +208,11 @@ def analysis_md(reg):
     if opened:
         out += ["## Open items", ""]
         for row in opened:
-            cited.update(evidence_ids(reg, row))
             out.append(f"- {row['id']} [{row['status']}; {row['criticality'] or 'unrated'}]: {row['text']}"
                        + (f" — {row['purpose']}" if row["purpose"] else ""))
         out.append("")
-    links = original_sources(reg, cited)
-    if links:
-        out += ["## Original sources", ""] + links + [""]
+    if reg["sources"]:
+        out += ["## Sources", ""] + original_sources(reg, {s["id"] for s in reg["sources"]}) + [""]
     return "\n".join(out)
 
 
@@ -315,60 +223,11 @@ def next_id(rows, prefix):
     return f"{prefix}-{max(nums, default=0) + 1:03d}"
 
 
-def validate_file_ref(value):
-    if (not isinstance(value, dict) or set(value) != {"path", "sha256"}
-            or not isinstance(value["path"], str) or not value["path"].strip()
-            or not isinstance(value["sha256"], str) or not re.fullmatch(r"[0-9a-f]{64}", value["sha256"])):
-        raise ChangeError("run file references require path and a SHA-256 digest")
-
-
-def validate_run(fields):
-    strings = {"output_dir", "mode", "provenance", "build_id", "parent_build_id", "status", "build_request_sha256"}
-    if not isinstance(fields, dict) or set(fields) - strings - {"base", "template", "draft", "record", "examples", "support", "preflight", "artifacts"}:
-        raise ChangeError("run contains an unknown field")
-    for key, value in fields.items():
-        if key in strings and not isinstance(value, str):
-            raise ChangeError(f"run {key} must be a string")
-        if key in {"base", "template", "draft", "record"}:
-            validate_file_ref(value)
-        if key in {"examples", "support"}:
-            if not isinstance(value, list):
-                raise ChangeError(f"run {key} must be a list of file references")
-            for item in value:
-                validate_file_ref(item)
-        if key == "artifacts":
-            if not isinstance(value, dict) or set(value) - {"word", "record", "proposals"}:
-                raise ChangeError("run artifacts must contain word, record or proposals file references")
-            for item in value.values():
-                validate_file_ref(item)
-        if key == "preflight":
-            if not isinstance(value, dict) or set(value) - {"word", "template", "editorial"}:
-                raise ChangeError("run preflight must contain word, template or editorial")
-            if any(not isinstance(value[k], dict) for k in ("word", "template") if k in value):
-                raise ChangeError("run preflight word/template must be inspection objects")
-            if "editorial" in value and value["editorial"] not in ("pending", "complete"):
-                raise ChangeError("run editorial preflight must be pending or complete")
-    for key, allowed in (("mode", {"existing", "first", "normal"}), ("status", {"prepared", "built", "partial"})):
-        if key in fields and fields[key] not in allowed:
-            raise ChangeError(f"run {key} must be one of {sorted(allowed)}")
-    for key in {"output_dir", "provenance", "build_id"} & fields.keys():
-        if not fields[key].strip():
-            raise ChangeError(f"run {key} cannot be blank")
-    if "build_request_sha256" in fields and not re.fullmatch(r"[0-9a-f]{64}", fields["build_request_sha256"]):
-        raise ChangeError("run build_request_sha256 must be a SHA-256 digest")
-
-
 def apply_change(reg, ch):
     if not isinstance(ch, dict):
         raise ChangeError("each change must be an object")
     sheet = ch.get("sheet")
     fields = ch.get("add", ch.get("set", {}))
-    if sheet == "run":
-        if set(ch) != {"sheet", "set"}:
-            raise ChangeError("run changes require sheet and set")
-        validate_run(fields)
-        reg["run"] = copy.deepcopy(fields)
-        return None
     if not isinstance(fields, dict) or any(not isinstance(v, str) for v in fields.values()):
         raise ChangeError("add/set fields must be an object of strings; omit unavailable fields")
     if sheet == "control":
@@ -443,9 +302,9 @@ def request_sha256(changes):
 def invalidate_links(reg, old):
     """Follow only explicit register links; whole-case source impact remains separate."""
     old_sources = {r["id"]: r for r in old["sources"]}
-    source_fields = set(TABLES["sources"][1]) - {"coverage", "impact", "reviewed_scope", "extract_path"}
+    # A new version needs a new source ID; a corrected title, link or note changes no evidence.
     changed_sources = {r["id"] for r in reg["sources"] if r["id"] in old_sources
-                       and any(r[k] != old_sources[r["id"]][k] for k in source_fields)}
+                       and any(r[k] != old_sources[r["id"]][k] for k in ("entity", "period", "event_date"))}
     changed_sources.update(r["supersedes"] for r in reg["sources"] if r["supersedes"]
                            and r["supersedes"] != old_sources.get(r["id"], {}).get("supersedes"))
     old_claims = {r["id"]: r for r in old["claims"]}
@@ -466,9 +325,12 @@ def invalidate_links(reg, old):
     reopened = []
     old_answers = {r["id"]: r for r in old["open_items"]}
     for row in reg["open_items"]:
-        if (row["status"] in {"closed", "answered"}
+        prior = old_answers.get(row["id"])
+        # An assessment written in this change set already reflects the changed evidence.
+        if (prior and {prior["status"], row["status"]} <= {"closed", "answered"}
+                and row["assessment"] == prior["assessment"]
                 and (changed_sources | changed_claims).intersection(ID_RE.findall(row["answer_source"]))):
-            reopened.append(copy.deepcopy(old_answers.get(row["id"], row)))
+            reopened.append(copy.deepcopy(prior))
             row.update(status="recheck", assessment="", assessed_by="", officer_decision="")
     old_analysis = {r["id"]: r for r in old["analysis"]}
     changed_analysis = {r["id"] for r in reg["analysis"] if r["id"] in old_analysis
@@ -527,22 +389,21 @@ def apply(folder, changes):
     control_changes = {k: v for ch in changes.get("changes", []) if ch.get("sheet") == "control"
                        for k, v in ch.get("set", {}).items()}
     requested_ready = control_changes.get("status") == "ready"
-    word = recorded_word(folder, new)
     if requested_ready:
-        reasons = open_checks(new, word)
+        reasons = open_checks(new)
         if not str(control_changes.get("ready_by", "")).strip():
             reasons.append("explicit Investment Officer attribution in ready_by is required")
-        if not c["word"].strip() or not c["word_sha256"].strip():
-            reasons.append("a current Word file and word_sha256 are required")
+        if not c["word"].strip():
+            reasons.append("the current document link and version are required in word")
         if reasons:
             raise ChangeError("cannot record ready, nothing saved: " + "; ".join(reasons))
         c["ready_for"] = f"{c['word']} at register revision {new['revision'] + 1}"
     elif reg["control"]["status"] == "ready":
-        reasons = open_checks(new, word)
-        if any(new[name] != reg[name] for name in list(TABLES) + ["run"]):
+        reasons = open_checks(new)
+        if any(new[name] != reg[name] for name in TABLES):
             reasons.append("evidence or analysis changed since readiness was recorded")
         if any(c[k] != reg["control"][k] for k in CONTROL if k != "updated"):
-            reasons.append("the Word record or control details changed since readiness was recorded")
+            reasons.append("the document or control details changed since readiness was recorded")
         if reasons:
             if c["status"] == "ready":
                 c["status"] = "draft"
@@ -621,13 +482,17 @@ def evidence_ids(reg, row):
 
 def original_sources(reg, ids):
     lines = []
+    newer = {s["supersedes"]: s["id"] for s in reg["sources"] if s["supersedes"]}
     for source in reg["sources"]:
         if source["id"] not in ids:
             continue
         title = source["title"].replace("[", "\\[").replace("]", "\\]") or source["id"]
         reference = f"[{title}](<{source['link']}>)" if source["link"] else title + " (original link unavailable)"
-        version = source["version"] or source["sha256"] or "not recorded"
-        lines.append(f"- {source['id']}: {reference} · version {version}")
+        details = [f"version {source['version'] or source['sha256'] or 'not recorded'}",
+                   ", ".join(v for v in (source["entity"], source["period"]) if v),
+                   f"coverage {source['coverage'] or 'unread'}",
+                   f"superseded by {newer[source['id']]}" if source["id"] in newer else ""]
+        lines.append(f"- {source['id']}: {reference} · " + " · ".join(d for d in details if d))
     for claim in reg["claims"]:
         evidence = "; ".join(claim[k] for k in ("sources", "inputs") if claim[k])
         if claim["id"] in ids and evidence:
@@ -768,28 +633,8 @@ def problems(reg, today=None):
     return out
 
 
-def recorded_word(folder, reg):
-    name = reg["control"]["word"].strip()
-    return Path(folder) / name if name else None
-
-
-def word_problem(reg, word):
-    if word is None:
-        return None
-    try:
-        if sha256(word) != reg["control"]["word_sha256"]:
-            return "the Word file changed since it was last recorded"
-    except OSError:
-        return "the recorded Word file is unavailable; its hash could not be checked"
-    return None
-
-
-def open_checks(reg, word=None):
-    reasons = [f"{n} rule errors" for n in [sum(p[0] == "error" for p in problems(reg))] if n] + gates(reg)
-    problem = word_problem(reg, word)
-    if problem:
-        reasons.append(problem)
-    return reasons
+def open_checks(reg):
+    return [f"{n} rule errors" for n in [sum(p[0] == "error" for p in problems(reg))] if n] + gates(reg)
 
 
 # ---------- views for the assistant ----------
@@ -799,19 +644,24 @@ def short(text, n=90):
     return text if len(text) <= n else text[:n - 1] + "…"
 
 
-def summary(reg, word=None):
+def tally(*counters):
+    parts = [", ".join(f"{k} {v}" for k, v in sorted(c.items())) for c in counters if c]
+    return f" ({'; '.join(parts)})" if parts else ""
+
+
+def checks_line(reasons):
+    return "Open checks: " + ("; ".join(reasons) if reasons else "none")
+
+
+def summary(reg):
     c = reg["control"]
-    changed = bool(word_problem(reg, word))
     lines = [f"{c['deal']} · register revision {reg['revision']}"]
-    if c["status"] == "ready" and changed:
-        lines.append("Status: draft — the Word file changed since readiness was recorded or is unavailable")
-    elif c["status"] == "ready":
-        lines.append(f"Status: ready ({c['ready_for']}, recorded by {c['ready_by'] or 'unknown'})"
-                     + (" — current Word hash not checked" if word is None else ""))
+    if c["status"] == "ready":
+        lines.append(f"Status: ready ({c['ready_for']}, recorded by {c['ready_by'] or 'unknown'})")
     else:
         lines.append(f"Status: {c['status'] or 'draft'}")
     if c["word"]:
-        lines.append(f"Word: {c['word']}" + (" (changed since recorded — inspect it first)" if changed else ""))
+        lines.append(f"Document: {c['word']}")
     if reg["log"] and reg["log"][-1]["next_step"]:
         lines.append(f"Next: {reg['log'][-1]['next_step']}")
     src = reg["sources"]
@@ -819,16 +669,14 @@ def summary(reg, word=None):
     lines.append(f"Sources: {len(src)} · tier A read {sum(s['coverage'] == 'read' for s in tier_a)}/{len(tier_a)}"
                  f" · impact pending {sum(s['impact'] == 'pending' for s in src)}")
     dest = Counter(r["destination"] or "unplaced" for r in reg["risks"] if r["status"] != "closed")
-    lines.append(f"Risks: {sum(dest.values())} open (" + ", ".join(f"{k} {v}" for k, v in sorted(dest.items()))
-                 + f") · recheck {sum(r['status'] == 'recheck' for r in reg['risks'])}")
+    lines.append(f"Risks: {sum(dest.values())} open{tally(dest)}"
+                 f" · recheck {sum(r['status'] == 'recheck' for r in reg['risks'])}")
     opened = [o for o in reg["open_items"] if o["status"] != "closed"]
     state = Counter(o["status"] or "open" for o in opened)
     crit = Counter(o["criticality"] or "unrated" for o in opened)
-    lines.append(f"Open items: {len(opened)} not closed (" + ", ".join(f"{k} {v}" for k, v in sorted(state.items()))
-                 + "; " + ", ".join(f"{k} {v}" for k, v in sorted(crit.items())) + ")")
+    lines.append(f"Open items: {len(opened)} not closed{tally(state, crit)}")
     lines.append(f"Findings: {sum(f['status'] != 'resolved' for f in reg['findings'])} unresolved")
-    reasons = open_checks(reg, word)
-    lines.append("Register checks: passed" if not reasons else "Register checks: not passed — " + "; ".join(reasons))
+    lines.append(checks_line(open_checks(reg)))
     rank = {"blocker": 0, "material": 1}
     top = sorted(opened, key=lambda o: (rank.get(o["criticality"], 2), o["due"] or "9999"))[:5]
     if top:
@@ -837,7 +685,8 @@ def summary(reg, word=None):
                   + (f" ({o['link']})" if o["link"] else "") + (f" due {o['due']}" if o["due"] else "")
                   + (f" — {o['status']}" if o["status"] != "open" else "") for o in top]
     probs = problems(reg)
-    lines.append(f"Checks: {sum(p[0] == 'error' for p in probs)} errors, {sum(p[0] == 'warning' for p in probs)} warnings")
+    lines.append(f"Rule problems: {sum(p[0] == 'error' for p in probs)} errors, "
+                 f"{sum(p[0] == 'warning' for p in probs)} warnings")
     lines += [f"  {p[0].upper()} {p[2]}: {short(p[3])}" for p in probs[:5]]
     if reg["log"]:
         lines.append("Recent:")
@@ -959,10 +808,6 @@ def main(argv=None):
     p = sub.add_parser("init")
     p.add_argument("folder")
     p.add_argument("--deal", required=True)
-    for name in ("summary", "check"):
-        p = sub.add_parser(name)
-        p.add_argument("folder")
-        p.add_argument("--word")
     p = sub.add_parser("show")
     p.add_argument("folder")
     p.add_argument("ids", nargs="*")
@@ -970,7 +815,7 @@ def main(argv=None):
     p = sub.add_parser("apply")
     p.add_argument("folder")
     p.add_argument("changes")
-    for name in ("lists", "ddq", "migrate", "refresh"):
+    for name in ("summary", "check", "lists", "ddq", "migrate", "refresh"):
         p = sub.add_parser(name)
         p.add_argument("folder")
     args = ap.parse_args(argv)
@@ -982,8 +827,7 @@ def main(argv=None):
             save(args.folder, new_register(args.deal))
             print(f"created register for {args.deal} at revision 0")
         elif args.cmd == "summary":
-            reg = load(args.folder)
-            print(summary(reg, args.word or recorded_word(args.folder, reg)))
+            print(summary(load(args.folder)))
         elif args.cmd == "show":
             print(show(load(args.folder), args.ids, args.section))
         elif args.cmd == "apply":
@@ -1001,8 +845,8 @@ def main(argv=None):
             reg = load(args.folder)
             probs = problems(reg)
             print("\n".join(f"{p[0].upper()} {p[1]} {p[2]}: {p[3]}" for p in probs) or "no problems")
-            reasons = open_checks(reg, args.word or recorded_word(args.folder, reg))
-            print("Register checks: passed" if not reasons else "Register checks: not passed — " + "; ".join(reasons))
+            reasons = open_checks(reg)
+            print(checks_line(reasons))
             return 1 if reasons else 0
     except ViewsIncompleteError as e:
         print(f"SAVED: {e}", file=sys.stderr)

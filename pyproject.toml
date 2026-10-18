@@ -1,11 +1,11 @@
 [project]
 name = "aissociate"
-version = "0.5.6"
+version = "0.6.0"
 requires-python = ">=3.9"
 dependencies = []  # tools/ use the Python standard library only
 
 [dependency-groups]
-dev = ["pytest>=8", "python-docx>=1.1", "openpyxl>=3.1"]  # independent readers for tests only
+dev = ["pytest>=8", "openpyxl>=3.1"]  # writes realistic spreading exports for tests only
 
 [tool.pytest.ini_options]
 pythonpath = ["tools", "scripts"]

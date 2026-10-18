@@ -1,7 +1,6 @@
 import datetime
 import json
 
-import openpyxl  # dev-only independent reader; the tool itself uses the standard library
 import pytest
 
 import register as reg_tool
@@ -70,22 +69,17 @@ def test_officer_ok_allows_later_diligence(folder):
     assert reg_tool.apply(folder, change(1, "b", {"sheet": "open_items", "add": item}))["status"] == "applied"
 
 
-def test_ready_gate_blocks_and_word_change_invalidates(folder, tmp_path):
-    word = tmp_path / "FP-v01.docx"
-    word.write_bytes(b"v1")
+def test_ready_gate_blocks_until_the_blocker_is_closed(folder):
     reg_tool.apply(folder, change(0, "a", RISK, {"sheet": "open_items", "add": {
         "text": "Borrower cash flow", "raised_by": "officer", "criticality": "blocker", "status": "open",
-        "addressee": "client"}}, {"sheet": "control", "set": {"word": word.name, "word_sha256": reg_tool.sha256(word)}}))
+        "addressee": "client"}}, {"sheet": "control", "set": {"word": "FP-v01.docx (version 3)"}}))
     with pytest.raises(reg_tool.ChangeError, match="cannot record ready"):
         reg_tool.apply(folder, change(1, "b", {"sheet": "control", "set": {"status": "ready"}}))
     reg_tool.apply(folder, change(1, "c", {"sheet": "sources", "add": {
         "title": "Cash flow answer", "impact": "assessed"}}, {"sheet": "open_items", "update": "O-001",
         "set": {"status": "closed", "answer_source": "S-001 p.2", "assessment": "Reconciled to accounts",
                 "assessed_by": "Analyst"}}))
-    reg = reg_tool.load(folder)
-    assert reg_tool.open_checks(reg, word) == []
-    word.write_bytes(b"v1 edited by officer")
-    assert reg_tool.open_checks(reg, word) == ["the Word file changed since it was last recorded"]
+    assert reg_tool.open_checks(reg_tool.load(folder)) == []
 
 
 def test_new_source_with_pending_impact_blocks_ready(folder):
@@ -108,17 +102,6 @@ def test_analysis_upsert_and_markdown_view(folder):
     reg_tool.apply(folder, change(1, "b", {"sheet": "analysis", "update": "timeline", "set": {"text": "2026: CFO left."}}))
     md = (folder / "Analysis.md").read_text()
     assert "2026: CFO left." in md and "2025: new plant." not in md and "revision 2" in md
-
-
-def test_excel_view_opens_in_an_independent_reader(folder):
-    reg_tool.apply(folder, change(0, "a", RISK))
-    wb = openpyxl.load_workbook(folder / "register.xlsx")
-    assert wb.sheetnames[:3] == ["Control", "Sources", "Risks"]
-    assert wb["Risks"]["A2"].value == "R-001" and wb["Risks"]["B2"].value == "FX mismatch"
-    assert wb["Control"]["B2"].value == "Cedar"
-    assert wb["Control"]["A3"].value == "Investment Officer"
-    assert "Investment Officer decision" in [cell.value for cell in wb["Risks"][1]]
-    assert "Investment Officer agreement" in [cell.value for cell in wb["Open items"][1]]
 
 
 def test_summary_lists_show_and_cli(folder, tmp_path, capsys):
@@ -173,17 +156,13 @@ def test_promised_and_answered_items_stay_visible_until_closed(folder):
     assert "O-001" not in reg_tool.lists(reg) and reg_tool.gates(reg) == []
 
 
-def test_tool_reports_checks_and_readiness_is_recorded_for_a_version(folder, tmp_path):
-    word = tmp_path / "FP-v05.docx"
-    word.write_bytes(b"v5")
-    reg_tool.apply(folder, change(0, "a", {"sheet": "control", "set": {"word": word.name, "word_sha256": reg_tool.sha256(word)}}))
-    assert "Register checks: passed" in reg_tool.summary(reg_tool.load(folder), word)
+def test_tool_reports_checks_and_readiness_is_recorded_for_a_version(folder):
+    reg_tool.apply(folder, change(0, "a", {"sheet": "control", "set": {"word": "FP-v05.docx"}}))
+    assert "Open checks: none" in reg_tool.summary(reg_tool.load(folder))
     reg_tool.apply(folder, change(1, "b", {"sheet": "control", "set": {"status": "ready", "ready_by": "Officer"}}))
     reg = reg_tool.load(folder)
-    assert reg["control"]["ready_for"] == f"{word.name} at register revision 2"
-    assert "Status: ready (FP-v05.docx at register revision 2, recorded by Officer)" in reg_tool.summary(reg, word)
-    word.write_bytes(b"v5 edited")
-    assert "changed since readiness was recorded" in reg_tool.summary(reg, word)
+    assert reg["control"]["ready_for"] == "FP-v05.docx at register revision 2"
+    assert "Status: ready (FP-v05.docx at register revision 2, recorded by Officer)" in reg_tool.summary(reg)
 
 
 def test_retry_repairs_views_left_stale_by_an_interrupted_run(folder, monkeypatch):
@@ -198,19 +177,15 @@ def test_retry_repairs_views_left_stale_by_an_interrupted_run(folder, monkeypatc
 
 
 def test_new_evidence_after_ready_withdraws_readiness_instead_of_blocking(folder):
-    record_word(folder)
+    record_document(folder)
     reg_tool.apply(folder, change(1, "a", {"sheet": "control", "set": {"status": "ready", "ready_by": "FP Lead"}}))
     r = reg_tool.apply(folder, change(2, "b", {"sheet": "sources", "add": {"title": "Lender email: covenant breach"}}))
     assert r["status"] == "applied" and r["warnings"][0].startswith("readiness withdrawn")
     assert reg_tool.load(folder)["control"]["status"] == "draft"
 
 
-def record_word(folder, revision=0):
-    word = folder / 'FP.docx'
-    word.write_bytes(b'current synthetic Word version')
-    reg_tool.apply(folder, change(revision, 'word', {'sheet': 'control', 'set': {
-        'word': word.name, 'word_sha256': reg_tool.sha256(word)}}))
-    return word
+def record_document(folder, revision=0):
+    reg_tool.apply(folder, change(revision, 'word', {'sheet': 'control', 'set': {'word': 'FP.docx (version 2)'}}))
 
 
 def test_findings_default_open_and_block_readiness(folder):
@@ -240,32 +215,22 @@ def test_lifecycle_or_blocker_fields_cannot_be_cleared(folder, sheet, fields, fi
 @pytest.mark.parametrize('fields', [
     {'status': 'ready'},
     {'status': 'ready', 'ready_by': '  '},
-    {'status': 'ready', 'ready_by': 'Officer', 'word': '', 'word_sha256': ''},
-    {'status': 'ready', 'ready_by': 'Officer', 'word_sha256': 'old'},
-    {'status': 'ready', 'ready_by': 'Officer', 'word': 'missing.docx'},
+    {'status': 'ready', 'ready_by': 'Officer', 'word': ''},
 ])
-def test_ready_requires_explicit_officer_and_current_word(folder, fields):
-    record_word(folder)
+def test_ready_requires_explicit_officer_and_current_document(folder, fields):
+    record_document(folder)
     with pytest.raises(reg_tool.ChangeError, match='cannot record ready'):
         reg_tool.apply(folder, change(1, 'ready', {'sheet': 'control', 'set': fields}, actor='Automation'))
     assert reg_tool.load(folder)['control']['status'] == 'draft'
 
 
-@pytest.mark.parametrize('edit', ['evidence', 'word_metadata', 'word_bytes'])
-def test_ready_invalidated_on_assessed_evidence_or_word_changes(folder, edit):
-    word = record_word(folder)
+@pytest.mark.parametrize('changes', [
+    [{'sheet': 'sources', 'add': {'title': 'New facts', 'impact': 'assessed'}}],
+    [{'sheet': 'control', 'set': {'word': 'FP.docx (version 3)'}}],
+])
+def test_ready_invalidated_on_assessed_evidence_or_document_changes(folder, changes):
+    record_document(folder)
     reg_tool.apply(folder, change(1, 'ready', {'sheet': 'control', 'set': {'status': 'ready', 'ready_by': 'Officer'}}))
-    changes = []
-    if edit == 'evidence':
-        changes = [{'sheet': 'sources', 'add': {'title': 'New facts', 'impact': 'assessed'}}]
-    else:
-        word.write_bytes(b'changed Word')
-        if edit == 'word_metadata':
-            changes = [{'sheet': 'control', 'set': {'word_sha256': reg_tool.sha256(word)}}]
-        else:
-            text = reg_tool.summary(reg_tool.load(folder), word)
-            assert 'Status: ready' not in text
-            assert 'changed since readiness was recorded' in text
     result = reg_tool.apply(folder, change(2, 'changed', *changes))
     assert result['warnings'][0].startswith('readiness withdrawn')
     assert reg_tool.load(folder)['control']['status'] == 'draft'
@@ -281,9 +246,6 @@ def test_views_have_revision_and_partial_save_is_honest(folder, monkeypatch, cap
     assert 'saved' in err.lower() and 'views incomplete' in err.lower() and 'REFUSED' not in err
     monkeypatch.setattr(reg_tool, 'write_views', original)
     assert reg_tool.main(['apply', str(folder), str(changes)]) == 0
-    wb = openpyxl.load_workbook(folder / 'register.xlsx')
-    control = dict(wb['Control'].values)
-    assert control['register_revision'] == 1
     assert 'revision 1' in (folder / 'Analysis.md').read_text()
 
 
@@ -301,7 +263,7 @@ def test_blank_required_evidence_and_decisions_are_refused(folder, bad, message)
 
 
 def test_blocker_awaiting_officer_judgment_still_blocks_readiness(folder):
-    record_word(folder)
+    record_document(folder)
     reg_tool.apply(folder, change(1, 'finding', {'sheet': 'findings', 'add': {
         'by': 'grill', 'issue': 'Repayment depends on unsigned refinancing',
         'priority': 'blocker', 'status': 'officer-judgment'}}))
@@ -347,7 +309,7 @@ def test_ddq_uses_explicit_audience_and_never_recipient_keywords(folder):
     exported = reg_tool.ddq(reg_tool.load(folder))
     assert 'client request' in exported
     assert all(a + ' request' not in exported for a in ['unknown', 'internal', 'restricted'])
-    assert 'client request' in (folder / 'Client-DDQ.md').read_text()
+    assert sorted(p.name for p in folder.iterdir()) == ['Analysis.md', 'register.json']  # DDQ only on request
 
 
 @pytest.mark.parametrize('fields,match', [
@@ -397,7 +359,7 @@ def test_analysis_export_retains_provenance_and_update_metadata(folder):
     row = reg_tool.load(folder)['analysis'][0]
     assert row['updated']
     md = (folder / 'Analysis.md').read_text()
-    assert 'S-001 p.8' in md and row['updated'] in md and 'Cash is constrained.' in md
+    assert '[S-001](<https://example.org/accounts>) p.8' in md and row['updated'] in md and 'Cash is constrained.' in md
     assert '[Accounts](<https://example.org/accounts>) · version 2025' in md
     assert 'https://example.org/accounts' in reg_tool.show(reg_tool.load(folder), ['C-001'])
     assert 'S-001 p.8' in reg_tool.show(reg_tool.load(folder), ['liquidity'])
@@ -408,7 +370,6 @@ def test_explicit_migration_preserves_bytes_ids_history_and_refuses_legacy_repla
     legacy = reg_tool.load(folder)
     legacy.pop('schema_version', None)
     legacy.pop('claims', None)
-    legacy.pop('run', None)
     legacy['log'][0].pop('request_sha256', None)
     raw = json.dumps(legacy, separators=(',', ':')).encode()
     (folder / 'register.json').write_bytes(raw)
@@ -426,18 +387,6 @@ def test_explicit_migration_preserves_bytes_ids_history_and_refuses_legacy_repla
     (folder / 'Analysis.md').unlink()
     assert reg_tool.refresh(folder)['status'] == 'refreshed'
     assert (folder / 'Analysis.md').exists()
-
-
-def test_run_update_is_typed_and_uses_normal_revision_and_digest(folder):
-    payload = {'base': {'path': '/base.docx', 'sha256': 'a' * 64}, 'mode': 'existing',
-               'provenance': 'Officer authorised this imported draft', 'examples': [], 'output_dir': '/out'}
-    req = change(0, 'prepare', {'sheet': 'run', 'set': payload})
-    reg_tool.apply(folder, req)
-    assert reg_tool.load(folder)['run']['base'] == payload['base']
-    assert reg_tool.apply(folder, req)['status'] == 'already-applied'
-    for fields in [{'mode': 'reset'}, {'arbitrary': {}}, {'examples': ['wrong']}, {'base': {'path': 4}}]:
-        with pytest.raises(reg_tool.ChangeError):
-            reg_tool.apply(folder, change(1, 'bad', {'sheet': 'run', 'set': fields}))
 
 
 def test_source_hash_change_requires_a_new_source_id(folder):
@@ -561,14 +510,6 @@ def test_claims_validate_sources_and_applicable_numeric_provenance(folder, field
         reg_tool.apply(folder, change(1, 'claim', {'sheet': 'claims', 'add': fields}))
 
 
-def test_run_record_reference_and_bad_nested_preflight_are_validated(folder):
-    record = {'path': 'FP-v01.sections.json', 'sha256': 'b' * 64}
-    reg_tool.apply(folder, change(0, 'record', {'sheet': 'run', 'set': {'record': record}}))
-    assert reg_tool.load(folder)['run']['record'] == record
-    with pytest.raises(reg_tool.ChangeError):
-        reg_tool.apply(folder, change(1, 'bad', {'sheet': 'run', 'set': {'preflight': {'editorial': {}}}}))
-
-
 def test_section_selection_follows_analysis_and_retains_explicit_contradiction(folder):
     reg_tool.apply(folder, change(0, 'case',
         {'sheet': 'sources', 'add': {'title': 'Original'}},
@@ -684,26 +625,6 @@ def test_migrated_analysis_recheck_is_valid_unknown_and_blocks_readiness(folder)
     assert 'fp_map to recheck: v1/summary' in reg_tool.gates(reg)
 
 
-def test_run_set_replaces_prior_run_so_prepare_clears_stale_build_state(folder):
-    reg_tool.apply(folder, change(0, 'old-build', {'sheet': 'run', 'set': {
-        'mode': 'normal', 'build_id': 'old-build', 'draft': {'path': 'draft.md', 'sha256': 'a' * 64},
-        'artifacts': {'word': {'path': 'old.docx', 'sha256': 'b' * 64}}}}))
-    reg_tool.apply(folder, change(1, 'prepare', {'sheet': 'run', 'set': {'mode': 'existing', 'status': 'prepared'}}))
-    assert reg_tool.load(folder)['run'] == {'mode': 'existing', 'status': 'prepared'}
-
-
-def test_workbook_view_bytes_do_not_depend_on_zip_creation_time(tmp_path, monkeypatch):
-    import zipfile
-    sheets = [('Control', ['field', 'value'], [['deal', 'Synthetic']])]
-    first, second = tmp_path / 'first.xlsx', tmp_path / 'second.xlsx'
-    monkeypatch.setattr(zipfile.time, 'localtime', lambda *a: (2026, 10, 14, 10, 0, 0, 2, 287, 0))
-    reg_tool.write_xlsx(first, sheets)
-    monkeypatch.setattr(zipfile.time, 'localtime', lambda *a: (2026, 10, 14, 10, 0, 4, 2, 287, 0))
-    reg_tool.write_xlsx(second, sheets)
-    assert first.read_bytes() == second.read_bytes()
-    assert openpyxl.load_workbook(second)['Control']['B2'].value == 'Synthetic'
-
-
 def test_section_selection_keeps_risk_analysis_provenance_and_recheck(folder):
     reg_tool.apply(folder, change(0, 'risk-analysis', RISK,
         {'sheet': 'sources', 'add': {'title': 'Accounts', 'impact': 'assessed'}},
@@ -718,7 +639,7 @@ def test_section_selection_keeps_risk_analysis_provenance_and_recheck(folder):
 
 @pytest.mark.parametrize('coverage,expected_status', [('unread', 'draft'), ('read', 'ready')])
 def test_migration_withdraws_invalid_readiness_but_keeps_historical_decision(folder, coverage, expected_status):
-    word = record_word(folder)
+    record_document(folder)
     reg_tool.apply(folder, change(1, 'critical', {'sheet': 'sources', 'add': {
         'title': 'Critical accounts', 'tier': 'A', 'coverage': coverage, 'impact': 'assessed'}}))
     legacy = reg_tool.load(folder)
@@ -735,4 +656,27 @@ def test_migration_withdraws_invalid_readiness_but_keeps_historical_decision(fol
     assert migrated['log'] == legacy['log'] and migrated['revision'] == legacy['revision']
     assert (folder / 'register.schema-0.backup.json').read_bytes() == raw
     if coverage == 'unread':
-        assert 'Status: ready' not in reg_tool.summary(migrated, word)
+        assert 'Status: ready' not in reg_tool.summary(migrated)
+
+
+def test_source_title_or_link_correction_does_not_reopen_dependent_work(folder):
+    reg_tool.apply(folder, change(0, 'evidence', {'sheet': 'sources', 'add': {'title': 'Call note', 'impact': 'assessed'}},
+        {'sheet': 'claims', 'add': {'assertion': 'CFO expects growth', 'kind': 'assertion', 'sources': 'S-001 p.1'}},
+        {'sheet': 'open_items', 'add': {'text': 'Growth view?', 'raised_by': 'Analyst', 'status': 'closed',
+            'answer_source': 'S-001 p.1; C-001', 'assessment': 'Attributed to the CFO', 'assessed_by': 'Analyst'}}))
+    reg_tool.apply(folder, change(1, 'link', {'sheet': 'sources', 'update': 'S-001', 'set': {
+        'title': 'Call note (CFO)', 'link': 'https://example.org/call-note'}}))
+    reg = reg_tool.load(folder)
+    assert reg['claims'][0]['recheck'] == 'no' and reg['open_items'][0]['status'] == 'closed'
+    assert '[S-001](<https://example.org/call-note>) p.1' in (folder / 'Analysis.md').read_text()
+
+
+def test_answer_closed_with_its_claim_correction_stays_closed(folder):
+    reg_tool.apply(folder, change(0, 'evidence', {'sheet': 'sources', 'add': {'title': 'Agreement', 'impact': 'assessed'}},
+        {'sheet': 'claims', 'add': {'assertion': 'Stake is 30%', 'kind': 'fact', 'sources': 'S-001 cl. 2'}},
+        {'sheet': 'open_items', 'add': {'text': 'Confirm stake', 'raised_by': 'Investment Officer'}}))
+    reg_tool.apply(folder, change(1, 'correct-and-close',
+        {'sheet': 'claims', 'update': 'C-001', 'set': {'period': 'at signing'}},
+        {'sheet': 'open_items', 'update': 'O-001', 'set': {'status': 'closed', 'answer_source': 'S-001 cl. 2; C-001',
+            'assessment': 'Confirmed in the signed agreement', 'assessed_by': 'Analyst'}}))
+    assert reg_tool.load(folder)['open_items'][0]['status'] == 'closed'

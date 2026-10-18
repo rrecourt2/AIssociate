@@ -51,8 +51,7 @@ def frontmatter(text):
 
 def originals(root):
     return {f"../../shared/{p.name}": (f"references/{p.name}", p) for p in (root / "shared").glob("*.md")} | \
-           {f"../../tools/{p.name}": (f"scripts/{p.name}", p) for p in (root / "tools").glob("*.py")} | \
-           {"../../.claude-plugin/plugin.json": ("scripts/plugin.json", root / ".claude-plugin/plugin.json")}
+           {f"../../tools/{p.name}": (f"scripts/{p.name}", p) for p in (root / "tools").glob("*.py")}
 
 
 def check_skill(skill, canon):

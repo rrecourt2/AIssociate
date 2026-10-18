@@ -19,6 +19,6 @@ Where a recommendation is intended, write the strongest defensible case for it a
 
 Explain material financial movements, supported drivers and their implications for cash and repayment. Distinguish existing protections from proposed conditions and assumptions. Do not force an acceptable conclusion where the evidence leaves a material question open.
 
-Keep internal actions and fuller reasoning in Analysis, client evidence requests in the DDQ, and material qualifications in the document. Rewrite specialist inputs for the audience. Use annexes only where useful; summarise decisive results in the body. Before external circulation, exclude internal-only notes, comments, revisions, metadata and links. Retain review markup intended for those recipients and material qualifications.
+Keep internal actions and fuller reasoning in Analysis, client evidence requests in client open items, and material qualifications in the document. Rewrite specialist inputs for the audience. Use annexes only where useful; summarise decisive results in the body. Before external circulation, exclude internal-only notes, comments, revisions, metadata and links. Retain review markup intended for those recipients and material qualifications.
 
 Review whole sections for flow, density, repetition and fit beside the examples. Preserve attribution, uncertainty, scope and meaning during edits. Unsupported claims return for substantive review; smoother wording is not stronger evidence.

@@ -1,11 +1,11 @@
 # Review protocol
 
-Match challenge to the requested decision. For substantial documents, use fresh review of the plan, consequential analysis batches and complete draft; a short scan usually needs one scoped review. Group related issues rather than reviewing every paragraph. Recheck material revisions and their consequences, reusing unaffected checks.
+Match the challenge to the decision. By default, run one challenge of the complete draft or scoped answer and one focused recheck of the repairs. For a full FP, also challenge the plan before drafting so that structural problems surface early. Group related issues instead of reviewing paragraph by paragraph.
 
-Give the reviewer the exact version, brief, relevant original evidence/calculations, contrary evidence, open questions and enough wider context to find omissions. Keep it separate from the drafting conversation. The reviewer may agree with a sound conclusion.
+Run the reviewer as a separate agent. Give it the exact version, the brief, the relevant original evidence and calculations, contrary evidence, open questions and enough wider context to find omissions. The reviewer may agree with a sound conclusion.
 
-Default to one challenge round and one focused recheck. The author repairs findings or gives an evidence-backed response; useful drafting elsewhere continues. Document Lead rewrites adopted findings. Questions do not automatically become conditions or repeated caveats.
+The author repairs each finding or answers it with evidence; Document Lead rewrites adopted findings. Questions do not automatically become conditions or repeated caveats.
 
-Use a third fresh arbiter for unresolved material disagreement or Investment Officer-requested adjudication. It reads decisive evidence and returns a scoped conclusion, correction or missing input. The Investment Officer owns the recommendation; formal approval and specialist clearance remain with authorised decision-makers.
+Use a fresh arbiter only for an unresolved material disagreement or when the Investment Officer asks. It reads the decisive evidence and returns a scoped conclusion, correction or missing input.
 
-Stop when the evidence gap or Investment Officer decision is clear; further rounds need new evidence or a material unresolved point. Record findings and dispositions in the existing register. If separate tasks are unavailable, give a named handoff and label self-review honestly. Agents are not independent professional assurance.
+Stop when the evidence gap or Investment Officer decision is clear; another round needs new evidence or a material unresolved point. Record findings and their disposition in the register. If a separate agent is unavailable, label the review as a self-review. Agents are not independent professional assurance: the Investment Officer owns the recommendation, and formal approval and specialist clearance stay with authorised decision-makers.

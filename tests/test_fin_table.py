@@ -204,23 +204,29 @@ def test_expected_cells_identify_the_export(spread):
 
 
 def fin_table_inject_formula(path, ref, formula):
+    """Add a formula to a cell that keeps its cached value, as Excel saves it."""
+    import re
     import zipfile
     with zipfile.ZipFile(path) as z:
         parts = {n: z.read(n) for n in z.namelist()}
-    sheet = parts["xl/worksheets/sheet1.xml"].decode()
-    head = f'<c r="{ref}" s="2">'
-    assert head in sheet
-    parts["xl/worksheets/sheet1.xml"] = sheet.replace(head, head + f"<f>{formula}</f>").encode()
+    sheet, count = re.subn(rf'(<c r="{ref}"[^>]*>)', rf"\1<f>{formula}</f>",
+                           parts["xl/worksheets/sheet1.xml"].decode(), count=1)
+    assert count == 1
+    parts["xl/worksheets/sheet1.xml"] = sheet.encode()
     with zipfile.ZipFile(path, "w") as z:
         for n, d in parts.items():
             z.writestr(n, d)
 
 
 def formula_export(tmp_path):
-    from register import write_xlsx
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    ws.title = 'Spread'
+    for row in (['EUR m', '2025'], ['Revenue', 120], ['Gross profit', 30],
+                ['Entity', 'Example Group'], ['Perimeter', 'consolidated']):
+        ws.append(row)
     path = tmp_path / 'formula.xlsx'
-    write_xlsx(path, [('Spread', ['EUR m', '2025'], [['Revenue', 120], ['Gross profit', 30],
-                                                  ['Entity', 'Example Group'], ['Perimeter', 'consolidated']])])
+    wb.save(path)
     fin_table_inject_formula(path, 'B3', 'B2*0.25')
     m = mapping(periods=['2025'], rows=[{'label': 'Gross profit', 'source': 'Gross profit'}])
     m['identity']['entity']['cell'] = 'B4'
