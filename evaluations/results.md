@@ -8,6 +8,7 @@ Checked locally on 18 October 2026. These checks establish tool behaviour, not m
 | Register fixes | Correcting a source's title or link no longer marks its facts for recheck or reopens closed answers. An answer closed in the same change set as a correction to its claim is no longer silently reopened. |
 | Readable record | `Analysis.md` lists every fact with a link to its original document and locator, and every source with its version, coverage and any replacement. A save writes only `register.json` and `Analysis.md`; the client DDQ is printed on request. |
 | Extracted packages | Both the plugin ZIP and the individual-skill ZIPs create, save and resume an evidence record outside the repository. |
+| Dry run | INSTALL's save/resume test was followed with the extracted plugin and two synthetic documents: intake, readback, resume from the saved file, a corrected bank email reopening its answer, refusal of the stale answer and reassessment. One tracked-change revision with an anchored comment was made through a Word skill similar to Cowork's; the earlier version and the Investment Officer's comment stayed intact. |
 
 The package holds eight skills, six shared references and two scripts: 42 files and about 0.5 MB unpacked, down from 48 files and 0.8 MB.
 

@@ -1,0 +1,21 @@
+name: Release
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git fetch --force --tags
+      - name: Tag must match plugin.json
+        run: test "$GITHUB_REF_NAME" = "v$(python3 -c "import json; print(json.load(open('.claude-plugin/plugin.json'))['version'])")"
+      - run: python3 scripts/package.py
+      - name: Publish pre-release with both ZIPs; notes come from the annotated tag
+        run: gh release create "$GITHUB_REF_NAME" dist/*.zip --prerelease --title "AIssociate ${GITHUB_REF_NAME#v}" --notes-from-tag
+        env:
+          GH_TOKEN: ${{ github.token }}

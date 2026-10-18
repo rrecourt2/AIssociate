@@ -192,7 +192,7 @@ def analysis_md(reg):
     for r in rows:
         out += [f"## {r['title'] or r['id']} ({r['id']})", "", r["text"].strip(), ""]
         out += [f"{label}: {linked(reg, r[key])}" for key, label in (("sources", "Sources"), ("claims", "Claims"),
-                ("updated", "Updated"), ("recheck", "Recheck")) if r.get(key)]
+                ("updated", "Updated"), ("recheck", "Recheck")) if r.get(key) not in ("", None, "no")]
         out.append("")
     if reg["claims"]:
         out += ["## Evidence index", ""]
