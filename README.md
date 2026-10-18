@@ -47,6 +47,6 @@ python3 scripts/package.py --check
 
 `skills/` holds only skill instructions. `shared/` and `tools/` hold one copy of each reference and processor. The builder makes self-contained upload ZIPs in `dist/`; it never writes generated copies back into the source tree. [Validation](evaluations/results.md).
 
-To release, push an annotated tag `vX.Y.Z` that matches `plugin.json`; the release workflow builds both ZIPs and publishes a pre-release with the tag message as its notes.
+To release, publish a GitHub release whose tag `vX.Y.Z` matches `plugin.json` (a pre-release while piloting); the release workflow builds both ZIPs and attaches them.
 
 Client-prepared deal folders and reuse across lenders are future possibilities. If this pilot works, its evidence format could contribute to a wider **Bankability** standard.
