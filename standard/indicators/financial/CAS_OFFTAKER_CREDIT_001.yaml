@@ -1,0 +1,73 @@
+id: CAS_OFFTAKER_CREDIT_001
+title: Offtaker Credit Assessment
+workstream: WS_FIN
+due_by: diligence
+applies_to: [sells_to]
+checks:
+- id: OBS_OFFTAKER_001
+  question: Is this contract or counterparty responsible for a material share of contracted project revenue?
+  answer: yes_no
+  why: Material offtakers can centralize repayment risk
+  due_by: screening
+  evidence:
+    best: [offtake_agreement, company_record]
+    supporting: [term_sheet, internal_memo]
+    stated: [call, officer_note]
+  ask: Is this contract or counterparty expected to buy a material share of the project's output or otherwise provide
+    contracted revenue?
+- id: OBS_OFFTAKER_002
+  question: What share of project revenue depends on this offtaker?
+  answer: number
+  unit: percent
+  why: Revenue share drives offtaker materiality and ask depth
+  due_by: screening
+  after: [OBS_OFFTAKER_001]
+  when:
+  - check: OBS_OFFTAKER_001
+    is: true
+  evidence:
+    best: [offtake_agreement, financial_model]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence]
+  ask: Approximately what percentage of project revenue depends on this offtaker or PPA?
+- id: OBS_OFFTAKER_003
+  question: What is the offtaker or revenue counterparty's credit quality?
+  answer: choice
+  options: [sovereign_or_government, investment_grade, sub_investment_grade, unrated_strong, unrated_weak, unknown]
+  why: Offtaker credit quality determines reliability of contracted cash flow
+  after: [OBS_OFFTAKER_001]
+  when:
+  - check: OBS_OFFTAKER_001
+    is: true
+  evidence:
+    best: [credit_rating_report, audited_annual_report]
+    supporting: [internal_memo]
+    stated: [correspondence]
+  ask: What is the offtaker or revenue counterparty's credit quality? For a government offtaker, please provide
+    the relevant sovereign/public-sector rating or credit memo.
+- id: OBS_OFFTAKER_004
+  question: Has the offtaker paid on time under comparable contracts?
+  answer: yes_no
+  why: Strong ratings do not fully replace payment performance
+  after: [OBS_OFFTAKER_001]
+  when:
+  - check: OBS_OFFTAKER_001
+    is: true
+  evidence:
+    best: [company_record, correspondence, internal_memo]
+    supporting: [management_presentation]
+  ask: Is there evidence that this offtaker pays on time under this or comparable contracts?
+- id: OBS_OFFTAKER_005
+  question: Does the contract protect lenders on termination, curtailment, or non-payment?
+  answer: yes_no
+  why: Termination and curtailment protections preserve debt service under stress
+  after: [OBS_OFFTAKER_001]
+  when:
+  - check: OBS_OFFTAKER_001
+    is: true
+  evidence:
+    best: [offtake_agreement, legal_opinion]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence]
+  ask: Does the offtake/PPA include protections for termination, curtailment, non-payment, and lender step-in or
+    termination compensation?

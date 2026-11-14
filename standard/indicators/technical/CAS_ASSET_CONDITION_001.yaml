@@ -1,0 +1,88 @@
+id: CAS_ASSET_CONDITION_001
+title: Asset Condition
+workstream: WS_TO
+due_by: diligence
+applies_to: [asset]
+why_it_matters:
+  debt: Asset deterioration can impair collateral value and trigger covenant breaches
+  equity: Asset condition affects capex requirements and value-add potential
+matters_more_when:
+- check: OBS_SECTOR_001
+  is: real_estate
+  reason: Real estate — physical asset condition directly affects value and cash flow
+- check: OBS_COLLATERAL_001
+  is: single_asset
+  reason: Single asset — condition is existential; no diversification to absorb deterioration
+- check: OBS_SECTOR_001
+  is: infrastructure
+  reason: Infrastructure — asset condition affects service availability and concession compliance
+matters_less_when:
+- check: OBS_SECTOR_001
+  is: corporate
+  reason: Corporate — less physical asset focus, intangibles and operations drive value
+- check: OBS_LIFECYCLE_001
+  is: greenfield
+  reason: Greenfield — asset does not yet exist; construction indicator is more relevant
+checks:
+- id: OBS_ASSET_001
+  question: What is the age and condition of the entity's key operating assets?
+  answer: choice
+  options: [new, good, fair, poor, end_of_life]
+  assumption: Assets are in acceptable operating condition
+  due_by: screening
+  look_in: [06.02.a]
+  evidence:
+    best: [company_record, valuation_report]
+    supporting: [management_accounts, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: What is the approximate age and current condition of your main operating assets (plant, equipment, vehicles,
+    property)? A fixed asset register, recent valuation, or a brief description of asset ages would help.
+- id: OBS_ASSET_002
+  question: Has an independent condition assessment been performed on key assets?
+  answer: yes_no
+  assumption: Asset condition relies solely on management self-assessment
+  disproved_by: 'yes'
+  after: [OBS_ASSET_001]
+  when:
+  - check: OBS_ASSET_001
+    is: true
+  - check: OBS_ASSET_004
+    is: true
+  evidence:
+    best: [technical_feasibility, valuation_report]
+    supporting: [consultant_report]
+    stated: [correspondence]
+  ask: Has an independent surveyor, engineer, or valuer assessed the condition of your key assets? This could be
+    a condition survey, an independent engineer's report, or a recent third-party valuation.
+- id: OBS_ASSET_003
+  question: Is there a documented maintenance plan and budget for key assets?
+  answer: yes_no
+  assumption: Maintenance is planned and budgeted
+  disproved_by: 'no'
+  after: [OBS_ASSET_001]
+  when:
+  - check: OBS_ASSET_001
+    is: true
+  evidence:
+    best: [company_record, financial_projections]
+    supporting: [management_accounts, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Do you have a maintenance plan and budget for your key assets? This could be a formal preventive maintenance
+    schedule, an annual capex/maintenance budget, or a description of your maintenance approach.
+  if_unknown: No maintenance plan or budget documented — risk of unplanned asset degradation
+- id: OBS_ASSET_004
+  question: Are there deferred maintenance issues or a maintenance backlog?
+  answer: yes_no
+  assumption: All required maintenance is current with no material backlog
+  disproved_by: 'yes'
+  after: [OBS_ASSET_001]
+  when:
+  - check: OBS_ASSET_001
+    is: true
+  evidence:
+    best: [technical_feasibility, company_record]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Are there any deferred maintenance items or a maintenance backlog on your key assets? We want to understand
+    if any required maintenance has been postponed and the estimated cost to catch up.
+  if_unknown: Deferred maintenance status unknown — potential hidden liability

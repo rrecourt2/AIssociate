@@ -1,0 +1,65 @@
+id: CAS_INTERNAL_CONTROLS_001
+title: Internal Controls
+workstream: WS_GOV
+due_by: diligence
+applies_to: [borrower]
+checks:
+- id: OBS_IC_001
+  question: Does the entity have documented internal control procedures?
+  answer: yes_no
+  assumption: Entity has a functioning internal control framework
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [01.03.a, 06.01.a]
+  evidence:
+    best: [corporate_governance_policy]
+    supporting: [audit_management_letter, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Does your company have written procedures for internal controls? These are the rules and processes that ensure
+    financial reporting is accurate, assets are protected, and operations run as intended. Examples include approval
+    limits, payment authorization procedures, and inventory controls.
+- id: OBS_IC_002
+  question: Is there segregation of duties for financial transactions?
+  answer: yes_no
+  assumption: Financial transactions have adequate separation of authorization, execution, and recording
+  disproved_by: 'no'
+  after: [OBS_IC_001]
+  when:
+  - check: OBS_IC_001
+    is: true
+  evidence:
+    best: [corporate_governance_policy]
+    supporting: [organizational_chart, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Are the duties for financial transactions split between different people? For example, the person who approves
+    a payment should be different from the person who executes it, and different again from the person who records
+    it in the books. How is this separation handled in your company?
+- id: OBS_IC_003
+  question: Is there an internal audit function?
+  answer: yes_no
+  assumption: Entity has independent verification of its internal controls
+  disproved_by: 'no'
+  after: [OBS_IC_001]
+  when:
+  - check: OBS_IC_001
+    is: true
+  evidence:
+    best: [audit_management_letter, corporate_governance_policy]
+    supporting: [organizational_chart, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: Does your company have an internal audit function — either an in-house team or an outsourced firm that periodically
+    reviews your internal controls, processes, and financial records independently of the finance team?
+- id: OBS_IC_004
+  question: Have there been material control failures in the last 3 years?
+  answer: yes_no
+  assumption: Internal controls have been effective without significant breakdowns
+  disproved_by: 'yes'
+  after: [OBS_IC_001]
+  evidence:
+    best: [audit_management_letter, company_record]
+    supporting: [board_minutes]
+    stated: [correspondence]
+  ask: In the last three years, has your company experienced any significant breakdowns in internal controls? Examples
+    include unauthorized transactions, fraud, material misstatements in financial reporting, or significant audit
+    findings. Please disclose any incidents even if they have since been resolved.
+  if_unknown: Control failure history not disclosed or not verifiable from available documents

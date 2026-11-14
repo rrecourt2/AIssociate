@@ -1,0 +1,50 @@
+id: CAS_DISCOVERY_LIFECYCLE_001
+title: Asset / Entity Lifecycle Discovery
+workstream: WS_TO
+due_by: screening
+applies_to: [deal]
+why_it_matters:
+  debt: Lifecycle stage determines which downside scenarios are plausible
+  equity: Lifecycle stage determines value creation runway
+checks:
+- id: OBS_LIFECYCLE_001
+  question: What stage is the asset or entity in?
+  answer: choice
+  options: [greenfield, brownfield, transitional, stabilized, distressed]
+  look_in: [01.01.a, 01.02.a, 03.01.a]
+  evidence:
+    best: [business_plan, audited_annual_report]
+    supporting: [management_accounts, financial_projections]
+    stated: [call, officer_note, correspondence]
+  ask: 'What stage is this asset or entity in? - Greenfield: new build, not yet operational - Brownfield: existing
+    site being redeveloped - Transitional: operational but undergoing significant change (renovation, repositioning,
+    expansion) - Stabilized: fully operational with established track record - Distressed: facing financial or operational
+    difficulties'
+- id: OBS_CAPEX_PLAN_001
+  question: Is there a material capex program planned (>15% of asset value)?
+  answer: yes_no
+  after: [OBS_LIFECYCLE_001]
+  look_in: [01.02.a, 06.01.a]
+  evidence:
+    best: [business_plan, financial_projections]
+    supporting: [management_accounts, board_minutes]
+    stated: [call, officer_note, correspondence]
+  ask: Is there a significant capital expenditure program planned? By significant we mean more than 15% of the current
+    asset value. This includes major renovations, expansions, equipment replacements, or new construction.
+- id: OBS_LIFECYCLE_CONFIRM_001
+  question: Is there active construction or renovation?
+  answer: yes_no
+  after: [OBS_LIFECYCLE_001]
+  look_in: [06.01.a, 06.02.a]
+  evidence:
+    best: [epc_contract, technical_feasibility]
+    supporting: [financial_projections, management_accounts]
+- id: OBS_LIFECYCLE_CONFIRM_002
+  question: Are projections based on current or future state?
+  answer: choice
+  options: [current_state, future_state, blended]
+  after: [OBS_LIFECYCLE_001]
+  look_in: [01.02.a]
+  evidence:
+    best: [financial_projections, business_plan]
+    supporting: [management_accounts]

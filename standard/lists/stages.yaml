@@ -1,0 +1,46 @@
+stages:
+- id: lead
+  title: Lead
+  purpose: Capture and log new investment opportunities from all sourcing channels.
+  ideal_evidence: stated
+  ideal_max_age_months: 36
+- id: screening
+  title: Screening
+  purpose: Assess whether the opportunity fits the investor's mandate, sector focus, and risk appetite.
+  ideal_evidence: stated
+  ideal_max_age_months: 24
+- id: concept
+  title: Concept note
+  purpose: Produce a structured summary of the opportunity for internal review and go/no-go decision.
+  ideal_evidence: supporting
+  ideal_max_age_months: 18
+- id: diligence
+  title: Due diligence
+  purpose: Conduct comprehensive investigation across all activated workstreams to verify claims and assess risks.
+  ideal_evidence: supporting
+  ideal_max_age_months: 18
+- id: approval
+  title: Approval
+  purpose: Compile findings into a formal investment recommendation for the approval committee.
+  ideal_evidence: best
+  ideal_max_age_months: 12
+- id: legal
+  title: Legal documentation
+  purpose: Complete legal due diligence and draft transaction documents including conditions precedent.
+  ideal_evidence: best
+  ideal_max_age_months: 12
+- id: disbursement
+  title: Disbursement
+  purpose: Verify all conditions precedent are met and execute the initial disbursement.
+  ideal_evidence: best
+  ideal_max_age_months: 6
+- id: monitoring
+  title: Monitoring
+  purpose: Track ongoing compliance, financial performance, and covenant adherence post-investment.
+  ideal_evidence: supporting
+  ideal_max_age_months: 18
+- id: exit
+  title: Exit
+  purpose: Manage loan repayment, equity exit, or portfolio wind-down and capture lessons learned.
+  ideal_evidence: supporting
+  ideal_max_age_months: 24

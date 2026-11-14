@@ -1,0 +1,85 @@
+id: CAS_COVENANT_DESIGN_001
+title: Covenant Design
+workstream: WS_FIN
+due_by: diligence
+applies_to: [facility]
+checks:
+- id: OBS_COV_001
+  question: What financial covenants are appropriate based on the entity's financial profile?
+  answer: choice
+  options: [debt_service_coverage, leverage_ratio, current_ratio, minimum_net_worth, debt_to_equity, multiple]
+  assumption: Appropriate financial covenants have been identified for monitoring
+  look_in: [06.03.a]
+  evidence:
+    best: [internal_memo, audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Based on your company's financial profile, which financial covenants do you expect in the loan agreement?
+    Common examples include debt service coverage ratio (DSCR), leverage ratio, current ratio, or minimum net worth.
+    What ratios does your company currently achieve?
+- id: OBS_COV_002
+  question: Are information and reporting covenants clearly defined?
+  answer: yes_no
+  assumption: Borrower reporting obligations are specified and achievable
+  disproved_by: 'no'
+  after: [OBS_COV_001]
+  when:
+  - check: OBS_COV_001
+    is: true
+  look_in: [06.03.a]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: What reporting and information requirements will be in the loan agreement? For example, how frequently will
+    you need to provide financial statements, compliance certificates, and management reports? Can your finance
+    team produce these on time?
+- id: OBS_COV_003
+  question: Are there negative pledge provisions and restrictions on additional indebtedness?
+  answer: yes_no
+  assumption: Borrower's ability to incur additional debt is appropriately restricted
+  disproved_by: 'no'
+  after: [OBS_COV_001]
+  when:
+  - check: OBS_COV_001
+    is: true
+  look_in: [06.03.a]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Will the loan agreement include a negative pledge (preventing you from granting security to other lenders)
+    or restrictions on taking on additional debt? Are these restrictions workable for your business plans?
+- id: OBS_COV_004
+  question: Are financial covenant levels set with appropriate headroom above current performance?
+  answer: yes_no
+  assumption: Covenant levels provide a meaningful early warning without being too tight
+  disproved_by: 'no'
+  after: [OBS_COV_001]
+  when:
+  - check: OBS_COV_001
+    is: true
+  look_in: [06.03.a]
+  evidence:
+    best: [internal_memo, company_record]
+    supporting: [management_accounts]
+    stated: [correspondence, call, officer_note]
+  ask: Are the proposed covenant levels realistic? For example, if a DSCR covenant is set at 1.2x, does your company
+    currently achieve at least 1.5x to provide a reasonable cushion? Have you tested covenant levels under downside
+    scenarios?
+- id: OBS_COV_005
+  question: Are cure rights and remedy provisions defined for covenant breaches?
+  answer: yes_no
+  assumption: Clear remediation process exists if covenants are breached
+  disproved_by: 'no'
+  after: [OBS_COV_001]
+  when:
+  - check: OBS_COV_001
+    is: true
+  look_in: [06.03.a]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [internal_memo, legal_opinion]
+    stated: [correspondence, call, officer_note]
+  ask: If a financial covenant is breached, what happens? Is there a cure period (time to fix the breach)? Can the
+    sponsor inject equity to cure? What are the lender's remedies — waiver, acceleration, or other consequences?

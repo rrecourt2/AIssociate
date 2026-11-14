@@ -1,0 +1,82 @@
+id: CAS_LEGAL_CAPACITY_001
+title: Legal Capacity to Transact
+workstream: WS_LEG
+due_by: diligence
+applies_to: [borrower]
+checks:
+- id: OBS_LEGAL_001
+  question: Is the entity duly incorporated and registered?
+  answer: yes_no
+  assumption: Entity is a legally constituted body
+  disproved_by: 'no'
+  due_by: screening
+  look_in: [01.01.a]
+  evidence:
+    best: [certificate_of_incorporation, registry_extract]
+    supporting: [legal_opinion]
+    stated: [correspondence]
+  ask: Is your company formally registered and incorporated under the laws of its country? Please share a copy of
+    your certificate of incorporation or equivalent registration document.
+- id: OBS_LEGAL_002
+  question: Is the entity in good standing with the company registry?
+  answer: yes_no
+  assumption: Entity is current on statutory filings and fees
+  disproved_by: 'no'
+  due_by: concept
+  after: [OBS_LEGAL_001]
+  when:
+  - check: OBS_LEGAL_001
+    is: true
+  evidence:
+    best: [registry_extract]
+    supporting: [legal_opinion, tax_clearance]
+    stated: [correspondence, call, officer_note]
+  ask: Is your company in good standing with the relevant company registry? This means all annual returns have been
+    filed and registration fees are current. A recent registry search or good standing certificate would be ideal.
+- id: OBS_LEGAL_003
+  question: Do the entity's constitutional documents permit borrowing?
+  answer: yes_no
+  assumption: Entity has legal authority to incur debt
+  disproved_by: 'no'
+  after: [OBS_LEGAL_001]
+  when:
+  - check: OBS_LEGAL_001
+    is: true
+  look_in: [01.02.a]
+  evidence:
+    best: [memorandum_and_articles]
+    supporting: [legal_opinion]
+    stated: [correspondence]
+  ask: Do your company's founding documents (articles of association, memorandum, or bylaws) allow the company to
+    borrow money and enter into loan agreements? Some companies have restrictions in their constitutional documents.
+- id: OBS_LEGAL_004
+  question: Has a board resolution been passed authorizing the proposed transaction?
+  answer: yes_no
+  assumption: Transaction has proper corporate authorization
+  disproved_by: 'no'
+  after: [OBS_LEGAL_003]
+  when:
+  - check: OBS_LEGAL_003
+    is: true
+  look_in: [01.03.a]
+  evidence:
+    best: [board_resolution, shareholder_resolution]
+    supporting: [board_minutes]
+    stated: [correspondence]
+  ask: Has your board of directors (or shareholders, if required) passed a formal resolution authorizing the company
+    to enter into this specific financing transaction? If not yet, is this planned before signing?
+- id: OBS_LEGAL_005
+  question: What steps are required to restore good standing?
+  answer: choice
+  options: [file_annual_returns, pay_fees, resolve_dispute, reinstatement_required, unknown]
+  assumption: Good standing issues are straightforward to resolve
+  after: [OBS_LEGAL_002]
+  when:
+  - check: OBS_LEGAL_002
+    is: false
+  evidence:
+    best: [legal_opinion, regulatory_document]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: If your company is not currently in good standing with the registry, what steps are needed to restore it?
+    For example, are there overdue annual filings, outstanding fees, or other issues to resolve?

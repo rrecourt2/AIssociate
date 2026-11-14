@@ -1,0 +1,62 @@
+id: CAS_SECURITY_LEGAL_001
+title: Security Package Legal Review
+workstream: WS_LEG
+due_by: diligence
+applies_to: [facility]
+checks:
+- id: OBS_SECLG_001
+  question: Can the proposed security interest be legally created under the relevant jurisdiction?
+  answer: yes_no
+  assumption: Legal framework supports creation of the proposed security
+  disproved_by: 'no'
+  evidence:
+    best: [legal_opinion]
+    supporting: [internal_memo]
+    stated: [correspondence]
+  ask: Under the laws of your country, can the type of security we are proposing (e.g., mortgage, pledge, assignment)
+    be legally created? A legal opinion from local counsel confirming enforceability would be very helpful.
+- id: OBS_SECLG_002
+  question: Are there existing security interests, liens, or encumbrances on the proposed collateral?
+  answer: yes_no
+  assumption: Proposed collateral is unencumbered
+  disproved_by: 'yes'
+  after: [OBS_SECLG_001]
+  when:
+  - check: OBS_SECLG_001
+    is: true
+  evidence:
+    best: [registry_extract, legal_opinion]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Are there any existing mortgages, pledges, liens, or other charges registered against the assets you are
+    proposing as security? A search of the relevant asset registry (company registry, land registry, etc.) would
+    confirm this.
+- id: OBS_SECLG_003
+  question: Is registration or perfection of the security interest possible in the relevant jurisdiction?
+  answer: yes_no
+  assumption: Security can be perfected to achieve priority over other creditors
+  disproved_by: 'no'
+  after: [OBS_SECLG_001]
+  when:
+  - check: OBS_SECLG_001
+    is: true
+  evidence:
+    best: [legal_opinion]
+    supporting: [regulatory_document]
+    stated: [correspondence]
+  ask: Can the security interest be registered or perfected under local law? Registration is essential to establish
+    priority over other creditors. What registry is applicable and what are the typical timelines and costs?
+- id: OBS_SECLG_004
+  question: Are there any legal impediments to enforcement of the security in a default scenario?
+  answer: yes_no
+  assumption: Security can be enforced without material legal barriers
+  disproved_by: 'yes'
+  after: [OBS_SECLG_001]
+  evidence:
+    best: [legal_opinion]
+    supporting: [internal_memo]
+    stated: [correspondence]
+  ask: Are there any legal barriers to enforcing the security if the borrower defaults? For example, are there moratorium
+    provisions, employee or government priority claims, or restrictions on foreign creditor enforcement under local
+    law?
+  if_unknown: Enforcement regime not assessed for this jurisdiction

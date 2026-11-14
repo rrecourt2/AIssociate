@@ -1,0 +1,25 @@
+subject_kinds:
+- id: party
+  prefix: P
+  title: Party
+  description: A company, a person or a public body.
+- id: facility
+  prefix: L
+  title: Facility
+  description: A loan, a guarantee facility or another financing, proposed or existing.
+- id: contract
+  prefix: C
+  title: Contract
+  description: A contract that matters for repayment.
+- id: asset
+  prefix: A
+  title: Asset
+  description: A plant, a site, a property or another asset.
+- id: project
+  prefix: J
+  title: Project
+  description: A project that is financed or built.
+- id: group
+  prefix: G
+  title: Group
+  description: Parties that report or are treated together, such as a consolidated group.

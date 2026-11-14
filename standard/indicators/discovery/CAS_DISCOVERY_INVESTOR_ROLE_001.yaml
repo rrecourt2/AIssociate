@@ -1,0 +1,58 @@
+id: CAS_DISCOVERY_INVESTOR_ROLE_001
+title: Investor Position Discovery
+workstream: WS_FIN
+due_by: screening
+applies_to: [deal]
+checks:
+- id: OBS_INVESTOR_ROLE_001
+  question: What is the investor's position in the capital structure?
+  answer: choice
+  options: [senior_secured, senior_unsecured, subordinated, mezzanine, preferred_equity, common_equity, co_invest,
+    guarantee]
+  look_in: [10.01.a, 01.01.a]
+  evidence:
+    best: [term_sheet]
+    supporting: [internal_memo]
+    stated: [call, officer_note, correspondence]
+  ask: What type of capital is being provided or raised? Senior debt (secured or unsecured), junior/mezzanine debt,
+    preferred or common equity, co-investment, or a guarantee?
+  ask_whom: lender
+  if_unknown: Capital structure position unknown — thesis frame cannot be set
+- id: OBS_INVESTOR_ROLE_002
+  question: Is there an existing capital structure (other layers of financing)?
+  answer: yes_no
+  after: [OBS_INVESTOR_ROLE_001]
+  look_in: [03.01.a, 10.01.a]
+  evidence:
+    best: [audited_annual_report, facility_agreement]
+    supporting: [management_accounts, term_sheet]
+    stated: [call, officer_note, correspondence]
+  ask: Does the entity already have other financing in place (existing loans, bonds, equity investors)? We need
+    to understand how the new capital fits alongside existing commitments.
+- id: OBS_INVESTOR_ROLE_003
+  question: What is the full capital structure?
+  answer: text
+  after: [OBS_INVESTOR_ROLE_002]
+  when:
+  - check: OBS_INVESTOR_ROLE_002
+    is: true
+  look_in: [03.01.a, 10.01.a, 10.02.a]
+  evidence:
+    best: [audited_annual_report, facility_agreement]
+    supporting: [management_accounts, shareholder_register]
+    stated: [internal_memo]
+  ask: Can you provide details of the full capital structure? This includes all existing debt facilities (amounts,
+    seniority, maturity, lender), equity contributions, and any shareholder loans. A capitalization table or summary
+    is ideal.
+  if_unknown: Full capital structure not available — intercreditor and structural analysis limited
+- id: OBS_INVESTOR_ROLE_004
+  question: Are multiple capital structure positions being targeted?
+  answer: yes_no
+  after: [OBS_INVESTOR_ROLE_001]
+  look_in: [01.01.a]
+  evidence:
+    best: [term_sheet, internal_memo]
+    stated: [call, officer_note, correspondence]
+  ask: Is the entity raising capital across multiple layers of the structure simultaneously? For example, raising
+    both senior debt and equity, or senior and mezzanine tranches?
+  ask_whom: lender

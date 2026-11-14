@@ -1,0 +1,67 @@
+link_types:
+- id: borrows
+  title: Borrows under
+  description: The party borrows under the facility.
+  role_from: borrower
+- id: guarantees
+  title: Guarantees
+  description: The party guarantees the facility or another party's obligations.
+  role_from: guarantor
+- id: sponsors
+  title: Sponsors
+  description: The party stands behind another party or a project as its main shareholder or promoter.
+  role_from: sponsor
+- id: owns
+  title: Owns
+  description: The party owns shares in another party, or owns an asset or a project.
+  role_from: shareholder
+- id: controls
+  title: Controls
+  description: The party controls another party without owning it, for example through voting rights or management.
+- id: member_of
+  title: Is a member of
+  description: The party belongs to a group.
+- id: supplies_to
+  title: Supplies to
+  description: The party supplies goods or services to another party.
+  role_from: supplier
+- id: sells_to
+  title: Sells to
+  description: The party sells to another party.
+  role_to: customer
+- id: lends_to
+  title: Lends to
+  description: The party lends to another party, including loans within a group.
+  role_from: lender
+- id: operates
+  title: Operates
+  description: The party operates an asset or a project.
+  role_from: operator
+- id: builds
+  title: Builds
+  description: The party builds an asset or a project.
+  role_from: contractor
+- id: party_to
+  title: Is a party to
+  description: The party is a party to a contract.
+- id: secures
+  title: Is security for
+  description: The asset is security for the facility.
+- id: ranks_behind
+  title: Ranks behind
+  description: The facility ranks behind another facility.
+- id: part_of
+  title: Is part of
+  description: One thing is part of another, such as a tranche of a facility or an asset of a project.
+- id: supports
+  title: Gives support to
+  description: The party has given a support undertaking that is not a guarantee.
+- id: completion_support
+  title: Supports completion of
+  description: The party supports the completion of a project or the facility that finances it.
+- id: portfolio_support
+  title: Supports within a portfolio
+  description: One project or party supports another, for example through a cash sweep or shared reserves.
+- id: other
+  title: Other link
+  description: Any other link. Say what it is in the reason.

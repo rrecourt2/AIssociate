@@ -1,0 +1,74 @@
+id: CAS_COMPLETION_SUPPORT_001
+title: Completion Support Assessment
+workstream: WS_FIN
+due_by: diligence
+applies_to: [completion_support]
+checks:
+- id: OBS_COMPSUPPORT_001
+  question: Does this guarantee or undertaking support project completion or performance?
+  answer: yes_no
+  why: Completion support can be a core mitigant for construction-phase project finance
+  due_by: screening
+  evidence:
+    best: [guarantee_agreement, facility_agreement]
+    supporting: [term_sheet, internal_memo]
+    stated: [call, officer_note, correspondence]
+  ask: Does this guarantee or support undertaking cover project completion, commissioning, performance tests, or
+    cost-to-complete obligations?
+- id: OBS_COMPSUPPORT_002
+  question: What event triggers the completion support?
+  answer: choice
+  options: [completion_delay, cost_overrun, performance_test_failure, debt_service_shortfall, event_of_default,
+    other, unclear]
+  many: true
+  why: Trigger events determine when support is actually available
+  after: [OBS_COMPSUPPORT_001]
+  when:
+  - check: OBS_COMPSUPPORT_001
+    is: true
+  evidence:
+    best: [guarantee_agreement, facility_agreement]
+    supporting: [term_sheet, legal_opinion]
+    stated: [correspondence]
+- id: OBS_COMPSUPPORT_003
+  question: What event releases the completion support?
+  answer: choice
+  options: [project_completion, financial_completion, commercial_operation_date, completion_certificate, dsra_funded,
+    facility_repaid, other, unclear]
+  many: true
+  why: Release events define how long the support remains available
+  after: [OBS_COMPSUPPORT_001]
+  when:
+  - check: OBS_COMPSUPPORT_001
+    is: true
+  evidence:
+    best: [guarantee_agreement, facility_agreement]
+    supporting: [term_sheet, legal_opinion]
+    stated: [correspondence]
+- id: OBS_COMPSUPPORT_004
+  question: What evidence is required to prove the release event?
+  answer: choice
+  options: [independent_engineer_certificate, completion_certificate, lender_approval, rating_letter, operating_test_report,
+    other, unclear]
+  many: true
+  why: Release should depend on objective evidence rather than an unsupported assertion
+  after: [OBS_COMPSUPPORT_003]
+  when:
+  - check: OBS_COMPSUPPORT_001
+    is: true
+  evidence:
+    best: [guarantee_agreement, facility_agreement]
+    supporting: [term_sheet, legal_opinion]
+    stated: [correspondence]
+- id: OBS_COMPSUPPORT_005
+  question: Is the completion support enforceable and capped at an adequate level?
+  answer: yes_no
+  why: Weak enforceability or a low cap can make completion support ineffective
+  after: [OBS_COMPSUPPORT_001]
+  when:
+  - check: OBS_COMPSUPPORT_001
+    is: true
+  evidence:
+    best: [legal_opinion, guarantee_agreement]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence]

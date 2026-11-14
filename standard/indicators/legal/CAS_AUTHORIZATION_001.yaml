@@ -1,0 +1,83 @@
+id: CAS_AUTHORIZATION_001
+title: Transaction Authorization
+workstream: WS_LEG
+due_by: diligence
+applies_to: [deal]
+checks:
+- id: OBS_AUTH_001
+  question: Is there a board resolution authorizing the proposed transaction?
+  answer: yes_no
+  assumption: Transaction has proper corporate authorization
+  disproved_by: 'no'
+  due_by: screening
+  look_in: [02.03.a]
+  evidence:
+    best: [board_resolution, shareholder_resolution]
+    supporting: [board_minutes]
+    stated: [correspondence]
+  ask: Has your board of directors passed a resolution specifically authorizing this financing transaction? Please
+    share a copy of the board resolution or the relevant extract from the board minutes.
+- id: OBS_AUTH_002
+  question: Has legal counsel reviewed the authorization and confirmed it is sufficient?
+  answer: yes_no
+  assumption: Authorization has been independently verified as adequate
+  disproved_by: 'no'
+  after: [OBS_AUTH_001]
+  when:
+  - check: OBS_AUTH_001
+    is: true
+  look_in: [02.03.a]
+  evidence:
+    best: [legal_opinion]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Has your legal counsel reviewed the board resolution and confirmed that it properly authorizes this transaction?
+    A legal opinion or confirmation letter would be ideal.
+- id: OBS_AUTH_003
+  question: Are there signing authority limits, and does this transaction fall within them?
+  answer: yes_no
+  assumption: Signatories have authority to bind the entity for this amount
+  disproved_by: 'no'
+  after: [OBS_AUTH_001]
+  when:
+  - check: OBS_AUTH_001
+    is: true
+  look_in: [02.03.a]
+  evidence:
+    best: [board_resolution, memorandum_and_articles]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Does your company have signing authority limits (e.g., a maximum amount that certain officers can authorize)?
+    If so, does this transaction fall within those limits, or is additional approval needed?
+- id: OBS_AUTH_004
+  question: Do the articles of association permit this type of transaction?
+  answer: yes_no
+  assumption: Constitutional documents allow this class of transaction
+  disproved_by: 'no'
+  after: [OBS_AUTH_003]
+  when:
+  - check: OBS_AUTH_003
+    is: true
+  look_in: [02.02.a]
+  evidence:
+    best: [memorandum_and_articles]
+    supporting: [legal_opinion]
+    stated: [correspondence]
+  ask: Do your company's articles of association or bylaws specifically allow this type of financing arrangement?
+    Some companies have restrictions on certain financing contexts or borrowing limits in their constitutional documents.
+- id: OBS_AUTH_005
+  question: What steps are required to obtain proper authorization?
+  answer: choice
+  options: [board_meeting_required, shareholder_approval_required, amendment_to_articles_required, already_scheduled,
+    unknown]
+  assumption: Authorization gap can be resolved before signing
+  after: [OBS_AUTH_001]
+  when:
+  - check: OBS_AUTH_001
+    is: false
+  evidence:
+    best: [legal_opinion]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: If a board resolution has not yet been passed, what steps are needed to obtain authorization? Is a board
+    meeting already scheduled? Does this require shareholder approval in addition to board approval?

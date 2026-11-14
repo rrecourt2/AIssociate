@@ -1,0 +1,99 @@
+id: CAS_COVERAGE_001
+title: Insurance Coverage
+workstream: WS_INS
+due_by: diligence
+applies_to: [borrower]
+why_it_matters:
+  debt: Inadequate insurance creates unhedged tail risk for lenders
+  equity: Insurance is a cost and risk transfer mechanism, not a value driver
+  hybrid: insurance adequacy for loss absorption capacity
+matters_more_when:
+- check: OBS_SECTOR_001
+  is: real_estate
+  reason: Real estate — property insurance and business interruption coverage are standard requirements
+- check: OBS_SECTOR_001
+  is: infrastructure
+  reason: Infrastructure — insurance requirements typically mandated by concession or regulation
+- check: OBS_COLLATERAL_001
+  is: single_asset
+  reason: Single asset — insurance is critical because there is no diversification buffer
+matters_less_when:
+- check: OBS_COLLATERAL_001
+  is: unsecured
+  reason: Unsecured — insurance matters less when there is no physical collateral to protect
+checks:
+- id: OBS_INS_001
+  question: Does the entity maintain insurance coverage?
+  answer: yes_no
+  assumption: Entity carries insurance
+  disproved_by: 'no'
+  due_by: screening
+  look_in: [07.01.a]
+  evidence:
+    best: [insurance_policy]
+    supporting: [insurance_broker_report, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Does your entity maintain any insurance coverage? A copy of your insurance certificate, policy schedule,
+    or broker's confirmation letter would be ideal. Even a list of current policies is helpful.
+  if_unknown: Insurance status unknown — unquantified risk transfer gap
+- id: OBS_INS_002
+  question: What types of insurance coverage are in place?
+  answer: choice
+  options: [property, liability, business_interruption, key_person, other]
+  assumption: Insurance coverage types are identified
+  after: [OBS_INS_001]
+  when:
+  - check: OBS_INS_001
+    is: true
+  evidence:
+    best: [insurance_policy]
+    supporting: [insurance_broker_report]
+    stated: [correspondence, call, officer_note]
+  ask: What types of insurance does your entity carry? Common types include property/assets, general liability,
+    business interruption, and key person insurance. A policy schedule or broker summary is ideal.
+- id: OBS_INS_003
+  question: Is the sum insured adequate relative to asset replacement values and revenue exposure?
+  answer: yes_no
+  assumption: Insurance coverage is adequate relative to exposure
+  disproved_by: 'no'
+  after: [OBS_INS_001]
+  when:
+  - check: OBS_INS_001
+    is: true
+  evidence:
+    best: [insurance_policy, valuation_report]
+    supporting: [insurance_broker_report, company_record]
+    stated: [correspondence]
+  ask: Is the total sum insured sufficient to cover your asset replacement values and revenue exposure? We will
+    compare your policy limits against your asset values and turnover to check for underinsurance.
+  if_unknown: Insurance adequacy not verified — potential underinsurance exposure
+- id: OBS_INS_004
+  question: Are there material coverage gaps or exclusions in current policies?
+  answer: yes_no
+  assumption: No material gaps or exclusions in insurance coverage
+  disproved_by: 'yes'
+  after: [OBS_INS_001]
+  when:
+  - check: OBS_INS_001
+    is: true
+  evidence:
+    best: [insurance_policy, insurance_broker_report]
+    supporting: [consultant_report]
+    stated: [correspondence]
+  ask: Are there any significant gaps or exclusions in your current insurance coverage? Common gaps include natural
+    catastrophe (flood, earthquake), cyber risk, political risk, or specific equipment breakdown.
+- id: OBS_INS_005
+  question: Are insurance premiums current and all policies active?
+  answer: yes_no
+  assumption: All insurance policies are active and premiums are paid
+  disproved_by: 'no'
+  after: [OBS_INS_001]
+  when:
+  - check: OBS_INS_001
+    is: true
+  evidence:
+    best: [insurance_policy, bank_statement]
+    supporting: [insurance_broker_report]
+    stated: [correspondence, call, officer_note]
+  ask: Are all your insurance premiums paid up to date and all policies currently active? A broker confirmation
+    or recent premium receipt would confirm this.

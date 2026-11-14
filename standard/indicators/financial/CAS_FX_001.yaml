@@ -1,0 +1,252 @@
+id: CAS_FX_001
+title: Foreign Exchange Risk Assessment
+workstream: WS_FIN
+due_by: diligence
+applies_to: [borrower, guarantor]
+why_it_matters:
+  debt: Unhedged FX exposure can create cash flow volatility affecting debt service
+  equity: FX exposure is a risk factor, not a value driver for equity
+matters_more_when:
+- check: OBS_SECTOR_001
+  is: corporate
+  reason: Corporate entities more likely to have cross-border revenue/cost mismatches
+- check: OBS_VALUE_CHAIN_001
+  is: primary_producer
+  reason: Primary producers often sell in USD but incur costs in local currency
+- check: OBS_VALUE_CHAIN_001
+  is: manufacturer
+  reason: Manufacturers may have imported input costs creating natural FX exposure
+risk:
+  statement: This party has material currency mismatch or convertibility exposure
+  checks: [OBS_FX_001, OBS_FX_002, OBS_FX_003, OBS_FX_007, OBS_FX_008, OBS_FX_TRANSLATION_001, OBS_FX_CAPEX_001,
+    OBS_FX_CAPITAL_CONTROLS_001, OBS_FX_INPUT_001, OBS_FX_PASSTHROUGH_001]
+mitigant:
+  statement: FX exposure is adequately mitigated through hedging or natural offsets
+  checks: [OBS_HEDGE_001, OBS_HEDGE_002, OBS_HEDGE_003, OBS_HEDGE_004, OBS_HEDGE_TENOR_001, OBS_HEDGE_COUNTERPARTY_001]
+look_again_when:
+- new_source: hedge_document
+  reason: New hedging documentation filed — re-evaluate mitigation adequacy
+- check: OBS_REV_003
+  is: true
+  reason: Revenue geographic mix changed — FX exposure may have shifted
+- older_than_days: 180
+  checks: [OBS_FX_002, OBS_HEDGE_003]
+  reason: FX percentage and hedge coverage data older than 6 months
+checks:
+- id: OBS_FX_001
+  question: Does the entity have material foreign currency revenue?
+  answer: yes_no
+  assumption: Entity has no FX exposure
+  disproved_by: 'yes'
+  due_by: screening
+  look_in: [03.01.a, 03.02.a]
+  evidence:
+    best: [audited_annual_report, management_accounts]
+    supporting: [internal_memo, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Does your company earn revenue in foreign currencies? You can answer with a revenue breakdown by currency,
+    your latest annual report, or simply tell us the approximate share.
+  note: 'If no: confirm cost, debt-service, translation, capex and convertibility exposure before treating currency
+    risk as closed.'
+- id: OBS_FX_002
+  question: What percentage of revenue is in foreign currency?
+  answer: number
+  unit: percent
+  assumption: FX revenue is immaterial
+  flag_when: above 20
+  after: [OBS_FX_001]
+  when:
+  - check: OBS_FX_001
+    is: true
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, internal_memo]
+    stated: [correspondence]
+  ask: What share of your revenue comes from foreign currencies? A rough percentage is fine at this stage.
+- id: OBS_FX_003
+  question: In which currencies does the entity earn revenue?
+  answer: choice
+  options: [USD, EUR, GBP, local_only, multiple]
+  assumption: FX exposure is in stable currencies only
+  flag_when: is multiple
+  after: [OBS_FX_001]
+  when:
+  - check: OBS_FX_001
+    is: true
+- id: OBS_FX_007
+  question: Does the entity have any foreign-currency-denominated costs?
+  answer: yes_no
+  assumption: Entity has zero FX exposure
+  disproved_by: 'yes'
+  after: [OBS_FX_001]
+  if_unknown: Cost currency breakdown not available in current documents
+- id: OBS_FX_008
+  question: Is debt service or borrowing denominated in a currency different from the entity's operating cash flows?
+  answer: yes_no
+  assumption: Debt service currency is naturally matched to operating cash flows
+  disproved_by: 'yes'
+  after: [OBS_FX_001]
+  evidence:
+    best: [facility_agreement, term_sheet, audited_annual_report]
+    supporting: [management_accounts, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Is any borrowing or debt service in a different currency from the cash flows used to repay it? For example,
+    USD or EUR debt serviced from local-currency revenue.
+- id: OBS_FX_INPUT_001
+  question: What share of input costs is imported or priced on import parity (FX-linked)?
+  answer: number
+  unit: percent
+  assumption: Input costs are local-currency with no import linkage
+  flag_when: above 25
+  after: [OBS_FX_007]
+  when:
+  - check: OBS_FX_008
+    is: true
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Roughly what share of your input costs is imported, or priced off international markets in hard currency
+    even when billed locally (for example imported gas, fuels, or raw materials)? Raw materials in transit and import
+    letters of credit in your accounts are useful reference points.
+- id: OBS_FX_PASSTHROUGH_001
+  question: Can FX-driven input cost increases be passed through to selling prices within one quarter?
+  answer: choice
+  options: [full_passthrough, partial, administered_prices, none]
+  assumption: Pricing freedom absorbs FX-driven cost shocks
+  flag_when: is administered_prices
+  after: [OBS_FX_INPUT_001]
+  evidence:
+    best: [management_accounts, internal_memo]
+    supporting: [management_presentation]
+    stated: [correspondence, call, officer_note]
+  ask: When a weaker currency raises your input costs, can you raise selling prices to match within a quarter —
+    fully, partly, or are your prices administered or capped by policy?
+- id: OBS_FX_TRANSLATION_001
+  question: Are material assets, liabilities, or earnings translated from foreign currencies?
+  answer: yes_no
+  assumption: Foreign-currency translation exposure is immaterial
+  disproved_by: 'yes'
+  after: [OBS_FX_001]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Do you have material assets, liabilities, subsidiaries, or earnings that are reported in a different currency
+    and translated into your reporting currency?
+- id: OBS_FX_CAPEX_001
+  question: Are material capex or procurement commitments denominated in foreign currency?
+  answer: yes_no
+  assumption: Capital expenditure and procurement are naturally currency-matched
+  disproved_by: 'yes'
+  after: [OBS_FX_001]
+  evidence:
+    best: [financial_projections, material_contract, audited_annual_report]
+    supporting: [management_accounts, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Are any major capex, equipment, or procurement commitments priced in a foreign currency?
+- id: OBS_FX_CAPITAL_CONTROLS_001
+  question: Could capital controls or convertibility restrictions affect debt service or cash movement?
+  answer: yes_no
+  assumption: Cash can be converted and transferred without material restriction
+  disproved_by: 'yes'
+  after: [OBS_FX_001]
+  evidence:
+    best: [legal_opinion, consultant_report]
+    supporting: [internal_memo, management_presentation]
+    stated: [correspondence, call, officer_note]
+  ask: Are there any capital controls, convertibility limits, or transfer restrictions that could affect cash movement
+    or debt service?
+- id: OBS_HEDGE_001
+  question: Does the entity have a formal FX hedging policy or documented FX hedge programme?
+  answer: yes_no
+  assumption: Entity manages FX risk through documented policy or hedge programme
+  disproved_by: 'no'
+  after: [OBS_FX_001]
+  when:
+  - check: OBS_FX_001
+    is: true
+  - check: OBS_FX_007
+    is: true
+  - check: OBS_FX_008
+    is: true
+  - check: OBS_FX_TRANSLATION_001
+    is: true
+  - check: OBS_FX_CAPEX_001
+    is: true
+  - check: OBS_FX_CAPITAL_CONTROLS_001
+    is: true
+  look_in: [06.01.a]
+  evidence:
+    best: [corporate_governance_policy]
+    supporting: [internal_memo, management_presentation]
+    stated: [correspondence, call, officer_note]
+  ask: Does your company have a written policy or documented hedge programme for managing foreign exchange risk?
+    This could be a treasury policy, risk management framework, board-approved hedging guidelines, or documented
+    hedge confirmations.
+- id: OBS_HEDGE_002
+  question: What hedging instruments are used?
+  answer: choice
+  options: [forwards, options, swaps, natural_hedging, none]
+  many: true
+  assumption: Entity uses appropriate hedging instruments for its risk profile
+  after: [OBS_HEDGE_001]
+  when:
+  - check: OBS_HEDGE_001
+    is: true
+  ask: What types of hedging instruments does your company use to manage foreign exchange risk? Common examples
+    include forward contracts, options, or currency swaps.
+- id: OBS_HEDGE_003
+  question: What percentage of FX exposure is hedged?
+  answer: number
+  unit: percent
+  assumption: Entity has adequate hedge coverage
+  flag_when: at most 50
+  after: [OBS_HEDGE_001]
+  when:
+  - check: OBS_HEDGE_001
+    is: true
+  evidence:
+    best: [management_accounts, hedge_document]
+    supporting: [internal_memo]
+    stated: [correspondence]
+  ask: What portion of your foreign currency exposure is currently hedged? An approximate percentage is fine.
+  note: This is the company's own statement of adequacy. Look for independent support.
+- id: OBS_HEDGE_004
+  question: Is there a natural FX offset from costs in the same currency?
+  answer: yes_no
+  assumption: Unhedged FX exposure is truly unmitigated
+  disproved_by: 'yes'
+  after: [OBS_HEDGE_001]
+  when:
+  - check: OBS_HEDGE_001
+    is: false
+  ask: Even without a formal hedging policy, does your company have significant costs in the same foreign currencies
+    as your revenue? This natural offset can reduce risk without formal hedging.
+- id: OBS_HEDGE_TENOR_001
+  question: Does hedge tenor cover the relevant exposure or debt-service period?
+  answer: yes_no
+  assumption: Hedges mature before the relevant exposure period
+  disproved_by: 'yes'
+  after: [OBS_HEDGE_001]
+  when:
+  - check: OBS_HEDGE_001
+    is: true
+  evidence:
+    best: [hedge_document]
+    supporting: [internal_memo, management_accounts]
+    stated: [correspondence]
+  ask: Do the hedges cover the same period as the underlying foreign-currency exposure or debt-service period?
+- id: OBS_HEDGE_COUNTERPARTY_001
+  question: Are hedge counterparties creditworthy and documented under enforceable agreements?
+  answer: yes_no
+  why: Hedge counterparty or documentation risk can undermine mitigation
+  after: [OBS_HEDGE_001]
+  when:
+  - check: OBS_HEDGE_001
+    is: true
+  evidence:
+    best: [hedge_document, credit_rating_report]
+    supporting: [internal_memo, management_presentation]
+    stated: [correspondence]
+  ask: Are the hedge counterparties acceptable credit institutions, and are the hedge agreements properly documented?

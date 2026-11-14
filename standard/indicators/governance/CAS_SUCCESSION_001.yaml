@@ -1,0 +1,68 @@
+id: CAS_SUCCESSION_001
+title: Key Person & Succession
+workstream: WS_GOV
+due_by: diligence
+applies_to: [borrower]
+checks:
+- id: OBS_SUCC_001
+  question: Is the entity dependent on key individuals?
+  answer: yes_no
+  assumption: Entity operations do not depend critically on specific individuals
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [02.01.a]
+  evidence:
+    best: [management_presentation, organizational_chart]
+    supporting: [audited_annual_report, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Is your company heavily dependent on one or a few key individuals — people whose departure would significantly
+    disrupt operations, client relationships, or strategic direction? This often includes founders, CEOs, or technical
+    leads with unique expertise.
+- id: OBS_SUCC_002
+  question: Is there a documented succession plan?
+  answer: yes_no
+  assumption: Entity has a plan for leadership continuity
+  disproved_by: 'no'
+  after: [OBS_SUCC_001]
+  when:
+  - check: OBS_SUCC_001
+    is: true
+  evidence:
+    best: [company_record, board_resolution]
+    supporting: [board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: Does your company have a written succession plan that identifies who would step into key roles if current
+    leaders were to leave? This does not need to be a public document — a confidential board-approved plan is sufficient.
+- id: OBS_SUCC_003
+  question: Are key person insurance policies in place?
+  answer: yes_no
+  assumption: Financial exposure from key person loss is mitigated
+  disproved_by: 'no'
+  after: [OBS_SUCC_001]
+  when:
+  - check: OBS_SUCC_001
+    is: true
+  evidence:
+    best: [insurance_policy]
+    supporting: [insurance_broker_report, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: Does your company hold key person insurance — a policy that provides financial protection if a critical individual
+    is unable to work due to death, disability, or incapacitation? If so, which roles are covered and what are the
+    coverage amounts?
+- id: OBS_SUCC_004
+  question: Is there a management team below the key persons?
+  answer: yes_no
+  assumption: There is organizational depth below key individuals
+  disproved_by: 'no'
+  after: [OBS_SUCC_001]
+  when:
+  - check: OBS_SUCC_001
+    is: true
+  look_in: [02.01.a]
+  evidence:
+    best: [organizational_chart, management_presentation]
+    supporting: [audited_annual_report, management_cv]
+    stated: [correspondence, call, officer_note]
+  ask: Below the key individuals, is there a capable management team that handles day-to-day operations? We are
+    looking for evidence that the company is not a one-person operation — for example, department heads, a COO,
+    or senior managers who could maintain operations independently.

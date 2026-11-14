@@ -1,0 +1,90 @@
+id: CAS_ENERGY_CONSTRUCTION_001
+title: Construction & EPC Assessment
+workstream: WS_TO
+due_by: diligence
+applies_to: [project]
+checks:
+- id: OBS_ECON_001
+  question: Does the project have a signed EPC contract or equivalent construction arrangement?
+  answer: yes_no
+  assumption: Construction scope, cost, and timeline are contractually defined
+  disproved_by: 'no'
+  due_by: screening
+  look_in: [06.01.a, 06.02.a]
+  evidence:
+    best: [epc_contract]
+    supporting: [term_sheet, consultant_report]
+    stated: [correspondence, call, officer_note]
+  ask: Does the project have a signed engineering, procurement, and construction (EPC) contract or equivalent construction
+    arrangement? Please share a copy of the EPC contract or term sheet, or describe the construction contracting
+    structure (turnkey, split-contract, owner-managed, etc.).
+  if_unknown: EPC contract status unknown — construction risk cannot be assessed
+- id: OBS_ECON_002
+  question: Does the EPC contractor have a track record of delivering comparable projects?
+  answer: yes_no
+  assumption: Contractor is experienced and capable of delivering this project
+  disproved_by: 'no'
+  after: [OBS_ECON_001]
+  look_in: [06.01.a, 05.01.a]
+  evidence:
+    best: [consultant_report, technical_feasibility]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Does the EPC contractor (or lead construction contractor) have experience delivering projects of comparable
+    technology, scale, and geography? Please share the contractor's reference project list, company profile, or
+    any independent assessment of their track record.
+  if_unknown: Contractor track record not verified — execution risk unclear
+- id: OBS_ECON_003
+  question: Does the EPC contract include a completion guarantee with defined performance standards?
+  answer: yes_no
+  assumption: Completion and performance obligations are contractually allocated to the EPC contractor
+  disproved_by: 'no'
+  after: [OBS_ECON_001]
+  when:
+  - check: OBS_ECON_001
+    is: true
+  look_in: [06.01.a, 06.02.a]
+  evidence:
+    best: [epc_contract]
+    supporting: [legal_opinion, consultant_report]
+    stated: [correspondence]
+  ask: Does the EPC contract include a completion guarantee? Specifically, are there defined performance standards
+    (e.g., minimum capacity, performance ratio) that the contractor must achieve at completion testing? What happens
+    if these standards are not met — are there liquidated damages or a right to reject?
+  if_unknown: Completion guarantee terms not confirmed — risk of underperforming asset
+- id: OBS_ECON_004
+  question: Does the EPC contract include adequate delay and defect liquidated damages provisions?
+  answer: yes_no
+  assumption: Financial remedies exist for construction delays and defects
+  disproved_by: 'no'
+  after: [OBS_ECON_001]
+  when:
+  - check: OBS_ECON_001
+    is: true
+  look_in: [06.01.a, 06.02.a]
+  evidence:
+    best: [epc_contract]
+    supporting: [legal_opinion]
+    stated: [correspondence]
+  ask: Does the EPC contract include liquidated damages for delay and defects? What are the delay LD rates (e.g.,
+    per day or per week), and what is the LD cap as a percentage of contract price? What is the defect liability
+    period? Please share the relevant contract clauses or a summary of the LD provisions.
+  if_unknown: LD provisions not reviewed — financial remedies for delay/defect unclear
+- id: OBS_ECON_005
+  question: How does the construction budget compare to actual costs or independent estimates?
+  answer: choice
+  options: [within_budget, minor_overrun, material_overrun, no_comparison_available]
+  assumption: Construction cost estimates are realistic and independently validated
+  after: [OBS_ECON_001]
+  when:
+  - check: OBS_ECON_001
+    is: true
+  look_in: [05.01.a, 06.01.a]
+  evidence:
+    best: [consultant_report, technical_feasibility]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: How does the construction budget compare to independent cost estimates or actual costs incurred to date?
+    Has an independent quantity surveyor or cost engineer reviewed the budget? For projects already under construction,
+    please share a cost-to-complete analysis or budget vs actuals comparison.
+  if_unknown: Construction cost validation not available — budget realism unconfirmed

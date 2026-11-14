@@ -1,0 +1,96 @@
+id: CAS_FI_GOVERNANCE_001
+title: FI-Specific Governance
+workstream: WS_GOV
+due_by: screening
+applies_to: [borrower]
+applies_when:
+- check: OBS_SECTOR_001
+  is: financial_institution
+- check: OBS_SECTOR_003
+  is: true
+checks:
+- id: OBS_FIG_001
+  question: What is the institution's current central bank supervision status?
+  answer: choice
+  options: [normal, enhanced_monitoring, corrective_action, conservatorship, not_supervised]
+  assumption: Institution is in good standing with the regulator
+  look_in: [09.01.a, 08.01.a]
+  evidence:
+    best: [regulatory_document, audited_annual_report]
+    supporting: [internal_memo, board_minutes]
+    stated: [call, officer_note]
+  ask: What is your institution's current supervisory status with the central bank or primary regulator? Is it normal
+    supervision, or is the institution under any enhanced monitoring, corrective action plan, or other special regulatory
+    measures?
+- id: OBS_FIG_002
+  question: Are there any material regulatory compliance findings in the past 3 years?
+  answer: yes_no
+  assumption: Institution has a clean regulatory compliance history
+  disproved_by: 'yes'
+  after: [OBS_FIG_001]
+  when:
+  - check: OBS_FIG_001
+    is: true
+  look_in: [09.01.a, 08.01.a]
+  evidence:
+    best: [regulatory_document, audited_annual_report]
+    supporting: [internal_memo, board_minutes]
+    stated: [call, officer_note]
+  ask: Has your institution received any material findings, sanctions, penalties, or directives from the central
+    bank or other regulators in the past 3 years? If so, please describe the nature of the findings and what remedial
+    actions have been taken.
+- id: OBS_FIG_003
+  question: Does the institution engage in related party lending?
+  answer: yes_no
+  assumption: No material insider or related party lending exists
+  disproved_by: 'yes'
+  after: [OBS_FIG_001]
+  when:
+  - check: OBS_FIG_001
+    is: true
+  look_in: [03.01.a, 08.01.a]
+  evidence:
+    best: [audited_annual_report, regulatory_document]
+    supporting: [internal_memo, board_minutes]
+    stated: [call, officer_note]
+  ask: Does your institution have any loans or credit facilities extended to directors, shareholders, management,
+    or their related entities? If so, what is the total exposure as a percentage of capital, and are these within
+    regulatory single-borrower and insider lending limits?
+  leads_to:
+  - indicator: CAS_RELATED_PARTY_001
+    is: true
+    reason: Related party lending detected — requires dedicated related party assessment
+- id: OBS_FIG_004
+  question: Does the institution have a functioning risk committee?
+  answer: yes_no
+  assumption: Board-level risk oversight is formally established
+  disproved_by: 'no'
+  after: [OBS_FIG_001]
+  when:
+  - check: OBS_FIG_001
+    is: true
+  look_in: [08.01.a, 02.01.a]
+  evidence:
+    best: [corporate_governance_policy, board_minutes]
+    supporting: [internal_memo, business_plan]
+    stated: [call, officer_note]
+  ask: Does your institution have a dedicated risk management committee at the board level? How often does it meet,
+    and does it have a formal charter or terms of reference? Please share the committee charter or recent meeting
+    minutes if available.
+- id: OBS_FIG_005
+  question: Is the institution subject to independent external audit?
+  answer: yes_no
+  assumption: Financial statements are independently verified
+  disproved_by: 'no'
+  after: [OBS_FIG_001]
+  when:
+  - check: OBS_FIG_001
+    is: true
+  look_in: [03.01.a, 08.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [internal_memo, board_minutes]
+    stated: [call, officer_note]
+  ask: Are your financial statements audited by an independent external auditor? Who is your current auditor, and
+    have there been any auditor changes in the past 3 years? Were there any qualified opinions or emphasis-of-matter
+    paragraphs in recent audit reports?

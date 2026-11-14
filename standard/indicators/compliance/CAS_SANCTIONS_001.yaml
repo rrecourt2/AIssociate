@@ -1,0 +1,76 @@
+id: CAS_SANCTIONS_001
+title: Sanctions Screening
+workstream: WS_CI
+due_by: diligence
+applies_to: [borrower, guarantor, sponsor]
+why_it_matters:
+  debt: Sanctions violation is a hard stop regardless of thesis frame
+  equity: Sanctions violation is a hard stop regardless of thesis frame
+checks:
+- id: OBS_SANC_001
+  question: Has a sanctions screening been performed?
+  answer: yes_no
+  assumption: Entity has been screened against sanctions lists
+  disproved_by: 'no'
+  due_by: screening
+  look_in: [06.02.a]
+  evidence:
+    best: [aml_screening]
+    supporting: [company_certificate, legal_opinion]
+    stated: [correspondence]
+  ask: Has a sanctions screening been performed on your company, its directors, and its beneficial owners? This
+    means checking names against international sanctions lists (UN, EU, OFAC, UK). If a screening has been done,
+    please share the screening report or certificate.
+  if_unknown: Sanctions screening not performed or results not available
+- id: OBS_SANC_002
+  question: Are any entities or persons on sanctions lists?
+  answer: yes_no
+  assumption: No connected parties appear on any sanctions list
+  disproved_by: 'yes'
+  due_by: screening
+  after: [OBS_SANC_001]
+  when:
+  - check: OBS_SANC_001
+    is: true
+  evidence:
+    best: [aml_screening]
+    supporting: [company_certificate, legal_opinion]
+    stated: [correspondence]
+  ask: Did the sanctions screening identify any matches — either exact or potential — against any sanctions list
+    for the company, its directors, shareholders, or beneficial owners?
+  if_unknown: Sanctions match status unresolved — potential matches not cleared
+  note: 'If no: the topic stays relevant for monitoring.'
+- id: OBS_SANC_003
+  question: Are there transactions involving sanctioned jurisdictions?
+  answer: yes_no
+  assumption: Entity has no business activity in or with sanctioned jurisdictions
+  disproved_by: 'yes'
+  due_by: concept
+  after: [OBS_SANC_001]
+  when:
+  - check: OBS_SANC_001
+    is: true
+  evidence:
+    best: [management_accounts, audited_annual_report]
+    supporting: [management_presentation, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Does your company conduct any business with or in jurisdictions that are subject to international sanctions?
+    This includes selling to, buying from, or transiting goods through countries like North Korea, Iran, Syria,
+    Cuba, or Crimea, among others.
+  if_unknown: Geographic exposure to sanctioned jurisdictions not assessed
+- id: OBS_SANC_004
+  question: Is there a sanctions compliance policy?
+  answer: yes_no
+  assumption: Entity has a framework to prevent sanctions violations on an ongoing basis
+  disproved_by: 'no'
+  after: [OBS_SANC_001]
+  when:
+  - check: OBS_SANC_001
+    is: true
+  look_in: [06.02.a]
+  evidence:
+    best: [corporate_governance_policy]
+    supporting: [board_resolution]
+    stated: [correspondence, call, officer_note]
+  ask: Does your company have a written sanctions compliance policy — a document that describes how the company
+    screens counterparties, monitors for sanctions changes, and ensures it does not engage in prohibited transactions?

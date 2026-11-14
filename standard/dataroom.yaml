@@ -1,0 +1,389 @@
+folders:
+- id: '01'
+  title: Business & Project Overview
+  sub_folders:
+  - id: '01.01'
+    title: Transaction Overview
+    slots:
+    - id: 01.01.a
+      title: Investment Memo / Teaser
+      holds: Transaction summary, deal overview, key parties, funding need, use of proceeds, highlights, risks,
+        and contact details.
+      expected: always
+    - id: 01.01.b
+      title: Company / Project Description
+      holds: Business, asset, or project description including history, footprint, products or services, and operating
+        model.
+      expected: always
+    - id: 01.01.e
+      title: Management / Investor Presentation
+      holds: Management, lender, investor, earnings, or board presentation supporting the transaction narrative.
+      expected: sometimes
+  - id: '01.02'
+    title: Timeline & Status
+    slots:
+    - id: 01.02.a
+      title: Uses & Sources / Investment Plan
+      holds: Funding sources, uses, deployment timeline, and reconciliation to the business plan or model.
+      expected: always
+  - id: '01.03'
+    title: Market & Commercial Context
+    slots:
+    - id: 01.03.a
+      title: Market Study
+      holds: Market, demand, competitive, or commercial analysis.
+      expected: sometimes
+- id: '02'
+  title: Corporate Structure & Governance
+  sub_folders:
+  - id: '02.01'
+    title: Constitutional Documents
+    slots:
+    - id: 02.01.a
+      title: Certificate of Incorporation
+      holds: Formation, registration, or equivalent constitutional evidence.
+      expected: always
+    - id: 02.01.b
+      title: Memorandum & Articles of Association
+      holds: Articles, bylaws, constitution, or equivalent governing documents.
+      expected: always
+    - id: 02.01.c
+      title: Certificate of Good Standing
+      holds: Recent good-standing, incumbency, or registry compliance evidence.
+      expected: sometimes
+  - id: '02.02'
+    title: Ownership & Governance
+    slots:
+    - id: 02.02.a
+      title: Board Resolution
+      holds: Board approval, signing authority, and related corporate authorization evidence.
+      expected: always
+    - id: 02.02.b
+      title: Shareholder Agreement
+      holds: Shareholder rights, reserved matters, voting, transfer restrictions, deadlock, and exit terms.
+      expected: sometimes
+    - id: 02.02.c
+      title: Shareholder Resolution
+      holds: Shareholder resolution, written consent, approval, or authorization evidence.
+      expected: sometimes
+    - id: 02.02.g
+      title: JV / Partnership Agreement
+      holds: Joint venture, partnership, consortium, or sponsor-support terms.
+      expected: sometimes
+    - id: 02.02.h
+      title: Proxy Statement / AGM Materials
+      holds: Shareholder meeting, proxy, voting, director-election, or governance materials.
+      expected: sometimes
+    - id: 02.02.i
+      title: Scheme of Arrangement / Restructuring Order
+      holds: Court-sanctioned scheme of arrangement, carve-out, demerger, amalgamation, or group reconstruction
+        documents that change the reporting perimeter.
+      expected: sometimes
+  - id: '02.03'
+    title: Structure Charts
+    slots:
+    - id: 02.03.a
+      title: Organizational Chart
+      holds: Group, ownership, borrower, obligor, sponsor, or perimeter structure chart.
+      expected: always
+  - id: '02.04'
+    title: Beneficial Ownership
+    slots:
+    - id: 02.04.a
+      title: Beneficial Ownership Declaration
+      holds: UBO declaration and ownership/control chain evidence.
+      expected: always
+  - id: '02.05'
+    title: Governance & Management
+    slots:
+    - id: 02.05.a
+      title: Corporate Governance Policy
+      holds: Governance framework, code of conduct, controls, committees, or policies.
+      expected: sometimes
+    - id: 02.05.b
+      title: Management CVs
+      holds: Key management biographies, qualifications, track record, and role summaries.
+      expected: sometimes
+    - id: 02.05.c
+      title: Board Composition
+      holds: Board list, independence, committee membership, and director details.
+      expected: sometimes
+  - id: '02.06'
+    title: KYC & Compliance
+    slots:
+    - id: 02.06.a
+      title: KYC Package
+      holds: Identity, proof of address, director, UBO, and customer due-diligence materials.
+      expected: always
+    - id: 02.06.b
+      title: AML Screening
+      holds: AML, sanctions, adverse media, or screening results.
+      expected: always
+    - id: 02.06.c
+      title: Tax Clearance
+      holds: Tax registration, clearance, or good-standing evidence.
+      expected: sometimes
+    - id: 02.06.d
+      title: Adverse Media / Integrity Screen
+      holds: Adverse media search results, integrity due diligence reports, sanctions and reputation screening with
+        date of search.
+      expected: sometimes
+- id: '03'
+  title: Financial Information
+  sub_folders:
+  - id: '03.01'
+    title: Historical Financials
+    slots:
+    - id: 03.01.a
+      title: Audited Annual Financial Statements
+      holds: Audited annual report or financial statements with opinion and notes.
+      expected: always
+    - id: 03.01.b
+      title: Management Accounts
+      holds: Unaudited monthly or quarterly management accounts.
+      expected: sometimes
+    - id: 03.01.d
+      title: Tax Returns
+      holds: Tax returns, computations, or filed tax schedules.
+      expected: sometimes
+    - id: 03.01.e
+      title: Audit Management Letter
+      holds: Auditor management letter or recommendations.
+      expected: sometimes
+    - id: 03.01.i
+      title: Interim Financial Statements
+      holds: Half-year, quarterly, or interim financial statements and reports.
+      expected: sometimes
+    - id: 03.01.j
+      title: Earnings / Results Release
+      holds: Earnings release, trading update, quarterly results release, or full-year results announcement that
+        may summarize financial performance but is not an audited annual report.
+      expected: sometimes
+  - id: '03.02'
+    title: Forecasts & Models
+    slots:
+    - id: 03.02.a
+      title: Financial Projections
+      holds: Forecasts, budgets, cases, sensitivities, or plan financials.
+      expected: sometimes
+    - id: 03.02.b
+      title: Financial Model
+      holds: Detailed model with assumptions, calculations, outputs, and checks.
+      expected: sometimes
+- id: '04'
+  title: Capital Structure & Financing
+  sub_folders:
+  - id: '04.01'
+    title: Facility Documents
+    slots:
+    - id: 04.01.a
+      title: Facility Agreement / Term Sheet
+      holds: Term sheet, facility agreement, credit agreement, loan agreement, or binding financing terms.
+      expected: always
+    - id: 04.01.b
+      title: Executed Facility Agreement
+      holds: Executed credit, facility, or loan agreement.
+      expected: sometimes
+  - id: '04.02'
+    title: Support & Security
+    slots:
+    - id: 04.02.a
+      title: Guarantee Agreement
+      holds: Guarantee, completion support, shareholder support, or support undertaking.
+      expected: sometimes
+    - id: 04.02.b
+      title: Security Agreement / Collateral Pledge
+      holds: Security agreement, pledge, mortgage, charge, assignment, or collateral document.
+      expected: sometimes
+    - id: 04.02.c
+      title: Intercreditor / Subordination Agreement
+      holds: Intercreditor, priority, subordination, waterfall, or standstill agreement.
+      expected: sometimes
+  - id: '04.03'
+    title: Debt & Capitalization
+    slots:
+    - id: 04.03.a
+      title: Debt Schedule
+      holds: Existing debt, maturities, lenders, ranking, pricing, and covenants.
+      expected: sometimes
+    - id: 04.03.b
+      title: DFI / Multilateral Facility Documentation
+      holds: Development finance institution or multilateral facility agreements, commitment letters, or press confirmations
+        (IFC, DFC, DEG, FMO, EBRD, etc.).
+      expected: sometimes
+- id: '05'
+  title: Assets, Sites & Collateral
+  sub_folders:
+  - id: '05.01'
+    title: Asset & Technical Evidence
+    slots:
+    - id: 05.01.a
+      title: Asset Register / Collateral Description
+      holds: Asset register, collateral description, technical report, or feasibility evidence.
+      expected: sometimes
+  - id: '05.02'
+    title: Valuations
+    slots:
+    - id: 05.02.a
+      title: Valuation Report
+      holds: Independent valuation, appraisal, NAV, or fair-value report.
+      expected: sometimes
+- id: '06'
+  title: Material Contracts
+  sub_folders:
+  - id: '06.01'
+    title: Commercial Contracts
+    slots:
+    - id: 06.01.a
+      title: Material Commercial Contract
+      holds: Offtake, sales, concession, customer, or other material commercial contract.
+      expected: sometimes
+  - id: '06.02'
+    title: Construction Contracts
+    slots:
+    - id: 06.02.a
+      title: EPC / Construction Contract
+      holds: Engineering, procurement, construction, or development contract.
+      expected: sometimes
+  - id: '06.03'
+    title: Operations Contracts
+    slots:
+    - id: 06.03.a
+      title: Operations & Maintenance Agreement
+      holds: O&M, services, maintenance, or operator agreement.
+      expected: sometimes
+  - id: '06.04'
+    title: Supply Contracts
+    slots:
+    - id: 06.04.a
+      title: Supply Agreement
+      holds: Supply, feedstock, procurement, or input contract.
+      expected: sometimes
+  - id: '06.05'
+    title: Lease and Concession Agreements
+    slots:
+    - id: 06.05.a
+      title: Lease / Concession Agreement
+      holds: Land lease, property lease, concession, or rights agreement.
+      expected: sometimes
+- id: '07'
+  title: Regulatory, Permits and E&S
+  sub_folders:
+  - id: '07.01'
+    title: Permits & Regulatory Approvals
+    slots:
+    - id: 07.01.a
+      title: Permits and Regulatory Approvals
+      holds: Operating licenses, permits, registrations, concessions, or regulatory approvals.
+      expected: sometimes
+  - id: '07.02'
+    title: Environmental & Social
+    slots:
+    - id: 07.02.a
+      title: ESIA Report
+      holds: Environmental and social impact assessment.
+      expected: sometimes
+    - id: 07.02.b
+      title: ESMS Policy
+      holds: Environmental and social management system policy or framework.
+      expected: sometimes
+    - id: 07.02.c
+      title: ESAP
+      holds: Environmental and social action plan.
+      expected: sometimes
+    - id: 07.02.d
+      title: Stakeholder Engagement Plan
+      holds: Stakeholder engagement plan or consultation evidence.
+      expected: sometimes
+    - id: 07.02.e
+      title: Grievance Mechanism
+      holds: Grievance mechanism documentation.
+      expected: sometimes
+- id: 08
+  title: Tax, Legal and Insurance
+  sub_folders:
+  - id: '08.01'
+    title: Legal Opinions & CPs
+    slots:
+    - id: 08.01.a
+      title: Legal Opinion
+      holds: Legal opinion on capacity, authority, enforceability, tax, or regulatory matters.
+      expected: sometimes
+    - id: 08.01.b
+      title: Conditions Precedent Checklist
+      holds: CP checklist, CP satisfaction certificate, or closing evidence tracker.
+      expected: sometimes
+  - id: '08.03'
+    title: Insurance
+    slots:
+    - id: 08.03.a
+      title: Insurance Evidence
+      holds: Insurance policy, certificate, broker evidence, or schedule of coverage.
+      expected: sometimes
+    - id: 08.03.b
+      title: Insurance Broker Report
+      holds: Broker report or insurance adequacy assessment.
+      expected: sometimes
+- id: 09
+  title: Fund and Investor Materials
+  sub_folders:
+  - id: '09.01'
+    title: Fund Formation & Overview
+    slots:
+    - id: 09.01.a
+      title: Private Placement Memorandum / Fund Overview
+      holds: PPM, fund overview, strategy, portfolio, manager, and risk disclosures.
+      expected: sometimes
+    - id: 09.01.b
+      title: Limited Partnership Agreement
+      holds: LPA, fund constitutional documents, investor rights, and waterfall.
+      expected: sometimes
+  - id: '09.02'
+    title: Investor Documents
+    slots:
+    - id: 09.02.a
+      title: Subscription Agreement
+      holds: Subscription documents, investor admission, and commitment evidence.
+      expected: sometimes
+    - id: 09.02.b
+      title: Side Letter
+      holds: Investor side letters, special rights, limits, or exclusions.
+      expected: sometimes
+  - id: '09.03'
+    title: Commitments & Calls
+    slots:
+    - id: 09.03.a
+      title: Capital Commitment / Capital Call
+      holds: LP commitments, capital call notices, undrawn commitments, and payment status.
+      expected: sometimes
+  - id: '09.04'
+    title: NAV & Portfolio
+    slots:
+    - id: 09.04.a
+      title: NAV / Valuation Report
+      holds: NAV report, portfolio valuation, asset-level valuation, or investor reporting package.
+      expected: sometimes
+- id: '10'
+  title: Monitoring and Reporting
+  sub_folders:
+  - id: '10.01'
+    title: Monitoring Reports
+    slots:
+    - id: 10.01.a
+      title: Monitoring Report / Borrowing-Base Certificate
+      holds: Monitoring report, borrowing-base certificate, covenant report, or periodic lender certificate.
+      expected: sometimes
+  - id: '10.02'
+    title: Correspondence
+    slots:
+    - id: 10.02.a
+      title: Transaction Correspondence
+      holds: Letters, emails, or other correspondence relevant to the transaction.
+      expected: sometimes
+  - id: '10.03'
+    title: Other Documents
+    slots:
+    - id: 10.03.a
+      title: Other Document Requiring Review
+      holds: Document that does not fit a defined type and requires human review.
+      expected: sometimes

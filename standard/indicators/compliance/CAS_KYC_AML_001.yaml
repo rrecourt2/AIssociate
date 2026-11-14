@@ -1,0 +1,95 @@
+id: CAS_KYC_AML_001
+title: KYC/AML Compliance Assessment
+workstream: WS_CI
+due_by: diligence
+applies_to: [borrower, guarantor, sponsor]
+why_it_matters:
+  debt: KYC/AML failures can result in regulatory action or forced exit
+  equity: Clean compliance record supports institutional investor appetite
+matters_more_when:
+- check: OBS_INVESTOR_ROLE_001
+  is: common_equity
+  reason: Equity thesis — reputational exposure from association with investee is higher
+- check: OBS_INVESTOR_ROLE_001
+  is: preferred_equity
+  reason: Equity position — reputational risk from governance association
+- check: OBS_SECTOR_001
+  is: financial_institution
+  reason: Financial institutions face heightened AML scrutiny
+checks:
+- id: OBS_KYC_001
+  question: Does the entity have a compliance officer or designated compliance function?
+  answer: yes_no
+  assumption: Entity has a functioning compliance oversight mechanism
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [02.01.a]
+  evidence:
+    best: [organizational_chart, company_record]
+    supporting: [internal_memo, management_presentation]
+    stated: [correspondence, call, officer_note]
+  ask: Does your company have a compliance officer or a team responsible for regulatory compliance? This could be
+    a dedicated compliance department or a senior person with compliance as part of their responsibilities.
+- id: OBS_KYC_002
+  question: Does the entity maintain KYC records for its own clients or counterparties?
+  answer: yes_no
+  assumption: Entity conducts adequate know-your-customer due diligence
+  disproved_by: 'no'
+  after: [OBS_KYC_001]
+  when:
+  - check: OBS_KYC_001
+    is: true
+  evidence:
+    best: [corporate_governance_policy]
+    supporting: [internal_memo, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Does your company collect and verify identity documents from your clients or business partners before entering
+    into business relationships? This is sometimes called KYC (Know Your Customer) or CDD (Customer Due Diligence).
+- id: OBS_KYC_003
+  question: Has the entity been subject to sanctions, fines, or regulatory enforcement actions?
+  answer: yes_no
+  assumption: Entity has a clean regulatory record
+  disproved_by: 'yes'
+  due_by: screening
+  after: [OBS_KYC_001]
+  evidence:
+    best: [aml_screening, regulatory_document]
+    supporting: [legal_opinion, company_certificate]
+    stated: [correspondence]
+  ask: Has your company ever been fined, sanctioned, or subject to enforcement action by any regulatory authority?
+    This includes tax authorities, central banks, securities regulators, or anti-money laundering bodies. Please
+    include any ongoing investigations.
+  if_unknown: Sanctions/regulatory history not disclosed or not verifiable
+- id: OBS_KYC_004
+  question: Does the entity have a documented AML policy?
+  answer: yes_no
+  assumption: Entity has adequate anti-money laundering controls
+  disproved_by: 'no'
+  after: [OBS_KYC_001]
+  when:
+  - check: OBS_KYC_001
+    is: true
+  look_in: [06.02.a]
+  evidence:
+    best: [corporate_governance_policy]
+    supporting: [board_resolution, internal_memo]
+    stated: [correspondence]
+  ask: Does your company have a written Anti-Money Laundering (AML) policy? This is a document that describes how
+    the company prevents, detects, and reports suspicious financial activities. A copy of the policy would be helpful.
+- id: OBS_KYC_005
+  question: What remediation steps were taken following regulatory actions or compliance gaps?
+  answer: choice
+  options: [full_remediation, partial_remediation, ongoing, none, not_applicable]
+  assumption: Entity has addressed identified compliance deficiencies
+  after: [OBS_KYC_003]
+  when:
+  - check: OBS_KYC_001
+    is: false
+  - check: OBS_KYC_003
+    is: true
+  evidence:
+    best: [company_record, regulatory_document]
+    supporting: [board_minutes, audit_management_letter]
+    stated: [correspondence]
+  ask: If your company has faced any regulatory actions or identified compliance gaps, what steps have been taken
+    to address them? Please describe any remediation plans, policy changes, or new controls put in place.

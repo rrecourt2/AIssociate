@@ -1,0 +1,18 @@
+id: CAS_COUNTRY_RISK_001
+title: Country Risk
+workstream: WS_CI
+due_by: screening
+applies_to: [deal]
+why_it_matters:
+  debt: Jurisdictional risk can affect enforceability, transferability, and sanctions exposure.
+  equity: Country context is needed to calibrate the remaining diligence scope.
+checks:
+- id: OBS_COUNTRY_001
+  question: What is the primary jurisdiction for this transaction?
+  answer: text
+  evidence:
+    best: [registry_extract, term_sheet]
+    supporting: [management_presentation, internal_memo]
+    stated: [call, officer_note, correspondence]
+  ask: Which country is the main jurisdiction for the borrower, investee, or principal transaction assets?
+  if_unknown: Primary transaction jurisdiction is unknown

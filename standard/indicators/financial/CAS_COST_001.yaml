@@ -1,0 +1,106 @@
+id: CAS_COST_001
+title: Cost Structure Analysis
+workstream: WS_FIN
+due_by: diligence
+applies_to: [borrower, guarantor]
+why_it_matters:
+  debt: Cost escalation or fixed-cost inflexibility can erode debt service capacity
+  equity: Cost optimization potential affects margin expansion and value creation
+matters_more_when:
+- check: OBS_VALUE_CHAIN_001
+  is: manufacturer
+  reason: Manufacturer — cost structure is the primary margin driver
+- check: OBS_VALUE_CHAIN_001
+  is: contractor
+  reason: Contractor — input costs and labor drive profitability
+- check: OBS_CASHFLOW_BASIS_001
+  is: projected
+  reason: Projected cashflow — cost assumptions need validation
+- check: OBS_LIFECYCLE_001
+  is: stabilized
+  reason: Stabilized — cost history provides reliable baseline for projections
+matters_less_when:
+- check: OBS_BORROWER_001
+  is: spv
+  reason: SPV — limited cost base, operating costs typically pass-through
+checks:
+- id: OBS_COST_001
+  question: What is the gross margin?
+  answer: number
+  unit: percent
+  assumption: Core business is profitable at the unit level
+  due_by: concept
+  look_in: [03.01.a, 03.02.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  ask: What is your company's gross margin (gross profit as a percentage of revenue)? If you don't have this calculated,
+    we can work it out from your revenue and cost of goods sold figures.
+- id: OBS_COST_002
+  question: Is the cost structure primarily fixed or variable?
+  answer: choice
+  options: [fixed_dominant, variable_dominant, balanced]
+  assumption: Cost structure provides operational flexibility
+  after: [OBS_COST_001]
+  when:
+  - check: OBS_COST_001
+    is: true
+  look_in: [03.01.a, 03.02.a]
+  evidence:
+    best: [audited_annual_report, management_accounts]
+    supporting: [internal_memo, financial_projections]
+    stated: [call, officer_note]
+  ask: Would you say most of your costs are fixed (rent, salaries, insurance) or variable (raw materials, commissions,
+    shipping)? Or is it roughly balanced between the two?
+- id: OBS_COST_003
+  question: Are there significant input cost dependencies?
+  answer: yes_no
+  assumption: Input costs are diversified and stable
+  disproved_by: 'yes'
+  after: [OBS_COST_001]
+  when:
+  - check: OBS_COST_001
+    is: true
+  look_in: [03.01.a, 03.02.a]
+  evidence:
+    best: [audited_annual_report, management_accounts]
+    supporting: [internal_memo, company_record]
+    stated: [call, officer_note]
+  ask: Is your company heavily dependent on any single input cost — for example, a specific raw material, commodity,
+    or energy source that makes up a large share of your total costs?
+  if_unknown: Input cost dependency unknown — supply and margin risk may be understated
+- id: OBS_COST_004
+  question: Has the entity experienced margin compression in the last 2 years?
+  answer: yes_no
+  assumption: Margins have been stable or improving
+  disproved_by: 'yes'
+  after: [OBS_COST_001]
+  when:
+  - check: OBS_COST_001
+    is: true
+  look_in: [03.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  ask: Have your profit margins decreased over the past 2 years? For example, has gross margin or operating margin
+    fallen compared to previous years?
+  if_unknown: Historical margin trend not available
+- id: OBS_COST_005
+  question: Are there material related-party costs?
+  answer: yes_no
+  assumption: All costs are transacted with independent third parties
+  disproved_by: 'yes'
+  after: [OBS_COST_001]
+  look_in: [03.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, internal_memo]
+    stated: [call, officer_note]
+  ask: Does your company pay significant amounts to related parties — for example, management fees to a parent company,
+    rent to a shareholder-owned property, or purchases from affiliated companies?
+  leads_to:
+  - indicator: CAS_RELATED_PARTY_001
+    is: true
+    reason: Material related-party costs require arm's-length verification

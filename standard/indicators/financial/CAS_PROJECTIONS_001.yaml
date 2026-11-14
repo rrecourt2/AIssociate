@@ -1,0 +1,89 @@
+id: CAS_PROJECTIONS_001
+title: Financial Projections Assessment
+workstream: WS_FIN
+due_by: diligence
+applies_to: [borrower]
+look_again_when:
+- check: OBS_RP_PERIMETER_001
+  is: true
+  reason: Reporting perimeter changed — historical baselines behind projections need restatement flags
+- check: OBS_INPUT_005
+  is: true
+  reason: Critical input interruption occurred — stress production-linked projection assumptions
+checks:
+- id: OBS_PROJ_001
+  question: Has the entity prepared financial projections?
+  answer: yes_no
+  assumption: Entity has forward-looking financial plans
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [04.01.a, 04.02.a]
+  evidence:
+    best: [financial_model, business_plan]
+    supporting: [financial_projections, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Has your company prepared financial projections or forecasts — for example, a financial model, business plan
+    with projected financials, or a detailed budget? A simple yes or no is fine.
+- id: OBS_PROJ_002
+  question: What period do projections cover?
+  answer: choice
+  options: [1_year, 3_year, 5_year, beyond_5]
+  assumption: Projection horizon is adequate for the financing tenor
+  after: [OBS_PROJ_001]
+  when:
+  - check: OBS_PROJ_001
+    is: true
+  look_in: [04.01.a, 04.02.a]
+  evidence:
+    best: [financial_model, business_plan]
+    supporting: [financial_projections, internal_memo]
+    stated: [call, officer_note]
+  ask: How far into the future do your financial projections extend? Is it 1 year, 3 years, 5 years, or beyond 5
+    years?
+- id: OBS_PROJ_003
+  question: Are key assumptions documented?
+  answer: yes_no
+  assumption: Projections are built on documented, testable assumptions
+  disproved_by: 'no'
+  after: [OBS_PROJ_001]
+  when:
+  - check: OBS_PROJ_001
+    is: true
+  look_in: [04.01.a, 04.02.a]
+  evidence:
+    best: [financial_model, business_plan]
+    supporting: [internal_memo, company_record]
+    stated: [call, officer_note]
+  ask: Are the key assumptions behind your projections written down — for example, revenue growth rates, cost inflation,
+    pricing assumptions, and capital expenditure plans? This is typically an assumptions page in a financial model
+    or an appendix in a business plan.
+- id: OBS_PROJ_004
+  question: Have projections been independently reviewed?
+  answer: yes_no
+  assumption: Projections have been validated by an independent party
+  disproved_by: 'no'
+  after: [OBS_PROJ_001]
+  when:
+  - check: OBS_PROJ_001
+    is: true
+  look_in: [04.01.a, 04.03.a]
+  evidence:
+    best: [consultant_report]
+    supporting: [audited_annual_report, internal_memo]
+    stated: [call, officer_note]
+  ask: Have your financial projections been reviewed or audited by an independent party — for example, a model auditor,
+    independent financial adviser, or your external auditors?
+- id: OBS_PROJ_005
+  question: How do projections compare to historical performance?
+  answer: choice
+  options: [conservative, in_line, aggressive]
+  assumption: Projections are grounded in historical performance
+  after: [OBS_PROJ_001]
+  look_in: [04.01.a, 03.01.a]
+  evidence:
+    best: [financial_model, audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  ask: Compared to your company's actual performance over the past few years, would you describe the projections
+    as conservative (below historical trends), in line with historical trends, or aggressive (significantly above
+    historical trends)?

@@ -1,0 +1,318 @@
+source_kinds:
+- id: audited_annual_report
+  title: Audited annual report
+  description: Audited annual financial statements with independent audit opinion
+  slot: 03.01.a
+- id: management_accounts
+  title: Management accounts
+  description: Unaudited monthly or quarterly management accounts
+  slot: 03.01.b
+- id: interim_financial_statements
+  title: Interim financial statements
+  description: Half-year or quarterly reviewed or unaudited financial statements
+  slot: 03.01.i
+- id: quarterly_report
+  title: Quarterly report
+  description: Quarterly financial report or filing with face statements (e.g. Form 10-Q)
+  slot: 03.01.i
+- id: earnings_release
+  title: Earnings release
+  description: Earnings release, trading update, quarterly results release, or full-year results announcement
+  slot: 03.01.j
+- id: financial_projections
+  title: Financial projections
+  description: Forward-looking financial model, projections, or business plan financials
+  slot: 03.02.a
+- id: financial_model
+  title: Financial model
+  description: Detailed financial model (typically Excel-based) with assumptions and outputs
+  slot: 03.02.b
+- id: tax_returns
+  title: Tax returns
+  description: Filed tax returns or tax computation schedules
+  slot: 03.01.d
+- id: audit_management_letter
+  title: Audit management letter
+  description: Auditor's management letter, internal audit report or another report on controls
+  slot: 03.01.e
+- id: certificate_of_incorporation
+  title: Certificate of incorporation
+  description: Certificate of incorporation, registration, or equivalent formation document
+  slot: 02.01.a
+- id: memorandum_and_articles
+  title: Memorandum and articles
+  description: Memorandum and Articles of Association, Bylaws, or Constitution
+  slot: 02.01.b
+- id: board_resolution
+  title: Board resolution
+  description: Board resolution authorizing the transaction or specific action
+  slot: 02.02.a
+- id: shareholder_resolution
+  title: Shareholder resolution
+  description: Shareholder resolution or written consent
+  slot: 02.02.c
+- id: shareholder_agreement
+  title: Shareholder agreement
+  description: Shareholders agreement governing ownership, voting, transfers, or reserved matters
+  slot: 02.02.b
+- id: jv_agreement
+  title: JV agreement
+  description: Joint venture, partnership, consortium, or sponsor-support agreement
+  slot: 02.02.g
+- id: organizational_chart
+  title: Organizational chart
+  description: Corporate or group organizational structure chart
+  slot: 02.03.a
+- id: beneficial_ownership_declaration
+  title: Beneficial ownership declaration
+  description: Declaration of ultimate beneficial ownership (UBO)
+  slot: 02.04.a
+- id: corporate_governance_policy
+  title: Corporate governance policy
+  description: Governance framework, code of conduct, or a compliance, risk or HR policy, manual or charter
+  slot: 02.05.a
+- id: executive_summary
+  title: Executive summary
+  description: Investment memo, teaser, or executive summary of the transaction
+  slot: 01.01.a
+- id: management_presentation
+  title: Management presentation
+  description: Management, lender, or investor presentation deck
+  slot: 01.01.e
+- id: investor_presentation
+  title: Investor presentation
+  description: Investor presentation, earnings deck, or results presentation
+  slot: 01.01.e
+- id: business_plan
+  title: Business plan
+  description: Detailed business plan or strategic plan
+  slot: 01.01.b
+- id: investment_plan
+  title: Investment plan
+  description: Detailed investment plan including uses and sources of funds
+  slot: 01.02.a
+- id: term_sheet
+  title: Term sheet
+  description: Indicative or binding term sheet for the facility
+  slot: 04.01.a
+- id: facility_agreement
+  title: Facility agreement
+  description: Executed credit agreement, facility agreement, or loan agreement
+  slot: 04.01.b
+- id: guarantee_agreement
+  title: Guarantee agreement
+  description: Guarantee or support agreement (corporate, personal, partial or sovereign)
+  slot: 04.02.a
+- id: security_agreement
+  title: Security agreement
+  description: Security agreement, pledge, mortgage, charge or assignment, and title documents for the collateral
+  slot: 04.02.b
+- id: intercreditor_agreement
+  title: Intercreditor agreement
+  description: Intercreditor, subordination, or priority agreement
+  slot: 04.02.c
+- id: debt_schedule
+  title: Debt schedule
+  description: Schedule of existing indebtedness, debt maturity profile
+  slot: 04.03.a
+- id: technical_feasibility
+  title: Technical feasibility
+  description: Technical feasibility study, engineer's report, resource assessment or independent technical review
+  slot: 05.01.a
+- id: valuation_report
+  title: Valuation report
+  description: Independent valuation, appraisal, or fair value assessment
+  slot: 05.02.a
+- id: market_study
+  title: Market study
+  description: Market study, demand assessment, or competitive analysis
+  slot: 01.03.a
+- id: operational_license
+  title: Operational license
+  description: Operating license, permit, or regulatory approval
+  slot: 07.01.a
+- id: offtake_agreement
+  title: Offtake agreement
+  description: Offtake, power purchase, or sales agreement
+  slot: 06.01.a
+- id: epc_contract
+  title: EPC contract
+  description: Engineering, Procurement, and Construction contract
+  slot: 06.02.a
+- id: om_agreement
+  title: O&M agreement
+  description: Operations and Maintenance agreement
+  slot: 06.03.a
+- id: supply_agreement
+  title: Supply agreement
+  description: Supply agreement, feedstock contract, or procurement agreement
+  slot: 06.04.a
+- id: lease_agreement
+  title: Lease agreement
+  description: Land lease, property lease, or concession agreement
+  slot: 06.05.a
+- id: esia_report
+  title: ESIA report
+  description: Environmental and Social Impact Assessment
+  slot: 07.02.a
+- id: esms_policy
+  title: ESMS policy
+  description: Environmental and Social Management System policy or framework
+  slot: 07.02.b
+- id: esap
+  title: ESAP
+  description: Environmental and Social Action Plan
+  slot: 07.02.c
+- id: stakeholder_engagement_plan
+  title: Stakeholder engagement plan
+  description: Stakeholder engagement plan or community consultation records
+  slot: 07.02.d
+- id: grievance_mechanism
+  title: Grievance mechanism
+  description: Grievance redress mechanism documentation
+  slot: 07.02.e
+- id: insurance_policy
+  title: Insurance policy
+  description: Insurance policy, certificate, or schedule of coverage
+  slot: 08.03.a
+- id: insurance_broker_report
+  title: Insurance broker report
+  description: Insurance broker's report or adequacy assessment
+  slot: 08.03.b
+- id: legal_opinion
+  title: Legal opinion
+  description: Legal opinion (enforceability, capacity, corporate authority)
+  slot: 08.01.a
+- id: conditions_precedent_checklist
+  title: Conditions precedent checklist
+  description: Conditions precedent checklist or CP satisfaction certificate
+  slot: 08.01.b
+- id: private_placement_memorandum
+  title: Private placement memorandum
+  description: Private placement memorandum, fund overview, strategy, portfolio, manager, or risk disclosure package
+  slot: 09.01.a
+- id: limited_partnership_agreement
+  title: Limited partnership agreement
+  description: Limited partnership agreement, fund constitutional document, investor rights document, or waterfall
+    terms
+  slot: 09.01.b
+- id: subscription_agreement
+  title: Subscription agreement
+  description: Subscription agreement, investor admission document, or commitment evidence
+  slot: 09.02.a
+- id: side_letter
+  title: Side letter
+  description: Investor side letter, special rights letter, limit, exclusion, or most-favoured-nation arrangement
+  slot: 09.02.b
+- id: capital_commitment
+  title: Capital commitment
+  description: Capital commitment schedule, capital call notice, undrawn commitment report, or payment status
+  slot: 09.03.a
+- id: nav_report
+  title: NAV report
+  description: NAV report, portfolio valuation, asset-level valuation, or investor reporting package
+  slot: 09.04.a
+- id: kyc_package
+  title: KYC package
+  description: Know Your Customer documentation bundle (ID, proof of address, etc.)
+  slot: 02.06.a
+- id: aml_screening
+  title: AML and sanctions screening
+  description: Anti-Money Laundering screening results or sanctions check
+  slot: 02.06.b
+- id: tax_clearance
+  title: Tax clearance
+  description: Tax clearance, tax registration or tax incentive certificate
+  slot: 02.06.c
+- id: management_cv
+  title: Management CVs
+  description: CV or resume of key management personnel
+  slot: 02.05.b
+- id: board_composition
+  title: Board composition
+  description: Board of directors list, composition, and independence declarations
+  slot: 02.05.c
+- id: proxy_statement
+  title: Proxy statement
+  description: Proxy statement, AGM/EGM notice, or annual meeting materials
+  slot: 02.02.h
+- id: dfi_facility_document
+  title: DFI facility document
+  description: Development finance institution or multilateral facility documentation (agreement, commitment letter,
+    or official announcement)
+  slot: 04.03.b
+- id: adverse_media_screen
+  title: Adverse media screen
+  description: Adverse media search, integrity due diligence, or reputation screening report with date of search
+  slot: 02.06.d
+- id: scheme_of_arrangement
+  title: Scheme of arrangement
+  description: Court-sanctioned scheme of arrangement, carve-out, demerger, amalgamation, or group reconstruction
+    order
+  slot: 02.02.i
+- id: correspondence
+  title: Correspondence
+  description: Letters, emails, or other correspondence relevant to the transaction
+  slot: 10.02.a
+- id: other
+  title: Other
+  description: Document that does not fit any defined type — requires human review
+  slot: 10.03.a
+- id: call
+  title: Call or meeting
+  description: Transcript or notes of a call or a meeting.
+- id: officer_note
+  title: Note by the officer
+  description: A note by the investment officer or the deal team, including what the officer tells the assistant.
+- id: internal_memo
+  title: Internal memo
+  description: 'An internal paper of the lender: a credit memo, a committee paper or an analysis.'
+- id: public_source
+  title: Public source
+  description: 'Public information: a company website, a news article, a registry website or market data.'
+- id: registry_extract
+  title: Registry extract
+  description: Extract from the company registry, or a certificate of good standing.
+  slot: 02.01.c
+- id: board_minutes
+  title: Board minutes
+  description: Minutes of board or committee meetings.
+  slot: 02.02.a
+- id: shareholder_register
+  title: Shareholder register
+  description: Shareholder register or capitalisation table.
+  slot: 02.04.a
+- id: bank_statement
+  title: Bank statement
+  description: Bank statement or proof of payment.
+  slot: 03.01.b
+- id: company_record
+  title: Company record
+  description: 'A record, plan or report kept by the company: registers, ageing lists, exports from its systems,
+    internal risk and compliance reports, incident logs.'
+  slot: 10.03.a
+- id: regulatory_document
+  title: Regulatory document
+  description: A filing with a regulator or an authority, or a letter, notice or order from one.
+  slot: 07.01.a
+- id: consultant_report
+  title: Consultant report
+  description: Report by an external adviser that is not a legal opinion, a valuation, a market study or a technical
+    report.
+  slot: 10.03.a
+- id: credit_rating_report
+  title: Credit rating report
+  description: Rating report or credit report from a rating agency or a credit bureau.
+  slot: 10.03.a
+- id: hedge_document
+  title: Hedging document
+  description: ISDA agreement, hedge confirmation or hedge report.
+  slot: 04.03.a
+- id: material_contract
+  title: Other material contract
+  description: A material contract of a kind not listed separately, or a summary of contract terms.
+  slot: 06.01.a
+- id: company_certificate
+  title: Company certificate
+  description: A certificate, declaration or representation letter signed by the company's management.
+  slot: 10.01.a

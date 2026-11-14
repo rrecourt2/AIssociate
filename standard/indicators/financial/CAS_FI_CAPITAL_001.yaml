@@ -1,0 +1,91 @@
+id: CAS_FI_CAPITAL_001
+title: Capital Adequacy
+workstream: WS_FIN
+due_by: concept
+applies_to: [borrower]
+applies_when:
+- check: OBS_SECTOR_001
+  is: financial_institution
+- check: OBS_SECTOR_003
+  is: true
+checks:
+- id: OBS_FIC_001
+  question: What is the capital adequacy ratio (CAR) and tier 1 ratio?
+  answer: number
+  unit: percent
+  assumption: Institution is adequately capitalized
+  due_by: screening
+  look_in: [03.01.a, 03.02.a]
+  evidence:
+    best: [audited_annual_report, regulatory_document]
+    supporting: [management_accounts, internal_memo]
+    stated: [call, officer_note]
+  ask: What is your current capital adequacy ratio (CAR) and tier 1 capital ratio? Please provide the most recent
+    figures — ideally from your latest prudential return or audited financial statements.
+- id: OBS_FIC_002
+  question: What is the regulatory minimum CAR and how much buffer exists?
+  answer: number
+  unit: percent
+  assumption: Capital buffer above regulatory minimum is adequate
+  after: [OBS_FIC_001]
+  when:
+  - check: OBS_FIC_001
+    is: true
+  look_in: [03.01.a, 09.01.a]
+  evidence:
+    best: [regulatory_document, audited_annual_report]
+    supporting: [management_accounts, internal_memo]
+    stated: [call, officer_note]
+  ask: What is the regulatory minimum capital adequacy ratio required by your central bank or regulator? How much
+    buffer does your current CAR provide above this minimum? Has this buffer been narrowing or widening over the
+    past 3 years?
+- id: OBS_FIC_003
+  question: What is the institution's dividend policy relative to capital needs?
+  answer: choice
+  options: [no_dividends, conservative, moderate, aggressive]
+  assumption: Dividend policy supports capital retention and growth
+  after: [OBS_FIC_001]
+  when:
+  - check: OBS_FIC_001
+    is: true
+  look_in: [03.01.a, 08.01.a]
+  evidence:
+    best: [audited_annual_report, board_minutes]
+    supporting: [business_plan, internal_memo]
+    stated: [call, officer_note]
+  ask: What is your institution's dividend policy? What percentage of profits has been distributed as dividends
+    over the past 3 years? Is there a formal policy that links dividend payments to capital adequacy levels?
+- id: OBS_FIC_004
+  question: Does the institution have subordinated debt counting as tier 2 capital?
+  answer: yes_no
+  assumption: Capital structure includes subordinated debt for regulatory capital
+  disproved_by: 'no'
+  after: [OBS_FIC_001]
+  when:
+  - check: OBS_FIC_001
+    is: true
+  look_in: [03.01.a, 04.01.a]
+  evidence:
+    best: [audited_annual_report, facility_agreement]
+    supporting: [management_accounts, internal_memo]
+    stated: [call, officer_note]
+  ask: Does your institution have any subordinated debt that qualifies as tier 2 regulatory capital? If so, what
+    are the amounts, maturity dates, and terms? Are any of these instruments approaching maturity or callable?
+- id: OBS_FIC_005
+  question: Is the planned growth trajectory sustainable given current capital?
+  answer: yes_no
+  assumption: Growth plans can be funded without breaching capital requirements
+  disproved_by: 'no'
+  after: [OBS_FIC_001]
+  when:
+  - check: OBS_FIC_001
+    is: true
+  look_in: [01.01.a]
+  evidence:
+    best: [business_plan, financial_projections]
+    supporting: [management_accounts, internal_memo]
+    stated: [call, officer_note]
+  ask: What is your planned loan book growth rate for the next 2-3 years? Have you modeled whether your current
+    capital base — plus expected retained earnings — can support this growth without falling below regulatory minimums?
+    A capital plan or projection would be ideal.
+  if_unknown: Capital adequacy projections not available

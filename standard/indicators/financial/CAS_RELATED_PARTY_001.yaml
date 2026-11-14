@@ -1,0 +1,155 @@
+id: CAS_RELATED_PARTY_001
+title: Related Party Transactions
+workstream: WS_FIN
+due_by: diligence
+applies_to: [borrower]
+checks:
+- id: OBS_RP_001
+  question: Does the entity engage in related party transactions?
+  answer: yes_no
+  assumption: Entity has no related party dealings
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [03.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Does your company buy from, sell to, or otherwise transact with related parties — such as shareholders, directors,
+    affiliated companies, or family members of key management?
+- id: OBS_RP_002
+  question: What is the total value of related party transactions as a percentage of revenue?
+  answer: number
+  unit: percent
+  assumption: Related party transactions are immaterial
+  after: [OBS_RP_001]
+  when:
+  - check: OBS_RP_001
+    is: true
+  look_in: [03.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, internal_memo]
+    stated: [call, officer_note]
+  ask: What is the total value of all transactions with related parties, expressed as a percentage of your total
+    revenue? The notes to your audited accounts should have this breakdown.
+- id: OBS_RP_003
+  question: Are related party transactions at arm's length?
+  answer: yes_no
+  assumption: Related party transactions are conducted on commercial terms
+  disproved_by: 'no'
+  after: [OBS_RP_001]
+  when:
+  - check: OBS_RP_001
+    is: true
+  look_in: [03.01.a, 09.01.a]
+  evidence:
+    best: [audited_annual_report, consultant_report]
+    supporting: [internal_memo, board_resolution]
+    stated: [call, officer_note]
+  ask: Are your transactions with related parties priced at market rates — meaning on the same terms you would offer
+    to an unrelated third party? If you have transfer pricing documentation or auditor confirmation, that would
+    be helpful.
+  if_unknown: Arm's-length status of related party transactions not confirmed
+- id: OBS_RP_004
+  question: Is there a related party transaction policy?
+  answer: yes_no
+  assumption: Related party transactions are governed by a formal policy
+  disproved_by: 'no'
+  after: [OBS_RP_001]
+  when:
+  - check: OBS_RP_001
+    is: true
+  look_in: [09.01.a, 09.02.a]
+  evidence:
+    best: [corporate_governance_policy, board_resolution]
+    supporting: [internal_memo]
+    stated: [call, officer_note]
+  ask: Does your company have a formal policy for approving and monitoring related party transactions? This might
+    be part of your corporate governance framework or board charter.
+- id: OBS_RP_005
+  question: Have related party transactions been disclosed in audited financials?
+  answer: yes_no
+  assumption: Related party transactions are fully disclosed per accounting standards
+  disproved_by: 'no'
+  after: [OBS_RP_001]
+  when:
+  - check: OBS_RP_003
+    is: false
+  look_in: [03.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [audit_management_letter]
+    stated: [call, officer_note]
+  ask: Are all related party transactions disclosed in the notes to your audited financial statements, as required
+    by accounting standards (IAS 24 or equivalent)?
+- id: OBS_RP_EXPOSURE_001
+  question: What is total related-party lending (loans plus receivables) as a share of tangible equity?
+  answer: number
+  unit: percent
+  assumption: Related-party lending is immaterial to the capital base
+  flag_when: above 10
+  after: [OBS_RP_001]
+  when:
+  - check: OBS_RP_001
+    is: true
+  look_in: [03.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts]
+    stated: [call, officer_note]
+  ask: Add up all loans and receivables owed to you by related parties (group companies, associates, sponsors).
+    What is that total as a share of your equity?
+- id: OBS_RP_PEAK_001
+  question: What was the maximum related-party loan balance during the period relative to the period-end balance?
+  answer: number
+  unit: ratio
+  assumption: The period-end balance is representative of the year
+  flag_when: above 1.5
+  after: [OBS_RP_001]
+  when:
+  - check: OBS_RP_001
+    is: true
+  look_in: [03.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts]
+    stated: [call, officer_note]
+  ask: Your accounts may disclose the maximum amount of each related-party loan outstanding during the year. How
+    does that peak compare to the year-end balance? A peak well above year-end means the year-end figure understates
+    the real exposure.
+- id: OBS_RP_DEMAND_001
+  question: Are related-party loans repayable on demand, and could the borrower actually repay if demanded?
+  answer: choice
+  options: [demandable_and_liquid, demandable_illiquid_borrower, term_loan, no_terms]
+  assumption: Loans are recoverable on their stated terms
+  flag_when: is demandable_illiquid_borrower
+  after: [OBS_RP_001]
+  when:
+  - check: OBS_RP_001
+    is: true
+  look_in: [03.01.a]
+  evidence:
+    best: [audited_annual_report, facility_agreement]
+    supporting: [management_accounts, internal_memo]
+    stated: [call, officer_note]
+  ask: 'For loans to group companies: can you demand repayment (for example on 30 days'' notice), and does the borrowing
+    company have the liquidity to actually pay if you did? A demand right against an illiquid borrower provides
+    little protection.'
+  if_unknown: Recoverability of related-party loans not assessed against borrower liquidity
+- id: OBS_RP_PERIMETER_001
+  question: Has a scheme of arrangement, carve-out, or group restructuring changed the reporting perimeter in the
+    last 24 months?
+  answer: yes_no
+  assumption: The reporting perimeter is stable; period-on-period trends are comparable
+  disproved_by: 'yes'
+  look_in: [03.01.a, 01.02.a]
+  evidence:
+    best: [audited_annual_report, scheme_of_arrangement]
+    supporting: [internal_memo, management_presentation]
+    stated: [call, officer_note]
+  ask: In the last two years, has any plant, division, or subsidiary been moved into or out of the reporting entity
+    — for example through a scheme of arrangement, carve-out, demerger, or amalgamation? If so, which periods are
+    affected?
+  if_unknown: Perimeter stability unknown — historical trend analysis may be misleading
+  note: This is the company's own statement. Look for independent support.

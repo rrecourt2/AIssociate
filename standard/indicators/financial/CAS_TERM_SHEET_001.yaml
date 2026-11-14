@@ -1,0 +1,80 @@
+id: CAS_TERM_SHEET_001
+title: Term Sheet Assessment
+workstream: WS_FIN
+due_by: diligence
+applies_to: [deal]
+checks:
+- id: OBS_TS_001
+  question: Has a term sheet or heads of terms been agreed between the parties?
+  answer: yes_no
+  assumption: Parties have reached preliminary commercial agreement
+  disproved_by: 'no'
+  due_by: screening
+  look_in: [06.01.a]
+  evidence:
+    best: [term_sheet]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Has a term sheet or heads of terms been agreed between your company and the lender/investor? This is the
+    preliminary document that sets out the main commercial terms of the transaction. Please share a copy if available.
+- id: OBS_TS_002
+  question: Are the key commercial terms fully documented — including tenor, pricing, and repayment schedule?
+  answer: yes_no
+  assumption: Key commercial terms are complete and unambiguous
+  disproved_by: 'no'
+  after: [OBS_TS_001]
+  when:
+  - check: OBS_TS_001
+    is: true
+  look_in: [06.01.a]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [internal_memo]
+    stated: [correspondence]
+  ask: Does the term sheet clearly specify the loan tenor (duration), interest rate or pricing, repayment schedule
+    (amortization or bullet), fees, and any other key commercial terms? Are there any terms still under negotiation?
+- id: OBS_TS_003
+  question: Is the proposed structure appropriate for the entity's risk profile?
+  answer: yes_no
+  assumption: Transaction structure matches the entity's risk characteristics
+  disproved_by: 'no'
+  after: [OBS_TS_001]
+  when:
+  - check: OBS_TS_001
+    is: true
+  look_in: [06.01.a]
+  evidence:
+    best: [internal_memo]
+    supporting: [company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Does the proposed financing structure (loan type, tenor, repayment profile) suit your company's cash flow
+    patterns and risk profile? For example, is the repayment schedule aligned with your revenue cycle?
+- id: OBS_TS_004
+  question: Are there precedent transactions in this market and sector that support the proposed terms?
+  answer: yes_no
+  assumption: Proposed terms are within market norms for comparable transactions
+  disproved_by: 'no'
+  after: [OBS_TS_003]
+  when:
+  - check: OBS_TS_003
+    is: true
+  look_in: [06.01.a]
+  evidence:
+    best: [internal_memo]
+    supporting: [company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Are you aware of similar financing transactions in your market and sector? How do the proposed terms compare
+    to those precedents — is the pricing, tenor, and structure in line with market practice?
+- id: OBS_TS_005
+  question: Is the proposed facility size appropriate relative to the entity's debt capacity?
+  answer: yes_no
+  assumption: Facility size is within the entity's borrowing capacity
+  disproved_by: 'no'
+  after: [OBS_TS_001]
+  look_in: [06.01.a]
+  evidence:
+    best: [internal_memo, audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Based on your company's current revenues, cash flows, and existing debt, is the proposed loan amount appropriate?
+    Can the company comfortably service this debt alongside existing obligations?

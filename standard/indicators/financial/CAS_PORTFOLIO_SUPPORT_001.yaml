@@ -1,0 +1,84 @@
+id: CAS_PORTFOLIO_SUPPORT_001
+title: Portfolio Support / Cash Sweep Assessment
+workstream: WS_FIN
+due_by: diligence
+applies_to: [portfolio_support]
+checks:
+- id: OBS_PORTSUPPORT_001
+  question: Is this portfolio support arrangement documented and binding?
+  answer: yes_no
+  why: Support between projects only mitigates risk if it is legally documented
+  due_by: screening
+  evidence:
+    best: [guarantee_agreement, facility_agreement]
+    supporting: [term_sheet, internal_memo]
+    stated: [call, officer_note, correspondence]
+  ask: Is the cash sweep or portfolio support arrangement documented and legally binding? Please share the agreement,
+    cash waterfall, or term sheet section that describes it.
+- id: OBS_PORTSUPPORT_002
+  question: What type of support is provided?
+  answer: choice
+  options: [excess_cash_sweep, reserve_sharing, debt_service_support, cross_collateral, cross_default, other]
+  why: Support type determines how much risk is centralized across projects
+  due_by: screening
+  after: [OBS_PORTSUPPORT_001]
+  when:
+  - check: OBS_PORTSUPPORT_001
+    is: true
+  evidence:
+    best: [guarantee_agreement, facility_agreement]
+    supporting: [term_sheet, internal_memo]
+    stated: [call, officer_note]
+- id: OBS_PORTSUPPORT_003
+  question: Is support mandatory when the trigger event occurs?
+  answer: yes_no
+  why: Discretionary support is weaker than mandatory debt-service support
+  after: [OBS_PORTSUPPORT_001]
+  when:
+  - check: OBS_PORTSUPPORT_001
+    is: true
+  evidence:
+    best: [guarantee_agreement, facility_agreement]
+    supporting: [term_sheet, legal_opinion]
+    stated: [correspondence]
+- id: OBS_PORTSUPPORT_004
+  question: Where does the support sit in the cash waterfall?
+  answer: choice
+  options: [before_debt_service, after_opex_before_debt_service, after_debt_service_before_distributions, after_distributions,
+    unclear]
+  why: Waterfall priority determines whether excess cash is actually available for support
+  after: [OBS_PORTSUPPORT_001]
+  when:
+  - check: OBS_PORTSUPPORT_001
+    is: true
+  evidence:
+    best: [facility_agreement]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence]
+- id: OBS_PORTSUPPORT_005
+  question: Which events trigger the support?
+  answer: choice
+  options: [debt_service_shortfall, dscr_breach, construction_delay, cost_overrun, distribution_lockup, event_of_default,
+    other, unclear]
+  many: true
+  why: Support only matters when the trigger event is clear
+  after: [OBS_PORTSUPPORT_001]
+  evidence:
+    best: [guarantee_agreement, facility_agreement]
+    supporting: [term_sheet, internal_memo]
+    stated: [call, officer_note]
+- id: OBS_PORTSUPPORT_006
+  question: Which events release or terminate the support?
+  answer: choice
+  options: [project_completion, financial_completion, commercial_operation_date, facility_repaid, dsra_funded, lender_approval,
+    other, unclear]
+  many: true
+  why: Release events determine whether support remains available through the relevant risk period
+  after: [OBS_PORTSUPPORT_001]
+  when:
+  - check: OBS_PORTSUPPORT_001
+    is: true
+  evidence:
+    best: [guarantee_agreement, facility_agreement]
+    supporting: [term_sheet, legal_opinion, internal_memo]
+    stated: [call, officer_note]
