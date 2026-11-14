@@ -3,6 +3,11 @@ title: Construction & EPC Assessment
 workstream: WS_TO
 due_by: diligence
 applies_to: [project]
+applies_when:
+- check: OBS_SECTOR_002
+  is: renewable_energy
+- check: OBS_SECTOR_002
+  is: conventional_power
 checks:
 - id: OBS_ECON_001
   question: Does the project have a signed EPC contract or equivalent construction arrangement?

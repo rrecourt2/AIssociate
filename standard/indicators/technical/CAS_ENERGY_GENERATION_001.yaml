@@ -3,6 +3,11 @@ title: Power Generation Assessment
 workstream: WS_TO
 due_by: concept
 applies_to: [project]
+applies_when:
+- check: OBS_SECTOR_002
+  is: renewable_energy
+- check: OBS_SECTOR_002
+  is: conventional_power
 checks:
 - id: OBS_EGEN_001
   question: What is the installed or planned generation capacity of the project?
@@ -23,9 +28,6 @@ checks:
   unit: percent
   assumption: Capacity factor assumptions are realistic and supported by resource data
   after: [OBS_EGEN_001]
-  when:
-  - check: OBS_EGEN_001
-    is: true
   look_in: [05.01.a, 05.02.a]
   evidence:
     best: [technical_feasibility]
@@ -41,9 +43,6 @@ checks:
   assumption: Grid connection is secured or not required
   disproved_by: 'no'
   after: [OBS_EGEN_001]
-  when:
-  - check: OBS_EGEN_001
-    is: true
   look_in: [06.01.a]
   evidence:
     best: [material_contract, technical_feasibility]
@@ -59,9 +58,6 @@ checks:
   assumption: Revenue is secured through a contracted offtake arrangement
   disproved_by: 'no'
   after: [OBS_EGEN_001]
-  when:
-  - check: OBS_EGEN_001
-    is: true
   look_in: [06.01.a, 06.02.a]
   evidence:
     best: [offtake_agreement]
@@ -77,9 +73,6 @@ checks:
   assumption: Project output can be fully dispatched without curtailment
   disproved_by: 'yes'
   after: [OBS_EGEN_003]
-  when:
-  - check: OBS_EGEN_003
-    is: false
   look_in: [05.01.a]
   evidence:
     best: [technical_feasibility, material_contract]

@@ -30,13 +30,19 @@ def targets(names, memory, held):
     return list(dict.fromkeys(found))
 
 
-def answers(memory):
-    """The facts that answer each check, by check and by whom or what the answer is for."""
+def answers(memory, std):
+    """The facts that answer each check, by check and by whom or what the answer is for.
+
+    An answer is for the subject its fact is about, unless it says otherwise or the check is asked about the deal only.
+    """
     found = {}
     for fid, fact in memory["facts"].items():
         if fact["state"] != "outdated":
             for answer in fact.get("answers", []):
-                found.setdefault((answer["check"], answer.get("for", fact["about"])), []).append((fid, answer["value"]))
+                check = std["checks"].get(answer["check"], {})
+                asked_about = check.get("applies_to") or std["by_id"].get(check.get("indicator"), {}).get("applies_to")
+                whom = answer.get("for") or (DEAL if asked_about == ["deal"] else fact["about"])
+                found.setdefault((answer["check"], whom), []).append((fid, answer["value"]))
     return found
 
 
@@ -86,7 +92,7 @@ def answered_row(row, check, given, memory, std, today):
     kinds = {memory["sources"][fact["source"]]["kind"] for fact in facts}
     tiers = [tier for tier in TIERS if kinds & set(check.get("evidence", {}).get(tier, []))]
     row["evidence"] = tiers[-1] if tiers else "unlisted"
-    if tiers and TIERS.index(tiers[-1]) < TIERS.index(stage["ideal_evidence"]):
+    if "evidence" in check and TIERS.index(tiers[-1] if tiers else TIERS[0]) < TIERS.index(stage["ideal_evidence"]):
         row["flags"].append("thin")
     ages = [months_since(fact.get("as_of") or memory["sources"][fact["source"]].get("date"), today) for fact in facts]
     ages = [age for age in ages if age is not None]
@@ -101,7 +107,7 @@ def answered_row(row, check, given, memory, std, today):
 def assess(memory, std, today=None):
     """One row per check and per subject it is asked about, with its state."""
     today = today or datetime.date.today()
-    held, found = roles(memory, std), answers(memory)
+    held, found = roles(memory, std), answers(memory, std)
     rows, states = [], {}
 
     def parked(off, check, target):
@@ -141,10 +147,11 @@ def assess(memory, std, today=None):
             row.update(state="off" if off["strength"] == "not_for_this_deal" else "parked", reason=off["reason"])
         elif given:
             answered_row(row, check, given, memory, std, today)
-        elif (False in conds and True not in conds) or follows_dead_end:
-            row["state"] = "not relevant"
-        elif any(not (found.get((dep, target)) or found.get((dep, DEAL))) for dep in after) or unnamed:
-            row["state"] = "waiting"
+        elif (conds and all(cond is False for cond in conds)) or follows_dead_end:
+            row["state"] = "not relevant"  # none of its conditions can hold any more
+        elif (any(not (found.get((dep, target)) or found.get((dep, DEAL))) for dep in after) or unnamed
+              or (conds and True not in conds)):
+            row["state"] = "waiting"  # for an earlier answer, for a condition, or for the seat to be filled
         return row["state"]
 
     for ind in std["indicators"]:
@@ -157,19 +164,22 @@ def assess(memory, std, today=None):
     return rows
 
 
-def next_list(memory, std, rows):
-    """Every candidate for what to do or collect next. The assistant chooses what to show."""
+def next_list(memory, std, rows, in_folder=()):
+    """Every candidate for what to do or collect next. The assistant chooses what to show.
+
+    `in_folder` names the data-room slots that hold a document according to the manifest.
+    """
     order = {stage: place for place, stage in enumerate(std["stage_ids"])}
     unlocks = {}
     for check in std["checks"].values():
         for earlier in check.get("after", []):
             unlocks[earlier] = unlocks.get(earlier, 0) + 1
-    work = [dict(row, unlocks=unlocks.get(row["check"], 0)) for row in rows
+    work = [dict(row, unlocks=unlocks.get(row["check"], 0) if row["state"] == "open" else 0) for row in rows
             if row["state"] in ("open", "contested") or (row["state"] == "answered" and row["flags"])]
     work.sort(key=lambda row: (order[row["due_by"]], -row["unlocks"]))
 
     slot_of = {kind["id"]: kind.get("slot") for kind in std["source_kinds"]}
-    filed = {slot_of[source["kind"]] for source in memory["sources"].values() if source["state"] == "current"}
+    filed = {slot_of[source["kind"]] for source in memory["sources"].values() if source["state"] == "current"} | set(in_folder)
     wanted = {}
     for row in work:
         for slot in std["checks"][row["check"]].get("look_in", []):

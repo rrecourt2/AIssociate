@@ -43,11 +43,7 @@ checks:
   question: Is a corporate guarantee available from a parent company or sponsor?
   answer: yes_no
   assumption: Transaction has credit support beyond the borrower's own assets
-  disproved_by: 'no'
   after: [OBS_SECPKG_001]
-  when:
-  - check: OBS_SECPKG_001
-    is: true
   look_in: [06.02.a]
   evidence:
     best: [guarantee_agreement, internal_memo]
@@ -61,9 +57,6 @@ checks:
   assumption: Real property collateral is available and free of prior claims
   disproved_by: 'no'
   after: [OBS_SECPKG_001]
-  when:
-  - check: OBS_SECPKG_001
-    is: true
   look_in: [06.02.a, 07.01.a]
   evidence:
     best: [security_agreement, valuation_report]
@@ -81,9 +74,6 @@ checks:
   assumption: Cash flow assignment is a viable security mechanism
   disproved_by: 'no'
   after: [OBS_SECPKG_001]
-  when:
-  - check: OBS_SECPKG_001
-    is: true
   look_in: [06.02.a]
   evidence:
     best: [material_contract, legal_opinion]

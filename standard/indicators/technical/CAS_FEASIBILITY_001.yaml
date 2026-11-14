@@ -42,9 +42,6 @@ checks:
   assumption: Feasibility conclusions rely solely on management or sponsor assertions
   disproved_by: 'yes'
   after: [OBS_FEAS_001]
-  when:
-  - check: OBS_FEAS_004
-    is: true
   evidence:
     best: [technical_feasibility, consultant_report]
     supporting: [internal_memo]

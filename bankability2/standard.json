@@ -1,6 +1,6 @@
 {
  "name": "Bankability Standard",
- "version": "3.0.0",
+ "version": "3.0.1",
  "description": "A standard for evidence-based investment due diligence. It says what a deal folder holds and what must be known.",
  "licence": "MIT",
  "stages": [
@@ -2406,10 +2406,6 @@
       {
        "check": "OBS_SUPPORT_TOPOLOGY_001",
        "is": true
-      },
-      {
-       "check": "OBS_SUPPORT_TOPOLOGY_001",
-       "is": true
       }
      ],
      "look_in": [
@@ -3137,12 +3133,6 @@
      "after": [
       "OBS_ENV_001"
      ],
-     "when": [
-      {
-       "check": "OBS_ENV_001",
-       "is": true
-      }
-     ],
      "evidence": {
       "best": [
        "esia_report"
@@ -3195,12 +3185,6 @@
      "after": [
       "OBS_ENV_001"
      ],
-     "when": [
-      {
-       "check": "OBS_ENV_001",
-       "is": true
-      }
-     ],
      "evidence": {
       "best": [
        "esms_policy",
@@ -3226,12 +3210,6 @@
      "disproved_by": "no",
      "after": [
       "OBS_ENV_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_ENV_001",
-       "is": true
-      }
      ],
      "evidence": {
       "best": [
@@ -3630,12 +3608,6 @@
      "after": [
       "OBS_COST_001"
      ],
-     "when": [
-      {
-       "check": "OBS_COST_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "03.01.a",
       "03.02.a"
@@ -3664,12 +3636,6 @@
      "disproved_by": "yes",
      "after": [
       "OBS_COST_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_COST_001",
-       "is": true
-      }
      ],
      "look_in": [
       "03.01.a",
@@ -3700,12 +3666,6 @@
      "disproved_by": "yes",
      "after": [
       "OBS_COST_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_COST_001",
-       "is": true
-      }
      ],
      "look_in": [
       "03.01.a"
@@ -3813,12 +3773,6 @@
      "after": [
       "OBS_COV_001"
      ],
-     "when": [
-      {
-       "check": "OBS_COV_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "06.03.a"
      ],
@@ -3846,12 +3800,6 @@
      "disproved_by": "no",
      "after": [
       "OBS_COV_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_COV_001",
-       "is": true
-      }
      ],
      "look_in": [
       "06.03.a"
@@ -3881,12 +3829,6 @@
      "after": [
       "OBS_COV_001"
      ],
-     "when": [
-      {
-       "check": "OBS_COV_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "06.03.a"
      ],
@@ -3914,12 +3856,6 @@
      "disproved_by": "no",
      "after": [
       "OBS_COV_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_COV_001",
-       "is": true
-      }
      ],
      "look_in": [
       "06.03.a"
@@ -4168,7 +4104,7 @@
      "when": [
       {
        "check": "OBS_DEBT_001",
-       "is": false
+       "is": true
       }
      ],
      "look_in": [
@@ -4247,12 +4183,6 @@
      "after": [
       "OBS_FIC_001"
      ],
-     "when": [
-      {
-       "check": "OBS_FIC_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "03.01.a",
       "09.01.a"
@@ -4287,12 +4217,6 @@
      "after": [
       "OBS_FIC_001"
      ],
-     "when": [
-      {
-       "check": "OBS_FIC_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "03.01.a",
       "08.01.a"
@@ -4322,12 +4246,6 @@
      "after": [
       "OBS_FIC_001"
      ],
-     "when": [
-      {
-       "check": "OBS_FIC_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "03.01.a",
       "04.01.a"
@@ -4356,12 +4274,6 @@
      "disproved_by": "no",
      "after": [
       "OBS_FIC_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_FIC_001",
-       "is": true
-      }
      ],
      "look_in": [
       "01.01.a"
@@ -4445,12 +4357,6 @@
      "after": [
       "OBS_FIG_001"
      ],
-     "when": [
-      {
-       "check": "OBS_FIG_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "09.01.a",
       "08.01.a"
@@ -4479,12 +4385,6 @@
      "disproved_by": "yes",
      "after": [
       "OBS_FIG_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_FIG_001",
-       "is": true
-      }
      ],
      "look_in": [
       "03.01.a",
@@ -4522,12 +4422,6 @@
      "after": [
       "OBS_FIG_001"
      ],
-     "when": [
-      {
-       "check": "OBS_FIG_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "08.01.a",
       "02.01.a"
@@ -4556,12 +4450,6 @@
      "disproved_by": "no",
      "after": [
       "OBS_FIG_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_FIG_001",
-       "is": true
-      }
      ],
      "look_in": [
       "03.01.a",
@@ -4639,12 +4527,6 @@
      "after": [
       "OBS_FIL_001"
      ],
-     "when": [
-      {
-       "check": "OBS_FIL_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "03.01.a",
       "08.01.a"
@@ -4673,12 +4555,6 @@
      "disproved_by": "yes",
      "after": [
       "OBS_FIL_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_FIL_001",
-       "is": true
-      }
      ],
      "look_in": [
       "03.01.a",
@@ -4709,12 +4585,6 @@
      "after": [
       "OBS_FIL_001"
      ],
-     "when": [
-      {
-       "check": "OBS_FIL_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "04.01.a",
       "09.01.a"
@@ -4743,12 +4613,6 @@
      "assumption": "Interbank exposure is manageable and well-monitored",
      "after": [
       "OBS_FIL_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_FIL_001",
-       "is": true
-      }
      ],
      "look_in": [
       "03.01.a",
@@ -4828,12 +4692,6 @@
      "after": [
       "OBS_FIP_001"
      ],
-     "when": [
-      {
-       "check": "OBS_FIP_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "03.01.a",
       "03.02.a"
@@ -4862,12 +4720,6 @@
      "disproved_by": "yes",
      "after": [
       "OBS_FIP_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_FIP_001",
-       "is": true
-      }
      ],
      "look_in": [
       "03.01.a",
@@ -4898,12 +4750,6 @@
      "after": [
       "OBS_FIP_001"
      ],
-     "when": [
-      {
-       "check": "OBS_FIP_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "03.01.a",
       "03.02.a"
@@ -4933,12 +4779,6 @@
      "disproved_by": "no",
      "after": [
       "OBS_FIP_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_FIP_001",
-       "is": true
-      }
      ],
      "look_in": [
       "08.01.a",
@@ -5168,12 +5008,6 @@
      "after": [
       "OBS_FX_007"
      ],
-     "when": [
-      {
-       "check": "OBS_FX_008",
-       "is": true
-      }
-     ],
      "evidence": {
       "best": [
        "audited_annual_report"
@@ -5201,7 +5035,7 @@
       "none"
      ],
      "assumption": "Pricing freedom absorbs FX-driven cost shocks",
-     "flag_when": "is administered_prices",
+     "flag_when": "is not full_passthrough",
      "after": [
       "OBS_FX_INPUT_001"
      ],
@@ -5983,12 +5817,6 @@
      "after": [
       "OBS_LIQ_001"
      ],
-     "when": [
-      {
-       "check": "OBS_LIQ_001",
-       "is": false
-      }
-     ],
      "look_in": [
       "03.01.a"
      ],
@@ -6750,12 +6578,6 @@
      "after": [
       "OBS_RP_001"
      ],
-     "when": [
-      {
-       "check": "OBS_RP_003",
-       "is": false
-      }
-     ],
      "look_in": [
       "03.01.a"
      ],
@@ -7104,12 +6926,6 @@
      "after": [
       "OBS_REV_001"
      ],
-     "when": [
-      {
-       "check": "OBS_REV_003",
-       "is": true
-      }
-     ],
      "look_in": [
       "03.02.a"
      ],
@@ -7136,12 +6952,6 @@
      "disproved_by": "yes",
      "after": [
       "OBS_REV_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_REV_003",
-       "is": true
-      }
      ],
      "look_in": [
       "03.01.a",
@@ -7379,15 +7189,8 @@
      "question": "Is a corporate guarantee available from a parent company or sponsor?",
      "answer": "yes_no",
      "assumption": "Transaction has credit support beyond the borrower's own assets",
-     "disproved_by": "no",
      "after": [
       "OBS_SECPKG_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_SECPKG_001",
-       "is": true
-      }
      ],
      "look_in": [
       "06.02.a"
@@ -7416,12 +7219,6 @@
      "disproved_by": "no",
      "after": [
       "OBS_SECPKG_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_SECPKG_001",
-       "is": true
-      }
      ],
      "look_in": [
       "06.02.a",
@@ -7456,12 +7253,6 @@
      "disproved_by": "no",
      "after": [
       "OBS_SECPKG_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_SECPKG_001",
-       "is": true
-      }
      ],
      "look_in": [
       "06.02.a"
@@ -7799,12 +7590,6 @@
      "after": [
       "OBS_WC_001"
      ],
-     "when": [
-      {
-       "check": "OBS_WC_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "03.01.a",
       "03.02.a"
@@ -7834,12 +7619,6 @@
      "after": [
       "OBS_WC_001"
      ],
-     "when": [
-      {
-       "check": "OBS_WC_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "03.01.a",
       "06.01.a"
@@ -7868,16 +7647,6 @@
      "disproved_by": "yes",
      "after": [
       "OBS_WC_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_WC_001",
-       "is": true
-      },
-      {
-       "check": "OBS_WC_002",
-       "is": false
-      }
      ],
      "look_in": [
       "03.01.a"
@@ -8068,12 +7837,6 @@
      "disproved_by": "no",
      "after": [
       "OBS_BOARD_003"
-     ],
-     "when": [
-      {
-       "check": "OBS_BOARD_003",
-       "is": true
-      }
      ],
      "look_in": [
       "01.03.a"
@@ -8840,7 +8603,6 @@
      "question": "Are there signing authority limits, and does this transaction fall within them?",
      "answer": "yes_no",
      "assumption": "Signatories have authority to bind the entity for this amount",
-     "disproved_by": "no",
      "after": [
       "OBS_AUTH_001"
      ],
@@ -8877,12 +8639,6 @@
      "disproved_by": "no",
      "after": [
       "OBS_AUTH_003"
-     ],
-     "when": [
-      {
-       "check": "OBS_AUTH_003",
-       "is": true
-      }
      ],
      "look_in": [
       "02.02.a"
@@ -9010,7 +8766,6 @@
      "question": "Do any material contracts contain change-of-control provisions?",
      "answer": "yes_no",
      "assumption": "Transaction will not trigger change-of-control clauses in existing contracts",
-     "disproved_by": "yes",
      "after": [
       "OBS_CONT_001"
      ],
@@ -9083,6 +8838,16 @@
    "due_by": "concept",
    "applies_to": [
     "project"
+   ],
+   "applies_when": [
+    {
+     "check": "OBS_SECTOR_002",
+     "is": "renewable_energy"
+    },
+    {
+     "check": "OBS_SECTOR_002",
+     "is": "conventional_power"
+    }
    ],
    "checks": [
     {
@@ -9565,12 +9330,6 @@
      "after": [
       "OBS_LIT_001"
      ],
-     "when": [
-      {
-       "check": "OBS_LIT_001",
-       "is": false
-      }
-     ],
      "look_in": [
       "02.04.a"
      ],
@@ -9763,12 +9522,6 @@
      "answer": "yes_no",
      "assumption": "Regulatory environment is stable and predictable",
      "disproved_by": "yes",
-     "when": [
-      {
-       "check": "OBS_REG_001",
-       "is": false
-      }
-     ],
      "look_in": [
       "02.06.a"
      ],
@@ -10154,16 +9907,6 @@
      "after": [
       "OBS_ASSET_001"
      ],
-     "when": [
-      {
-       "check": "OBS_ASSET_001",
-       "is": true
-      },
-      {
-       "check": "OBS_ASSET_004",
-       "is": true
-      }
-     ],
      "evidence": {
       "best": [
        "technical_feasibility",
@@ -10186,12 +9929,6 @@
      "disproved_by": "no",
      "after": [
       "OBS_ASSET_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_ASSET_001",
-       "is": true
-      }
      ],
      "evidence": {
       "best": [
@@ -10220,12 +9957,6 @@
      "after": [
       "OBS_ASSET_001"
      ],
-     "when": [
-      {
-       "check": "OBS_ASSET_001",
-       "is": true
-      }
-     ],
      "evidence": {
       "best": [
        "technical_feasibility",
@@ -10252,6 +9983,16 @@
    "due_by": "diligence",
    "applies_to": [
     "project"
+   ],
+   "applies_when": [
+    {
+     "check": "OBS_SECTOR_002",
+     "is": "renewable_energy"
+    },
+    {
+     "check": "OBS_SECTOR_002",
+     "is": "conventional_power"
+    }
    ],
    "checks": [
     {
@@ -10430,6 +10171,16 @@
    "applies_to": [
     "project"
    ],
+   "applies_when": [
+    {
+     "check": "OBS_SECTOR_002",
+     "is": "renewable_energy"
+    },
+    {
+     "check": "OBS_SECTOR_002",
+     "is": "conventional_power"
+    }
+   ],
    "checks": [
     {
      "id": "OBS_EGEN_001",
@@ -10467,12 +10218,6 @@
      "after": [
       "OBS_EGEN_001"
      ],
-     "when": [
-      {
-       "check": "OBS_EGEN_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "05.01.a",
       "05.02.a"
@@ -10501,12 +10246,6 @@
      "disproved_by": "no",
      "after": [
       "OBS_EGEN_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_EGEN_001",
-       "is": true
-      }
      ],
      "look_in": [
       "06.01.a"
@@ -10538,12 +10277,6 @@
      "after": [
       "OBS_EGEN_001"
      ],
-     "when": [
-      {
-       "check": "OBS_EGEN_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "06.01.a",
       "06.02.a"
@@ -10573,12 +10306,6 @@
      "disproved_by": "yes",
      "after": [
       "OBS_EGEN_003"
-     ],
-     "when": [
-      {
-       "check": "OBS_EGEN_003",
-       "is": false
-      }
      ],
      "look_in": [
       "05.01.a"
@@ -10639,6 +10366,16 @@
    "due_by": "diligence",
    "applies_to": [
     "project"
+   ],
+   "applies_when": [
+    {
+     "check": "OBS_SECTOR_002",
+     "is": "renewable_energy"
+    },
+    {
+     "check": "OBS_SECTOR_002",
+     "is": "conventional_power"
+    }
    ],
    "checks": [
     {
@@ -10861,12 +10598,6 @@
      "disproved_by": "yes",
      "after": [
       "OBS_FEAS_001"
-     ],
-     "when": [
-      {
-       "check": "OBS_FEAS_004",
-       "is": true
-      }
      ],
      "evidence": {
       "best": [

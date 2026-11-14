@@ -71,9 +71,6 @@ checks:
   answer: yes_no
   assumption: Regulatory environment is stable and predictable
   disproved_by: 'yes'
-  when:
-  - check: OBS_REG_001
-    is: false
   look_in: [02.06.a]
   evidence:
     best: [legal_opinion, regulatory_document]

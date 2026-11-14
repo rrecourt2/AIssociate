@@ -38,7 +38,6 @@ checks:
   question: Do any material contracts contain change-of-control provisions?
   answer: yes_no
   assumption: Transaction will not trigger change-of-control clauses in existing contracts
-  disproved_by: 'yes'
   after: [OBS_CONT_001]
   when:
   - check: OBS_CONT_001

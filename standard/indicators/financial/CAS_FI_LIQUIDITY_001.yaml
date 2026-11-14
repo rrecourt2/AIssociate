@@ -29,9 +29,6 @@ checks:
   assumption: Deposit base is diversified and stable
   disproved_by: 'yes'
   after: [OBS_FIL_001]
-  when:
-  - check: OBS_FIL_001
-    is: true
   look_in: [03.01.a, 08.01.a]
   evidence:
     best: [audited_annual_report, regulatory_document]
@@ -45,9 +42,6 @@ checks:
   assumption: Asset and liability maturities are reasonably matched
   disproved_by: 'yes'
   after: [OBS_FIL_001]
-  when:
-  - check: OBS_FIL_001
-    is: true
   look_in: [03.01.a, 08.01.a]
   evidence:
     best: [audited_annual_report, regulatory_document]
@@ -61,9 +55,6 @@ checks:
   assumption: Emergency liquidity backstop is available
   disproved_by: 'no'
   after: [OBS_FIL_001]
-  when:
-  - check: OBS_FIL_001
-    is: true
   look_in: [04.01.a, 09.01.a]
   evidence:
     best: [regulatory_document, facility_agreement]
@@ -77,9 +68,6 @@ checks:
   unit: percent
   assumption: Interbank exposure is manageable and well-monitored
   after: [OBS_FIL_001]
-  when:
-  - check: OBS_FIL_001
-    is: true
   look_in: [03.01.a, 03.02.a]
   evidence:
     best: [audited_annual_report, regulatory_document]

@@ -67,9 +67,6 @@ checks:
   assumption: Entity is not subject to regulatory scrutiny
   disproved_by: 'yes'
   after: [OBS_LIT_001]
-  when:
-  - check: OBS_LIT_001
-    is: false
   look_in: [02.04.a]
   evidence:
     best: [regulatory_document, legal_opinion]

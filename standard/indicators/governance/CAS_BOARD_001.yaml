@@ -86,9 +86,6 @@ checks:
   assumption: Board decisions are formally documented and auditable
   disproved_by: 'no'
   after: [OBS_BOARD_003]
-  when:
-  - check: OBS_BOARD_003
-    is: true
   look_in: [01.03.a]
   evidence:
     best: [board_minutes]

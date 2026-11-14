@@ -94,9 +94,6 @@ checks:
   assumption: Revenue is evenly distributed throughout the year
   disproved_by: 'yes'
   after: [OBS_REV_001]
-  when:
-  - check: OBS_REV_003
-    is: true
   look_in: [03.02.a]
   evidence:
     best: [management_accounts]
@@ -110,9 +107,6 @@ checks:
   assumption: All revenue is transactional / one-off
   disproved_by: 'yes'
   after: [OBS_REV_001]
-  when:
-  - check: OBS_REV_003
-    is: true
   look_in: [03.01.a, 10.02.a]
   evidence:
     best: [audited_annual_report, offtake_agreement]

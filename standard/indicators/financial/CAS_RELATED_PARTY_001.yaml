@@ -73,9 +73,6 @@ checks:
   assumption: Related party transactions are fully disclosed per accounting standards
   disproved_by: 'no'
   after: [OBS_RP_001]
-  when:
-  - check: OBS_RP_003
-    is: false
   look_in: [03.01.a]
   evidence:
     best: [audited_annual_report]

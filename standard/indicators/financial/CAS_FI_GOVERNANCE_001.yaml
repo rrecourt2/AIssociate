@@ -28,9 +28,6 @@ checks:
   assumption: Institution has a clean regulatory compliance history
   disproved_by: 'yes'
   after: [OBS_FIG_001]
-  when:
-  - check: OBS_FIG_001
-    is: true
   look_in: [09.01.a, 08.01.a]
   evidence:
     best: [regulatory_document, audited_annual_report]
@@ -45,9 +42,6 @@ checks:
   assumption: No material insider or related party lending exists
   disproved_by: 'yes'
   after: [OBS_FIG_001]
-  when:
-  - check: OBS_FIG_001
-    is: true
   look_in: [03.01.a, 08.01.a]
   evidence:
     best: [audited_annual_report, regulatory_document]
@@ -66,9 +60,6 @@ checks:
   assumption: Board-level risk oversight is formally established
   disproved_by: 'no'
   after: [OBS_FIG_001]
-  when:
-  - check: OBS_FIG_001
-    is: true
   look_in: [08.01.a, 02.01.a]
   evidence:
     best: [corporate_governance_policy, board_minutes]
@@ -83,9 +74,6 @@ checks:
   assumption: Financial statements are independently verified
   disproved_by: 'no'
   after: [OBS_FIG_001]
-  when:
-  - check: OBS_FIG_001
-    is: true
   look_in: [03.01.a, 08.01.a]
   evidence:
     best: [audited_annual_report]

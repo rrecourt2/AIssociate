@@ -3,6 +3,11 @@ title: Resource Assessment
 workstream: WS_TO
 due_by: diligence
 applies_to: [project]
+applies_when:
+- check: OBS_SECTOR_002
+  is: renewable_energy
+- check: OBS_SECTOR_002
+  is: conventional_power
 checks:
 - id: OBS_ERES_001
   question: Is site-specific resource data available for the project?

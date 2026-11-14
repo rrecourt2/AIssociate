@@ -28,9 +28,6 @@ checks:
   unit: percent
   assumption: Capital buffer above regulatory minimum is adequate
   after: [OBS_FIC_001]
-  when:
-  - check: OBS_FIC_001
-    is: true
   look_in: [03.01.a, 09.01.a]
   evidence:
     best: [regulatory_document, audited_annual_report]
@@ -45,9 +42,6 @@ checks:
   options: [no_dividends, conservative, moderate, aggressive]
   assumption: Dividend policy supports capital retention and growth
   after: [OBS_FIC_001]
-  when:
-  - check: OBS_FIC_001
-    is: true
   look_in: [03.01.a, 08.01.a]
   evidence:
     best: [audited_annual_report, board_minutes]
@@ -61,9 +55,6 @@ checks:
   assumption: Capital structure includes subordinated debt for regulatory capital
   disproved_by: 'no'
   after: [OBS_FIC_001]
-  when:
-  - check: OBS_FIC_001
-    is: true
   look_in: [03.01.a, 04.01.a]
   evidence:
     best: [audited_annual_report, facility_agreement]
@@ -77,9 +68,6 @@ checks:
   assumption: Growth plans can be funded without breaching capital requirements
   disproved_by: 'no'
   after: [OBS_FIC_001]
-  when:
-  - check: OBS_FIC_001
-    is: true
   look_in: [01.01.a]
   evidence:
     best: [business_plan, financial_projections]

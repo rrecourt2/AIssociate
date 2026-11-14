@@ -2,7 +2,7 @@
 
 The standard says what a deal folder holds and what must be known about a deal. It is data only: lists, a data-room structure and checks. No meaning lives in code.
 
-Version 3.0.0 holds 50 indicators with 267 checks, a data room of 10 folders with 64 slots, and 79 kinds of source. It continues the first Bankability's standard, version 2.0.0. [CHANGES.md](CHANGES.md) lists what changed.
+Version 3.0.1 holds 50 indicators with 267 checks, a data room of 10 folders with 64 slots, and 79 kinds of source. It continues the first Bankability's standard, version 2.0.0. [CHANGES.md](CHANGES.md) lists what changed.
 
 ## The files
 

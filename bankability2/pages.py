@@ -10,6 +10,7 @@ from .store import DEAL, TABLES
 
 SHELVES = ("deal", "parties", "people", "topics", "terms", "work")
 BEGIN, END = "<!-- tool:begin {} -->", "<!-- tool:end -->"
+PART = BEGIN + "((?!<!-- tool:begin).)*?" + END  # a begin marker, its lines and its own end marker
 ID = re.compile(r"\b[A-Z]-\d{3,}\b")
 NUMBER = re.compile(r"\d[\d,.]*\d|\d")
 SKELETON = """---
@@ -53,17 +54,16 @@ def own_text(text):
     """What the assistant wrote: the page without its top lines, its headings and the parts the tool fills in."""
     if text.startswith("---\n") and "\n---" in text[4:]:
         text = text[text.index("\n---", 4) + 4:]
-    text = re.sub(r"<!-- tool:begin \w+ -->.*?<!-- tool:end -->", "", text, flags=re.S)
+    text = re.sub(PART.format(r"\w+"), "", text, flags=re.S)
     return re.sub(r"^#.*$", "", text, flags=re.M)
 
 
 def fill(text, name, lines):
     """Put lines between a pair of markers. A page without the markers gets them at the end."""
-    begin = BEGIN.format(name)
-    body = "\n".join([begin, *lines, END])
-    if begin in text and END in text[text.index(begin):]:
-        start = text.index(begin)
-        return text[:start] + body + text[text.index(END, start) + len(END):]
+    body = "\n".join([BEGIN.format(name), *lines, END])
+    found = re.search(PART.format(name), text, flags=re.S)
+    if found:
+        return text[:found.start()] + body + text[found.end():]
     return text.rstrip() + "\n\n" + body + "\n"
 
 
@@ -183,11 +183,12 @@ def refresh(deal, memory, std, rows, held):
             kind = "deal" if rid == DEAL else memory["subjects"][rid]["kind"]
             shelf = "parties" if kind in ("party", "group") else "deal"
             name = memory["deal"]["name"] if rid == DEAL else memory["subjects"][rid].get("name") or rid
-            slug = "deal" if rid == DEAL else re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+            slug = "deal" if rid == DEAL else re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-") or rid.lower()
             path = f"{files.WIKI}/{shelf}/{slug}.md"
-            if path not in pages:
-                pages[path] = SKELETON.format(title=name, about=rid)
-                created.append(path)
+            if path in pages:  # another subject has the same name
+                path = f"{files.WIKI}/{shelf}/{slug}-{rid.lower()}.md"
+            pages[path] = SKELETON.format(title=name, about=rid)
+            created.append(path)
     contents = {shelf: [] for shelf in SHELVES}
     for path, text in sorted(pages.items()):
         ids = [rid.strip() for rid in front(text).get("about", "").split(",") if rid.strip()]
@@ -237,7 +238,8 @@ def problems(deal, memory):
         held = ""
         for rid in known:
             entry = memory["facts"].get(rid) or memory["sources"].get(rid) or {}
-            held += " " + " ".join(str(value) for value in entry.values())
+            for record in (entry, memory["sources"].get(entry.get("source"), {})):  # a fact, and the source it comes from
+                held += " " + " ".join(str(value) for key, value in record.items() if key not in ("fingerprint", "rev"))
         loose = sorted(n for n in numbers(written) - numbers(held) if n >= 10 or n != int(n))
         if loose:
             shown = ", ".join(f"{n:g}" for n in loose[:8])

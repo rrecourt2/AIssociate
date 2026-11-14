@@ -55,7 +55,8 @@ def group(title, lines, limit):
 def status(args):
     memory, std = load(args.deal)
     rows = assess.assess(memory, std)
-    todo = assess.next_list(memory, std, rows)
+    listed = files.read_json(args.deal, files.MANIFEST, {"documents": []})["documents"]
+    todo = assess.next_list(memory, std, rows, in_folder={doc["slot"] for doc in listed})
     if args.json:
         print(json.dumps({"deal": memory["deal"], "revision": store.revision(memory), "checks": rows, "next": todo},
                          indent=1, ensure_ascii=False))
@@ -80,14 +81,14 @@ def status(args):
     print("\n## Next\n\nChecks: " + (", ".join(f"{count} {state}" for state, count in counts.items()) or "none apply yet") + ".")
     limit = None if args.all else 15
     group("Structure still open", todo["structure"], limit)
-    group("Documents not in the folder", [f"{doc['slot']} {doc['title']}: {doc['why']}" for doc in todo["documents"]], limit)
     lines = []
     for row in todo["checks"]:
         waits = f"; {row['unlocks']} checks wait on it" if row["unlocks"] else ""
         state = ", ".join([row["state"], *row["flags"]])
-        lines.append(f"{row['check']} for {pages.name_of(row['for'], memory)}, ideally by {titles[row['due_by']]}: "
-                     f"{std['checks'][row['check']]['question']} ({state}{waits})")
+        lines.append(f"{std['checks'][row['check']]['question']} ({pages.name_of(row['for'], memory)}; "
+                     f"ideally by {titles[row['due_by']]}; {state}{waits}) [{row['check']}]")
     group("Checks to answer or strengthen", lines, limit)
+    group("Documents not in the folder", [f"{doc['slot']} {doc['title']}: {doc['why']}" for doc in todo["documents"]], limit)
     group("Questions without an answer", [f"{q['id']} to {q['asked_of']}, asked {q.get('asked', 'no date')}: {q['text']}"
                                          for q in todo["questions"]], limit)
     group("Facts that rest on a replaced source", todo["replaced"], limit)
@@ -110,7 +111,10 @@ def add(args):
                 source.setdefault("fingerprint", mark)
             else:
                 missing.append(source["where"])
-    entry = store.apply(memory, change, std)
+    try:
+        entry = store.apply(memory, change, std)
+    except (TypeError, KeyError, AttributeError) as error:  # nothing is written before apply returns
+        raise Refused(f"Nothing was recorded. A value in this set of changes has the wrong shape: {error!r}")
     if entry is None:
         print("Already recorded: this set of changes was applied before.")
         return
@@ -130,7 +134,7 @@ def summary(record):
 
 def show(args):
     memory, std = load(args.deal)
-    what, rows = args.what, assess.assess(memory, std)
+    what, rows = " ".join(args.what), assess.assess(memory, std)
     if what == "log":
         for entry in memory["log"][-30:]:
             print(f"{entry['n']}. {entry['at']} {entry['by']}: {entry['note']} "
@@ -155,10 +159,9 @@ def show(args):
         if used:
             print("\n" + "\n".join(pages.check_lines([row for row in used if row["state"] != "not relevant"], memory, std)))
     else:
-        for table in store.TABLES:
-            for rid, record in memory[table].items():
-                if what.lower() in json.dumps(record, ensure_ascii=False).lower():
-                    print(f"- {rid}: {summary(record)}")
+        hits = [f"- {rid}: {summary(record)}" for table in store.TABLES for rid, record in memory[table].items()
+                if what.lower() in json.dumps(record, ensure_ascii=False).lower()]
+        print("\n".join(hits) or "Nothing found.")
 
 
 def refresh(args):
@@ -172,7 +175,8 @@ def file_problems(deal, memory):
     """Documents that are missing, changed or not listed. Skipped where the documents are not present."""
     listed = {doc["path"]: doc for doc in files.read_json(deal, files.MANIFEST, {"documents": []})["documents"]}
     present = [path for path in files.listing(deal, files.CLIENT) if path != files.MANIFEST]
-    if listed and not present:
+    wheres = [source["where"] for source in memory["sources"].values() if source.get("where")]
+    if (listed or wheres) and not present and not any(files.fingerprint(deal, where) for where in wheres):
         return ["The documents are not in this copy of the folder, so files were not checked."]
     found = [f"{path}: in the client folder but not in the manifest" for path in present if path not in listed]
     for path, doc in listed.items():
@@ -182,7 +186,7 @@ def file_problems(deal, memory):
     for sid, source in memory["sources"].items():
         mark = files.fingerprint(deal, source["where"]) if source.get("where") else None
         if source.get("where") and mark is None:
-            found.append(f"{sid}: {source['where']} was not found")
+            found.append(f"{sid}: {source['where']} was not found in this copy of the folder")
         elif mark and source.get("fingerprint") not in (None, mark):
             found.append(f"{sid}: {source['where']} changed since it was recorded")
     return found
@@ -200,7 +204,7 @@ def adjust(args):
     memory, std = load(args.deal)
     items = given(args.adjustment)
     items = items if isinstance(items, list) else [items]
-    if not all(isinstance(item, dict) for item in items):
+    if not items or not all(isinstance(item, dict) for item in items):
         raise Refused("an adjustment is a JSON object, or a list of them")
     stamp = {"date": datetime.date.today().isoformat(), "rev": store.revision(memory), "stage": memory["deal"]["stage"]}
     items = [{**item, **stamp} for item in items]
@@ -211,6 +215,7 @@ def adjust(args):
     layer["adjustments"] += items
     files.write_json(args.deal, files.DEAL_LAYER, layer)
     done = "; ".join(f"{item['do']} {item.get('target') or (item.get('check') or item.get('indicator'))['id']}" for item in items)
+    store.note_outside_change(memory)
     store.record(memory, items[0].get("by", "unknown"), f"Adjusted the standard: {done}")
     files.write_json(args.deal, files.MEMORY, memory)
     print(f"Adjusted the standard for this deal: {done}.")
@@ -222,24 +227,24 @@ def file_documents(args):
     place = {slot["id"]: f"{files.CLIENT}/{folder['id']} {safe(folder['title'])}/{sub['id']} {safe(sub['title'])}"
              for folder in std["dataroom"]["folders"] for sub in folder["sub_folders"] for slot in sub["slots"]}
     items = given(args.filing)
+    items = items if isinstance(items, list) else [items]
     for item in items:
-        if not isinstance(item, dict) or item.get("kind") not in kinds or not item.get("file"):
-            raise Refused(f"each document needs a 'file' and a known 'kind': {item!r}")
+        if not isinstance(item, dict) or item.get("kind") not in kinds or not isinstance(item.get("file"), str):
+            raise Refused(f"a filing is a list, and each document in it needs a 'file' and a known 'kind': {item!r}\n"
+                          f"Known kinds: {', '.join(kinds)}")
     manifest = files.read_json(args.deal, files.MANIFEST, {"documents": []})
-    moved = []
     for item in items:
         name = item["file"].replace("\\", "/").split("/")[-1]
         slot = kinds[item["kind"]].get("slot")
         target = f"{place[slot]}/{name}" if slot else f"Internal/sources/{name}"
         files.move(args.deal, item["file"], target)
+        manifest["documents"] = [doc for doc in manifest["documents"] if doc["path"] not in (target, item["file"])]
         if slot:
-            entry = {"path": target, "slot": slot, "kind": item["kind"], "title": item.get("title", name),
-                     "party": item.get("party"), "period": item.get("period"),
-                     "fingerprint": files.fingerprint(args.deal, target)}
-            manifest["documents"] = [doc for doc in manifest["documents"] if doc["path"] != target] + [entry]
-            files.write_json(args.deal, files.MANIFEST, manifest)  # after each move, so the list never lags the folder
-        moved.append(f"{item['file']} -> {target}")
-    print("\n".join(moved))
+            manifest["documents"].append({"path": target, "slot": slot, "kind": item["kind"], "title": item.get("title", name),
+                                          "party": item.get("party"), "period": item.get("period"),
+                                          "fingerprint": files.fingerprint(args.deal, target)})
+        files.write_json(args.deal, files.MANIFEST, manifest)  # after each move, so the list never lags the folder
+        print(f"{item['file']} -> {target}")
 
 
 def doctor(args):
@@ -277,21 +282,24 @@ def main(argv=None):
     sub.add_argument("--since", type=int, help="show changes after this revision")
     sub.add_argument("--json", action="store_true")
     command("add", add, "record a set of changes").add_argument("changes", help="a JSON file, or - for standard input")
-    command("show", show, "look something up").add_argument("what", help="an ID, 'log', 'sheet', or words to search for")
+    command("show", show, "look something up").add_argument("what", nargs="+", help="an ID, 'log', 'sheet', or words to search for")
     command("pages", refresh, "fill in the tool's parts of the wiki pages")
     command("check", check, "report what looks wrong")
     command("adjust", adjust, "adjust the standard for this deal").add_argument("adjustment", help="a JSON file, or -")
     command("file", file_documents, "sort documents into the client folder").add_argument("filing", help="a JSON file, or -")
     command("doctor", doctor, "report where the tool runs", deal="optional")
     args = parser.parse_args(argv)
+    for stream in filter(None, (sys.__stdin__, sys.__stdout__)):
+        stream.reconfigure(encoding="utf-8")  # Windows would use its own code page when the tool is piped
+    code = 0
     try:
         args.run(args)
-    except (Refused, json.JSONDecodeError, FileNotFoundError) as refusal:
+    except (Refused, json.JSONDecodeError, UnicodeDecodeError, OSError) as refusal:
         print(f"Refused: {refusal}")
-        return 1
-    if files.WRITTEN:
+        code = 1
+    if files.WRITTEN:  # also after a refusal: `file` may have moved documents before it was refused
         print("Wrote: " + ", ".join(dict.fromkeys(files.WRITTEN)))
-    return 0
+    return code
 
 
 if __name__ == "__main__":

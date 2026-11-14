@@ -278,7 +278,7 @@ These rules are checked by a test that fails when the code breaks one:
 - No network access, no starting of other programs, no `eval`, no reading of environment variables, no deleting.
 - One module touches the disk. It writes through three functions, and each refuses a path outside the deal folder.
 - No function longer than 100 lines.
-- The whole tool stays under 2,000 lines, in at most seven files. It is about 1,200 lines now.
+- The whole tool stays under 2,000 lines, in at most seven files. It is about 1,300 lines now.
 
 [audit.md](audit.md) says what the tool does, what it can touch and how to verify a release.
 

@@ -23,9 +23,6 @@ checks:
   assumption: Borrower reporting obligations are specified and achievable
   disproved_by: 'no'
   after: [OBS_COV_001]
-  when:
-  - check: OBS_COV_001
-    is: true
   look_in: [06.03.a]
   evidence:
     best: [term_sheet, facility_agreement]
@@ -40,9 +37,6 @@ checks:
   assumption: Borrower's ability to incur additional debt is appropriately restricted
   disproved_by: 'no'
   after: [OBS_COV_001]
-  when:
-  - check: OBS_COV_001
-    is: true
   look_in: [06.03.a]
   evidence:
     best: [term_sheet, facility_agreement]
@@ -56,9 +50,6 @@ checks:
   assumption: Covenant levels provide a meaningful early warning without being too tight
   disproved_by: 'no'
   after: [OBS_COV_001]
-  when:
-  - check: OBS_COV_001
-    is: true
   look_in: [06.03.a]
   evidence:
     best: [internal_memo, company_record]
@@ -73,9 +64,6 @@ checks:
   assumption: Clear remediation process exists if covenants are breached
   disproved_by: 'no'
   after: [OBS_COV_001]
-  when:
-  - check: OBS_COV_001
-    is: true
   look_in: [06.03.a]
   evidence:
     best: [term_sheet, facility_agreement]

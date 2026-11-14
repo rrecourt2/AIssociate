@@ -102,8 +102,6 @@ checks:
   when:
   - check: OBS_SUPPORT_TOPOLOGY_001
     is: true
-  - check: OBS_SUPPORT_TOPOLOGY_001
-    is: true
   look_in: [06.01.a, 06.02.a]
   evidence:
     best: [term_sheet, guarantee_agreement, facility_agreement]

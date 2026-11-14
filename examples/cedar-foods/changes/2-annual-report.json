@@ -13,7 +13,7 @@
   {"ref": "tuskway", "kind": "party", "name": "Bluegate Supermarkets"}
  ],
  "links": [
-  {"from": "P-001", "type": "sells_to", "to": "@tuskway", "state": "confirmed", "source": "@ar",
+  {"ref": "sale", "from": "P-001", "type": "sells_to", "to": "@tuskway", "state": "confirmed", "source": "@ar",
    "why": "Bluegate buys 31% of Cedar's revenue, so whether it pays matters for repayment."}
  ],
  "facts": [
@@ -22,7 +22,9 @@
    "answers": [{"check": "OBS_REV_001", "value": true}], "replaces": "F-005"},
   {"about": "P-001", "statement": "Two customers each account for more than 10% of revenue: Bluegate Supermarkets with 31% and Lakeside Distributors with 14%.",
    "as_of": "2025-12-31", "source": "@ar", "place": "note 5", "said_by": "document",
-   "answers": [{"check": "OBS_BUYER_CONC_001", "value": true}]},
+   "answers": [{"check": "OBS_BUYER_CONC_001", "value": true},
+               {"check": "OBS_OFFTAKER_001", "value": true, "for": "@sale"},
+               {"check": "OBS_OFFTAKER_002", "value": 31, "for": "@sale"}]},
   {"about": "P-001", "statement": "All revenue is in Kenyan shillings.", "as_of": "2025-12-31", "source": "@ar", "place": "note 5",
    "said_by": "document", "answers": [{"check": "OBS_FX_001", "value": false}]},
   {"about": "P-001", "statement": "Borrowings were KES 1,300m at 31 December 2025, all from Kenyan banks and all in Kenyan shillings.",

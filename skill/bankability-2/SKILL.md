@@ -24,18 +24,21 @@ A deal folder holds everything known about one deal. A small tool keeps its memo
 ## The tool
 
 ```bash
-python3 scripts/bk2.py <command> "<deal folder>"
+python3 scripts/bk2.py <command> "<deal folder>" <what the command takes>
+python3 scripts/bk2.py add "<deal folder>" changes.json
 ```
+
+The deal folder always comes right after the command.
 
 | Command | Use it to |
 |---|---|
 | `status` | See the structure, what changed and every candidate for what to do next. Add `--all` for the full list. |
 | `add changes.json` | Record what you learned. See [recording](references/recording.md). |
-| `show <ID or words>` | Look up a record, a check or an indicator, or search. `show sheet` prints the entry sheets. `show log` prints the history. |
+| `show <ID or words>` | Look up a record, a check or an indicator, or search the memory for words. `show sheet` prints the entry sheets. `show log` prints the history. |
 | `pages` | Create the pages the deal's structure calls for and fill in the tool's parts of every page. |
 | `check` | See what looks wrong: citations that lead nowhere, numbers no cited fact holds, changed files. |
 | `adjust adjustment.json` | Change the standard for this deal. See [standard](references/standard.md). |
-| `file filing.json` | Sort documents into the client folder. On the laptop only. |
+| `file filing.json` | Sort documents into the client folder. On the laptop only. The filing is a list: `[{"file": "Inbox/Teaser.pdf", "kind": "executive_summary", "title": "Teaser", "party": "Cedar Foods Ltd", "period": "2025"}]`. `file` is the path in the deal folder and `kind` is a kind of source. The rest is optional. |
 | `start`, `doctor` | Create a deal folder. Report where the tool runs. |
 
 Each command that writes ends with a line `Wrote:` and the files it wrote. If your host does not save files by itself, save those files back to the deal folder.
@@ -46,7 +49,7 @@ Each command that writes ends with a line `Wrote:` and the files it wrote. If yo
 2. **Read what is new** with your own tools: a document, a transcript, an email, or what the officer tells you.
 3. **Record it** with `add`. Record every source, the facts that would go into a table or a system field, and any party or link that matters for repayment. Say which checks a fact answers.
 4. **Run `pages`**, then write or update the pages the new material touches. See [pages](references/pages.md).
-5. **Run `check`** and repair what it reports.
+5. **Run `check`** and repair what it reports. One thing stays: a citation you left on purpose under a claim that was replaced.
 6. **Tell the officer** what changed, and what you suggest next and why. What to show, and how, is your choice. Do not recite the list.
 
 ## Rules
@@ -65,7 +68,7 @@ Each command that writes ends with a line `Wrote:` and the files it wrote. If yo
 
 ## When the deal folder is not on this machine
 
-In Copilot Cowork the deal folder lives in OneDrive and the tool runs on copies. Bring in `Internal/memory/memory.json`, the files in `Internal/standard`, and the wiki pages you need. Run the tool on that copy. Save every file named after `Wrote:` back to the same place in the deal folder. Sorting documents with `file` needs the laptop.
+In Copilot Cowork the deal folder lives in OneDrive and the tool runs on copies. Bring in `Internal/memory/memory.json`, the files in `Internal/standard`, `Client folder/manifest.json` and the whole `Internal/wiki` folder. Bring all of the wiki: `pages` writes an empty page for every subject whose page is missing, and saving that back would overwrite the real page. Run the tool on that copy. Save every file named after `Wrote:` back to the same place in the deal folder. Sorting documents with `file` needs the laptop.
 
 ## More
 

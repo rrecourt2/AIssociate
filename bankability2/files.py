@@ -31,6 +31,8 @@ def inside(deal, relative):
 def write(deal, relative, text):
     """Write a text file in the deal folder. The only place the tool writes."""
     target = inside(deal, relative)
+    if os.path.islink(target + ".tmp"):
+        raise Refused(f"{relative}.tmp is a link")  # it could lead out of the deal folder
     os.makedirs(os.path.dirname(target), exist_ok=True)
     with open(target + ".tmp", "w", encoding="utf-8", newline="\n") as f:
         f.write(text)
@@ -64,7 +66,7 @@ def read(deal, relative, default=None):
     path = inside(deal, relative)
     if not os.path.isfile(path):
         return default
-    with open(path, encoding="utf-8") as f:
+    with open(path, encoding="utf-8-sig") as f:  # also reads a file that starts with a byte-order mark
         return f.read()
 
 
@@ -75,7 +77,7 @@ def read_json(deal, relative, default=None):
 
 def read_input(path):
     """Read a JSON file the user or the assistant hands to a command."""
-    with open(path, encoding="utf-8") as f:
+    with open(path, encoding="utf-8-sig") as f:
         return json.load(f)
 
 

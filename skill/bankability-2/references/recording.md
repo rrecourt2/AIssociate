@@ -52,10 +52,10 @@ Record what would go into a table or a system field: names, amounts, dates, term
 | `as_of` | The date the fact refers to. For a standing fact, the date of the source. |
 | `source`, `place` | Where it comes from, and the page, note or minute. |
 | `said_by` | `document`, `client`, `officer`, `third_party` or `inference`. Mark your own conclusions as `inference`. |
-| `answers` | The checks it answers: `{"check": "OBS_REV_001", "value": true}`. Add `"for": "P-002"` if the answer is about another subject than the fact. Yes or no is `true` or `false`, a number is a number, a choice is one of the check's options. |
-| `fills` | The system fields it fills, such as `["CRM.country"]`. |
+| `answers` | The checks it answers, as a list: `[{"check": "OBS_REV_001", "value": true}]`. Yes or no is `true` or `false`, a number is a number, a choice is one of the check's options. An answer counts for the subject the fact is about. Add `"for": "P-002"` if it is about another subject. An answer to a check that is asked about the deal counts for the deal. An answer for a subject the check is not asked about is recorded and does not count: look at the check with `show` afterwards. |
+| `fills` | The system fields it fills, such as `["CRM.country"]`. A field the institution's layer does not list is refused. |
 | `nothing_found` | `true` for a search that found nothing. Say in the statement what was looked for and where. |
-| `replaces` | The fact this one replaces. The old one stays, marked `outdated`. |
+| `replaces` | The fact this one replaces: an earlier fact that was not replaced before. The old one stays, marked `outdated`. |
 | `state` | Set `disputed` when the fact is contested. |
 
 ## Subjects and links

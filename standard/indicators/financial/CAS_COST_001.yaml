@@ -43,9 +43,6 @@ checks:
   options: [fixed_dominant, variable_dominant, balanced]
   assumption: Cost structure provides operational flexibility
   after: [OBS_COST_001]
-  when:
-  - check: OBS_COST_001
-    is: true
   look_in: [03.01.a, 03.02.a]
   evidence:
     best: [audited_annual_report, management_accounts]
@@ -59,9 +56,6 @@ checks:
   assumption: Input costs are diversified and stable
   disproved_by: 'yes'
   after: [OBS_COST_001]
-  when:
-  - check: OBS_COST_001
-    is: true
   look_in: [03.01.a, 03.02.a]
   evidence:
     best: [audited_annual_report, management_accounts]
@@ -76,9 +70,6 @@ checks:
   assumption: Margins have been stable or improving
   disproved_by: 'yes'
   after: [OBS_COST_001]
-  when:
-  - check: OBS_COST_001
-    is: true
   look_in: [03.01.a]
   evidence:
     best: [audited_annual_report]

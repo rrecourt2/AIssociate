@@ -41,9 +41,6 @@ checks:
   assumption: No material environmental liabilities exist
   disproved_by: 'yes'
   after: [OBS_ENV_001]
-  when:
-  - check: OBS_ENV_001
-    is: true
   evidence:
     best: [esia_report]
     supporting: [consultant_report, audited_annual_report]
@@ -69,9 +66,6 @@ checks:
   assumption: Entity has no GHG reporting obligations
   disproved_by: 'yes'
   after: [OBS_ENV_001]
-  when:
-  - check: OBS_ENV_001
-    is: true
   evidence:
     best: [esms_policy, regulatory_document]
     supporting: [consultant_report, internal_memo]
@@ -84,9 +78,6 @@ checks:
   assumption: Climate risks have been formally assessed
   disproved_by: 'no'
   after: [OBS_ENV_001]
-  when:
-  - check: OBS_ENV_001
-    is: true
   evidence:
     best: [esia_report, esms_policy]
     supporting: [consultant_report, internal_memo]

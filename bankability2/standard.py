@@ -10,6 +10,21 @@ STRENGTHS = ("not_now", "not_for_this_deal")
 FLAG = re.compile(r"^(above|below|at most|at least) (-?\d+(?:\.\d+)?)$|^is (not )?(\w+)$")
 
 
+EXPECTS = {"yes_no": "true or false", "number": "a number", "choice": "one of the check's options", "text": "text"}
+
+
+def fits(check, value):
+    """Whether a value is the kind of answer the check asks for."""
+    if check["answer"] == "yes_no":
+        return isinstance(value, bool)
+    if check["answer"] == "number":
+        return isinstance(value, (int, float)) and not isinstance(value, bool)
+    if check["answer"] == "choice":
+        values = value if isinstance(value, list) else [value]
+        return bool(values) and all(option in check.get("options", []) for option in values)
+    return isinstance(value, str)
+
+
 def slots_of(std):
     return [slot for folder in std["dataroom"]["folders"] for sub in folder["sub_folders"] for slot in sub["slots"]]
 
@@ -46,10 +61,14 @@ def adjust(std, item, layer):
     found = find(std, target)
     if found is None:
         return f"{target!r} names nothing in the standard"
-    if layer == "deal" and found.get("locked") and do in ("change", "switch_off"):
-        return f"{target} is locked by the institution: {found['locked']}"
+    home = next((ind for ind in std["indicators"] if any(found is check for check in ind["checks"])), {})
+    locked = next((one["locked"] for one in (found, home, *found.get("checks", [])) if one.get("locked")), None)
+    if layer == "deal" and locked and do in ("change", "switch_off"):  # a lock covers an indicator and its checks
+        return f"{target} is locked by the institution: {locked}"
     if do == "change" and isinstance(item.get("set"), dict):
         found.update(item["set"])
+        for key in [key for key, value in item["set"].items() if value is None]:
+            del found[key]  # setting a field to null takes it off
     elif do == "switch_off" and item.get("strength") in STRENGTHS and item.get("reason"):
         found["off"] = {key: item.get(key) for key in ("strength", "reason", "by", "date", "rev", "stage")}
     elif do == "switch_on":
@@ -108,6 +127,7 @@ def problems(std):
         found.append("a role, a kind of subject and a kind of link share a name")
     indicators = [ind["id"] for ind in std["indicators"]]
     checks = [check["id"] for ind in std["indicators"] for check in ind["checks"]]
+    by_id = {check["id"]: check for ind in std["indicators"] for check in ind["checks"]}
     for name, ids in (("indicator", indicators), ("check", checks), ("slot", slots),
                       ("kind of source", [kind["id"] for kind in std["source_kinds"]])):
         found += [f"{name} {rid} appears twice" for rid in sorted(set(ids)) if ids.count(rid) > 1]
@@ -118,12 +138,16 @@ def problems(std):
 
     def known_checks(where, items):
         for item in items or []:
-            need(where, item.get("check") in checks, f"unknown check {item.get('check')!r}")
+            named = by_id.get(item.get("check"))
+            need(where, named, f"unknown check {item.get('check')!r}")
+            need(where, not named or "is" not in item or fits(named, item["is"]),
+                 f"{item.get('check')} cannot have the answer {item.get('is')!r}")
 
     for kind in std["source_kinds"]:
         need(kind["id"], kind.get("slot") is None or kind["slot"] in slots, f"unknown slot {kind.get('slot')!r}")
     for ind in std["indicators"]:
         iid, own = ind["id"], {check["id"] for check in ind["checks"]}
+        need(iid, ind.get("title"), "needs a title")
         need(iid, ind.get("workstream") in {ws["id"] for ws in std["workstreams"]}, "unknown workstream")
         need(iid, ind.get("due_by") in stages, f"unknown stage {ind.get('due_by')!r}")
         need(iid, set(ind.get("applies_to", ["?"])) <= applicable, "applies_to names something unknown")
@@ -153,4 +177,5 @@ def problems(std):
             need(cid, check.get("ask_whom", "client") in ("client", "lender"), "ask_whom must be client or lender")
             for lead in check.get("leads_to", []):
                 need(cid, lead.get("indicator") in indicators, f"leads to unknown indicator {lead.get('indicator')!r}")
+                need(cid, "is" not in lead or fits(check, lead["is"]), f"leads_to names an answer the check cannot have")
     return found

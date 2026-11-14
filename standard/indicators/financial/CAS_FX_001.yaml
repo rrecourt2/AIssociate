@@ -99,9 +99,6 @@ checks:
   assumption: Input costs are local-currency with no import linkage
   flag_when: above 25
   after: [OBS_FX_007]
-  when:
-  - check: OBS_FX_008
-    is: true
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, internal_memo]
@@ -114,7 +111,7 @@ checks:
   answer: choice
   options: [full_passthrough, partial, administered_prices, none]
   assumption: Pricing freedom absorbs FX-driven cost shocks
-  flag_when: is administered_prices
+  flag_when: is not full_passthrough
   after: [OBS_FX_INPUT_001]
   evidence:
     best: [management_accounts, internal_memo]

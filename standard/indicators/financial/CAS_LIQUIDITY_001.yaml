@@ -70,9 +70,6 @@ checks:
   assumption: Cash flow has been consistently positive
   disproved_by: 'yes'
   after: [OBS_LIQ_001]
-  when:
-  - check: OBS_LIQ_001
-    is: false
   look_in: [03.01.a]
   evidence:
     best: [audited_annual_report]

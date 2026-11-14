@@ -41,14 +41,14 @@ The officer adjusts the standard by saying so. You write the adjustment and hand
 ]
 ```
 
-- **`add`** a check to an indicator (`to`), or a whole `indicator`. Give a new check an ID that starts with `DEAL_`.
-- **`change`** any field of a check or an indicator.
+- **`add`** a check to an indicator (`to`), or a whole `indicator` with its `id`, `title`, `workstream`, `due_by`, `applies_to` and `checks`. Copy the shape from `show` of an existing indicator. Give a new check an ID that starts with `DEAL_`.
+- **`change`** any field of a check or an indicator. Set a field to `null` to take it off.
 - **`switch_off`** a check or an indicator, in one of two strengths:
   - `not_now`: it leaves the next list and comes back when the stage changes or when a check it follows gets a new answer.
   - `not_for_this_deal`: it is off until someone switches it on.
 - **`switch_on`** undoes a switch-off.
 
-The tool refuses an adjustment that names something unknown, lacks a reason, or touches what the institution has locked.
+The tool refuses an adjustment that names something unknown, lacks a reason, or touches what the institution has locked. A lock on an indicator covers its checks, and a lock on a check covers its indicator.
 
 An adjustment that should hold for every deal belongs in the institution's layer. Tell the officer. Moving it there is their step.
 

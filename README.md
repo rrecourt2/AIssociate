@@ -64,7 +64,7 @@ docs/            the design and the audit note
 
 ## Kept simple
 
-The tool is about 1,200 lines in seven files. These rules hold, and `tests/test_audit.py` fails if the code breaks one:
+The tool is about 1,300 lines in seven files. These rules hold, and `tests/test_audit.py` fails if the code breaks one:
 
 - Python standard library only.
 - No network access, no starting of other programs, no `eval`, no reading of environment variables, no deleting.

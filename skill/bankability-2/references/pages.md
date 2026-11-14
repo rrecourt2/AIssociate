@@ -72,7 +72,7 @@ Put the ID of the fact or the source in square brackets after the sentence it su
 Also:
 
 - One subject per page. Split a page that covers two.
-- Merge new information into the page. Do not append a dated entry. Leave what it replaces visible under the claim, marked outdated or disputed.
+- Merge new information into the page. Do not append a dated entry. Leave what it replaces visible under the claim, marked outdated or disputed, with its citation. `check` keeps reporting that citation. Leave it.
 - Write nothing when a source adds nothing.
 - Mark what you inferred.
 - On the people pages, record what people said, asked for and decided, with the source. No judgements of character.

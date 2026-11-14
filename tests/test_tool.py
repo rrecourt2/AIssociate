@@ -84,6 +84,9 @@ class Deal(unittest.TestCase):
         self.assertEqual(rows["OBS_OFFTAKER_004", "R-003"]["state"], "answered")  # a check on a link
         self.assertEqual(rows["DEAL_MILK_PRICE_001", "P-001"]["state"], "open")  # the check this deal added
         self.assertNotIn(("OBS_FIC_001", "P-001"), rows)  # checks for banks do not apply
+        memory = self.memory()
+        memory["facts"]["F-007"]["state"] = "outdated"  # without it, only one of the six conditions is answered, with a no
+        self.assertEqual(self.rows(memory)["OBS_HEDGE_001", "P-001"]["state"], "waiting")
 
     def test_not_now_lasts_until_the_stage_changes(self):
         memory = self.memory()
@@ -95,6 +98,9 @@ class Deal(unittest.TestCase):
         code, said = run("adjust", self.deal, self.handed(
             {"do": "switch_off", "target": "OBS_SANC_001", "strength": "not_for_this_deal", "reason": "Not needed."}))
         self.assertEqual(code, 1)
+        self.assertIn("locked by the institution", said)
+        code, said = run("adjust", self.deal, self.handed(  # nor through its indicator
+            {"do": "switch_off", "target": "CAS_SANCTIONS_001", "strength": "not_now", "reason": "Not needed."}))
         self.assertIn("locked by the institution", said)
 
     def test_a_malformed_change_is_refused_whole(self):
@@ -127,6 +133,8 @@ class Deal(unittest.TestCase):
             text = f.read()
         self.assertIn("| Revenue | 4060 KES m | 2025-12-31 | F-008 |", text)
         self.assertIn("- S-002 Annual report 2025", text)
+        damaged = text.replace("<!-- tool:end -->", "", 1)  # a page that lost the end marker of its first part
+        self.assertIn("**Debt.** Borrowings were KES 1,300m", pages.fill(damaged, "glance", ["new"]))
         self.assertEqual(run("check", self.deal)[1].strip(), "No problems found.")
         invented = os.path.join(os.path.dirname(self.page), "invented.md")
         with open(invented, "w", encoding="utf-8") as f:

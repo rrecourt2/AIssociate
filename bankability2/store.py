@@ -7,6 +7,7 @@ import hashlib
 import json
 
 from .files import Refused
+from .standard import EXPECTS, fits
 
 # For each table: the ID prefix, the fields a new record must have, and the other fields it may have.
 TABLES = {
@@ -22,7 +23,8 @@ TABLES = {
 }
 # Fields that hold IDs, and the tables those IDs may come from.
 REFERS = {"source": ("sources",), "via": ("sources",), "about": ("subjects", "links"), "from": ("subjects",),
-          "to": ("subjects",), "rests_on": ("facts",), "answered_by": ("facts", "sources")}
+          "to": ("subjects",), "rests_on": ("facts",), "answered_by": ("facts", "sources"),
+          "replaced_by": ("facts", "sources")}
 STATES = {"sources": ("current", "replaced"), "facts": ("current", "outdated", "disputed"),
           "links": ("proposed", "confirmed", "ended"), "questions": ("open", "answered", "withdrawn")}
 SAID_BY = ("document", "client", "officer", "third_party", "inference")
@@ -38,7 +40,7 @@ def new(name, stage, standard_version):
 
 
 def revision(memory):
-    return memory["log"][-1]["n"]
+    return memory["log"][-1]["n"] if memory["log"] else 0
 
 
 def digest(data):
@@ -69,9 +71,15 @@ def verify(memory):
             problems.append(f"the log is broken at entry {entry['n']}")
             break
         prev = entry["hash"]
-    if memory["log"] and memory["log"][-1]["state"] != state_of(memory):
+    if not memory["log"] or memory["log"][-1]["state"] != state_of(memory):
         problems.append("the memory was changed outside the tool since the last log entry")
     return problems
+
+
+def note_outside_change(memory):
+    """Log that the memory no longer matches its last entry, before a new entry hides it."""
+    if not memory["log"] or memory["log"][-1]["state"] != state_of(memory):
+        record(memory, "tool", "The memory was changed outside the tool before this entry")
 
 
 def table_of(memory, rid):
@@ -86,20 +94,6 @@ def next_id(prefix, taken):
 
 def as_list(value):
     return value if isinstance(value, list) else [] if value is None else [value]
-
-
-EXPECTS = {"yes_no": "true or false", "number": "a number", "choice": "one of the check's options", "text": "text"}
-
-
-def fits(check, value):
-    """Whether a value is the kind of answer the check asks for."""
-    if check["answer"] == "yes_no":
-        return isinstance(value, bool)
-    if check["answer"] == "number":
-        return isinstance(value, (int, float)) and not isinstance(value, bool)
-    if check["answer"] == "choice":
-        return bool(as_list(value)) and all(option in check["options"] for option in as_list(value))
-    return isinstance(value, str)
 
 
 def place(memory, change, std, errors):
@@ -138,6 +132,9 @@ def place(memory, change, std, errors):
         return value
 
     for _, _, fields, _ in placed:
+        for key in ("answers", "fills"):  # always stored as lists
+            if key in fields:
+                fields[key] = as_list(fields[key])
         for key in (*REFERS, "replaces"):
             if key in fields:
                 fields[key] = swap(fields[key])
@@ -151,16 +148,21 @@ def problems_of(table, rid, fields, is_new, memory, known, std):
     """What makes one record malformed. `known` maps every ID, old and new, to its table."""
     _, need, other = TABLES[table]
     found = [f"unknown field {key!r}" for key in fields if key not in (*need, *other, "replaces")]
-    if is_new:
-        found += [f"{key!r} is missing" for key in need if fields.get(key) in (None, "", [])]
-    elif rid not in memory[table]:
+    found += [f"{key!r} is missing" for key in need if (is_new or key in fields) and fields.get(key) in (None, "", [])]
+    if not is_new and rid not in memory[table]:
         found.append("no such record")
+    found += [f"{key!r} must be one ID, not a list" for key in ("from", "to", "source", "about")
+              if isinstance(fields.get(key), list) and (key, table) != ("about", "sources")]
     for key, tables in REFERS.items():
         for value in as_list(fields.get(key)):
             if not (known.get(value) in tables or (key == "about" and value == DEAL)):
                 found.append(f"{key} {value!r} is not a known ID of the right kind")
-    if "replaces" in fields and (table not in ("sources", "facts") or known.get(fields["replaces"]) != table):
-        found.append(f"replaces {fields['replaces']!r}: no such record in {table}")
+    replaced = fields.get("replaces")
+    if "replaces" in fields and (table not in ("sources", "facts") or replaced == rid or replaced not in memory[table]
+                                  or memory[table][replaced].get("replaced_by")):
+        found.append(f"replaces {replaced!r}: it must be an earlier record in {table} that was not replaced before")
+    listed = {field["id"] for system in std["systems"] for field in system.get("fields", [])}
+    found += [f"fills {name!r}: not a field of the institution's systems" for name in fields.get("fills", []) if name not in listed]
     for key, allowed in (("kind", std["kinds_by_table"].get(table)), ("type", std["link_ids"] if table == "links" else None),
                          ("state", STATES.get(table)), ("said_by", SAID_BY)):
         if allowed and fields.get(key) is not None and fields[key] not in allowed:
@@ -194,6 +196,7 @@ def apply(memory, change, std):
     if errors:
         raise Refused("Nothing was recorded.\n" + "\n".join(errors))
 
+    note_outside_change(memory)
     number = revision(memory) + 1
     added, changed = [], {}
     before = {key: memory["deal"].get(key) for key in deal if memory["deal"].get(key) != deal[key]}

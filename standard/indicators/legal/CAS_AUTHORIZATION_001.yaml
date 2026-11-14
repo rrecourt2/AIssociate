@@ -37,7 +37,6 @@ checks:
   question: Are there signing authority limits, and does this transaction fall within them?
   answer: yes_no
   assumption: Signatories have authority to bind the entity for this amount
-  disproved_by: 'no'
   after: [OBS_AUTH_001]
   when:
   - check: OBS_AUTH_001
@@ -55,9 +54,6 @@ checks:
   assumption: Constitutional documents allow this class of transaction
   disproved_by: 'no'
   after: [OBS_AUTH_003]
-  when:
-  - check: OBS_AUTH_003
-    is: true
   look_in: [02.02.a]
   evidence:
     best: [memorandum_and_articles]

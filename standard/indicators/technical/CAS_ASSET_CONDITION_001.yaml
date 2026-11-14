@@ -43,11 +43,6 @@ checks:
   assumption: Asset condition relies solely on management self-assessment
   disproved_by: 'yes'
   after: [OBS_ASSET_001]
-  when:
-  - check: OBS_ASSET_001
-    is: true
-  - check: OBS_ASSET_004
-    is: true
   evidence:
     best: [technical_feasibility, valuation_report]
     supporting: [consultant_report]
@@ -60,9 +55,6 @@ checks:
   assumption: Maintenance is planned and budgeted
   disproved_by: 'no'
   after: [OBS_ASSET_001]
-  when:
-  - check: OBS_ASSET_001
-    is: true
   evidence:
     best: [company_record, financial_projections]
     supporting: [management_accounts, internal_memo]
@@ -76,9 +68,6 @@ checks:
   assumption: All required maintenance is current with no material backlog
   disproved_by: 'yes'
   after: [OBS_ASSET_001]
-  when:
-  - check: OBS_ASSET_001
-    is: true
   evidence:
     best: [technical_feasibility, company_record]
     supporting: [internal_memo]
