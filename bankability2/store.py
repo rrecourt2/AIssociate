@@ -108,7 +108,10 @@ def place(memory, change, std, errors):
     names, placed = {}, []
     taken = {rid for table in TABLES for rid in memory[table]}
     for table in TABLES:
-        for item in change.get(table, []):
+        if not isinstance(change.get(table, []), list):
+            errors.append(f"{table}: must be a list")
+            continue
+        for item in change[table] if table in change else []:
             if not isinstance(item, dict):
                 errors.append(f"{table}: each entry must be an object")
                 continue

@@ -23,7 +23,7 @@ def inside(deal, relative):
     """The full path of a file in the deal folder. Refuses a path that leads out of it."""
     root = os.path.realpath(deal)
     target = os.path.realpath(os.path.join(root, relative))
-    if os.path.commonpath([root, target]) != root:
+    if target != root and not target.startswith(root + os.sep):
         raise Refused(f"{relative} is outside the deal folder")
     return target
 

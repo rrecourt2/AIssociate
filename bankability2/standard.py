@@ -33,11 +33,14 @@ def find(std, target):
 def adjust(std, item, layer):
     """Apply one adjustment to the standard. Returns a problem, or None."""
     do, target = item.get("do"), item.get("target", "")
+    if layer == "deal" and not item.get("reason"):
+        return f"{do!r} needs a 'reason'"
     if do == "add":
         home = find(std, item.get("to", "")) if "check" in item else std
         new = item.get("check") or item.get("indicator")
-        if not isinstance(new, dict) or "id" not in new or home is None or find(std, new["id"]):
-            return "add needs a check with a new ID and the indicator it goes 'to', or a whole indicator"
+        fits = isinstance(new, dict) and "id" in new and isinstance((home or {}).get("checks", new.get("checks")), list)
+        if not fits or find(std, new["id"]):
+            return "add needs a check with a new ID and the indicator it goes 'to', or a whole indicator with its checks"
         (home["checks"] if "check" in item else std["indicators"]).append(dict(new))
         return None
     found = find(std, target)

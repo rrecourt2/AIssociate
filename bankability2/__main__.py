@@ -99,13 +99,17 @@ def status(args):
 def add(args):
     memory, std = load(args.deal)
     change = given(args.changes)
-    missing = []
-    for source in change.get("sources", []) if isinstance(change, dict) else []:
-        if isinstance(source, dict) and source.get("where") and "id" not in source:
-            mark = files.fingerprint(args.deal, source["where"])
-            source.setdefault("fingerprint", mark) if mark else missing.append(source["where"])
     if not isinstance(change, dict):
         raise Refused("a set of changes is one JSON object")
+    missing = []
+    sources = change.get("sources", [])
+    for source in sources if isinstance(sources, list) else []:
+        if isinstance(source, dict) and source.get("where") and "id" not in source:
+            mark = files.fingerprint(args.deal, source["where"])
+            if mark:
+                source.setdefault("fingerprint", mark)
+            else:
+                missing.append(source["where"])
     entry = store.apply(memory, change, std)
     if entry is None:
         print("Already recorded: this set of changes was applied before.")
@@ -196,6 +200,8 @@ def adjust(args):
     memory, std = load(args.deal)
     items = given(args.adjustment)
     items = items if isinstance(items, list) else [items]
+    if not all(isinstance(item, dict) for item in items):
+        raise Refused("an adjustment is a JSON object, or a list of them")
     stamp = {"date": datetime.date.today().isoformat(), "rev": store.revision(memory), "stage": memory["deal"]["stage"]}
     items = [{**item, **stamp} for item in items]
     new = [note for note in standard.effective(args.deal, extra=items)["notes"] if note not in std["notes"]]
@@ -220,6 +226,7 @@ def file_documents(args):
         if not isinstance(item, dict) or item.get("kind") not in kinds or not item.get("file"):
             raise Refused(f"each document needs a 'file' and a known 'kind': {item!r}")
     manifest = files.read_json(args.deal, files.MANIFEST, {"documents": []})
+    moved = []
     for item in items:
         name = item["file"].replace("\\", "/").split("/")[-1]
         slot = kinds[item["kind"]].get("slot")
@@ -230,8 +237,9 @@ def file_documents(args):
                      "party": item.get("party"), "period": item.get("period"),
                      "fingerprint": files.fingerprint(args.deal, target)}
             manifest["documents"] = [doc for doc in manifest["documents"] if doc["path"] != target] + [entry]
-        print(f"{item['file']} -> {target}")
-    files.write_json(args.deal, files.MANIFEST, manifest)
+            files.write_json(args.deal, files.MANIFEST, manifest)  # after each move, so the list never lags the folder
+        moved.append(f"{item['file']} -> {target}")
+    print("\n".join(moved))
 
 
 def doctor(args):
@@ -278,7 +286,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         args.run(args)
-    except Refused as refusal:
+    except (Refused, json.JSONDecodeError, FileNotFoundError) as refusal:
         print(f"Refused: {refusal}")
         return 1
     if files.WRITTEN:
