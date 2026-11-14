@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bankability2"
+description = "A memory for an investment deal."
+requires-python = ">=3.9"
+dependencies = []
+dynamic = ["version"]
+
+[project.scripts]
+bankability2 = "bankability2.__main__:main"
+
+[tool.setuptools]
+packages = ["bankability2"]
+
+[tool.setuptools.dynamic]
+version = {attr = "bankability2.__version__"}
+
+[tool.setuptools.package-data]
+bankability2 = ["standard.json"]

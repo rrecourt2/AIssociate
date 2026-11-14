@@ -8,16 +8,16 @@ Needs PyYAML. The tool itself does not: it reads the JSON file.
 import glob
 import json
 import os
-import re
 import sys
 
 import yaml
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.dirname(HERE))
+from bankability2.standard import problems  # noqa: E402  the tool's own check of a standard
+
 JSON_PATH = os.path.join(HERE, "..", "bankability2", "standard.json")
-ANSWERS = {"yes_no", "number", "choice", "text"}
 TIERS = ("best", "supporting", "stated")
-FLAG = re.compile(r"^(above|below|at most|at least) -?\d+(\.\d+)?$|^is (not )?\w+$")
 
 
 def read(name):
@@ -33,74 +33,6 @@ def load():
     paths = sorted(glob.glob(os.path.join(HERE, "indicators", "*", "*.yaml")))
     std["indicators"] = [read(os.path.relpath(p, HERE)) for p in paths]
     return std
-
-
-def slots_of(std):
-    return [slot for f in std["dataroom"]["folders"] for sf in f["sub_folders"] for slot in sf["slots"]]
-
-
-def validate(std):
-    """Return a list of problems. An empty list means the standard is sound."""
-    problems = []
-    stages = {s["id"] for s in std["stages"]}
-    workstreams = {w["id"] for w in std["workstreams"]}
-    kinds = {k["id"] for k in std["source_kinds"]}
-    slots = {s["id"] for s in slots_of(std)}
-    roles = {l[r] for l in std["link_types"] for r in ("role_from", "role_to") if r in l}
-    targets = [{"deal"}, roles, {k["id"] for k in std["subject_kinds"]}, {l["id"] for l in std["link_types"]}]
-    applicable = set().union(*targets)
-    if sum(len(t) for t in targets) != len(applicable):
-        problems.append("a role, a subject kind and a link type share a name")
-    indicators = {i["id"] for i in std["indicators"]}
-    checks = [c["id"] for i in std["indicators"] for c in i["checks"]]
-    for name, ids in (("indicator", [i["id"] for i in std["indicators"]]), ("check", checks),
-                      ("slot", [s["id"] for s in slots_of(std)]), ("kind of source", [k["id"] for k in std["source_kinds"]])):
-        problems += [f"{name} {i} appears twice" for i in sorted(set(ids)) if ids.count(i) > 1]
-    checks = set(checks)
-
-    def need(where, ok, message):
-        if not ok:
-            problems.append(f"{where}: {message}")
-
-    def conditions(where, items):
-        for item in items or []:
-            need(where, item.get("check") in checks, f"unknown check {item.get('check')}")
-
-    for kind in std["source_kinds"]:
-        need(kind["id"], kind.get("slot") is None or kind["slot"] in slots, f"unknown slot {kind.get('slot')}")
-    for ind in std["indicators"]:
-        iid = ind["id"]
-        own = {c["id"] for c in ind["checks"]}
-        need(iid, ind["workstream"] in workstreams, f"unknown workstream {ind['workstream']}")
-        need(iid, ind["due_by"] in stages, f"unknown stage {ind['due_by']}")
-        need(iid, set(ind["applies_to"]) <= applicable, f"applies_to names something unknown: {ind['applies_to']}")
-        for key in ("applies_when", "matters_more_when", "matters_less_when"):
-            conditions(iid, ind.get(key))
-        conditions(iid, [i for i in ind.get("look_again_when", []) if "check" in i])
-        for side in ("risk", "mitigant"):
-            need(iid, set(ind.get(side, {}).get("checks", [])) <= own, f"{side} names a check of another indicator")
-        for item in ind.get("look_again_when", []):
-            need(iid, item.get("new_source") is None or item["new_source"] in kinds, "unknown kind of source")
-            need(iid, set(item.get("checks", [])) <= checks, "look_again_when names an unknown check")
-        for check in ind["checks"]:
-            cid = check["id"]
-            need(cid, check["answer"] in ANSWERS, f"unknown answer type {check['answer']}")
-            need(cid, check["answer"] != "choice" or check.get("options"), "a choice needs options")
-            need(cid, check.get("due_by", ind["due_by"]) in stages, f"unknown stage {check.get('due_by')}")
-            need(cid, set(check.get("applies_to", [])) <= applicable, "applies_to names something unknown")
-            need(cid, set(check.get("after", [])) <= checks, f"after names an unknown check: {check.get('after')}")
-            conditions(cid, check.get("when"))
-            need(cid, set(check.get("look_in", [])) <= slots, f"unknown slot in {check.get('look_in')}")
-            for tier, names in check.get("evidence", {}).items():
-                need(cid, tier in TIERS and set(names) <= kinds, f"evidence '{tier}' has an unknown name")
-            if "disproved_by" in check:
-                ok = check["answer"] == "yes_no" and "assumption" in check and check["disproved_by"] in ("yes", "no")
-                need(cid, ok, "disproved_by needs a yes/no check with an assumption")
-            need(cid, "flag_when" not in check or FLAG.match(check["flag_when"]), "flag_when is not understood")
-            need(cid, check.get("ask_whom", "client") in ("client", "lender"), "ask_whom must be client or lender")
-            for lead in check.get("leads_to", []):
-                need(cid, lead["indicator"] in indicators, f"leads to unknown indicator {lead['indicator']}")
-    return problems
 
 
 # ---------------------------------------------------------------- pages for a website
@@ -219,9 +151,9 @@ def write_site(std, out):
 
 def main():
     std = load()
-    problems = validate(std)
-    if problems:
-        sys.exit("\n".join(problems))
+    found = problems(std)
+    if found:
+        sys.exit("\n".join(found))
     with open(JSON_PATH, "w", encoding="utf-8") as f:
         json.dump(std, f, indent=1, ensure_ascii=False)
         f.write("\n")

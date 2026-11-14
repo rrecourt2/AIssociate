@@ -1,0 +1,18 @@
+{
+ "layer": "institution",
+ "note": "An invented example. A real institution keeps its own file in its own tenant.",
+ "adjustments": [
+  {"do": "change", "target": "stage:concept", "set": {"title": "CIP"}},
+  {"do": "change", "target": "stage:approval", "set": {"title": "FP"}},
+  {"do": "lock", "target": "OBS_SANC_001", "reason": "Sanctions screening is done on every deal."}
+ ],
+ "systems": [
+  {"id": "CRM", "title": "Client system (invented)", "fields": [
+   {"id": "CRM.client_name", "label": "Client legal name", "gate": "Intake"},
+   {"id": "CRM.country", "label": "Country", "gate": "Intake"},
+   {"id": "CRM.amount_eur", "label": "Requested amount", "gate": "Intake"},
+   {"id": "CRM.revenue_last_year", "label": "Revenue, last financial year", "gate": "CIP"},
+   {"id": "CRM.sector_code", "label": "Sector code", "gate": "CIP"}
+  ]}
+ ]
+}

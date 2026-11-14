@@ -1,0 +1,29 @@
+{
+ "by": "assistant",
+ "note": "Notes of the call with the CFO on 12 November",
+ "op": "cfo-call-2026-11-12",
+ "deal": {"stage": "concept"},
+ "sources": [
+  {"ref": "call", "title": "Call with the CFO, 12 November 2026", "kind": "call", "date": "2026-11-12",
+   "where": "Internal/sources/2026-11-12 CFO call.md", "about": ["P-001"], "read": "full", "sent_by": "The investment officer"}
+ ],
+ "facts": [
+  {"about": "P-001", "statement": "The CFO said the gross margin fell in 2025 because raw milk prices rose 18% during the drought.",
+   "as_of": "2026-11-12", "source": "@call", "said_by": "client", "answers": [{"check": "OBS_COST_004", "value": true}]},
+  {"about": "P-001", "statement": "Cedar buys milk from three cooperatives under contracts that fix volumes, not prices.",
+   "as_of": "2026-11-12", "source": "@call", "said_by": "client", "answers": [{"check": "OBS_INPUT_001", "value": true}]},
+  {"about": "R-003", "statement": "The CFO said Tuskway pays within 45 days.",
+   "as_of": "2026-11-12", "source": "@call", "said_by": "client", "answers": [{"check": "OBS_OFFTAKER_004", "value": true}]},
+  {"ref": "lakeside", "about": "P-001", "statement": "Lakeside Distributors buys under a one-year contract, and three other distributors serve the same region.",
+   "as_of": "2026-11-12", "source": "@call", "said_by": "client"}
+ ],
+ "decisions": [
+  {"about": "P-001", "decision": "Lakeside Distributors gets no page and no checks of its own.",
+   "reason": "It buys 14% of revenue and can be replaced: three other distributors serve the same region.",
+   "rests_on": ["F-009", "@lakeside"], "by": "assistant"}
+ ],
+ "questions": [
+  {"asked_of": "CFO of Cedar Foods", "text": "Please send the supply contracts with the three cooperatives.",
+   "about": "P-001", "asked": "2026-11-12", "via": "@call", "checks": ["OBS_INPUT_006"]}
+ ]
+}
