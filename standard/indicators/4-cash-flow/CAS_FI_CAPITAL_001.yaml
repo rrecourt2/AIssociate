@@ -1,0 +1,151 @@
+id: CAS_FI_CAPITAL_001
+title: 'Bank: capital'
+pillar: cash_flow
+claim: The institution's capital can absorb the losses its loan book is likely to bring and still stay above the regulatory
+  minimum.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+applies_when:
+- {check: OBS_SECTOR_001, is: financial_institution}
+matters_more_when:
+- {check: OBS_INVESTOR_ROLE_001, is: subordinated, reason: A subordinated loan to a bank takes losses itself once the capital
+    is gone}
+- {check: OBS_LIFECYCLE_001, is: expanding, reason: Growth in lending uses up capital faster than profit rebuilds it}
+look_again_when:
+- {new_source: regulatory_document, reason: 'A new prudential return shows the ratio at a new date, and the regulator can
+    set a new minimum'}
+- {new_source: audited_annual_report, reason: 'New accounts show equity, provisions and the dividends paid'}
+checks:
+- id: OBS_FIC_001
+  question: What is the institution's total capital adequacy ratio (regulatory capital as a percentage of risk-weighted
+    assets) at its latest reporting date?
+  answer: number
+  unit: percent
+  why: The starting figure. It is read against the minimum the regulator sets (OBS_FIC_002) and against what the loan book
+    may still cost (OBS_FIC_006).
+  due_by: screening
+  look_in: [07.01.a, 03.01.a]
+  evidence:
+    best: [regulatory_document, audited_annual_report]
+    supporting: [management_accounts, interim_financial_statements, credit_rating_report]
+    stated: [management_presentation, call, officer_note]
+  ask: What was your capital adequacy ratio at your latest reporting date? Your latest prudential return would answer this.
+  note: Say which date the figure is for, and whether it is for the institution alone or for its group. Record the tier
+    1 ratio beside it. Tier 1 is the capital that takes losses while the institution is still running. Where the regulator
+    does not use risk weights, give equity as a percentage of total assets and say so.
+- id: OBS_FIC_002
+  question: By how many percentage points does the total capital adequacy ratio exceed the minimum the regulator requires
+    of this institution, with all buffers and any add-on set for it alone?
+  answer: number
+  unit: percent
+  assumption: The capital ratio stands further above the regulatory minimum than one bad year of loan losses would take
+    away
+  flag_when: below 2
+  why: At the minimum the supervisor can stop new lending and dividends, and a breach is an event of default under most
+    loans to banks. Two percentage points of risk-weighted assets is about what a bank loses when three or four percent
+    of its loans go bad and half of that is never recovered. With less headroom, one bad year takes the institution to the
+    minimum. Two points is a guide, not a rule. An institution can set its own figure.
+  due_by: concept
+  look_in: [07.01.a, 03.01.a]
+  evidence:
+    best: [regulatory_document, audited_annual_report]
+    supporting: [management_accounts, credit_rating_report]
+    stated: [correspondence, call, officer_note]
+  ask: What minimum capital ratio does your regulator require of you, with all buffers? What was your ratio at each quarter-end
+    of the last year?
+  note: Take the lowest quarter-end of the last twelve months, not the year-end alone. A negative answer means the institution
+    is below the minimum.
+- id: OBS_FIC_006
+  question: If the non-performing loans that are not covered by provisions were written off against capital today, would
+    the capital adequacy ratio stay above the regulatory minimum?
+  answer: yes_no
+  assumption: Capital stays above the minimum after the bad loans that are not provided for are taken off
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [03.01.a, 07.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report, regulatory_document]
+    supporting: [management_accounts, company_record, credit_rating_report, internal_memo]
+    stated: [call, officer_note]
+  note: Take the non-performing loans less the provisions held against them, and take that amount off both capital and risk-weighted
+    assets. Collateral is left out on purpose, because it is realised late and for less than its book value. Where restructured
+    loans are counted as performing (OBS_FIP_004), work the answer out a second time with them added, and record both.
+  leads_to:
+  - {indicator: CAS_FI_PORTFOLIO_001, is: false, reason: The size of the hole depends on how the loans are classified and
+      provided for}
+- id: OBS_FIC_003
+  question: Set against its profit and its capital headroom, how much has the institution paid out to its shareholders over
+    the last three financial years?
+  answer: choice
+  options: [no_dividends, conservative, moderate, aggressive]
+  assumption: The institution keeps most of its profit as capital
+  flag_when: is aggressive
+  why: Retained profit is the main source of new capital for most banks. An institution that pays out most of its profit,
+    or pays out while its headroom is thin, cannot carry its own growth or absorb a bad year. It also shows that its owners
+    take cash out before they build the cushion.
+  look_in: [03.01.a, 02.02.c]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [board_minutes, shareholder_resolution, corporate_governance_policy]
+    stated: [call, officer_note]
+  ask: What dividends have you paid in each of the last three years? Do you have a rule that ties dividends to your capital
+    ratio?
+  note: 'The options: no_dividends is nothing paid out in the three years. conservative is less than about a third of profit.
+    moderate is between a third and two thirds. aggressive is more than about two thirds of profit, or any payout in a year
+    in which the institution made a loss or its capital ratio was within two percentage points of the minimum. The fractions
+    are a guide. Count share buy-backs as payouts.'
+- id: OBS_FIC_005
+  question: Does the institution's business plan keep its capital adequacy ratio above the regulatory minimum in every year
+    of the plan, counting only retained profit and new capital that is already committed in writing?
+  answer: yes_no
+  assumption: The capital the institution has, or is sure to get, can carry the growth in lending it plans
+  disproved_by: 'no'
+  look_in: [01.01.b, 03.02.a, 07.01.a]
+  evidence:
+    best: [regulatory_document, consultant_report]
+    supporting: [business_plan, financial_projections, financial_model, internal_memo]
+    stated: [management_presentation, call, officer_note]
+  ask: How fast do you plan to grow your loan book over the next three years? Please send the capital plan that shows your
+    capital ratio in each of those years.
+  if_unknown: Without a capital plan nobody has shown that growth will not take the institution to the minimum.
+  note: Set the profit the plan expects against the profit of the last three years (see Bank, earnings). A plan that needs
+    new capital from shareholders who have not committed to it is a no. A capital plan filed with the supervisor counts
+    as best evidence. The institution's own plan does not.
+- id: OBS_FIC_004
+  question: Does part of the institution's regulatory capital consist of subordinated debt (tier 2 capital)?
+  answer: yes_no
+  why: To have none is no fault. Where there is some, it takes losses only once the institution has failed. Under the Basel
+    rules it also counts for less in each of its last five years, so its maturity dates show when the capital ratio will
+    fall without any loss.
+  look_in: [03.01.a, 04.03.a, 07.01.a]
+  evidence:
+    best: [audited_annual_report, facility_agreement, regulatory_document]
+    supporting: [debt_schedule, management_accounts]
+    stated: [correspondence, call, officer_note]
+  ask: Does any subordinated debt count towards your regulatory capital? If so, from whom, how much, and when does each
+    loan fall due?
+  note: Record the amounts, the lenders and the maturity dates. Where the loan under review is itself meant to count as
+    tier 2 capital, say so.
+- id: OBS_FIC_MIT_001
+  question: Have the shareholders bound themselves in writing to pay in new capital of a stated amount by a stated date
+    (a signed subscription, a rights issue that is approved and underwritten, or a support undertaking)?
+  answer: yes_no
+  mitigant: true
+  assumption: The shareholders are bound to pay in the capital that is missing
+  disproved_by: 'no'
+  when:
+  - {check: OBS_FIC_002, against: true}
+  - {check: OBS_FIC_006, against: true}
+  - {check: OBS_FIC_005, against: true}
+  calls_for:
+  - is: true
+    link: [owns, sponsors, supports]
+  look_in: [02.02.c, 04.02.a, 07.01.a]
+  evidence:
+    best: [shareholder_resolution, guarantee_agreement, regulatory_document]
+    supporting: [board_minutes, business_plan]
+    stated: [correspondence, call, officer_note]
+  note: A letter of comfort, or a statement that the shareholders stand behind the institution, is a no. Whether the shareholders
+    can pay is asked in Owner and group.
+  leads_to:
+  - {indicator: CAS_GROUP_LINK_001, is: true, reason: A promise of capital is worth what the shareholder can pay}

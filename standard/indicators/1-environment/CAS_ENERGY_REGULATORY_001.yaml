@@ -1,0 +1,152 @@
+id: CAS_ENERGY_REGULATORY_001
+title: 'Power: tariff and regulation'
+pillar: environment
+claim: The tariff and the rules the project's revenue rests on will stay as they are until the loan is repaid.
+due_by: concept
+applies_to: [project]
+applies_when:
+- {check: OBS_SECTOR_002, is: power}
+matters_more_when:
+- {check: OBS_CASHFLOW_BASIS_001, is: contracted, reason: Repayment rests on a tariff or a contract that the state granted
+    and can change}
+look_again_when:
+- {new_source: regulatory_document, reason: 'A tariff order, a licence or a notice from the regulator bears directly on
+    the claim'}
+- {new_source: offtake_agreement, reason: A new draft or the signed purchase agreement can change the price and the protection
+    against a change in law}
+- {new_source: legal_opinion, reason: Counsel's review can find a missing licence or a rule that is about to change}
+checks:
+- id: OBS_EREG_001
+  question: Does the project hold, in its own name and in force, the licence or permit it needs to generate and sell electricity?
+  answer: yes_no
+  assumption: The project holds the licence to generate and sell electricity
+  disproved_by: 'no'
+  due_by: screening
+  look_in: [07.01.a, 08.01.a]
+  evidence:
+    best: [operational_license, regulatory_document, legal_opinion]
+    supporting: [company_record, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Does the project hold its generation licence? Please share it, or give its number, the authority that issued it and
+    the date it expires.
+  if_unknown: Without the licence the project has no right to sell what it generates.
+  note: A provisional licence, an application or a licence held by the sponsor or a sister company is a no. Record the expiry
+    date and set it against the final maturity of the loan.
+  leads_to:
+  - {indicator: CAS_REGULATORY_001, is: false, reason: The other licences and permits of the business need the same look}
+- id: OBS_EREG_002
+  question: How is the price for the project's electricity set?
+  answer: choice
+  options: [regulated_tariff, feed_in_tariff, auction_price, bilateral_contract, merchant, hybrid]
+  assumption: The price is fixed, or set by a stated rule, and does not follow the market from day to day
+  flag_when: is merchant or hybrid
+  why: A merchant plant sells at the market price of the day, so no rule and no contract holds its revenue up. A hybrid
+    leaves part of the output exposed in the same way. The other mechanisms fix the price or the way it is set.
+  look_in: [06.01.a, 07.01.a]
+  evidence:
+    best: [offtake_agreement, regulatory_document]
+    supporting: [legal_opinion, financial_model]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: How is your selling price set? By a regulator, by a tariff scheme, by an auction award, by a contract you negotiated
+    with the buyer, or by the market?
+  note: bilateral_contract is a price negotiated with the buyer. hybrid means part of the output is sold at market prices.
+    Say what share.
+  leads_to:
+  - {indicator: CAS_RATE_PRICE_RISK_001, is: merchant, reason: The project is exposed to the market price of power}
+  - {indicator: CAS_RATE_PRICE_RISK_001, is: hybrid, reason: Part of the output is exposed to the market price of power}
+- id: OBS_EREG_008
+  question: Is the tariff, or the formula that sets it, fixed until the final maturity of the loan, with no review before
+    then that could lower it?
+  answer: yes_no
+  assumption: The tariff or its formula is fixed until the loan is repaid
+  disproved_by: 'no'
+  due_by: diligence
+  look_in: [06.01.a, 07.01.a, 08.01.a]
+  evidence:
+    best: [offtake_agreement, regulatory_document, legal_opinion]
+    supporting: [financial_model, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: A regulated tariff that is reset every few years is a no, even where past resets were mild. Indexation by a stated
+    formula is not a review. For a plant that sells at market prices the answer is no.
+- id: OBS_EREG_003
+  question: Has a change to the tariff, to grid access or dispatch rules, or to the taxes and incentives for power producers
+    been proposed, or passed but not yet brought into force, that would lower the project's revenue or raise its costs?
+  answer: yes_no
+  assumption: No change now proposed or passed would lower the project's revenue or raise its costs
+  disproved_by: 'yes'
+  look_in: [07.01.a, 08.01.a, 10.03.a]
+  evidence:
+    best: [regulatory_document, legal_opinion, consultant_report]
+    supporting: [public_source, internal_memo]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Do you know of any change to tariffs, grid rules, taxes or incentives for power producers that is being prepared?
+    What would it mean for the project?
+  note: Name the measure and the date it is due. If the search finds nothing, record what was searched, where and when.
+- id: OBS_EREG_006
+  question: In the last ten years, has the government, the regulator or the state power buyer in this country cut a tariff
+    that had been granted, reopened signed power contracts, or stopped paying under them?
+  answer: yes_no
+  assumption: The country has kept to the tariffs and the power contracts it granted
+  disproved_by: 'yes'
+  look_in: [10.03.a, 08.01.a, 01.03.a]
+  evidence:
+    best: [legal_opinion, consultant_report, market_study]
+    supporting: [public_source, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: This asks about the country's record, not about this project. Name each case and its year. If the search finds nothing,
+    record what was searched, where and when.
+  leads_to:
+  - {indicator: CAS_COUNTRY_RISK_001, is: true, reason: A state that has reopened power contracts before may do so again}
+- id: OBS_EREG_004
+  question: Does the project need a subsidy, a tax incentive or a tariff higher than the buyer pays for power from other
+    sources to cover its debt service?
+  answer: yes_no
+  assumption: The project can service its debt without a subsidy, a tax incentive or a tariff above what other power costs
+    the buyer
+  disproved_by: 'yes'
+  look_in: [03.02.b, 06.01.a, 07.01.a]
+  evidence:
+    best: [consultant_report, regulatory_document, offtake_agreement]
+    supporting: [financial_model, financial_projections, tax_clearance]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Which subsidies, tax incentives or special tariffs does the project receive? Would it still cover its debt service
+    without them, at the price the buyer pays for other power?
+  note: Run the projections without the support. Name each support, who grants it and until when it is granted.
+  leads_to:
+  - {indicator: CAS_PROJECTIONS_001, is: true, reason: The downside case should show the project without the support}
+- id: OBS_EREG_005
+  question: Has the grid operator or an independent engineer confirmed that the plant meets, or as designed will meet, the
+    technical rules for connection and operation (the grid code)?
+  answer: yes_no
+  assumption: The plant meets the grid code
+  disproved_by: 'no'
+  due_by: diligence
+  look_in: [07.01.a, 05.01.a]
+  evidence:
+    best: [regulatory_document, technical_feasibility]
+    supporting: [material_contract, company_record]
+    stated: [correspondence, call, officer_note]
+  if_unknown: A plant that does not meet the grid code can be refused connection or be disconnected.
+- id: OBS_EREG_007
+  question: Does a signed agreement or a law protect the project if the tariff or the rules change, through a clause that
+    makes good the loss from a change in law, a stabilisation clause, or a government undertaking?
+  answer: yes_no
+  mitigant: true
+  assumption: A signed agreement or a law makes good the project's loss if the tariff or the rules change
+  disproved_by: 'no'
+  due_by: diligence
+  when:
+  - {check: OBS_EREG_003, against: true}
+  - {check: OBS_EREG_004, against: true}
+  - {check: OBS_EREG_006, against: true}
+  - {check: OBS_EREG_008, against: true}
+  look_in: [06.01.a, 08.01.a, 04.02.a]
+  evidence:
+    best: [offtake_agreement, guarantee_agreement, legal_opinion]
+    supporting: [regulatory_document, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Read the clause itself and say who must pay, and whether that party has paid under such a clause before. A protection
+    owed by the same state that changes the rule is only as good as that state's record (OBS_EREG_006).
+  leads_to:
+  - {indicator: CAS_SUPPORT_UNDERTAKING_001, is: true, reason: A government undertaking is worth what it binds the government
+      to do}

@@ -58,8 +58,8 @@ def status(args):
     listed = files.read_json(args.deal, files.MANIFEST, {"documents": []})["documents"]
     todo = assess.next_list(memory, std, rows, in_folder={doc["slot"] for doc in listed})
     if args.json:
-        print(json.dumps({"deal": memory["deal"], "revision": store.revision(memory), "checks": rows, "next": todo},
-                         indent=1, ensure_ascii=False))
+        print(json.dumps({"deal": memory["deal"], "revision": store.revision(memory), "checks": rows,
+                          "claims": assess.claims(rows, memory, std), "next": todo}, indent=1, ensure_ascii=False))
         return
     held, deal = assess.roles(memory, std), memory["deal"]
     titles = std["stage_titles"]
@@ -79,7 +79,15 @@ def status(args):
     for row in rows:
         counts[row["state"]] = counts.get(row["state"], 0) + 1
     print("\n## Next\n\nChecks: " + (", ".join(f"{count} {state}" for state, count in counts.items()) or "none apply yet") + ".")
+    found = assess.claims(rows, memory, std)
+    print("\n## Where the claims stand\n")
+    for pillar in std["pillars"]:
+        counts = assess.view(found, std)[pillar["id"]]
+        print(f"- {pillar['title']}: " + (", ".join(f"{count} {name}" for name, count in zip(assess.VERDICTS, counts) if count)
+                                          or "no claim applies yet"))
     limit = None if args.all else 15
+    urgent = [line[2:] for line in pages.claim_lines(found, memory, std) if not line.startswith("- **Claims:**")]
+    group("Claims that are challenged, contested or to look at again", urgent, limit)
     group("Structure still open", todo["structure"], limit)
     lines = []
     for row in todo["checks"]:
@@ -88,6 +96,7 @@ def status(args):
         lines.append(f"{std['checks'][row['check']]['question']} ({pages.name_of(row['for'], memory)}; "
                      f"ideally by {titles[row['due_by']]}; {state}{waits}) [{row['check']}]")
     group("Checks to answer or strengthen", lines, limit)
+    group("Gaps with an agreed action", todo["actions"], limit)
     group("Documents not in the folder", [f"{doc['slot']} {doc['title']}: {doc['why']}" for doc in todo["documents"]], limit)
     group("Questions without an answer", [f"{q['id']} to {q['asked_of']}, asked {q.get('asked', 'no date')}: {q['text']}"
                                          for q in todo["questions"]], limit)

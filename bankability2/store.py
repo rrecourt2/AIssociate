@@ -18,7 +18,7 @@ TABLES = {
                "state", "replaced_by", "note")),
     "subjects": (None, ("kind",), ("name", "note")),  # the prefix comes from the kind of subject
     "links": ("R", ("from", "type", "to"), ("state", "why", "source", "note")),
-    "decisions": ("D", ("decision", "reason"), ("about", "rests_on", "by")),
+    "decisions": ("D", ("decision", "reason"), ("about", "rests_on", "by", "covers", "owner", "due")),
     "questions": ("Q", ("asked_of", "text"), ("about", "checks", "asked", "via", "state", "answered_by")),
 }
 # Fields that hold IDs, and the tables those IDs may come from.
@@ -132,7 +132,7 @@ def place(memory, change, std, errors):
         return value
 
     for _, _, fields, _ in placed:
-        for key in ("answers", "fills"):  # always stored as lists
+        for key in ("answers", "fills", "covers"):  # always stored as lists
             if key in fields:
                 fields[key] = as_list(fields[key])
         for key in (*REFERS, "replaces"):
@@ -167,6 +167,7 @@ def problems_of(table, rid, fields, is_new, memory, known, std):
                          ("state", STATES.get(table)), ("said_by", SAID_BY)):
         if allowed and fields.get(key) is not None and fields[key] not in allowed:
             found.append(f"{key} {fields[key]!r} is not known. Known: {', '.join(sorted(allowed))}")
+    found += [f"covers {cid!r}: not a check of the standard" for cid in as_list(fields.get("covers")) if cid not in std["checks"]]
     for answer in as_list(fields.get("answers")):
         if not isinstance(answer, dict) or answer.get("check") not in std["checks"] or "value" not in answer:
             found.append(f"answer {answer!r} needs a known check and a value")

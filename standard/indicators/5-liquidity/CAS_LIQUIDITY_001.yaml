@@ -1,0 +1,186 @@
+id: CAS_LIQUIDITY_001
+title: Liquidity
+pillar: liquidity
+claim: The party can pay everything that falls due in the next twelve months from its free cash, its committed credit lines
+  and the cash its business brings in, without new borrowing, even in its weakest month.
+due_by: diligence
+applies_to: [borrower, repayment_source, guarantor]
+applies_when:
+- {check: OBS_SECTOR_001, is: corporate}
+- {check: OBS_SECTOR_001, is: project}
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: 'A business in distress fails on the day it cannot pay, whatever its
+    balance sheet says'}
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'A business that is not yet selling has no cash coming in, so cash
+    and committed lines are all there is'}
+- {check: OBS_BORROWER_001, is: holding_company, reason: A holding company's cash sits in its subsidiaries and reaches it
+    only as dividends}
+look_again_when:
+- {new_source: management_accounts, reason: New monthly figures show the cash position at a new date}
+- {new_source: debt_schedule, reason: New or rescheduled debt changes what falls due in the next twelve months}
+- {new_source: facility_agreement, reason: 'A credit line that is signed, renewed or cancelled changes what the party can
+    draw'}
+checks:
+- id: OBS_LIQ_006
+  question: How much cash and bank deposits does the party hold today that it is free to use to pay its own debts?
+  answer: number
+  unit: currency
+  why: The starting figure. Cash that is pledged, blocked, held where it cannot be brought back, or held for others is left
+    out. OBS_LIQ_008 tests whether it has been.
+  due_by: screening
+  look_in: [03.01.b, 03.01.a]
+  evidence:
+    best: [bank_statement, audited_annual_report]
+    supporting: [management_accounts, interim_financial_statements]
+    stated: [correspondence, call, officer_note]
+  ask: How much cash do you have in the bank today that you could use to pay a bill tomorrow? Please leave out anything
+    that is pledged to a lender or held for someone else.
+  note: Say which date and which currency. For a group, say which companies hold the cash.
+- id: OBS_LIQ_002
+  question: What is the party's current ratio (current assets divided by current liabilities) at its latest balance sheet
+    date?
+  answer: number
+  unit: ratio
+  why: A first reading of what turns into cash within a year against what is due within a year. It counts stock and receivables
+    as if they were cash, and it is taken on a single day, so it opens the topic and settles nothing. OBS_LIQ_007 is the
+    test.
+  due_by: concept
+  applies_to: [borrower, repayment_source]
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, interim_financial_statements]
+    stated: [call, officer_note]
+  note: Say which date the figure is for. Where borrowing is seasonal, give the figure at the seasonal peak as well.
+- id: OBS_LIQ_007
+  question: Does a month-by-month cash forecast for the next twelve months show the party paying everything that falls due
+    (debt repayments and interest, taxes, wages, suppliers, committed capital spending and declared dividends) in every
+    month, from its free cash, its undrawn committed credit lines and the cash its business brings in, without new borrowing?
+  answer: yes_no
+  assumption: The party's free cash, committed lines and cash from its business cover what falls due in each of the next
+    twelve months
+  disproved_by: 'no'
+  due_by: concept
+  applies_to: [borrower, repayment_source]
+  look_in: [04.03.a, 03.02.a, 03.01.b]
+  evidence:
+    best: [debt_schedule, facility_agreement, consultant_report]
+    supporting: [financial_projections, financial_model, management_accounts, internal_memo]
+    stated: [management_presentation, call, officer_note]
+  ask: Please send your cash forecast for the next twelve months, month by month, with every loan repayment, tax payment
+    and capital spending shown.
+  if_unknown: Without a monthly forecast nobody has shown that the party can pay through its weakest month. A year-end balance
+    does not show it.
+  note: Find the month in which cash is lowest, and record that month and the balance. Count a loan that falls due as a
+    payment unless its renewal is signed. Count the proceeds of the loan under review only against the spending it is meant
+    to pay for. Leave out credit lines that fail OBS_LIQ_003 and cash that fails OBS_LIQ_008. Take the cash from the business
+    at what the lender's own base case expects, not at the party's budget.
+- id: OBS_LIQ_008
+  question: 'Is about a fifth or more of the cash in the party''s balance sheet out of its reach: pledged or blocked in
+    favour of a lender, held in a country or in a subsidiary from which it cannot be brought back, or held on behalf of
+    customers or others?'
+  answer: yes_no
+  assumption: The cash in the party's balance sheet is the party's own to use
+  disproved_by: 'yes'
+  look_in: [03.01.a, 04.01.b, 04.02.b]
+  evidence:
+    best: [audited_annual_report, facility_agreement, security_agreement]
+    supporting: [management_accounts, bank_statement, debt_schedule]
+    stated: [correspondence, call, officer_note]
+  note: A fifth is a guide. What counts is whether the party could still pay what falls due without that cash. Look in the
+    notes to the accounts for restricted cash, in the loan agreements for reserve accounts and pledged accounts, and at
+    which company and which country holds each balance.
+- id: OBS_LIQ_003
+  question: 'Is every undrawn credit line that the party counts on for the next twelve months committed: the bank is bound
+    by a signed agreement to pay out on request, cannot cancel at will, and the line does not end within those twelve months?'
+  answer: yes_no
+  assumption: The credit lines the party counts on are committed, not merely available
+  disproved_by: 'no'
+  look_in: [04.01.b, 04.03.a]
+  evidence:
+    best: [facility_agreement]
+    supporting: [debt_schedule, audited_annual_report, term_sheet]
+    stated: [correspondence, call, officer_note]
+  ask: Which credit lines could you draw on tomorrow, and up to what amount? Please send the agreement for each, so that
+    we can see until when it runs and whether the bank can cancel it.
+  note: Read the cancellation and review clauses of each line. An overdraft that is repayable on demand, or a line the bank
+    renews each year at its own discretion, is not committed. Nor is a line the party cannot draw today, for example because
+    a covenant is breached. A party that counts on no credit line is a yes. Say so, because it then pays from cash alone.
+- id: OBS_LIQ_004
+  question: In the last two years, has the party paid wages, taxes or suppliers late for lack of cash, or needed money from
+    its owners or its bank at short notice to pay them?
+  answer: yes_no
+  assumption: The party has had the cash to pay what fell due over the last two years
+  disproved_by: 'yes'
+  due_by: concept
+  applies_to: [borrower, repayment_source]
+  look_in: [03.01.a, 02.06.c, 03.01.b]
+  evidence:
+    best: [audited_annual_report, tax_clearance]
+    supporting: [management_accounts, bank_statement, company_record, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: In the last two years, was there a month when wages, a tax payment or a supplier had to wait because the cash was
+    not there, or when a shareholder or the bank had to step in at short notice?
+  note: Late payments to lenders are asked in Existing debt (OBS_DEBT_008). A party that says yes is believed. A no is borne
+    out by a tax clearance, the ageing list of payables and the bank statements.
+  leads_to:
+  - {indicator: CAS_DEBT_001, is: true, reason: A party that ran short of cash has often asked its lenders for more time
+      as well}
+- id: OBS_LIQ_005
+  question: How many days does the party take, on average, to pay its suppliers (trade payables divided by the cost of sales,
+    times 365)?
+  answer: number
+  unit: days
+  why: The figure is read against the credit terms the suppliers give and against earlier years. Payable days that run beyond
+    the terms, or that lengthen from year to year, mean that suppliers are financing the party without having agreed to.
+    They can stop delivering.
+  applies_to: [borrower, repayment_source]
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  ask: How long do you take to pay your suppliers, and what terms do they give you? An ageing list of your payables would
+    answer this.
+  note: Record the suppliers' usual terms beside the figure. The ageing list of payables shows what is overdue.
+- id: OBS_LIQ_009
+  question: If the whole guaranteed amount were called today, would the guarantor's free cash and undrawn committed credit
+    lines cover both the call and its own debt repayments, interest and taxes of the next twelve months?
+  answer: yes_no
+  assumption: The guarantor can pay a call in cash and still pay what it owes itself
+  disproved_by: 'no'
+  applies_to: [guarantor]
+  look_in: [03.01.a, 03.01.b, 04.03.a]
+  evidence:
+    best: [audited_annual_report, bank_statement, facility_agreement]
+    supporting: [management_accounts, debt_schedule, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Assets that would first have to be sold do not count here. The guarantor's capacity asks about them. Where the guarantor
+    has given other guarantees, count what could be called under them at the same moment. For a guarantor who is a person,
+    take bank and custody statements, not a statement of net worth.
+  leads_to:
+  - {indicator: CAS_GUARANTOR_CAPACITY_001, is: false, reason: 'A guarantor without the cash must sell assets or borrow
+      to pay, and that indicator asks whether it could'}
+- id: OBS_LIQ_MIT_001
+  question: 'Is the shortfall covered by money that is promised in writing and has not been counted: a signed undertaking
+    by an owner to pay in cash, or a standby line signed with a bank?'
+  answer: yes_no
+  mitigant: true
+  assumption: Money that is promised in writing covers the shortfall
+  disproved_by: 'no'
+  applies_to: [borrower, repayment_source]
+  when:
+  - {check: OBS_LIQ_007, against: true}
+  calls_for:
+  - is: true
+    link: [supports, lends_to]
+  look_in: [04.02.a, 04.01.b]
+  evidence:
+    best: [guarantee_agreement, facility_agreement]
+    supporting: [board_resolution, term_sheet]
+    stated: [correspondence, call, officer_note]
+  note: The promise must name an amount and say when it can be drawn. A statement that the owner stands behind the party
+    is a no.
+  leads_to:
+  - {indicator: CAS_SUPPORT_UNDERTAKING_001, is: true, reason: An owner's undertaking counts only as far as the lender can
+      enforce it and the owner can pay}

@@ -1,0 +1,112 @@
+id: CAS_SOURCE_OF_FUNDS_001
+title: Source of the owners' funds
+pillar: governance
+claim: The money the party puts into the business comes from a source that is known and lawful, and it is the party's own.
+due_by: diligence
+applies_to: [sponsor, shareholder]
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'A new project is paid for with fresh equity, so its source has to
+    be shown before it is counted'}
+- {check: OBS_CAPEX_PLAN_001, is: true, reason: A large investment programme usually needs new money from the owners}
+look_again_when:
+- {new_source: bank_statement, reason: A statement from the time of payment shows where the money in fact came from}
+- {new_source: investment_plan, reason: 'A new financing plan can change how much the owners put in, and who'}
+checks:
+- id: OBS_SOF_006
+  question: 'Is the party to put money or assets into the business as part of this financing: equity, a shareholder loan,
+    or a promise to pay in later?'
+  answer: yes_no
+  why: Opens the topic. The checks on the source are asked only of a party that puts something in. OBS_SOF_005 is asked
+    of every owner.
+  due_by: screening
+  look_in: [01.02.a, 04.01.a, 03.02.b]
+  evidence:
+    best: [investment_plan, term_sheet]
+    supporting: [financial_model, shareholder_resolution]
+    stated: [correspondence, call, officer_note, management_presentation]
+  note: Answer from the sources and uses of the financing plan, not from what the party says alone. Money paid in during
+    the last two years to prepare this financing counts.
+- id: OBS_SOF_001
+  question: Has the party stated in writing where that money comes from (which business, sale, inheritance or loan) and
+    from which account it will be paid?
+  answer: yes_no
+  assumption: The party has named the source of the money it puts in
+  disproved_by: 'no'
+  due_by: concept
+  when:
+  - {check: OBS_SOF_006, is: true}
+  look_in: [10.01.a, 02.06.a, 01.02.a]
+  evidence:
+    best: [company_certificate, kyc_package]
+    supporting: [investment_plan, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Where does the money you are putting in come from? Please name the source (profits of which business, the sale of
+    which asset, a loan from whom) and the account it will be paid from.
+  if_unknown: Money whose source is not named cannot be counted as equity.
+- id: OBS_SOF_002
+  question: Do the party's accounts, tax returns or other records of its wealth show that it could have earned or saved
+    that amount from the source it names?
+  answer: yes_no
+  assumption: The amount is within what the named source could have produced
+  disproved_by: 'no'
+  when:
+  - {check: OBS_SOF_001, is: true}
+  look_in: [03.01.a, 03.01.d, 02.06.a]
+  evidence:
+    best: [audited_annual_report, tax_returns]
+    supporting: [bank_statement, management_accounts, kyc_package]
+    stated: [correspondence, call, officer_note]
+  note: Set the amount against several years of profit after tax, or against the price in the sale agreement. A source that
+    explains a tenth of the money explains a tenth of it.
+- id: OBS_SOF_004
+  question: Do documents from someone other than the party (a bank's statement, a sale agreement, a notary's deed) show
+    the money in the party's own account and coming from the source it names?
+  answer: yes_no
+  assumption: Documents from third parties bear out the source and show the money in the party's own hands
+  disproved_by: 'no'
+  when:
+  - {check: OBS_SOF_001, is: true}
+  look_in: [03.01.b, 06.01.a, 03.01.a]
+  evidence:
+    best: [bank_statement, material_contract, audited_annual_report]
+    supporting: [tax_returns, company_certificate]
+    stated: [correspondence, call, officer_note]
+  ask: 'Could we have the documents that show where the money comes from: the bank statements, and the sale agreement or
+    the accounts behind them?'
+- id: OBS_SOF_003
+  question: 'Does the money reach the business by a roundabout way: from a third party''s account, through several accounts
+    or countries without a business reason, or in cash?'
+  answer: yes_no
+  assumption: The money comes straight from the party's own account to the business
+  disproved_by: 'yes'
+  when:
+  - {check: OBS_SOF_006, is: true}
+  look_in: [03.01.b, 01.02.a]
+  evidence:
+    best: [bank_statement]
+    supporting: [investment_plan, company_record, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: 'Look again when the money is paid in: the statement of the receiving account names the sender.'
+- id: OBS_SOF_005
+  question: Has the party borrowed the money for its stake in the business, or does anyone have a right to get that money
+    back from the party or from the business (a loan to the owner, a put option, a promised return)?
+  answer: yes_no
+  assumption: The party's stake is paid for with its own money, and nobody can claim it back
+  disproved_by: 'yes'
+  due_by: concept
+  calls_for:
+  - is: true
+    link: [lends_to]
+    end: to
+  look_in: [03.01.a, 04.03.a, 02.02.b]
+  evidence:
+    best: [audited_annual_report, facility_agreement, shareholder_agreement]
+    supporting: [debt_schedule, registry_extract, company_certificate]
+    stated: [correspondence, call, officer_note]
+  ask: Did you borrow to fund your stake in the company, or does any investor or lender have a right to be bought out or
+    repaid from it?
+  note: Equity that is someone else's debt has to be served from dividends, and whoever lent it can end up as the owner.
+    The accounts meant here are the owner's own, not those of the business.
+  leads_to:
+  - {indicator: CAS_GROUP_LINK_001, is: true, reason: An owner with debt of its own needs cash from the business to service
+      it}

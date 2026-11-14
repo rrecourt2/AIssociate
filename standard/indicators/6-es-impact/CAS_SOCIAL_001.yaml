@@ -1,0 +1,162 @@
+id: CAS_SOCIAL_001
+title: Labour and community
+pillar: es_impact
+claim: The party employs its workers lawfully and safely and has no unresolved conflict with the people around its sites,
+  so that no strike, protest or sanction over either could stop its operations or discredit its lenders.
+due_by: diligence
+applies_to: [borrower, repayment_source, project]
+matters_more_when:
+- {check: OBS_SECTOR_002, is: agribusiness, reason: 'Field and packing work relies on seasonal and migrant workers, whose
+    terms are the weakest'}
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'Construction brings contractors'' workers, the highest accident rates
+    and new neighbours'}
+look_again_when:
+- {new_source: adverse_media_screen, reason: 'A press report of a strike, an accident or a protest bears directly on the
+    claim'}
+- {new_source: regulatory_document, reason: A labour inspection report or an order from an authority can show a breach}
+- {new_source: grievance_mechanism, reason: A complaints log shows what workers and neighbours have raised and what was
+    done about it}
+checks:
+- id: OBS_SOC_001
+  question: Does the party meet the labour law of each country where it employs people, on written contracts, minimum wage,
+    working hours and overtime pay, minimum age, social security contributions and the freedom to join a union?
+  answer: yes_no
+  assumption: The party meets the labour law on contracts, pay, hours, minimum age, social security and the freedom to organise
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [07.01.a, 10.03.a, 02.05.a]
+  evidence:
+    best: [regulatory_document, consultant_report]
+    supporting: [corporate_governance_policy, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Does every worker have a written contract? Do you pay at least the minimum wage, overtime, and social security contributions
+    in full? When did the labour inspector last visit, and what did the report say?
+  note: Count the workers of labour contractors who do the party's regular work. A labour inspection report or an independent
+    labour audit is best evidence. The party's own personnel policy shows what it intends, not what it does.
+- id: OBS_SOC_005
+  question: In the last three years, has a worker of the party, or of a contractor on its sites, died or been permanently
+    disabled in an accident at work?
+  answer: yes_no
+  assumption: No worker has died or been permanently disabled at the party's sites in the last three years
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [07.01.a, 10.03.a, 08.03.b]
+  evidence:
+    best: [regulatory_document, consultant_report, insurance_broker_report]
+    supporting: [company_record, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: In the last three years, has anyone died or been permanently injured at work on your sites, including contractors'
+    workers? What happened, and what did you change afterwards?
+  note: Count contractors' workers and drivers on the party's business. A party that says yes is believed. A party that
+    says no is believed once its accident register, the authority or the insurer bears it out. A site that is not yet built
+    has no record. Say so instead of answering no.
+- id: OBS_SOC_006
+  question: Are seasonal, agency, contract or migrant workers who do the party's regular work paid less, housed worse or
+    less protected against accidents than permanent staff who do the same work, or do they pay a fee for the job or leave
+    their identity papers with the employer or a recruiter?
+  answer: yes_no
+  assumption: Workers who are not permanent staff get the same pay and protection for the same work, pay no fee for the
+    job and keep their own papers
+  disproved_by: 'yes'
+  look_in: [10.03.a, 07.02.a]
+  evidence:
+    best: [consultant_report, regulatory_document, esia_report]
+    supporting: [company_record, material_contract, corporate_governance_policy]
+    stated: [correspondence, call, officer_note]
+  ask: How many seasonal, agency, contract or migrant workers do you use at the busiest time of the year? Who recruits them,
+    who pays them, and where do they live? Do they pay anything to get the job?
+  note: Where the party uses no such workers, answer no and say so. Fees paid for a job and papers held by someone else
+    are signs of forced labour under IFC Performance Standard 2. Look at the contract with the labour contractor and, where
+    workers are housed, at the housing.
+- id: OBS_SOC_004
+  question: In the last three years, has the party had a strike, a lock-out, a collective dismissal, a claim brought by
+    a group of workers before a court or a labour authority, or a fine or an order from the labour authority?
+  answer: yes_no
+  assumption: The party has had three years without a collective labour dispute and without a sanction from the labour authority
+  disproved_by: 'yes'
+  look_in: [07.01.a, 08.01.a, 02.06.d]
+  evidence:
+    best: [regulatory_document, legal_opinion, adverse_media_screen]
+    supporting: [company_record, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: In the last three years, have you had a strike, a mass dismissal, a court case brought by a group of workers, or
+    a fine or an order from the labour authority? What was it about, and how did it end?
+  note: Accidents at work are asked in OBS_SOC_005. If the search finds nothing, record what was searched, where and when.
+  leads_to:
+  - {indicator: CAS_LITIGATION_001, is: true, reason: A claim by workers or a sanction can turn into proceedings and a cost}
+- id: OBS_SOC_002
+  question: Have people who live or work near the party's sites raised a complaint, a protest or a claim about its operations
+    (for example about noise, dust, water, traffic, safety or a lost livelihood) that is not yet resolved?
+  answer: yes_no
+  assumption: No complaint, protest or claim from the people around the party's sites is unresolved
+  disproved_by: 'yes'
+  look_in: [07.02.a, 07.02.d, 02.06.d]
+  evidence:
+    best: [esia_report, consultant_report, adverse_media_screen]
+    supporting: [stakeholder_engagement_plan, grievance_mechanism, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Have neighbours, local leaders or local groups complained about your operations, or protested against them? What
+    about, and where does the matter stand today?
+  if_unknown: Nobody has asked the neighbours, so their silence shows nothing.
+  note: Resolved means that those who complained accept the outcome, or that a court or an authority has closed the matter.
+    If the search finds nothing, record what was searched, where and when.
+  leads_to:
+  - {indicator: CAS_LAND_SUPPLY_CHAIN_001, is: true, reason: 'Where the complaint is about land or lost livelihoods, how
+      the land was acquired is tested there'}
+- id: OBS_SOC_007
+  question: Is any site of the party protected by armed guards, police or soldiers who work without written rules on the
+    use of force or without a check of their past conduct, or who have injured or detained a worker or a local person in
+    the last three years?
+  answer: yes_no
+  assumption: Where armed guards, police or soldiers protect the party's sites, they are checked, bound by written rules
+    on the use of force, and have harmed no one
+  disproved_by: 'yes'
+  look_in: [10.03.a, 07.02.a, 02.06.d]
+  evidence:
+    best: [consultant_report, esia_report, adverse_media_screen]
+    supporting: [material_contract, corporate_governance_policy, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Who guards your sites, and are they armed? Do police or soldiers ever protect them? What written rules do the guards
+    follow on the use of force, and has anyone been hurt or held by them in the last three years?
+  note: Where no site has armed guards, police or soldiers, answer no and say so. IFC Performance Standard 4 is the usual
+    reference. If the search finds nothing, record what was searched, where and when.
+- id: OBS_SOC_003
+  question: Can workers and people near the party's sites raise a complaint through a channel that is written down, made
+    known to them and open to anonymous use, and is each complaint logged with what was done about it?
+  answer: yes_no
+  assumption: Workers and neighbours have a channel for complaints that they know of, and complaints are logged and answered
+  disproved_by: 'no'
+  look_in: [07.02.e, 10.03.a]
+  evidence:
+    best: [consultant_report, esia_report]
+    supporting: [grievance_mechanism, company_record, corporate_governance_policy]
+    stated: [correspondence, call, officer_note]
+  ask: How can a worker or a neighbour complain to you? Please share the procedure and the log of complaints received in
+    the last twelve months, with what was done about each.
+  note: Look at the log, not only at the procedure. An empty log at a large site more often means that the channel is not
+    known or not trusted than that nobody has a complaint.
+- id: OBS_SOC_008
+  question: Has the party agreed with the lender a written action plan that deals with every labour and community finding,
+    with a responsible person, a budget and a date for each action?
+  answer: yes_no
+  mitigant: true
+  assumption: An action plan agreed with the lender deals with every finding, with a person, a budget and a date for each
+    action
+  disproved_by: 'no'
+  due_by: approval
+  when:
+  - {check: OBS_SOC_001, against: true}
+  - {check: OBS_SOC_005, against: true}
+  - {check: OBS_SOC_006, against: true}
+  - {check: OBS_SOC_004, against: true}
+  - {check: OBS_SOC_002, against: true}
+  - {check: OBS_SOC_007, against: true}
+  - {check: OBS_SOC_003, against: true}
+  look_in: [07.02.c, 04.01.b]
+  evidence:
+    best: [esap, facility_agreement]
+    supporting: [term_sheet, board_minutes, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: The plan counts once the party has signed it or it is part of the facility agreement. After a death or a permanent
+    injury, the plan should rest on a written finding of the cause. For a dispute or a sanction, the plan should show the
+    settlement or the authority's confirmation that the breach is put right.

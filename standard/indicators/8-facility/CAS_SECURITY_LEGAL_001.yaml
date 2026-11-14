@@ -1,0 +1,124 @@
+id: CAS_SECURITY_LEGAL_001
+title: Security in law
+pillar: facility
+claim: The security can be created, registered and enforced under the law that governs it, and lenders have done so in practice.
+due_by: diligence
+applies_to: [facility]
+matters_more_when:
+- {check: OBS_INVESTOR_ROLE_001, is: senior_secured, reason: The lender's place as a secured lender holds only if the security
+    holds in law}
+- {check: OBS_COLLATERAL_001, is: enterprise, reason: 'Security over a whole business is made of several kinds of charge,
+    and each must hold'}
+look_again_when:
+- {new_source: legal_opinion, reason: A new or final opinion can add a qualification}
+- {new_source: security_agreement, reason: A new draft can change what is created and under which law}
+checks:
+- id: OBS_SECLG_001
+  question: Under the law that governs it, can each kind of security in the package be validly created in favour of the
+    lender or its security agent?
+  answer: yes_no
+  assumption: Each kind of security in the package can be validly created in favour of the lender
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [08.01.a, 04.02.b]
+  evidence:
+    best: [legal_opinion]
+    supporting: [internal_memo, consultant_report]
+    stated: [correspondence, call, officer_note]
+  note: 'Go through the package kind by kind: a charge over future assets, over a changing pool of stock or receivables,
+    over a bank account, security held by an agent for several lenders, security given by someone other than the borrower.
+    One kind that fails makes the answer no: say which.'
+- id: OBS_SECLG_006
+  question: Can the lender or its counsel name cases in the country where the assets are in which a lender enforced security
+    of this kind through to a sale and received the proceeds?
+  answer: yes_no
+  assumption: Lenders have in practice enforced this kind of security in the country where the assets are, and been paid
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [08.01.a, 10.03.a]
+  evidence:
+    best: [legal_opinion, consultant_report]
+    supporting: [internal_memo, public_source]
+    stated: [call, officer_note]
+  ask_whom: lender
+  note: A law that allows enforcement is not proof that it happens. Record the cases, how long each took and what share
+    of the debt was recovered. If the search finds nothing, record what was searched, where and when.
+- id: OBS_SECLG_002
+  question: Do searches against each one who gives security show a charge over all its assets, a lien that arises by law
+    (unpaid taxes or wages) or a court attachment that would rank ahead of the package?
+  answer: yes_no
+  assumption: No earlier charge, lien or attachment over the giver's assets as a whole ranks ahead of the package
+  disproved_by: 'yes'
+  look_in: [02.01.c, 08.01.a, 03.01.a]
+  evidence:
+    best: [registry_extract, legal_opinion, tax_clearance]
+    supporting: [audited_annual_report, debt_schedule]
+    stated: [correspondence, call, officer_note]
+  ask: Is there any charge over all the company's assets, any unpaid tax or wage claim, or any court order against its assets?
+    A search of the company's charges register would confirm it.
+  note: This check is about the package as a whole and is searched against the giver. Claims on one asset are searched for
+    under CAS_SECURITY_ASSET_001. If the search finds nothing, record what was searched, where and when.
+- id: OBS_SECLG_003
+  question: Can each kind of security in the package be registered, or otherwise made to hold against other creditors and
+    against a liquidator?
+  answer: yes_no
+  assumption: The security can be registered, and then holds against other creditors and in an insolvency
+  disproved_by: 'no'
+  look_in: [08.01.a, 07.01.a]
+  evidence:
+    best: [legal_opinion, regulatory_document]
+    supporting: [internal_memo, consultant_report]
+    stated: [correspondence, call, officer_note]
+  note: Record the register, the time limit for filing and the cost. Stamp duty and registry fees can be a real share of
+    the loan, and a filing made late can lose its rank. Say which kind fails if the answer is no.
+- id: OBS_SECLG_004
+  question: If the borrower defaults or becomes insolvent, does the law put other claims ahead of the lender's security
+    (unpaid wages, taxes, the costs of the insolvency), suspend enforcement with no fixed end, or stop a foreign lender
+    from enforcing or from taking the proceeds out of the country?
+  answer: yes_no
+  assumption: On default the lender can enforce the security and take the proceeds, with no claim put ahead of it by law
+  disproved_by: 'yes'
+  look_in: [08.01.a]
+  evidence:
+    best: [legal_opinion]
+    supporting: [internal_memo, consultant_report]
+    stated: [correspondence, call, officer_note]
+  if_unknown: The forced-sale values assume an enforcement that nobody has checked can happen.
+  note: Say which obstacle it is and which assets it touches. What stands in the way of one asset only is asked about under
+    CAS_SECURITY_ASSET_001.
+  leads_to:
+  - {indicator: CAS_COUNTRY_RISK_001, is: true, reason: 'Where the obstacle is a limit on taking money out of the country,
+      it is a transfer risk and is examined there'}
+- id: OBS_SECLG_005
+  question: Has counsel signed a legal opinion which confirms that the security is validly created, holds against other
+    creditors and can be enforced, and which leaves out none of the assets the lender counts on?
+  answer: yes_no
+  assumption: A signed legal opinion confirms the whole security package
+  disproved_by: 'no'
+  due_by: legal
+  look_in: [08.01.a, 08.01.b]
+  evidence:
+    best: [legal_opinion]
+    supporting: [conditions_precedent_checklist]
+    stated: [correspondence, call, officer_note]
+  note: 'Read the assumptions and the qualifications, not only the opinion paragraph. An opinion still in draft has not
+    been given: answer no until it is signed.'
+- id: OBS_SECLG_MIT_001
+  question: Does the lender hold security that can be enforced outside the country and under another law (a pledge over
+    shares in a holding company abroad, or over accounts abroad into which the revenue is paid)?
+  answer: yes_no
+  mitigant: true
+  assumption: Part of the security can be enforced outside the country, under another law
+  disproved_by: 'no'
+  when:
+  - {check: OBS_SECLG_001, against: true}
+  - {check: OBS_SECLG_003, against: true}
+  - {check: OBS_SECLG_004, against: true}
+  - {check: OBS_SECLG_006, against: true}
+  look_in: [04.02.b, 08.01.a, 02.03.a]
+  evidence:
+    best: [security_agreement, legal_opinion]
+    supporting: [term_sheet, organizational_chart]
+    stated: [correspondence, call, officer_note]
+  note: A pledge over shares abroad gives control of the company, not of its assets. Say what the lender could in fact do
+    with it.

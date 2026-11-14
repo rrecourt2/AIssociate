@@ -1,0 +1,133 @@
+id: CAS_FEASIBILITY_001
+title: Feasibility
+pillar: business
+claim: The project can be built on its site for the estimated cost and run as planned, with technology that already works
+  at this scale.
+due_by: diligence
+applies_to: [project]
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'Nothing has been built yet, so the studies are all there is to rely
+    on'}
+- {check: OBS_CASHFLOW_BASIS_001, is: projected, reason: Repayment rests on cash flows that exist only if the project works
+    as planned}
+look_again_when:
+- {new_source: technical_feasibility, reason: 'A new study or engineer''s report can change the design, the cost or the
+    risks that are known'}
+- {new_source: epc_contract, reason: A signed construction contract replaces estimates with prices}
+checks:
+- id: OBS_FEAS_001
+  question: Is there a written feasibility study for the project that covers its design, its site, its cost and its schedule?
+  answer: yes_no
+  assumption: The plan for the project rests on a written feasibility study
+  disproved_by: 'no'
+  due_by: screening
+  look_in: [05.01.a, 01.02.a]
+  evidence:
+    best: [technical_feasibility]
+    supporting: [investment_plan, internal_memo]
+    stated: [business_plan, correspondence, call, officer_note]
+  ask: Has a feasibility study been made for the project? Please share it, with its date and the name of whoever wrote it.
+  if_unknown: Without a study, the design, the cost and the schedule are the sponsor's own word.
+  note: A study written by or for the sponsor counts here. Whether anyone independent agrees with it is asked in OBS_FEAS_003.
+- id: OBS_FEAS_002
+  question: Is the project's core technology in commercial operation elsewhere, at about the scale of this project and under
+    conditions like those it will meet?
+  answer: yes_no
+  assumption: The core technology already works in commercial operation at this scale
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [05.01.a, 10.03.a]
+  evidence:
+    best: [technical_feasibility, consultant_report]
+    supporting: [company_record, public_source]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Where is this technology already running commercially at a similar size? Since when, and who can confirm how it performs?
+  note: A pilot plant, a demonstration unit or the first plant of its kind is a no. So is a known technology used at several
+    times its largest size so far, or with a feedstock or in a climate it has not run in. The supplier's own list of references
+    is the supplier's word.
+- id: OBS_FEAS_005
+  question: Does the project hold the rights it needs to its site (the land, the way in, and the connections to power, water
+    and transport) under signed agreements or registered title that run beyond the final maturity of the loan?
+  answer: yes_no
+  assumption: The project holds the rights to its land, its access and its connections for the life of the loan
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [06.05.a, 04.02.b, 08.01.a]
+  evidence:
+    best: [lease_agreement, security_agreement, legal_opinion, regulatory_document]
+    supporting: [technical_feasibility, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Do you own or lease the whole site, and are the rights of way and the utility connections signed? Please share the
+    title, the lease and the connection agreements.
+  note: An option, a letter of intent or an application that is still pending is a no until it is signed or granted. Say
+    which right is missing. For a power project the grid connection has its own check (OBS_EGEN_003).
+  leads_to:
+  - {indicator: CAS_LAND_SUPPLY_CHAIN_001, is: false, reason: Land that is not yet secured may still have to be acquired
+      from people who live on it or use it}
+- id: OBS_FEAS_006
+  question: Does the cost estimate rest on signed contracts or binding bids for the larger part of the cost, and carry a
+    contingency for the part that is not fixed?
+  answer: yes_no
+  assumption: Most of the cost is fixed by contracts or binding bids, and a contingency covers the rest
+  disproved_by: 'no'
+  look_in: [01.02.a, 06.02.a, 05.01.a]
+  evidence:
+    best: [epc_contract, technical_feasibility]
+    supporting: [investment_plan, financial_model, company_record]
+    stated: [correspondence, call, officer_note]
+  note: Both parts must hold for a yes. Indicative quotes, price lists and the sponsor's own figures do not fix a cost.
+    "The larger part" is a guide. Record the contingency as a share of the cost that is not fixed.
+  leads_to:
+  - {indicator: CAS_ENERGY_CONSTRUCTION_001, is: false, reason: A cost that is not fixed has to be met from committed funding
+      or from support for overruns}
+- id: OBS_FEAS_003
+  question: Has a technical expert who is independent of the sponsor, the builder and the equipment suppliers reviewed the
+    project's design, cost and schedule, and confirmed that it can be built and run as planned?
+  answer: yes_no
+  assumption: An independent technical expert has confirmed that the project can be built and run as planned
+  disproved_by: 'no'
+  look_in: [05.01.a, 10.03.a]
+  evidence:
+    best: [technical_feasibility, consultant_report]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  if_unknown: The feasibility of the project rests on the sponsor's word alone.
+  note: The expert's report must be in hand. Whoever wrote the study for the sponsor has not reviewed it. The usual form
+    is a technical adviser who reports to the lenders. A review that confirms only with open reservations is a no, and the
+    reservations belong in OBS_FEAS_004.
+- id: OBS_FEAS_004
+  question: Does the feasibility study or the independent expert's review name a technical risk that is still open, with
+    no agreed fix, no party that bears it and no allowance in the cost or the schedule?
+  answer: yes_no
+  assumption: Every technical risk the studies found has a fix, a party that bears it or an allowance in the budget
+  disproved_by: 'yes'
+  when:
+  - {check: OBS_FEAS_001, is: true}
+  - {check: OBS_FEAS_003, is: true}
+  look_in: [05.01.a, 10.03.a]
+  evidence:
+    best: [technical_feasibility, consultant_report]
+    supporting: [company_record, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Examples are ground that has not been surveyed, equipment with no reference at this size, a resource or a feedstock
+    that has not been measured, or a single route for delivery. Name each open risk. A study that names no risk at all has
+    not looked.
+- id: OBS_FEAS_007
+  question: Does the supplier of the technology, or the builder, guarantee the plant's output and availability in a signed
+    contract, with damages if they are not reached?
+  answer: yes_no
+  mitigant: true
+  assumption: The supplier or the builder is bound to pay if the technology does not perform
+  disproved_by: 'no'
+  when:
+  - {check: OBS_FEAS_002, against: true}
+  look_in: [06.02.a, 06.04.a, 06.01.a]
+  evidence:
+    best: [epc_contract, supply_agreement, material_contract]
+    supporting: [technical_feasibility, company_record]
+    stated: [correspondence, call, officer_note]
+  note: A guarantee is worth what its giver can pay. A young technology company with little capital does not carry this
+    risk, whatever it signs.
+  leads_to:
+  - {indicator: CAS_BUILDER_OPERATOR_001, is: true, reason: The guarantee is worth what the builder or supplier behind it
+      can pay}

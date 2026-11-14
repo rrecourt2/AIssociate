@@ -1,0 +1,128 @@
+id: CAS_ASSET_CONDITION_001
+title: Operating assets
+pillar: business
+claim: The asset can do its work until the loan is repaid without spending that the projections do not show.
+due_by: diligence
+applies_to: [asset]
+matters_more_when:
+- {check: OBS_COLLATERAL_001, is: single_asset, reason: 'One asset secures the loan, so its condition decides both the cash
+    flow and the value of the security'}
+- {check: OBS_SECTOR_002, is: real_estate, reason: 'In real estate the building is the business, and its condition sets
+    the rent and the value'}
+- {check: OBS_SECTOR_002, is: infrastructure, reason: An infrastructure asset has to stay available to earn its payments
+    and to keep its concession}
+look_again_when:
+- {new_source: technical_feasibility, reason: 'An engineer''s report can change the view of the condition, the remaining
+    life and the spending needed'}
+- {new_source: valuation_report, reason: A valuer who has inspected the asset reports on its condition and its remaining
+    life}
+checks:
+- id: OBS_ASSET_005
+  question: Who owns the asset?
+  answer: choice
+  options: [party_that_uses_it, another_group_company, lessor_or_landlord, public_body, other]
+  why: An asset that the party uses but does not own can be taken back, and the party cannot give it as security. The owner
+    belongs in the structure, with an "owns" link to the asset.
+  due_by: screening
+  calls_for:
+  - answered: true
+    link: [owns]
+  look_in: [04.02.b, 06.05.a, 05.02.a]
+  evidence:
+    best: [security_agreement, lease_agreement, valuation_report]
+    supporting: [company_record, audited_annual_report]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Who holds the title to this asset? If it is leased or held under a concession, from whom, and until when?
+  note: Title documents are filed with the security documents. Under a lease or a concession the owner is someone else,
+    however long it runs.
+- id: OBS_ASSET_001
+  question: What condition is the asset in?
+  answer: choice
+  options: [new, good, fair, poor, end_of_life]
+  assumption: The asset is in working condition and needs no major repair or replacement now
+  flag_when: is poor or end_of_life
+  why: An asset in poor condition or at the end of its life needs repair or replacement that takes cash from debt service,
+    and it can stop without warning.
+  due_by: concept
+  look_in: [05.01.a, 05.02.a]
+  evidence:
+    best: [technical_feasibility, valuation_report]
+    supporting: [company_record, management_accounts]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: How old is this asset and what condition is it in? An asset register, a recent valuation or an inspection report
+    would answer this.
+  note: 'New: in its first years of use. Good: runs at the output it was built for, with routine maintenance. Fair: runs
+    at that output, with wear that planned maintenance can deal with. Poor: runs below that output, breaks down often or
+    needs a major overhaul now. End of life: at or past the life it was built for. Record the age of the asset with the
+    answer. What the officer saw on a site visit counts as stated.'
+- id: OBS_ASSET_002
+  question: Has someone independent of the party (an engineer, a surveyor or a valuer) inspected the asset and reported
+    on its condition in the last three years?
+  answer: yes_no
+  assumption: Someone independent of the party has inspected the asset and reported on its condition
+  disproved_by: 'no'
+  look_in: [05.01.a, 05.02.a]
+  evidence:
+    best: [technical_feasibility, valuation_report]
+    supporting: [consultant_report, insurance_broker_report]
+    stated: [correspondence, call, officer_note]
+  ask: Has an independent engineer, surveyor or valuer inspected this asset in the last three years? May we see the report?
+  note: Three years is a guide. A valuation made without an inspection does not count.
+- id: OBS_ASSET_003
+  question: Is there a written maintenance plan for the asset, with a budget that is carried into the projections?
+  answer: yes_no
+  assumption: Maintenance of the asset is planned, and its cost is in the projections
+  disproved_by: 'no'
+  look_in: [05.01.a, 06.03.a, 03.02.a]
+  evidence:
+    best: [technical_feasibility, om_agreement]
+    supporting: [company_record, financial_projections, financial_model]
+    stated: [correspondence, call, officer_note]
+  ask: Do you have a maintenance plan and a yearly maintenance budget for this asset? Where does that budget appear in your
+    projections?
+  if_unknown: Without a plan and a budget, the cost of keeping the asset working is not in the projections.
+- id: OBS_ASSET_004
+  question: Has maintenance that was due on the asset been put off, so that a backlog has built up?
+  answer: yes_no
+  assumption: The maintenance that was due on the asset has been done
+  disproved_by: 'yes'
+  look_in: [05.01.a, 05.02.a]
+  evidence:
+    best: [technical_feasibility, valuation_report]
+    supporting: [company_record, management_accounts]
+    stated: [correspondence, call, officer_note]
+  ask: Has any maintenance that was due on this asset been postponed? What would it cost to catch up?
+  if_unknown: A backlog that nobody has counted is a cost that the projections do not show.
+  note: Where there is a backlog, record what it would cost to clear. Maintenance spending that falls while the asset ages
+    is a sign of one.
+- id: OBS_ASSET_006
+  question: Is the remaining useful life of the asset shorter than the time until the final repayment of the proposed loan?
+  answer: yes_no
+  assumption: The asset will last until the loan is repaid
+  disproved_by: 'yes'
+  look_in: [05.01.a, 05.02.a]
+  evidence:
+    best: [technical_feasibility, valuation_report]
+    supporting: [company_record, audited_annual_report]
+    stated: [correspondence, call, officer_note]
+  ask: How many more years can this asset work before it has to be replaced or rebuilt?
+  note: Use the technical life that an engineer or a valuer gives, not the life used for depreciation in the accounts. Where
+    the asset is held under a lease or a concession, its life for the party ends when that does.
+- id: OBS_ASSET_MIT_001
+  question: Is the cost of the repair, overhaul or replacement that the asset needs included in the projections, with its
+    funding named?
+  answer: yes_no
+  mitigant: true
+  assumption: The spending that the asset needs is in the projections and is funded
+  disproved_by: 'no'
+  when:
+  - {check: OBS_ASSET_001, against: true}
+  - {check: OBS_ASSET_004, against: true}
+  - {check: OBS_ASSET_006, against: true}
+  look_in: [05.01.a, 03.02.b, 01.02.a]
+  evidence:
+    best: [technical_feasibility]
+    supporting: [financial_model, financial_projections, investment_plan]
+    stated: [correspondence, call, officer_note]
+  ask: What will the repair, overhaul or replacement of this asset cost, when is it planned, and how will it be paid for?
+  note: Compare the amount in the projections with the estimate of the engineer or the valuer, not with the party's own.

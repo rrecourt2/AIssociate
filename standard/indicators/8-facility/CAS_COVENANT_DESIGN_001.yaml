@@ -1,0 +1,153 @@
+id: CAS_COVENANT_DESIGN_001
+title: Covenants
+pillar: facility
+claim: The covenants warn the lender while there is still time to act, give it the right to act, and keep cash and assets
+  from leaving the borrower before it does.
+due_by: diligence
+applies_to: [facility]
+matters_more_when:
+- {check: OBS_COLLATERAL_001, is: unsecured, reason: Without security the covenants are the lender's only hold on the borrower}
+- {check: OBS_BORROWER_003, is: true, reason: 'In a group, cash and assets can move to members that the covenants do not
+    reach'}
+- {check: OBS_INVESTOR_ROLE_002, is: true, reason: 'Other lenders have covenants of their own, and theirs may be breached
+    first'}
+look_again_when:
+- {new_source: term_sheet, reason: A new draft can change the covenants or their levels}
+- {new_source: facility_agreement, reason: 'The signed agreement can differ from the term sheet, most often in definitions,
+    exceptions and cure rights'}
+- {new_source: financial_model, reason: New cases move the room between the covenant levels and the figures}
+checks:
+- id: OBS_COV_001
+  question: Which financial covenants does the facility carry?
+  answer: choice
+  options: [debt_service_coverage, leverage_ratio, interest_cover, current_ratio, minimum_net_worth, debt_to_equity, loan_to_value,
+    other, none]
+  many: true
+  why: Opens the topic. A covenant on cash flow against debt service warns earlier than one on the balance sheet. An answer
+    of none is picked up by OBS_COV_004.
+  due_by: concept
+  look_in: [04.01.a, 04.01.b]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+- id: OBS_COV_004
+  question: As results fall from the lender's base case towards the point where cash flow no longer covers debt service,
+    when is a financial covenant first breached?
+  answer: choice
+  options: [already_in_base_case, before_cash_falls_short, not_before_cash_falls_short, no_financial_covenant]
+  assumption: A financial covenant is breached while the debt is still being serviced, and none is breached in the base
+    case
+  flag_when: is not before_cash_falls_short
+  why: A covenant that the base case already breaches will be waived until it means nothing. One that is breached only once
+    cash no longer covers debt service, or not at all, tells the lender what it already knows. The level belongs between
+    the two.
+  look_in: [04.01.a, 03.02.b]
+  evidence:
+    best: [term_sheet, facility_agreement, internal_memo]
+    supporting: [financial_model, financial_projections, management_accounts]
+    stated: [correspondence, call, officer_note]
+  ask_whom: lender
+  if_unknown: If no downside case has been run against the covenant levels, nobody knows when they would warn.
+  note: Run the lender's downside case with the covenant's own definitions. It shows how far results have to fall before
+    the first breach, and how many test periods lie between the breach and the first period in which cash flow no longer
+    covers debt service. Record the room between each level and the base case.
+- id: OBS_COV_006
+  question: Are the financial covenants tested on the accounts of every party that repayment relies on (consolidated where
+    it relies on a group), and not only on the borrower's own accounts?
+  answer: yes_no
+  assumption: The covenants are measured where the cash flow that repays the loan is earned
+  disproved_by: 'no'
+  look_in: [04.01.a, 04.01.b]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Read the definitions. A covenant tested on a holding company's own accounts says nothing about the subsidiary that
+    earns the cash, and the other way round. Where there is no financial covenant, leave this open. OBS_COV_004 records
+    it.
+- id: OBS_COV_002
+  question: Do the terms of the facility oblige the borrower to deliver audited annual accounts, interim accounts and a
+    compliance certificate that shows the covenant calculations, each by a stated date?
+  answer: yes_no
+  assumption: The lender is entitled to the figures it needs to test the covenants, by fixed dates
+  disproved_by: 'no'
+  look_in: [04.01.a, 04.01.b]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Which accounts and reports would you have to send the lender, how often, and how long after the period ends? Can
+    the finance team meet those dates today?
+- id: OBS_COV_003
+  question: Do the terms of the facility forbid the borrower to give security to anyone else (a negative pledge) and limit
+    the new debt it may take on, with every exception capped at a stated amount?
+  answer: yes_no
+  assumption: No other creditor can take security or add debt ahead of the lender without the lender's consent
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [04.01.a, 04.01.b]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Read the exceptions (permitted security, permitted debt). An exception without a cap undoes the rule. Where repayment
+    relies on a group, the limits should bind the group's members too.
+  leads_to:
+  - {indicator: CAS_OTHER_LENDERS_001, is: false, reason: Nothing stops another lender from ranking ahead}
+- id: OBS_COV_007
+  question: Do the terms of the facility make dividends and other payments to the owners, sales of assets, and loans or
+    guarantees to related parties subject to the lender's consent or to a stated test?
+  answer: yes_no
+  assumption: Cash and assets cannot leave the borrower for its owners or related parties unless the lender agrees or a
+    stated test is met
+  disproved_by: 'no'
+  look_in: [04.01.a, 04.01.b]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: All three have to be covered for a yes. Repayments of shareholder loans and fees paid to the owners count as payments
+    to the owners.
+  leads_to:
+  - {indicator: CAS_RELATED_PARTY_001, is: false, reason: Money can reach related parties without the lender knowing}
+- id: OBS_COV_005
+  question: Does a breach of a financial covenant give the lender the right to stop further drawings and to demand repayment,
+    once any stated cure period has run out?
+  answer: yes_no
+  assumption: A covenant breach gives the lender the right to act
+  disproved_by: 'no'
+  look_in: [04.01.a, 04.01.b]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: A breach that only blocks dividends, or only obliges the borrower to present a plan, does not give this right. Record
+    the length of the cure period.
+- id: OBS_COV_009
+  question: Can the owners cure a breach of a financial covenant with new money without a limit on how often, or in test
+    periods that follow one another?
+  answer: yes_no
+  assumption: The owners cannot cover up repeated breaches with new money
+  disproved_by: 'yes'
+  look_in: [04.01.a, 04.01.b]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Where the facility gives no right to cure with new money, the answer is no. Also read how the new money is counted.
+    Money counted as cash flow hides the breach. Money used to repay debt reduces it.
+- id: OBS_COV_008
+  question: Does the compliance certificate for the latest test date show every financial covenant within its limit?
+  answer: yes_no
+  assumption: The borrower is within its financial covenants at the latest test date
+  disproved_by: 'no'
+  due_by: monitoring
+  look_in: [10.01.a, 03.01.a, 03.01.i]
+  evidence:
+    best: [company_certificate, audited_annual_report]
+    supporting: [interim_financial_statements, management_accounts]
+    stated: [correspondence, call, officer_note]
+  if_unknown: A certificate that has not arrived is itself a breach of the information covenant. OBS_COND_007 records it.
+  note: Work the ratios out again from the accounts that came with the certificate, using the definitions in the facility
+    agreement.

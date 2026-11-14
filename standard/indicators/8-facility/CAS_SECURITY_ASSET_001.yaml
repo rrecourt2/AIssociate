@@ -1,0 +1,170 @@
+id: CAS_SECURITY_ASSET_001
+title: Asset given as security
+pillar: facility
+claim: The asset belongs to the one who gives it as security, would fetch the value counted on in a forced sale, and can
+  be taken and sold by the lender.
+due_by: diligence
+applies_to: [secures]
+matters_more_when:
+- {check: OBS_COLLATERAL_001, is: single_asset, reason: The whole second way out rests on this one asset}
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: The asset may have to be taken and sold soon}
+look_again_when:
+- {new_source: valuation_report, reason: A new valuation changes the value counted on}
+- {new_source: registry_extract, reason: A new search can show a charge that was not there before}
+- {new_source: insurance_policy, reason: Cover is renewed each year and can lapse or change}
+checks:
+- id: OBS_SECASSET_001
+  question: What kind of asset is it?
+  answer: choice
+  options: [real_estate, equipment, receivables, inventory, shares, cash_deposits, contract_rights, other]
+  why: The kind of asset decides what proves ownership, where a charge is registered, how the asset is valued and whether
+    it can be insured.
+  due_by: screening
+  look_in: [05.01.a, 04.02.b]
+  evidence:
+    best: [security_agreement, valuation_report]
+    supporting: [term_sheet, company_record]
+    stated: [correspondence, call, officer_note]
+  note: The kinds are those of OBS_SECPKG_001. 'contract_rights' covers an assignment of a contract, of a concession or
+    of insurance proceeds.
+- id: OBS_SECASSET_002
+  question: Does a title document or a public register show the one who gives the security as the owner of the asset?
+  answer: yes_no
+  assumption: The asset belongs to the one who gives it as security
+  disproved_by: 'no'
+  due_by: concept
+  calls_for:
+  - answered: true
+    link: [owns]
+  look_in: [04.02.b, 02.01.c, 05.01.a]
+  evidence:
+    best: [security_agreement, registry_extract, legal_opinion]
+    supporting: [company_record, audited_annual_report]
+    stated: [correspondence, call, officer_note]
+  ask: In whose name is this asset held? Could you send the title deed, the register extract or the other document that
+    shows it?
+  note: 'For shares, the share register. For cash, an account in the giver''s own name. For receivables, invoices issued
+    by the giver. Land held under a lease, a concession or a right of use is not owned: answer no and say what the giver
+    holds. Whatever the answer, the owner belongs in the structure.'
+- id: OBS_SECASSET_003
+  question: Has someone independent of the borrower and of the one who gives the security valued the asset within the last
+    twelve months?
+  answer: yes_no
+  assumption: The value counted on rests on a recent valuation by someone independent
+  disproved_by: 'no'
+  look_in: [05.02.a, 10.03.a]
+  evidence:
+    best: [valuation_report]
+    supporting: [company_record, audited_annual_report]
+    stated: [correspondence, call, officer_note]
+  ask: When was this asset last valued, by whom, and who asked for the valuation?
+  note: Twelve months is a guide. Stock, receivables and listed shares change faster and need a fresher figure. For cash,
+    the bank's own confirmation of the balance counts. For stock and receivables, a count or an ageing list checked by someone
+    independent counts. A book value is not a valuation.
+- id: OBS_SECASSET_004
+  question: What would the asset fetch in a forced sale, after the costs of the sale and after any claim that ranks ahead
+    of the lender?
+  answer: number
+  unit: currency
+  why: This is the figure the security package is measured with (OBS_SECPKG_006). The market value and the book value are
+    both higher and neither is what a lender receives.
+  look_in: [05.02.a, 05.01.a]
+  evidence:
+    best: [valuation_report]
+    supporting: [internal_memo, company_record]
+    stated: [correspondence, call, officer_note]
+  note: If the valuer gives no forced-sale value, say what discount was taken from the market value and why. Say how long
+    a sale is assumed to take.
+- id: OBS_SECASSET_005
+  question: If the business stopped, could the asset still be sold to a buyer outside it for about its forced-sale value?
+  answer: yes_no
+  assumption: The asset keeps its value when the business stops, and there are buyers for it
+  disproved_by: 'no'
+  look_in: [05.02.a, 10.03.a]
+  evidence:
+    best: [valuation_report, consultant_report]
+    supporting: [company_record, internal_memo]
+    stated: [call, officer_note]
+  note: 'Typical cases for a no: a plant built for one purpose or in a remote place, stock that only this business can use,
+    receivables that customers stop paying once supply ends, shares in the borrower itself. ''About'' is a guide: what counts
+    is whether the value survives the failure that makes the lender need it.'
+- id: OBS_SECASSET_006
+  question: Does the title document or a search of the registers show any charge, lien, lease, attachment or other claim
+    on the asset besides the lender's own?
+  answer: yes_no
+  assumption: The asset is free of any claim but the lender's
+  disproved_by: 'yes'
+  look_in: [02.01.c, 04.02.b, 08.01.a]
+  evidence:
+    best: [registry_extract, legal_opinion, security_agreement]
+    supporting: [audited_annual_report, debt_schedule]
+    stated: [correspondence, call, officer_note]
+  ask: Has anyone else a charge, a lien or a lease on this asset, or a claim to it in court? Is any part of its purchase
+    price still owed to the seller?
+  note: Search the register that belongs to the kind of asset (land, vehicles, movable assets, company charges) and the
+    courts. If the search finds nothing, record what was searched, where and when.
+  leads_to:
+  - {indicator: CAS_OTHER_LENDERS_001, is: true, reason: 'Where the holder of the claim is another lender, its rights are
+      examined there'}
+- id: OBS_SECASSET_007
+  question: Does a rule or a contract stop the lender or its security agent from holding security over the asset, or from
+    selling it to a buyer of its choice (a limit on foreign ownership of land, a licence or concession that does not pass
+    to a buyer, a consent not yet given)?
+  answer: yes_no
+  assumption: The lender or its agent may hold security over the asset and sell it to whoever pays most
+  disproved_by: 'yes'
+  look_in: [08.01.a, 07.01.a, 06.05.a]
+  evidence:
+    best: [legal_opinion, regulatory_document]
+    supporting: [lease_agreement, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: The question is about this asset and this lender. Obstacles that hold for every kind of security in the country
+    are asked about in CAS_SECURITY_LEGAL_001.
+- id: OBS_SECASSET_008
+  question: Can the lender take and sell the asset without first obtaining a court judgment (a private sale, taking the
+    asset in payment, or a power of sale given in the security agreement)?
+  answer: yes_no
+  assumption: The lender can sell the asset without waiting for a court
+  disproved_by: 'no'
+  look_in: [08.01.a, 04.02.b]
+  evidence:
+    best: [legal_opinion, security_agreement]
+    supporting: [internal_memo, consultant_report]
+    stated: [correspondence, call, officer_note]
+  note: Record also how long a sale would take from the day of default, with or without a court. The forced-sale value in
+    OBS_SECASSET_004 assumes that time.
+- id: OBS_SECASSET_009
+  question: Is the lender's security over the asset registered, or otherwise made effective against other creditors, at
+    first rank?
+  answer: yes_no
+  assumption: The lender holds first-ranking security over the asset that is effective against other creditors
+  disproved_by: 'no'
+  due_by: legal
+  look_in: [02.01.c, 08.01.a, 08.01.b]
+  evidence:
+    best: [registry_extract, legal_opinion]
+    supporting: [conditions_precedent_checklist, security_agreement]
+    stated: [correspondence, call, officer_note]
+  note: A filing receipt shows that registration was asked for. The extract shows that it was made, and at what rank. Where
+    there is no register (a notice to the debtor, control of an account), counsel's confirmation takes the place of the
+    extract.
+- id: OBS_SECASSET_010
+  question: Is the asset insured against loss and damage for at least its replacement value, and is the lender named on
+    the policy as the one to whom a claim is paid (loss payee)?
+  answer: yes_no
+  assumption: If the asset is lost or destroyed, the insurance money is enough to replace it and is paid to the lender
+  disproved_by: 'no'
+  due_by: disbursement
+  when:
+  - {check: OBS_SECASSET_001, is: real_estate}
+  - {check: OBS_SECASSET_001, is: equipment}
+  - {check: OBS_SECASSET_001, is: inventory}
+  look_in: [08.03.a, 08.03.b, 08.01.b]
+  evidence:
+    best: [insurance_policy, insurance_broker_report]
+    supporting: [conditions_precedent_checklist]
+    stated: [correspondence, call, officer_note]
+  note: 'If only one of the two holds, answer no and say which. Bare land has nothing to insure: leave the check unanswered
+    and record that decision with its reason.'
+  leads_to:
+  - {indicator: CAS_COVERAGE_001, is: false, reason: The party's insurance as a whole is examined there}

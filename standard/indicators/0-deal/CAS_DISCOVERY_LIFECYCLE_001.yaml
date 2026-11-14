@@ -1,0 +1,150 @@
+id: CAS_DISCOVERY_LIFECYCLE_001
+title: Stage of the business
+pillar: deal
+claim: Repayment is shown on what the business earns today, or the step from today to the projected business is in the structure
+  as a project.
+due_by: screening
+applies_to: [deal]
+matters_more_when:
+- {check: OBS_CASHFLOW_BASIS_001, is: projected, reason: Repayment then rests wholly on the step from today's business to
+    the projected one}
+- {check: OBS_SECTOR_001, is: project, reason: A project has no other business to fall back on if it is late or over budget}
+look_again_when:
+- {new_source: financial_model, reason: A new model can move repayment from today's business to the business that is planned}
+- {new_source: management_accounts, reason: New management accounts can show that the business has slipped into losses or
+    late payment}
+- {check: OBS_CAPEX_PLAN_001, is: true, reason: A new capital spending programme changes the stage of the business}
+checks:
+- id: OBS_LIFECYCLE_001
+  question: What stage is the business in?
+  answer: choice
+  options: [greenfield, expanding, established, distressed]
+  why: The stage says how much of the repayment story has already happened and how much is still a plan.
+  calls_for:
+  - {is: greenfield, kind: project}
+  look_in: [03.01.a, 01.01.b, 03.01.b]
+  evidence:
+    best: [audited_annual_report, technical_feasibility]
+    supporting: [management_accounts, financial_projections]
+    stated: [business_plan, executive_summary, call, officer_note]
+  ask: Is the business already operating? If it is, is it running steadily, in the middle of a large expansion or change,
+    or in difficulty?
+  note: Choose greenfield where the business is not yet operating. Choose expanding where it operates and a capital spending
+    programme of the size asked about in the next check is planned or under way. Choose established where it operates and
+    no such programme is planned. Choose distressed where the business is in default, is being restructured, or does not
+    pay suppliers, lenders, staff or taxes on time. Where distressed applies together with another stage, choose distressed.
+  leads_to:
+  - {indicator: CAS_FEASIBILITY_001, is: greenfield, reason: A business that does not operate yet rests on its feasibility}
+  - {indicator: CAS_LIQUIDITY_001, is: distressed, reason: A business in distress fails first for lack of cash}
+- id: OBS_CAPEX_PLAN_001
+  question: Is a capital spending programme planned or under way that the business cannot pay for from one year of its own
+    operating cash flow, or that the projected revenue depends on?
+  answer: yes_no
+  why: Such a programme has to be finished on time and on budget before the projected business exists, so it is examined
+    as a project.
+  calls_for:
+  - {is: true, kind: project}
+  look_in: [01.02.a, 03.02.b, 05.01.a]
+  evidence:
+    best: [technical_feasibility, epc_contract, audited_annual_report]
+    supporting: [investment_plan, financial_model, board_minutes]
+    stated: [business_plan, correspondence, call, officer_note]
+  ask: Do you plan to build, expand or replace on a scale that needs outside money, or that the growth in your plan depends
+    on?
+  note: This covers a new plant, a large expansion and a major overhaul. The routine replacement of worn equipment is not
+    meant.
+- id: OBS_LIFECYCLE_002
+  question: For how many full financial years does the business have audited accounts?
+  answer: number
+  unit: years
+  why: The length of the audited record is how much of the repayment story someone independent has checked.
+  look_in: [03.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [registry_extract]
+    stated: [correspondence, call, officer_note]
+  ask: Since which year have the accounts of the business been audited, and by whom?
+  note: Count the accounts of the business that repays the loan. A new vehicle with a long-standing sponsor has none of
+    its own, and the answer is 0.
+- id: OBS_LIFECYCLE_CONFIRM_001
+  question: Is construction, installation or a major refurbishment under way at the business today?
+  answer: yes_no
+  why: Checks the stage against what is happening on the ground. A business where building is under way is not established,
+    whatever it is called.
+  calls_for:
+  - {is: true, kind: project}
+  look_in: [06.02.a, 05.01.a, 03.01.b]
+  evidence:
+    best: [epc_contract, technical_feasibility]
+    supporting: [management_accounts, board_minutes, company_record]
+    stated: [public_source, call, officer_note]
+  note: A site visit answers this best. Record what was seen, and when, in a note by the officer.
+- id: OBS_LIFECYCLE_CONFIRM_002
+  question: Do the projections show the loan repaid by the business as it is today (current_state), by today's business
+    with the plan on top while today's business alone would still cover debt service (blended), or only by the business
+    as it will be once the plan is carried out (future_state)?
+  answer: choice
+  options: [current_state, future_state, blended]
+  assumption: Repayment is shown on the business as it is today
+  flag_when: is future_state
+  why: Projections for the business as it is can be checked against its accounts. Projections for the business as it will
+    be hold only if the plan is finished on time, on budget and at the planned output, so the plan has to be examined as
+    a project.
+  due_by: concept
+  calls_for:
+  - {is: future_state, kind: project}
+  - {is: blended, kind: project}
+  look_in: [03.02.b, 03.02.a, 03.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [financial_model, financial_projections]
+    stated: [business_plan, management_presentation, call, officer_note]
+  ask: Could the business repay the loan from what it earns today, or only once the new capacity is in use?
+  note: Compare the first projected year with the last audited year. Revenue, capacity or margin that the model shows and
+    the accounts do not belongs to the future state. Choose current_state where the projections hold no planned change.
+    Choose blended where they include the planned business, and today's business alone would still cover debt service in
+    every year. Choose future_state where debt service in any year is covered only with the planned business.
+  leads_to:
+  - {indicator: CAS_PROJECTIONS_001, is: future_state, reason: The projections describe a business that does not exist yet}
+  - {indicator: CAS_FEASIBILITY_001, is: future_state, reason: Whether the planned business can be built and run as projected
+      is examined there}
+- id: OBS_LIFECYCLE_003
+  question: Did the business make a loss in its latest financial year or in the current year to date, or is it paying suppliers,
+    lenders, staff or taxes late today?
+  answer: yes_no
+  assumption: The business makes a profit and pays what it owes on time today
+  disproved_by: 'yes'
+  due_by: concept
+  when:
+  - {check: OBS_LIFECYCLE_001, is: established}
+  - {check: OBS_LIFECYCLE_001, is: expanding}
+  look_in: [03.01.a, 03.01.b, 10.03.a]
+  evidence:
+    best: [audited_annual_report, credit_rating_report, tax_clearance]
+    supporting: [management_accounts, company_record, bank_statement]
+    stated: [correspondence, call, officer_note]
+  ask: Is the business making a profit this year? Are all suppliers, lenders, salaries and taxes being paid on time at the
+    moment?
+  note: Read the latest management accounts and the ageing list of amounts owed to suppliers, not only the last audited
+    year. A party that says yes is believed. If the answer is yes, look at the stage again.
+  leads_to:
+  - {indicator: CAS_LIQUIDITY_001, is: true, reason: Late payment is the first sign that cash is short}
+  - {indicator: CAS_DEBT_001, is: true, reason: A business that pays late has often already missed a payment to a lender}
+- id: OBS_LIFECYCLE_MIT_001
+  question: Is the step from today's business to the projected business set out as a project, with a budget, a timetable
+    and a named party that answers for its completion?
+  answer: yes_no
+  mitigant: true
+  assumption: The step from today's business to the projected one is a defined project, with a budget, a timetable and a
+    party that answers for completion
+  disproved_by: 'no'
+  due_by: diligence
+  when:
+  - {check: OBS_LIFECYCLE_CONFIRM_002, against: true}
+  calls_for:
+  - {is: true, kind: project}
+  look_in: [05.01.a, 06.02.a, 01.02.a]
+  evidence:
+    best: [technical_feasibility, epc_contract]
+    supporting: [investment_plan, financial_model, board_resolution]
+    stated: [business_plan, call, officer_note]

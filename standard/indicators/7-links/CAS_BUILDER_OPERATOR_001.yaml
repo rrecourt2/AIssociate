@@ -1,0 +1,153 @@
+id: CAS_BUILDER_OPERATOR_001
+title: Builder and operator
+pillar: links
+claim: The builder or operator has done this kind of work well before, is bound by contract to do it here, and can be made
+  to pay or be replaced if it fails.
+due_by: diligence
+applies_to: [builds, operates]
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'Until the project is built there is no cash flow, so repayment rests
+    on the builder'}
+- {check: OBS_BORROWER_001, is: spv, reason: 'A single-purpose company has no staff and no means of its own, so it can do
+    only what its contractors do'}
+look_again_when:
+- {new_source: epc_contract, reason: 'A signed or amended construction contract changes the price, the date and what the
+    builder answers for'}
+- {new_source: om_agreement, reason: A signed or amended operating contract changes the term and what the operator answers
+    for}
+checks:
+- id: OBS_BUILDOP_001
+  question: In the last five years, has the builder or operator delivered work of the same technology and of about the same
+    size as this job, on time and performing as specified?
+  answer: yes_no
+  assumption: The builder or operator has delivered comparable work on time and to specification
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [05.01.a, 10.03.a, 02.06.d]
+  evidence:
+    best: [technical_feasibility, consultant_report, adverse_media_screen]
+    supporting: [company_record, public_source]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Which comparable jobs has this firm done in the last five years? For each, was it finished on time, did the plant
+    pass its tests, and who at the client can confirm it?
+  note: For a builder, delivered means built and handed over. For an operator, it means run for at least a full year. Removal
+    from a contract, a job left unfinished, a bond that was called or damages paid on comparable work is a no. Five years
+    and "about the same size" are guides. The firm's own list of references is its own word until a client, a lender or
+    an independent engineer confirms it. If a search for such events finds nothing, record what was searched, where and
+    when.
+- id: OBS_BUILDOP_002
+  question: Is the net worth of the builder or operator, in its latest audited accounts, at least three times the most it
+    can owe under the contract (the cap on its liability)?
+  answer: yes_no
+  assumption: The builder or operator could pay the most it can owe under the contract and stay in business
+  disproved_by: 'no'
+  look_in: [03.01.a, 06.02.a, 06.03.a]
+  evidence:
+    best: [audited_annual_report, credit_rating_report, epc_contract, om_agreement]
+    supporting: [management_accounts, technical_feasibility, internal_memo]
+    stated: [correspondence, call, officer_note]
+  if_unknown: Damages and warranties are worth nothing if the firm that owes them cannot pay.
+  note: Take the accounts of the company that signs the contract, not those of its group. Where liability has no cap, set
+    the net worth against the contract price. Three times is a guide. What counts is that paying the cap would not break
+    the firm. A thinly capitalised local subsidiary is a no, and its parent's guarantee is then asked for in OBS_BUILDOP_007.
+- id: OBS_BUILDOP_003
+  question: Does the builder take on the whole of the works for a fixed price and a fixed completion date, as the one party
+    responsible for design, supply and construction?
+  answer: yes_no
+  assumption: One builder answers for the whole of the works, at a fixed price and by a fixed date
+  disproved_by: 'no'
+  due_by: concept
+  applies_to: [builds]
+  look_in: [06.02.a, 05.01.a]
+  evidence:
+    best: [epc_contract]
+    supporting: [technical_feasibility, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Is the construction contract a fixed-price, fixed-date contract for the whole of the works? If the works are split,
+    who answers for the gaps between the contracts?
+  note: Where the works are split between several contracts, the answer is no unless one party has signed to answer for
+    the whole. Say which parts of the price can still move, such as provisional sums, indexation or ground conditions.
+- id: OBS_BUILDOP_004
+  question: Does the operator's contract run at least until the final maturity of the loan, with no right for the operator
+    to end it earlier at its own choice?
+  answer: yes_no
+  assumption: The operator is bound for the life of the loan
+  disproved_by: 'no'
+  applies_to: [operates]
+  look_in: [06.03.a]
+  evidence:
+    best: [om_agreement]
+    supporting: [technical_feasibility, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Where the contract is shorter, record when it ends, whether it renews by itself, and on what price.
+- id: OBS_BUILDOP_005
+  question: If the builder or operator fails to perform, do the contract and a direct agreement with the lender allow it
+    to be removed and another firm to take over the work?
+  answer: yes_no
+  assumption: A builder or operator that fails can be removed and replaced, by the project or by the lender
+  disproved_by: 'no'
+  look_in: [06.02.a, 06.03.a, 06.01.a]
+  evidence:
+    best: [epc_contract, om_agreement, material_contract, legal_opinion]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: A direct agreement is signed by the builder or operator with the lender. It lets the lender step into the contract
+    or appoint a substitute before the contract can be ended. A right to replace is worth little where only this firm can
+    do the work (its own technology, a licence, the only local presence). Say whether other firms could take over.
+- id: OBS_BUILDOP_006
+  question: Is the builder or operator owned or controlled by the sponsor, the borrower or their owners?
+  answer: yes_no
+  assumption: The builder or operator is independent of the sponsor and the borrower, so the contract will be enforced against
+    it
+  disproved_by: 'yes'
+  due_by: concept
+  calls_for:
+  - is: true
+    link: [owns, controls, member_of]
+  look_in: [02.01.c, 03.01.a, 02.03.a]
+  evidence:
+    best: [registry_extract, audited_annual_report]
+    supporting: [organizational_chart, shareholder_register, beneficial_ownership_declaration]
+    stated: [correspondence, call, officer_note]
+  ask: Is the builder or the operator part of the sponsor's group, or owned by any of the same people?
+  note: A sponsor that controls both sides of the contract decides whether damages are claimed, a bond is called or the
+    contract is ended.
+  leads_to:
+  - {indicator: CAS_RELATED_PARTY_001, is: true, reason: A contract with a related party needs the price and the terms an
+      outsider would get}
+- id: OBS_BUILDOP_007
+  question: Is the performance of the builder or operator backed by security that can be called without its consent (a bank
+    bond or letter of credit, money retained from its payments, or a guarantee from its parent)?
+  answer: yes_no
+  mitigant: true
+  assumption: Security that can be called stands behind the performance of the builder or operator
+  disproved_by: 'no'
+  when:
+  - {check: OBS_BUILDOP_001, against: true}
+  - {check: OBS_BUILDOP_002, against: true}
+  look_in: [06.02.a, 06.03.a, 04.02.a]
+  evidence:
+    best: [epc_contract, om_agreement, guarantee_agreement]
+    supporting: [technical_feasibility, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Say which kind, who issued it, its amount as a share of the contract price, and when it expires. Set the amount
+    against the damages the firm can owe. A bond that lapses at handover does not cover defects.
+  leads_to:
+  - {indicator: CAS_GUARANTOR_CAPACITY_001, is: true, reason: 'Where the security is a parent''s guarantee, it is worth
+      what the parent can pay'}
+- id: OBS_BUILDOP_008
+  question: Are the rights under the contract, and under its bonds and guarantees, assigned to the lender, so that the lender
+    can claim damages and call the security without the sponsor or the borrower acting?
+  answer: yes_no
+  mitigant: true
+  assumption: The lender can enforce the contract and call its security itself
+  disproved_by: 'no'
+  when:
+  - {check: OBS_BUILDOP_006, against: true}
+  look_in: [04.02.b, 06.01.a, 08.01.a]
+  evidence:
+    best: [security_agreement, material_contract, legal_opinion]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: An assignment that takes effect only after the borrower defaults under the loan comes late. Say from when the lender
+    can act.

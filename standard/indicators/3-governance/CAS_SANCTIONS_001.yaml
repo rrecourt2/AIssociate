@@ -1,0 +1,95 @@
+id: CAS_SANCTIONS_001
+title: Sanctions
+pillar: governance
+claim: Neither the party nor anyone who owns, controls or directs it is under sanctions, and its business does not deal
+  with anyone who is.
+due_by: screening
+applies_to: [borrower, repayment_source, guarantor, sponsor, shareholder, controller]
+look_again_when:
+- {new_source: aml_screening, reason: 'A new screening is run against the lists as they stand now, and lists change'}
+- {new_source: shareholder_register, reason: A new holder has not been screened}
+checks:
+- id: OBS_SANC_001
+  question: Has the lender screened the party, its directors and its senior managers against every sanctions list the lender
+    must follow, and kept the result with its date and the lists used?
+  answer: yes_no
+  assumption: The party and the people who direct it have been screened against every list the lender must follow
+  disproved_by: 'no'
+  look_in: [02.06.b, 02.06.a]
+  evidence:
+    best: [aml_screening]
+    supporting: [kyc_package, internal_memo]
+    stated: [call, officer_note]
+  ask_whom: lender
+  if_unknown: A party that has not been screened is not known to be clear.
+  note: The lists usually include those of the United Nations, the European Union, the United States and the United Kingdom,
+    and those of the lender's own country. Owners and controllers are parties of their own and get this check themselves.
+    If the search finds nothing, record what was searched, where and when.
+- id: OBS_SANC_002
+  question: Is the party, or any of its directors or senior managers, named on a sanctions list, or owned or controlled
+    by someone who is?
+  answer: yes_no
+  assumption: Neither the party nor anyone who directs, owns or controls it is under sanctions
+  disproved_by: 'yes'
+  look_in: [02.06.b, 02.06.a]
+  evidence:
+    best: [aml_screening]
+    supporting: [kyc_package, company_certificate, legal_opinion]
+    stated: [correspondence, call, officer_note]
+  if_unknown: A possible match that has not been cleared is not a no.
+  note: A match on a name alone is checked against the date of birth, the nationality and the address before it is recorded
+    as a yes or as a no. If the search finds nothing, record what was searched, where and when.
+- id: OBS_SANC_003
+  question: In the last three years, has the party sold to, bought from, shipped through, banked in or been paid from a
+    country or territory under an embargo on trade or payments, or dealt with a person or a company on a sanctions list?
+  answer: yes_no
+  assumption: The party's business does not touch a country under embargo or a person under sanctions
+  disproved_by: 'yes'
+  due_by: concept
+  applies_to: [borrower, repayment_source]
+  look_in: [03.01.a, 02.06.b, 10.01.a]
+  evidence:
+    best: [audited_annual_report, aml_screening]
+    supporting: [management_accounts, company_record, company_certificate]
+    stated: [correspondence, call, officer_note]
+  ask: In the last three years, have you sold to, bought from or been paid from a country under embargo, or dealt with anyone
+    on a sanctions list? Please include sales through agents and distributors.
+  note: 'Dealings that a licence or an exemption allows still count: answer yes and say which. Look at where the goods end
+    up, not only at where the first buyer sits.'
+- id: OBS_SANC_006
+  question: Were all those dealings allowed under the sanctions that bind the party and the lender (a licence, an exemption,
+    a wind-down period), as confirmed in writing by a lawyer or by the authority?
+  answer: yes_no
+  mitigant: true
+  assumption: Every dealing with a country under embargo or a person under sanctions was allowed, and a lawyer or the authority
+    has confirmed it
+  disproved_by: 'no'
+  due_by: diligence
+  applies_to: [borrower, repayment_source]
+  when:
+  - {check: OBS_SANC_003, against: true}
+  look_in: [08.01.a, 07.01.a]
+  evidence:
+    best: [legal_opinion, regulatory_document]
+    supporting: [company_record, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: What the party's own law allows may still be forbidden to the lender. The confirmation has to cover both.
+- id: OBS_SANC_004
+  question: Does the party screen its customers, suppliers and banks against sanctions lists before it deals with them,
+    under a written policy?
+  answer: yes_no
+  mitigant: true
+  assumption: The party's own screening would find and stop a dealing with a person under sanctions
+  disproved_by: 'no'
+  due_by: diligence
+  applies_to: [borrower, repayment_source]
+  when:
+  - {check: OBS_SANC_003, against: true}
+  look_in: [02.05.a, 03.01.e, 10.03.a]
+  evidence:
+    best: [corporate_governance_policy, audit_management_letter]
+    supporting: [company_record, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: Do you have a written sanctions policy? How do you check a new customer, supplier or bank against the lists, and
+    how often are existing ones checked again?
+  note: A policy that is not applied is no protection. Ask to see the record of a recent screening.

@@ -1,0 +1,164 @@
+id: CAS_FI_LIQUIDITY_001
+title: 'Bank: funding and liquidity'
+pillar: liquidity
+claim: The institution can meet withdrawals and repay the funding that falls due, in each currency it owes, without selling
+  assets at a loss.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+applies_when:
+- {check: OBS_SECTOR_001, is: financial_institution}
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: 'Depositors and other banks leave first when there is doubt, and a
+    bank fails on the day it cannot pay them'}
+- {check: OBS_INVESTOR_ROLE_001, is: senior_unsecured, reason: An unsecured lender is repaid from the same liquid assets
+    that depositors draw on}
+look_again_when:
+- {new_source: regulatory_document, reason: A new prudential return shows the liquidity ratios and the open currency position
+    at a new date}
+- {new_source: audited_annual_report, reason: The maturity table and the funding notes show who funds the institution and
+    until when}
+- {new_source: management_accounts, reason: Monthly figures show deposits leaving before the annual accounts do}
+checks:
+- id: OBS_FIL_001
+  question: What are the institution's liquid assets (cash, balances at the central bank above the required reserve, balances
+    at other banks that are repayable within a month, and government securities that are not pledged) as a percentage of
+    its customer deposits and other funding repayable within twelve months?
+  answer: number
+  unit: percent
+  why: The first cushion against withdrawals. It is read against the regulatory minimum (OBS_FIL_006), against the institution's
+    own lowest point of the year, and against how concentrated and how short its funding is.
+  due_by: screening
+  look_in: [03.01.a, 07.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report, regulatory_document]
+    supporting: [management_accounts, company_record, credit_rating_report]
+    stated: [management_presentation, call, officer_note]
+  ask: What liquid assets do you hold today, and what are they as a share of your deposits and other short-term funding?
+    Your latest prudential return would answer this.
+  note: Regulators define the liquid asset ratio in different ways. Give the figure as the question defines it, and record
+    beside it the regulator's own ratio and, where it is reported, the liquidity coverage ratio. Say which date the figures
+    are for.
+- id: OBS_FIL_006
+  question: Has the institution met every liquidity requirement its regulator sets (such as a liquid asset ratio, a liquidity
+    coverage ratio and the reserve requirement) at every reporting date of the last twelve months?
+  answer: yes_no
+  assumption: The institution has kept its liquidity above the regulatory minimum throughout the year
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [07.01.a, 03.01.a, 03.01.b]
+  evidence:
+    best: [regulatory_document]
+    supporting: [audited_annual_report, management_accounts, company_record, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: Which liquidity ratios does your regulator require, and at what level? Please send your returns for each month of
+    the last year.
+  note: Ask for the returns of every month or quarter, not for the year-end alone, because a ratio is easily dressed for
+    one day. Where the regulator sets no liquidity requirement, say so, and answer against the limit the institution's own
+    board has set.
+- id: OBS_FIL_002
+  question: Do the twenty largest depositors hold more than about a quarter of the institution's deposits?
+  answer: yes_no
+  assumption: No small group of depositors could drain the institution by leaving
+  disproved_by: 'yes'
+  look_in: [07.01.a, 03.01.a, 10.03.a]
+  evidence:
+    best: [regulatory_document, audited_annual_report]
+    supporting: [company_record, management_accounts, credit_rating_report]
+    stated: [call, officer_note]
+  ask: What share of your deposits do your twenty largest depositors hold? How much of it could be withdrawn within a month?
+  note: Twenty depositors and a quarter are a guide. Count connected depositors as one, and count the deposits of the state
+    and of state bodies together, because they move on one decision. An institution that takes no deposits is a no. Its
+    funding is tested in OBS_FIL_007.
+- id: OBS_FIL_003
+  question: Are the institution's loans larger than its customer deposits, its funding with more than a year left to run
+    and its equity taken together?
+  answer: yes_no
+  assumption: The loans are funded by money that stays, namely deposits, long-term funding and equity
+  disproved_by: 'yes'
+  why: Loans cannot be called in when funding leaves. Where loans exceed the funding that stays, the difference is financed
+    by money that must be renewed within a year, and the institution depends on its lenders being willing every time.
+  look_in: [03.01.a, 07.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report, regulatory_document]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  note: Take the figures from the maturity table in the notes to the accounts, by the time left to run and not by the original
+    term. Where the institution reports a net stable funding ratio, a ratio below 100 percent is a yes. Where OBS_FIL_002
+    found the deposits concentrated, they are less sure to stay than this test takes them to be.
+- id: OBS_FIL_007
+  question: Does the wholesale funding that falls due within twelve months (loans from banks, funds and development lenders,
+    bonds and money-market borrowing, at home and abroad) exceed the institution's unpledged liquid assets?
+  answer: yes_no
+  assumption: The institution could repay the wholesale funding that falls due within a year even if none of it were renewed
+  disproved_by: 'yes'
+  why: Wholesale lenders are few, well informed and quick. They do not renew when there is doubt, and funding from abroad
+    can stop for reasons that have nothing to do with the institution, such as a downgrade of the country or a shortage
+    of foreign currency.
+  look_in: [03.01.a, 04.03.a, 04.01.b]
+  evidence:
+    best: [audited_annual_report, facility_agreement, regulatory_document]
+    supporting: [debt_schedule, management_accounts, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Please send a list of your borrowings from banks, funds and other lenders, with the amount, the currency and the
+    date on which each falls due.
+  note: Include the part of long-term loans that falls due within the year, and loans that a lender can call early because
+    a covenant is breached. Record separately what is owed in foreign currency and the liquid assets held in that currency.
+    Local-currency cash does not repay a foreign-currency loan when foreign currency is scarce.
+- id: OBS_FIL_005
+  question: 'What share of the institution''s total funding (all its liabilities) is owed to other banks: interbank deposits,
+    money-market borrowing and repurchase agreements?'
+  answer: number
+  unit: percent
+  why: Other banks are the first to withdraw. A high or a rising share means that the institution cannot fund itself from
+    its customers.
+  look_in: [03.01.a, 07.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report, regulatory_document]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  ask: How much do you owe to other banks today, and for how long is it lent to you? Has that amount grown or shrunk over
+    the last three years?
+  note: Record how long the bulk of it has left to run (overnight, under three months, longer) and the figure for each of
+    the last three years. Record also what the institution has placed with other banks, and with which. That side is a credit
+    exposure, and the largest of them count among the large exposures in OBS_FIP_007.
+- id: OBS_FIL_008
+  question: Is the institution's net open position in foreign currency, all currencies taken together and with items off
+    the balance sheet, above the limit its regulator sets or, where there is none, above about a fifth of its capital?
+  answer: yes_no
+  assumption: A move in the exchange rate would cost the institution only a small part of its capital
+  disproved_by: 'yes'
+  why: An open position turns a move in the exchange rate straight into a gain or a loss. A position that is closed in the
+    accounts can still be open in fact, where loans in foreign currency went to borrowers who earn local currency. They
+    stop paying when the local currency falls.
+  look_in: [07.01.a, 03.01.a, 10.03.a]
+  evidence:
+    best: [regulatory_document, audited_annual_report]
+    supporting: [company_record, management_accounts, hedge_document]
+    stated: [call, officer_note]
+  ask: What is your net open position in foreign currency as a share of your capital, and what limit applies to it? What
+    share of your foreign-currency loans went to borrowers who earn local currency?
+  note: A fifth is a guide. Take the highest month-end of the last twelve months. Record what share of the loans in foreign
+    currency went to borrowers without income in that currency. Where the loan under review is in foreign currency, work
+    the position out again with it included.
+- id: OBS_FIL_004
+  question: Is the institution admitted to a standing lending facility of its central bank, and does it hold unpledged assets
+    today that the central bank accepts as collateral?
+  answer: yes_no
+  mitigant: true
+  assumption: The central bank would lend to the institution against assets it holds today
+  disproved_by: 'no'
+  when:
+  - {check: OBS_FIL_006, against: true}
+  - {check: OBS_FIL_002, against: true}
+  - {check: OBS_FIL_003, against: true}
+  - {check: OBS_FIL_007, against: true}
+  look_in: [07.01.a, 04.01.b, 10.03.a]
+  evidence:
+    best: [regulatory_document, facility_agreement]
+    supporting: [company_record, management_accounts, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: Can you borrow from the central bank when you need to? Against which assets, and have you done so in the last twelve
+    months?
+  note: Access in name is not enough. The collateral must be in hand and free. A central bank lends its own currency, so
+    the facility does not answer a shortage of foreign currency. Record whether the institution has drawn on it in the last
+    twelve months, and why. Frequent use is itself a sign of strain.

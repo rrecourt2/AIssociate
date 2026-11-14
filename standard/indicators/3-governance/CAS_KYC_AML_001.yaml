@@ -1,0 +1,151 @@
+id: CAS_KYC_AML_001
+title: Integrity record
+pillar: governance
+claim: Nothing in the record of the party or of the people who own and run it points to fraud, corruption or money laundering,
+  and the party has its own controls against them.
+due_by: diligence
+applies_to: [borrower, repayment_source, guarantor, sponsor, shareholder, controller]
+matters_more_when:
+- {check: OBS_SECTOR_001, is: financial_institution, reason: 'A financial institution handles other people''s money: its
+    controls against money laundering are part of its licence'}
+- {check: OBS_INVESTOR_ROLE_001, is: common_equity, reason: A shareholder is tied to the party's name for longer and more
+    closely than a lender}
+look_again_when:
+- {new_source: adverse_media_screen, reason: A new search can find a report or a case that was not there before}
+- {new_source: regulatory_document, reason: A letter or an order from an authority can open or close a matter}
+checks:
+- id: OBS_KYC_003
+  question: In the last ten years, has a court or an authority fined or penalised the party, or debarred it from public
+    contracts or from a development bank's financing, for fraud, bribery, money laundering, tax evasion or a breach of sanctions?
+  answer: yes_no
+  assumption: No court or authority has penalised or debarred the party for a financial crime in the last ten years
+  disproved_by: 'yes'
+  due_by: screening
+  look_in: [02.06.d, 07.01.a, 02.06.b]
+  evidence:
+    best: [adverse_media_screen, regulatory_document, aml_screening]
+    supporting: [company_certificate, audited_annual_report, legal_opinion]
+    stated: [correspondence, call, officer_note]
+  ask: In the last ten years, has a court, a regulator, a tax authority or a development bank fined, penalised or debarred
+    you for fraud, bribery, money laundering, tax evasion or a breach of sanctions? Please include matters that were settled.
+  if_unknown: A record that has not been disclosed and cannot be checked is not a clean record.
+  note: 'Ten years is a guide: an older matter that is still talked about counts. A settlement without admission counts.
+    A criminal case against a person goes under OBS_KYC_008. Other fines and orders go under OBS_LIT_005. If the search
+    finds nothing, record what was searched, where and when.'
+- id: OBS_KYC_008
+  question: Has any director or senior manager of the party, or the party itself where it is a person, been convicted of
+    fraud, bribery, money laundering or another crime of dishonesty, or is any of them charged with one or under criminal
+    investigation for one?
+  answer: yes_no
+  assumption: None of the people who direct or manage the party has been convicted of a crime of dishonesty, is charged
+    with one or is under investigation for one
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [02.06.d, 02.06.a, 07.01.a]
+  evidence:
+    best: [adverse_media_screen, regulatory_document]
+    supporting: [kyc_package, company_certificate, public_source]
+    stated: [correspondence, call, officer_note]
+  ask: Has any director or senior manager ever been convicted of fraud, bribery, money laundering or a similar offence?
+    Is any of them charged or under investigation now?
+  note: A party that says yes is believed. Owners and controllers are parties of their own and get this check themselves.
+    If the search finds nothing, record what was searched, where and when.
+- id: OBS_KYC_006
+  question: Has the lender searched the press, the court records and the development banks' lists of debarred firms and
+    persons for the party, its directors and its senior managers, in the countries and the languages in which they are active?
+  answer: yes_no
+  assumption: The public record of the party and of the people who direct it has been searched
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [02.06.d, 02.06.b]
+  evidence:
+    best: [adverse_media_screen]
+    supporting: [aml_screening, internal_memo]
+    stated: [call, officer_note]
+  ask_whom: lender
+  if_unknown: Without a search, the record is only what the party says it is.
+  note: A search in one language of a party that works in another has not been done. Owners and controllers are parties
+    of their own and get this check themselves. If the search finds nothing, record what was searched, where and when.
+- id: OBS_KYC_007
+  question: 'Did the search find an allegation of fraud, corruption, money laundering or another financial crime against
+    the party, its directors or its senior managers that no court or authority has yet ruled on: a press report, a civil
+    claim, a whistleblower''s account?'
+  answer: yes_no
+  assumption: No public allegation of financial crime hangs over the party or the people who direct it
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [02.06.d]
+  evidence:
+    best: [adverse_media_screen]
+    supporting: [public_source, internal_memo, consultant_report]
+    stated: [call, officer_note]
+  note: Record who made the allegation, when, and what became of it. One report in a source with a known grudge weighs less
+    than several that do not depend on each other, but it is still recorded. A penalty or a conviction goes under OBS_KYC_003
+    or OBS_KYC_008. If the search finds nothing, record what was searched, where and when.
+- id: OBS_KYC_001
+  question: Is a named person or unit at the party in charge of compliance with the law on bribery, money laundering and
+    sanctions, with a direct line to the board or to the owners?
+  answer: yes_no
+  assumption: Someone at the party answers for compliance and can reach the board without going through management
+  disproved_by: 'no'
+  applies_to: [borrower, repayment_source]
+  look_in: [02.05.a, 02.03.a, 03.01.e]
+  evidence:
+    best: [audit_management_letter, regulatory_document, board_resolution]
+    supporting: [organizational_chart, corporate_governance_policy, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Who in your company is responsible for compliance, and to whom does that person report?
+  note: In a small business this can be one senior person beside other duties. What counts is that the person is named and
+    does not report to the people whose payments are checked.
+- id: OBS_KYC_004
+  question: Does the party have a written policy against money laundering, approved by its board or its owners, that says
+    how it identifies whom it deals with, what it does about a suspicious payment and who is told?
+  answer: yes_no
+  assumption: The party has written rules against money laundering that its board or owners have approved
+  disproved_by: 'no'
+  applies_to: [borrower, repayment_source]
+  look_in: [02.05.a, 02.02.a]
+  evidence:
+    best: [corporate_governance_policy, regulatory_document]
+    supporting: [board_minutes, audit_management_letter]
+    stated: [correspondence, call, officer_note]
+  ask: Do you have a written policy against money laundering? Could we have a copy, with the date on which the board approved
+    it?
+- id: OBS_KYC_002
+  question: Does the party check who its customers, agents and other main counterparties are before it deals with them,
+    and keep the record?
+  answer: yes_no
+  assumption: The party knows whom it deals with and can show it
+  disproved_by: 'no'
+  applies_to: [borrower, repayment_source]
+  look_in: [03.01.e, 10.03.a, 02.05.a]
+  evidence:
+    best: [audit_management_letter, regulatory_document]
+    supporting: [company_record, corporate_governance_policy]
+    stated: [correspondence, call, officer_note]
+  ask: Before you take on a new customer, agent or large supplier, what do you check about them, and where is that kept?
+  note: For a financial institution this is the identification of customers that its regulator requires. For other businesses
+    look at agents and intermediaries, and at customers who pay in cash or from someone else's account. Ask to see the file
+    of one recent counterparty.
+- id: OBS_KYC_005
+  question: 'How far has the matter been dealt with: closed by the authority or by an independent inquiry, those responsible
+    removed, and the weakness behind it put right?'
+  answer: choice
+  options: [full_remediation, partial_remediation, none]
+  mitigant: true
+  assumption: The matter is closed, those responsible have gone and the weakness behind it is put right
+  flag_when: is not full_remediation
+  why: A matter is behind the party only when all three are done. Anything less leaves the lender exposed to the same people
+    or to the same gap.
+  when:
+  - {check: OBS_KYC_003, against: true}
+  - {check: OBS_KYC_008, against: true}
+  - {check: OBS_KYC_007, against: true}
+  look_in: [07.01.a, 02.06.d, 02.02.a]
+  evidence:
+    best: [regulatory_document, legal_opinion, consultant_report]
+    supporting: [board_minutes, audit_management_letter, company_record]
+    stated: [correspondence, call, officer_note]
+  note: 'full_remediation: all three are done and shown. partial_remediation: some are done, or the work is still under
+    way. none: nothing is done, or nothing is shown. For an allegation, an independent inquiry that found no basis for it
+    is full_remediation.'

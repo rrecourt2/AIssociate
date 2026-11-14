@@ -1,0 +1,157 @@
+id: CAS_FI_PORTFOLIO_001
+title: 'Bank: loan quality'
+pillar: cash_flow
+claim: The losses in the institution's loan book are no larger than its accounts show, and no single sector or group of
+  borrowers could bring a loss that its capital cannot take.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+applies_when:
+- {check: OBS_SECTOR_001, is: financial_institution}
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: expanding, reason: 'A fast-growing loan book is young, and its bad loans have not yet shown'}
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: An institution under strain has every reason to put off recognising
+    its bad loans}
+look_again_when:
+- {new_source: audited_annual_report, reason: 'New accounts show the classification of loans, the provisions and the write-offs
+    at a new date'}
+- {new_source: regulatory_document, reason: An inspection can reclassify loans and order more provisions}
+- {new_source: company_record, reason: A new portfolio report shows arrears and restructured loans at a new date}
+checks:
+- id: OBS_FIP_001
+  question: What share of the institution's gross loans is non-performing at its latest reporting date?
+  answer: number
+  unit: percent
+  why: The headline figure of loan quality. It is read against the institution's own past, against the banks in its market,
+    and against what the other checks say about how loans are classified.
+  due_by: screening
+  look_in: [03.01.a, 07.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report, regulatory_document]
+    supporting: [management_accounts, company_record, credit_rating_report]
+    stated: [management_presentation, call, officer_note]
+  ask: What share of your loan book is non-performing today, and how do you define non-performing? Your latest prudential
+    return would answer this.
+  note: Say which date the figure is for. Record beside it the loans written off in each of the last three years as a share
+    of the book, because a low ratio after heavy write-offs is not a clean book. Portfolio at risk over thirty days, which
+    microfinance institutions report, is a different and stricter measure. Say which one is given.
+- id: OBS_FIP_008
+  question: Does the institution count as non-performing every loan on which a payment is more than ninety days overdue?
+  answer: yes_no
+  assumption: Loans that have stopped paying are counted as bad loans
+  disproved_by: 'no'
+  why: Ninety days is the international convention (the Basel Committee's definition of default). An institution that waits
+    longer, or that counts only the overdue instalment and not the whole loan, reports fewer bad loans than it has.
+  due_by: concept
+  look_in: [03.01.a, 07.01.a, 02.05.a]
+  evidence:
+    best: [audited_annual_report, regulatory_document]
+    supporting: [corporate_governance_policy, company_record, audit_management_letter]
+    stated: [call, officer_note]
+  ask: After how many days in arrears do you classify a loan as non-performing? Do you then classify the whole loan, or
+    only the instalments that are overdue?
+  note: Read the accounting policy note and the credit policy, then check them against the arrears report. The balance of
+    loans more than ninety days overdue should not be larger than the reported non-performing loans. The whole outstanding
+    balance of a loan counts, not only the instalments in arrears.
+- id: OBS_FIP_004
+  question: What share of the gross loan book consists of loans that were rescheduled, refinanced or otherwise restructured
+    because the borrower could not pay as agreed, and that are counted as performing?
+  answer: number
+  unit: percent
+  assumption: Few loans are kept out of the bad-loan figure by restructuring them
+  flag_when: above 5
+  why: Loans restructured because the borrower could not pay are the first place where bad loans hide. They are counted
+    as performing and carry little provision. Banking supervisors treat a bank as having a bad-loan problem when five percent
+    of its loans are non-performing (the European Banking Authority's guidelines on non-performing exposures apply from
+    that level). Where the restructured loans alone reach that size, the reported ratio says little. Five percent is a guide.
+    An institution can set its own figure.
+  look_in: [03.01.a, 07.01.a, 10.03.a]
+  evidence:
+    best: [audited_annual_report, regulatory_document]
+    supporting: [company_record, management_accounts, audit_management_letter]
+    stated: [call, officer_note]
+  ask: What share of your loan book has been rescheduled or refinanced because the borrower could not pay as first agreed?
+    How do you classify such loans afterwards?
+  if_unknown: An institution that cannot say how much of its book is restructured does not know its own bad loans.
+  note: Include loans repaid with a new loan from the institution, loans on which unpaid interest was added to the balance,
+    and loans given a grace period after they fell into arrears. Record the figure for each of the last three years.
+- id: OBS_FIP_002
+  question: Do the institution's loan-loss provisions, together with collateral at an independent valuation, cover its non-performing
+    loans in full?
+  answer: yes_no
+  assumption: The loss in the non-performing loans is provided for
+  disproved_by: 'no'
+  look_in: [03.01.a, 07.01.a, 05.02.a]
+  evidence:
+    best: [audited_annual_report, regulatory_document]
+    supporting: [management_accounts, company_record, valuation_report, credit_rating_report]
+    stated: [call, officer_note]
+  ask: What provisions do you hold against your non-performing loans, and what collateral? When was the collateral last
+    valued, and by whom?
+  note: Count only collateral that the institution holds under a registered charge and that an independent valuer has valued
+    within the last two years. Record the coverage ratio (provisions as a percentage of non-performing loans) as well. Where
+    the supervisor or the auditor has asked for more provisions, the answer is no.
+  leads_to:
+  - {indicator: CAS_FI_CAPITAL_001, is: false, reason: What is not provided for comes out of capital}
+- id: OBS_FIP_005
+  question: Does the institution have a written policy that fixes when a non-performing loan must be written off, and do
+    its write-offs of the last two years follow it?
+  answer: yes_no
+  assumption: Bad loans are written off under a fixed rule, neither kept on the books nor removed to flatter the figures
+  disproved_by: 'no'
+  look_in: [02.05.a, 03.01.a, 03.01.e]
+  evidence:
+    best: [audited_annual_report, audit_management_letter, regulatory_document]
+    supporting: [corporate_governance_policy, board_minutes, company_record]
+    stated: [call, officer_note]
+  ask: When do you write a loan off, and who decides? Please send the policy and the list of write-offs of the last two
+    years.
+  note: Set the write-offs of the last two years against the policy. Loans written off earlier than the policy says lower
+    the bad-loan ratio. Loans kept beyond it overstate the assets. Ask whether written-off loans were sold or moved to a
+    related party, and at what price.
+- id: OBS_FIP_006
+  question: Over the last three years, has the institution's loan book grown at more than about twice the rate of bank lending
+    in its market?
+  answer: yes_no
+  assumption: The loan book has grown at a pace at which its quality can already be seen
+  disproved_by: 'yes'
+  why: Loans go bad a year or two after they are made. A book that grows fast is young, so its bad-loan ratio stays low
+    for a while whatever the lending is like. Fast growth is also often won by taking the borrowers that other banks turned
+    down.
+  look_in: [03.01.a, 07.01.a]
+  evidence:
+    best: [audited_annual_report, regulatory_document]
+    supporting: [public_source, credit_rating_report, management_accounts]
+    stated: [management_presentation, call, officer_note]
+  note: Twice is a guide. Take the growth of the market from the central bank's published figures, and say which figures
+    were used. Growth by buying another institution or a portfolio is growth all the same.
+- id: OBS_FIP_003
+  question: Does any one economic sector, or any one region, account for more than about a quarter of the loan book?
+  answer: yes_no
+  assumption: No single sector or region could, by its own downturn, turn a large part of the loan book bad
+  disproved_by: 'yes'
+  look_in: [03.01.a, 07.01.a, 10.03.a]
+  evidence:
+    best: [audited_annual_report, regulatory_document]
+    supporting: [company_record, management_accounts, credit_rating_report]
+    stated: [management_presentation, call, officer_note]
+  ask: How is your loan book spread over sectors and regions? Which is the largest of each, and what share of the book does
+    it hold?
+  note: A quarter is a guide. An institution built to serve one sector or one region (an agricultural bank, a regional microfinance
+    institution) will answer yes. Then record how that sector or region fared in its last bad year. Sort loans by what the
+    borrower's cash flow depends on, not by the label in the institution's system. Single borrowers are asked in OBS_FIP_007.
+- id: OBS_FIP_007
+  question: Do the institution's ten largest exposures, with connected borrowers counted as one, add up to more than its
+    regulatory capital?
+  answer: yes_no
+  assumption: The failure of a handful of large borrowers would not take away the institution's capital
+  disproved_by: 'yes'
+  look_in: [07.01.a, 03.01.a, 10.03.a]
+  evidence:
+    best: [regulatory_document, audited_annual_report]
+    supporting: [company_record, credit_rating_report]
+    stated: [call, officer_note]
+  ask: Please send the list of your twenty largest exposures, with borrowers that belong together shown as one group, and
+    each as a percentage of your capital.
+  note: Ten exposures and the whole of capital are a guide. Count loans, guarantees and undrawn commitments. Record the
+    largest single exposure as a share of capital, and whether it is within the limit the regulator sets for one borrower.
+    Ask how the institution decides which borrowers are connected.

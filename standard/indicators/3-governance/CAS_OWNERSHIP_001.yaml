@@ -1,0 +1,160 @@
+id: CAS_OWNERSHIP_001
+title: Shareholders
+pillar: governance
+claim: The party's shareholders are settled and agree on how it is run, and they take out no more than it earns.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+matters_more_when:
+- {check: OBS_INVESTOR_ROLE_001, is: common_equity, reason: As a shareholder the lender sits among the others and lives
+    by what they have agreed}
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: 'Shareholders of a business in distress fall out, and some take out
+    what they still can'}
+look_again_when:
+- {new_source: shareholder_agreement, reason: A new or amended agreement changes who decides what}
+- {new_source: audited_annual_report, reason: New accounts show what was paid out to shareholders in the year}
+- {check: OBS_OWN_009, is: true, reason: A change of ownership brings shareholders who are not yet examined}
+checks:
+- id: OBS_OWN_006
+  question: 'Does more than one shareholder have a say in how the party is run: a holding of about a tenth or more, a seat
+    on the board or a right of veto?'
+  answer: yes_no
+  why: With one shareholder there is nobody to fall out with. With several, the lender needs to know how they decide and
+    what happens when they disagree.
+  due_by: screening
+  look_in: [02.04.a, 02.02.b, 02.01.b]
+  evidence:
+    best: [shareholder_register, shareholder_agreement, memorandum_and_articles]
+    supporting: [organizational_chart, board_composition]
+    stated: [correspondence, call, officer_note]
+  note: A tenth is a guide. A family that votes together counts as one shareholder only if nothing shows that its members
+    disagree.
+- id: OBS_OWN_001
+  question: Does the shareholder register or a registry extract, no more than twelve months old, show the same holders and
+    the same holdings as the party has declared?
+  answer: yes_no
+  assumption: The official record of who holds the party's shares matches what the party has told the lender
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [02.04.a, 02.01.c]
+  evidence:
+    best: [shareholder_register, registry_extract]
+    supporting: [audited_annual_report, organizational_chart, beneficial_ownership_declaration]
+    stated: [correspondence, call, officer_note]
+  ask: Could we have an up-to-date copy of the shareholder register, or an extract from the company registry that lists
+    the shareholders?
+  note: Twelve months is a guide. What counts is that no transfer has taken place since. A transfer that was agreed but
+    not registered is a difference.
+- id: OBS_OWN_005
+  question: Are there circular or cross holdings (the party or its subsidiaries hold shares in its own owners), or holdings
+    whose holder or size cannot be established?
+  answer: yes_no
+  assumption: No part of the party's shareholding is circular or unexplained
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [02.04.a, 02.01.c, 03.01.a]
+  evidence:
+    best: [shareholder_register, registry_extract, audited_annual_report]
+    supporting: [organizational_chart, beneficial_ownership_declaration]
+    stated: [correspondence, call, officer_note]
+  if_unknown: If the holdings cannot be drawn on one page with every line ending in a name, treat the answer as not known.
+  leads_to:
+  - {indicator: CAS_BENEFICIAL_OWNERSHIP_001, is: true, reason: A holding that cannot be established means the chain of
+      owners is not known}
+- id: OBS_OWN_003
+  question: Have the shareholders agreed in writing how they decide together, how shares may change hands and how a deadlock
+    is broken (in a shareholders' agreement or in the articles)?
+  answer: yes_no
+  assumption: The shareholders have written rules for deciding, for transfers of shares and for deadlock
+  disproved_by: 'no'
+  due_by: concept
+  when:
+  - {check: OBS_OWN_006, is: true}
+  look_in: [02.02.b, 02.01.b, 02.02.g]
+  evidence:
+    best: [shareholder_agreement, jv_agreement, memorandum_and_articles]
+    supporting: [shareholder_resolution, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: Is there a shareholders' agreement? If so, could we have a copy?
+- id: OBS_OWN_004
+  question: 'Do the shareholders'' agreement or the articles give minority shareholders rights of their own: a veto on named
+    decisions, a seat on the board, pre-emption, tag-along or protection against dilution?'
+  answer: yes_no
+  why: These rights cut both ways for a lender. They keep the majority from taking value out, and they can block a decision
+    the loan needs, such as new security or new capital. Where the lender itself takes shares, they are its own protection.
+  when:
+  - {check: OBS_OWN_006, is: true}
+  look_in: [02.02.b, 02.01.b]
+  evidence:
+    best: [shareholder_agreement, memorandum_and_articles]
+    supporting: [legal_opinion, shareholder_resolution]
+    stated: [correspondence, call, officer_note]
+  note: If yes, list the decisions that need the minority's consent, and see whether this financing is one of them.
+  leads_to:
+  - {indicator: CAS_AUTHORIZATION_001, is: true, reason: The borrowing or the security may need the consent of a minority
+      shareholder}
+- id: OBS_OWN_007
+  question: Is there now, or has there been in the last five years, a dispute among the party's shareholders, or between
+    a shareholder and the party, that went to a lawyer, a court or an arbitrator, or that left a decision blocked?
+  answer: yes_no
+  assumption: The shareholders have not been in dispute with each other or with the party in the last five years
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [08.01.a, 02.02.a, 02.06.d]
+  evidence:
+    best: [legal_opinion, audited_annual_report, adverse_media_screen]
+    supporting: [board_minutes, shareholder_resolution]
+    stated: [correspondence, call, officer_note]
+  ask: Have the shareholders had a serious disagreement in the last five years, among themselves or with the company? What
+    was it about, and how did it end?
+  note: A party that says yes is believed. If the search finds nothing, record what was searched, where and when.
+  leads_to:
+  - {indicator: CAS_LITIGATION_001, is: true, reason: A dispute that reached a court or an arbitrator is a case with an
+      amount at stake}
+- id: OBS_OWN_008
+  question: Are any of the party's shares pledged, charged or under an option in favour of someone other than the lender?
+  answer: yes_no
+  assumption: No one else can take over the party's shares by enforcing a pledge or an option
+  disproved_by: 'yes'
+  look_in: [02.01.c, 02.04.a, 04.02.b]
+  evidence:
+    best: [registry_extract, shareholder_register, legal_opinion]
+    supporting: [security_agreement, shareholder_agreement, company_certificate]
+    stated: [correspondence, call, officer_note]
+  ask: Has any shareholder pledged its shares in the company, or given someone an option over them?
+  note: Whoever enforces a pledge over the shares can end up as the owner, and the lender has no say in it. If the search
+    finds nothing, record what was searched, where and when.
+  leads_to:
+  - {indicator: CAS_SOURCE_OF_FUNDS_001, is: true, reason: A pledge over the shares often means that the owner borrowed
+      to pay for them}
+- id: OBS_OWN_009
+  question: Is a sale of shares, the entry of a new investor, a listing, a merger or a handover between generations planned
+    or under way that would change who controls the party?
+  answer: yes_no
+  assumption: Those who control the party today will control it for the life of the loan
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [02.02.a, 02.02.b, 10.01.a]
+  evidence:
+    best: [shareholder_agreement, company_certificate]
+    supporting: [board_minutes, shareholder_resolution]
+    stated: [correspondence, call, officer_note, management_presentation, business_plan]
+  ask: Do the owners plan to sell, to bring in a new investor, to list the company or to hand over to the next generation
+    during the life of the loan?
+  leads_to:
+  - {indicator: CAS_TERM_SHEET_001, is: true, reason: The terms have to say what happens to the loan when control changes}
+- id: OBS_OWN_010
+  question: Over the last three financial years taken together, did dividends, share buy-backs and loans or advances to
+    shareholders exceed the party's profit after tax?
+  answer: yes_no
+  assumption: Over the last three years the shareholders took out no more than the party earned
+  disproved_by: 'yes'
+  look_in: [03.01.a, 02.02.c]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, shareholder_resolution, board_minutes]
+    stated: [correspondence, call, officer_note]
+  note: 'Take profit in cash terms: leave out gains on revaluation. Count fees and other payments to shareholders that are
+    not the price of a service at market rates.'
+  leads_to:
+  - {indicator: CAS_RELATED_PARTY_001, is: true, reason: Money also leaves through contracts with the shareholders and their
+      other companies}

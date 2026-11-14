@@ -1,0 +1,135 @@
+id: CAS_COST_001
+title: Profitability
+pillar: cash_flow
+claim: The party earns its margin from its ordinary business, and that margin has held through good years and bad.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+applies_when:
+- {check: OBS_SECTOR_001, is: corporate}
+- {check: OBS_SECTOR_001, is: project}
+matters_more_when:
+- {check: OBS_VALUE_CHAIN_001, is: trader, reason: 'A trader lives on a thin margin, so a small fall takes most of the profit'}
+- {check: OBS_VALUE_CHAIN_001, is: manufacturer, reason: 'A manufacturer carries fixed costs, so a fall in volume cuts profit
+    faster than revenue'}
+- {check: OBS_CASHFLOW_BASIS_001, is: projected, reason: A projected margin has to be measured against the margin the party
+    has earned before}
+matters_less_when:
+- {check: OBS_BORROWER_001, is: spv, reason: 'A single-purpose company has few costs of its own, and contracts fix most
+    of them'}
+look_again_when:
+- {new_source: audited_annual_report, reason: 'A new year can be the new worst year, or show the margin turning'}
+- {new_source: management_accounts, reason: Interim figures show the margin since the last audit}
+checks:
+- id: OBS_COST_001
+  question: What was the party's gross margin in the latest financial year (gross profit as a share of revenue)?
+  answer: number
+  unit: percent
+  why: The starting figure. It is read against the party's own worst year (OBS_COST_006) and against others in the same
+    business, not against a fixed level.
+  due_by: concept
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note, management_presentation]
+  ask: What was your gross margin last year, that is gross profit as a percentage of revenue? If you do not have the figure,
+    revenue and cost of sales are enough.
+  note: Where the accounts show no cost of sales, as for many service businesses, use the operating margin before depreciation
+    and say so.
+- id: OBS_COST_006
+  question: What was the party's lowest gross margin in any of the last five financial years?
+  answer: number
+  unit: percent
+  why: A margin is read over a whole cycle. The lowest year shows what a bad year looks like for this business.
+  due_by: concept
+  look_in: [03.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  note: Say which year it was and what caused it. Use the same definition of margin as in OBS_COST_001. For a party with
+    fewer than five years of accounts, say how many years the answer covers.
+- id: OBS_COST_002
+  question: Are the party's costs mostly fixed or mostly variable?
+  answer: choice
+  options: [fixed_dominant, variable_dominant, balanced]
+  why: A business whose costs are mostly fixed loses profit faster than revenue when volume drops. The answer says how hard
+    a fall in sales would hit.
+  look_in: [03.01.a, 03.02.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, financial_model]
+    stated: [call, officer_note]
+  ask: Which of your costs would stay the same for a year if your sales fell by a quarter (rent, salaried staff, depreciation,
+    interest), and which would fall with them (raw materials, commissions, freight)?
+  note: 'Fixed costs are those that stay for a year when volume falls. Mostly means more than about half of all costs: that
+    is a guide.'
+  leads_to:
+  - {indicator: CAS_PROJECTIONS_001, is: fixed_dominant, reason: The downside case should show what a fall in volume does
+      to profit when the costs stay}
+- id: OBS_COST_004
+  question: Is the party's gross margin in the latest financial year lower than it was two years earlier?
+  answer: yes_no
+  assumption: The party's margin has held over the last two years
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  ask: What was your gross margin in each of the last three years? If it fell, what was behind the fall?
+  if_unknown: Without the two earlier years there is no trend, and one year's margin proves little.
+  note: Use the same definition of gross profit in both years, and give both figures. A difference too small to count in
+    this business (well under one point for most, less for a trader on thin margins) is a no.
+  leads_to:
+  - {indicator: CAS_INPUT_CONC_001, is: true, reason: A falling margin often starts with input costs that could not be passed
+      on}
+  - {indicator: CAS_SECTOR_MARKET_001, is: true, reason: A falling margin can also come from prices that competition has
+      pushed down}
+- id: OBS_COST_007
+  question: Did the party make an operating profit (before interest and tax, and without one-off items) in each of the last
+    five financial years?
+  answer: yes_no
+  assumption: The party's ordinary business made a profit in every one of the last five years
+  disproved_by: 'no'
+  why: A margin that holds through good years and bad shows in the worst year. A loss in that year says how little room
+    the lender has.
+  look_in: [03.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts]
+    stated: [call, officer_note, management_presentation]
+  note: For a party with fewer than five years of accounts, answer for the years there are and say how many.
+- id: OBS_COST_008
+  question: 'In any of the last three years, did items outside the ordinary business make up more than about a quarter of
+    profit before tax: a gain on the sale of an asset, an insurance payout, a grant, a debt forgiven, or income from investments?'
+  answer: yes_no
+  assumption: The party's profit comes from its ordinary business and can be expected again
+  disproved_by: 'yes'
+  why: A lender is repaid over years. Profit that came once will not come again to meet the next instalment.
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  note: A quarter is a guide. Gains that brought in no cash, such as revaluations, are asked about in The accounts (OBS_ACC_008).
+- id: OBS_COST_005
+  question: Do purchases from related parties, and fees, rent or interest paid to them, make up more than about a tenth
+    of the party's costs?
+  answer: yes_no
+  assumption: The party's margin does not depend on prices set with related parties
+  disproved_by: 'yes'
+  why: A price set between related parties can be moved at will. Set too high, it takes cash out of the party. Set too low,
+    it flatters the margin the lender counts on.
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Do you buy goods or services from your shareholders, from companies they own or from your directors, or pay them
+    fees, rent or interest? Roughly what share of your costs is that?
+  note: A tenth is a guide. Related parties are the owners, companies under the same owners, and directors and their families.
+    The note on related parties in the audited accounts gives the amounts.
+  leads_to:
+  - {indicator: CAS_RELATED_PARTY_001, is: true, reason: Whether these dealings are at market prices is tested there}

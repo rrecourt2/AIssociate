@@ -1,0 +1,99 @@
+id: CAS_SUPPORT_UNDERTAKING_001
+title: Support undertaking
+pillar: links
+claim: The undertaking binds its giver to do something definite that the lender itself can demand and enforce until the
+  loan is repaid.
+due_by: diligence
+applies_to: [supports]
+matters_more_when:
+- {check: OBS_COLLATERAL_001, is: unsecured, reason: Without security the undertaking may be all that stands behind the
+    borrower}
+- {check: OBS_BORROWER_001, is: spv, reason: A special-purpose borrower has only what its supporter is bound to put in}
+look_again_when:
+- {new_source: guarantee_agreement, reason: A new draft or the signed undertaking can change what is promised and to whom}
+- {new_source: legal_opinion, reason: The opinion says whether the undertaking binds}
+checks:
+- id: OBS_SUPPORTLTR_001
+  question: What does the giver of the undertaking promise to do?
+  answer: choice
+  options: [keep_ownership, keep_solvent, fund_shortfalls, complete_the_project, subordinate_its_claims, no_firm_promise]
+  many: true
+  why: The promise decides what the lender could claim. A promise to keep its shares or to keep the company solvent gives,
+    at best, a claim for damages. A promise to fund a named shortfall gives a claim for money. A letter that only says the
+    giver knows of the loan, or states its policy, promises nothing.
+  due_by: screening
+  look_in: [04.02.a, 02.02.g]
+  evidence:
+    best: [guarantee_agreement, jv_agreement]
+    supporting: [term_sheet]
+    stated: [correspondence, call, officer_note, management_presentation]
+  note: Answer from the wording of the document, not from its title. "Comfort letter", "letter of support" and "keepwell"
+    are used for very different promises. Choose no_firm_promise where the letter states an intention or a policy only.
+- id: OBS_SUPPORTLTR_002
+  question: Is the undertaking given to the lender, so that the lender can demand performance and sue the giver in its own
+    name without going through the borrower?
+  answer: yes_no
+  assumption: The lender itself can hold the giver to the undertaking
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [04.02.a, 02.02.g, 08.01.a]
+  evidence:
+    best: [guarantee_agreement, jv_agreement, legal_opinion]
+    supporting: [term_sheet]
+    stated: [correspondence, call, officer_note]
+  note: An undertaking given only to the borrower, to its board or to its auditors leaves the claim with the borrower.
+  leads_to:
+  - {indicator: CAS_REPAYMENT_THESIS_001, is: false, reason: An undertaking that the lender cannot enforce is not a second
+      way out}
+- id: OBS_SUPPORTLTR_003
+  question: Can the giver withdraw the undertaking, or does it lapse, before the loan is repaid (an end date, a right to
+    give notice, an end when the giver sells its shares in the borrower)?
+  answer: yes_no
+  assumption: The undertaking stays in force until the loan is repaid
+  disproved_by: 'yes'
+  look_in: [04.02.a, 02.02.g]
+  evidence:
+    best: [guarantee_agreement, jv_agreement]
+    supporting: [term_sheet]
+    stated: [correspondence, call, officer_note]
+- id: OBS_SUPPORTLTR_004
+  question: When the giver was asked in the past to do what an undertaking of this kind promised, for the borrower or for
+    another company, what did it do?
+  answer: choice
+  options: [performed, refused_or_withdrew, never_asked]
+  assumption: The giver has never walked away from an undertaking of this kind
+  flag_when: is refused_or_withdrew
+  why: An undertaking is weaker than a guarantee, so the giver's record counts for more. A giver that was never asked has
+    shown nothing either way, so that answer is recorded and does not count against it.
+  look_in: [02.06.d, 03.01.a]
+  evidence:
+    best: [adverse_media_screen, audited_annual_report, credit_rating_report]
+    supporting: [board_minutes, bank_statement, public_source]
+    stated: [correspondence, call, officer_note]
+  note: Ask other lenders to the giver's group, and search court records and the press. If the search finds nothing, record
+    what was searched, where and when.
+- id: OBS_SUPPORTLTR_005
+  question: Does a legal opinion confirm that the undertaking binds the giver under the law that governs it, as a duty that
+    a court would enforce and not as a statement of intent?
+  answer: yes_no
+  assumption: The undertaking is a binding promise under the law that governs it
+  disproved_by: 'no'
+  due_by: legal
+  look_in: [08.01.a, 04.02.a]
+  evidence:
+    best: [legal_opinion]
+    supporting: [guarantee_agreement, jv_agreement, internal_memo]
+    stated: [correspondence, call, officer_note]
+  if_unknown: Without an opinion the undertaking is counted as a statement of intent, and not as a second way out.
+- id: OBS_SUPPORTLTR_006
+  question: Has the giver's board, or the body that its articles require, approved the giving of the undertaking?
+  answer: yes_no
+  assumption: The giver has approved the undertaking as its own rules require
+  disproved_by: 'no'
+  due_by: legal
+  look_in: [02.02.a, 02.02.c, 08.01.a]
+  evidence:
+    best: [board_resolution, shareholder_resolution, legal_opinion]
+    supporting: [memorandum_and_articles, board_minutes]
+    stated: [correspondence, call, officer_note]
+  if_unknown: An undertaking signed by a manager without approval can be disowned by the giver when it is relied on.

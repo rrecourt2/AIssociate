@@ -1,0 +1,208 @@
+id: CAS_LAND_SUPPLY_CHAIN_001
+title: Land and supply chain
+pillar: es_impact
+claim: The land the party uses is held securely and was acquired fairly, and neither that land nor the party's supply chain
+  involves the clearing of natural forest or forced or child labour.
+due_by: diligence
+applies_to: [borrower, repayment_source, project]
+applies_when:
+- {check: OBS_SECTOR_001, is: corporate}
+- {check: OBS_SECTOR_001, is: project}
+matters_more_when:
+- {check: OBS_SECTOR_002, is: agribusiness, reason: 'Farm land and farm supply are where land conflict, forest clearing
+    and child labour are most common'}
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'New land is being taken now, and those who lose it are still there
+    to object'}
+- {check: OBS_COLLATERAL_001, is: single_asset, reason: 'Where the land is the security, a flaw in the right to it is a
+    flaw in the second way out'}
+look_again_when:
+- {new_source: lease_agreement, reason: 'A new or renewed lease changes how long, and on what terms, the land is held'}
+- {new_source: legal_opinion, reason: A review of title can find a competing right or a defect in how the land was acquired}
+- {new_source: adverse_media_screen, reason: Press and civil society reports are often the first sign of a land conflict
+    or of abuse among suppliers}
+checks:
+- id: OBS_LAND_001
+  question: Does the party hold every site that its operations need under a title or a lease that is registered in its own
+    name and runs beyond the final maturity of the loan?
+  answer: yes_no
+  assumption: The party holds the land it needs under a registered right that outlasts the loan
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [06.05.a, 02.01.c, 08.01.a]
+  evidence:
+    best: [registry_extract, lease_agreement, legal_opinion]
+    supporting: [company_record, audited_annual_report]
+    stated: [correspondence, call, officer_note]
+  ask: For each of your sites, do you own the land or lease it? In whose name is it registered, and when does the lease
+    or concession end? Please share the title deed, the lease or the extract from the land register.
+  note: A concession or a right of use granted by the state counts as a lease here. A site held by a shareholder, a sister
+    company or a director is not held by the party. Record for each site the kind of right, the register and the end date.
+    Where the country keeps no register for this kind of right, answer from the signed document and a legal opinion, and
+    say so.
+  leads_to:
+  - {indicator: CAS_SECURITY_ASSET_001, is: false, reason: Land that the party does not hold securely cannot be given as
+      good security}
+- id: OBS_LAND_002
+  question: In the last ten years, was any land that the party now uses, or that the loan would pay for, acquired from people
+    who lived on it, farmed it or earned their living from it, so that they had to move or lost that living?
+  answer: yes_no
+  assumption: No one had to give up a home or a living for the land the party uses
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [07.02.a, 10.03.a, 02.06.d]
+  evidence:
+    best: [esia_report, consultant_report, adverse_media_screen]
+    supporting: [company_record, stakeholder_engagement_plan, lease_agreement]
+    stated: [correspondence, call, officer_note]
+  ask: How and when did you get the land for each site, and from whom? Was anyone living on it, farming it or using it at
+    the time? What happened to them?
+  note: Ten years is a guide. Look further back where a grievance is still alive. Count land that the state or a previous
+    owner cleared of people for the party. A sale between willing parties, with no one else on the land, is a no.
+- id: OBS_LAND_003
+  question: Does anyone contest the party's right to any of its sites, in a court, before a land authority, or through a
+    claim made to the party or reported in the press (for example a competing title, an unpaid seller, heirs, an overlapping
+    concession or a claim for restitution)?
+  answer: yes_no
+  assumption: No one contests the party's right to its land
+  disproved_by: 'yes'
+  look_in: [08.01.a, 02.01.c, 02.06.d]
+  evidence:
+    best: [legal_opinion, registry_extract, adverse_media_screen]
+    supporting: [company_record, board_minutes, audited_annual_report]
+    stated: [correspondence, call, officer_note]
+  ask: Has anyone challenged your right to any of your land, in court or outside it? Think of former owners, heirs, neighbours,
+    communities, or another holder of a licence over the same area.
+  note: Search the land register, the courts and the press. If the search finds nothing, record what was searched, where
+    and when.
+  leads_to:
+  - {indicator: CAS_LITIGATION_001, is: true, reason: A claim to the land is a dispute whose cost and outcome are examined
+      there}
+- id: OBS_LAND_004
+  question: Do indigenous peoples, or people who farm, graze, fish or gather by custom without a registered right, live
+    on or use the party's sites or the land and water that its operations affect?
+  answer: yes_no
+  assumption: No indigenous people and no customary users depend on the land or water that the operations use or affect
+  disproved_by: 'yes'
+  look_in: [07.02.a, 07.02.d, 10.03.a]
+  evidence:
+    best: [esia_report, consultant_report]
+    supporting: [stakeholder_engagement_plan, public_source, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Who used this land before you, and who crosses it, grazes on it or takes water or wood from it today? Do any of them
+    belong to an indigenous people?
+  note: A clean title does not answer this. Customary use is often unregistered. If the search finds nothing, record what
+    was searched, where and when.
+- id: OBS_LAND_005
+  question: Were the people concerned consulted and compensated under a written plan or agreement (at replacement cost for
+    what they lost, and with the consent of indigenous peoples where the lender's standard asks for it), and has someone
+    independent of the party confirmed that the plan was carried out?
+  answer: yes_no
+  mitigant: true
+  assumption: Those who lost land or its use were consulted and compensated under a written plan, and someone independent
+    has confirmed that it was carried out
+  disproved_by: 'no'
+  when:
+  - {check: OBS_LAND_002, against: true}
+  - {check: OBS_LAND_004, against: true}
+  look_in: [10.03.a, 07.02.a, 07.02.d]
+  evidence:
+    best: [consultant_report, esia_report]
+    supporting: [stakeholder_engagement_plan, esap, company_record]
+    stated: [correspondence, call, officer_note]
+  note: IFC Performance Standards 5 and 7 are the usual reference. Money paid to a chief or an official is not compensation
+    paid to those who lost the land. Where the plan is not yet carried out, the answer is no, and what remains belongs in
+    an action agreed with the lender.
+- id: OBS_SUPPLYCHAIN_001
+  question: What share of the party's main raw materials, by volume, can be traced to the farm, the forest or the mine where
+    they were produced?
+  answer: number
+  unit: percent
+  why: A party can only answer for the supply it can trace. The answers to OBS_SUPPLYCHAIN_002 and OBS_SUPPLYCHAIN_003 are
+    worth no more than this share.
+  due_by: concept
+  when:
+  - {check: OBS_SECTOR_002, is: agribusiness}
+  - {check: OBS_VALUE_CHAIN_001, is: manufacturer}
+  - {check: OBS_VALUE_CHAIN_001, is: trader}
+  - {check: OBS_ES_003, is: true}
+  look_in: [10.03.a, 06.04.a]
+  evidence:
+    best: [consultant_report]
+    supporting: [company_record, supply_agreement]
+    stated: [correspondence, call, officer_note]
+  ask: For your main raw materials, what share of the volume can you trace back to the farm, the forest or the mine it came
+    from? And what share only as far as the first buyer, such as a co-operative, a collection point or a mill?
+  note: Tracing to the first buyer is weaker than tracing to the place of production. Record that share separately. A party
+    that produces all of its own raw materials records 100.
+- id: OBS_SUPPLYCHAIN_002
+  question: Has natural forest, or another habitat that is protected or of high conservation value, been cleared after the
+    cut-off date that the lender applies, on land the party uses or on land of the suppliers of its main raw materials?
+  answer: yes_no
+  assumption: No natural forest or protected habitat was cleared after the lender's cut-off date for the party's land or
+    for its main raw materials
+  disproved_by: 'yes'
+  look_in: [10.03.a, 07.02.a, 02.06.d]
+  evidence:
+    best: [consultant_report, esia_report, adverse_media_screen]
+    supporting: [public_source, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Has any forest or other natural land been cleared on your own land, and since when is each plot in use? What do you
+    know about clearing on the land of your suppliers?
+  note: Record the cut-off date used and where it comes from (the lender's policy, a certification scheme, or a rule of
+    the market where the goods are sold). A no for supply that cannot be traced is not a no. It is not known. If a search
+    of satellite records or the press finds nothing, record what was searched, where and when.
+- id: OBS_SUPPLYCHAIN_003
+  question: In the last three years, has an audit, an authority, a customer, a civil society group or the press found child
+    labour or forced labour among the suppliers of the party's main raw materials or goods?
+  answer: yes_no
+  assumption: No child labour or forced labour has been found among the party's main suppliers
+  disproved_by: 'yes'
+  look_in: [10.03.a, 02.06.d, 06.04.a]
+  evidence:
+    best: [consultant_report, adverse_media_screen, regulatory_document]
+    supporting: [company_record, public_source, supply_agreement]
+    stated: [correspondence, call, officer_note]
+  ask: Has child labour or forced labour ever been found at one of your suppliers, by you, by an auditor, by a customer
+    or by anyone else? How do you check for it, and how far down the chain?
+  if_unknown: In a sector known for child or forced labour, the absence of findings shows only that nobody has looked.
+  note: Where the supply comes from a setting flagged in OBS_ES_003 and nobody has looked, the answer is not no. It is not
+    known. If the search finds nothing, record what was searched, where and when.
+- id: OBS_SUPPLYCHAIN_004
+  question: Are the raw materials concerned covered by a certification scheme that sets rules on forest clearing and on
+    child and forced labour, with a certificate that is in force and an audit by an accredited third party in the last twelve
+    months?
+  answer: yes_no
+  mitigant: true
+  assumption: A certification that is in force, and audited by a third party within the last year, covers the raw materials
+    concerned
+  disproved_by: 'no'
+  when:
+  - {check: OBS_SUPPLYCHAIN_002, against: true}
+  - {check: OBS_SUPPLYCHAIN_003, against: true}
+  look_in: [10.03.a, 06.04.a]
+  evidence:
+    best: [consultant_report, public_source]
+    supporting: [company_record, supply_agreement]
+    stated: [correspondence, call, officer_note]
+  note: Check the certificate in the scheme's own public register, and record the share of the volume that it covers. A
+    certificate for part of the volume protects only that part. Read the audit report for open findings.
+- id: OBS_SUPPLYCHAIN_005
+  question: Does the party run a system that maps the suppliers concerned down to the place of production, checks them at
+    least once a year against records of forest loss and findings on labour, and stops buying from those that fail?
+  answer: yes_no
+  mitigant: true
+  assumption: The party traces the supply concerned, checks it at least once a year and stops buying from suppliers that
+    fail
+  disproved_by: 'no'
+  when:
+  - {check: OBS_SUPPLYCHAIN_002, against: true}
+  - {check: OBS_SUPPLYCHAIN_003, against: true}
+  look_in: [10.03.a, 06.04.a, 07.02.b]
+  evidence:
+    best: [consultant_report]
+    supporting: [company_record, supply_agreement, esms_policy]
+    stated: [correspondence, call, officer_note]
+  ask: How do you know where each delivery comes from? How often do you check your suppliers, against what, and when did
+    you last stop buying from one?
+  note: Ask for the list of suppliers that were suspended or dropped. A system that has never excluded anyone has not been
+    tested.

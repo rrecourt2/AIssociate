@@ -1,0 +1,153 @@
+id: CAS_TAX_STRUCTURE_001
+title: Tax
+pillar: cash_flow
+claim: The party owes no tax it has not provided for, and its cash flow does not depend on a tax position that can be taken
+  away before the loan is repaid.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: A business short of cash often stops paying the tax authority before
+    it stops paying anyone else}
+- {check: OBS_BORROWER_003, is: true, reason: 'In a group, prices and loans between companies in different countries draw
+    the tax authorities'' attention'}
+- {check: OBS_CASHFLOW_BASIS_001, is: projected, reason: Projected cash flow may count on a tax holiday or a reduced rate
+    that does not last}
+look_again_when:
+- {new_source: tax_clearance, reason: A clearance certificate is good for a short time only}
+- {new_source: regulatory_document, reason: A notice or an assessment from the tax authority changes what is owed}
+- {new_source: audited_annual_report, reason: New accounts show new tax provisions and contingent liabilities}
+checks:
+- id: OBS_TAX_001
+  question: Is the party registered with the tax authority in its own name, as a registration certificate or a current tax
+    clearance shows?
+  answer: yes_no
+  assumption: The party is registered with the tax authority
+  disproved_by: 'no'
+  due_by: screening
+  look_in: [02.06.c, 03.01.d]
+  evidence:
+    best: [tax_clearance]
+    supporting: [tax_returns, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Can you send us your tax registration certificate, or a recent tax clearance certificate?
+  if_unknown: A business that is not registered has not been paying tax in its own name, and what it owes is unknown.
+- id: OBS_TAX_004
+  question: 'Has the party filed every tax return that fell due in the last three years: income tax, value added or sales
+    tax, and payroll taxes?'
+  answer: yes_no
+  assumption: The party has filed its tax returns when due
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [02.06.c, 03.01.d]
+  evidence:
+    best: [tax_clearance, tax_returns, consultant_report]
+    supporting: [company_record, management_accounts]
+    stated: [correspondence, call, officer_note]
+  ask: Are all your tax returns for the last three years filed (income tax, value added or sales tax, payroll taxes)? A
+    tax clearance certificate, or the filed returns with proof of filing, would show it.
+  if_unknown: Years for which no return is filed stay open to assessment, and nobody knows for how much.
+- id: OBS_TAX_006
+  question: Does the party owe tax that is past its due date, or is it paying off tax arrears under a plan agreed with the
+    tax authority?
+  answer: yes_no
+  assumption: The party has paid its taxes when due
+  disproved_by: 'yes'
+  why: Unpaid tax is borrowing from the state without its consent. A business that falls behind on tax is usually short
+    of cash, and the tax authority can often collect faster than a lender.
+  due_by: concept
+  look_in: [02.06.c, 03.01.a, 03.01.d]
+  evidence:
+    best: [tax_clearance, audited_annual_report]
+    supporting: [tax_returns, management_accounts, bank_statement]
+    stated: [correspondence, call, officer_note]
+  ask: Is any tax overdue at the moment, or are you paying off older tax in instalments agreed with the tax authority?
+  note: Look for tax payable in the balance sheet that grows from year to year, and for penalties and interest on tax in
+    the income statement. Whether the tax authority ranks ahead of the lender is a question for counsel in the country concerned.
+  leads_to:
+  - {indicator: CAS_LIQUIDITY_001, is: true, reason: Tax arrears are a sign that cash is short}
+- id: OBS_TAX_005
+  question: In the last three years, has the tax authority raised an additional assessment against the party, or is a tax
+    audit or a tax dispute open now?
+  answer: yes_no
+  assumption: The tax authority has claimed no more tax from the party than the party declared
+  disproved_by: 'yes'
+  look_in: [07.01.a, 03.01.a]
+  evidence:
+    best: [regulatory_document, audited_annual_report, legal_opinion]
+    supporting: [board_minutes, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Has the tax authority audited you in the last three years, asked for more tax than you declared, or is any audit
+    or dispute still open? What amounts are involved?
+  if_unknown: An open tax claim of unknown size sits outside every figure in the analysis.
+  note: An audit that closed without further tax is a no. Say that it took place and which years it closed. The notes on
+    contingent liabilities in the audited accounts list open tax claims. If a search of court or tax registers finds nothing,
+    record what was searched, where and when.
+  leads_to:
+  - {indicator: CAS_LITIGATION_001, is: true, reason: An open tax dispute is a claim against the party like any other}
+- id: OBS_TAX_002
+  question: Does the party benefit from a tax holiday, an exemption, a reduced rate or another special tax regime?
+  answer: yes_no
+  why: Opens the question of what the party's cash flow would be without it. OBS_TAX_008 asks whether it lasts as long as
+    the loan, and is asked whatever the answer here.
+  due_by: concept
+  look_in: [02.06.c, 07.01.a]
+  evidence:
+    best: [tax_clearance, regulatory_document, audited_annual_report]
+    supporting: [tax_returns, financial_model]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Do you benefit from any tax incentive, such as a tax holiday, an exemption, a reduced rate or the status of a special
+    economic zone? Until when does it run, and on what conditions?
+- id: OBS_TAX_008
+  question: Does the party's cash flow count on a tax holiday, an exemption or a reduced rate that ends before this loan
+    is repaid, or that depends on conditions the party is not meeting now (a level of investment, jobs or exports)?
+  answer: yes_no
+  assumption: The tax position that the party's cash flow counts on lasts as long as the loan
+  disproved_by: 'yes'
+  why: When a tax holiday ends, tax takes a share of the cash flow that the loan was sized on. A regime that is granted
+    on conditions is lost when the conditions are not kept.
+  look_in: [02.06.c, 07.01.a, 03.02.b]
+  evidence:
+    best: [tax_clearance, regulatory_document, legal_opinion]
+    supporting: [financial_model, tax_returns]
+    stated: [correspondence, call, officer_note]
+  note: Compare the tax the party pays with the standard rate on its profit. A wide gap means that a special regime is at
+    work, whether or not the party has mentioned one. Check that the projections charge the full rate from the day the regime
+    ends.
+  leads_to:
+  - {indicator: CAS_PROJECTIONS_001, is: true, reason: The projections have to charge tax in full from the day the regime
+      ends}
+- id: OBS_TAX_003
+  question: 'Does tax arise across a border in the party''s dealings: tax withheld on interest, dividends or fees, prices
+    set with related parties abroad, or a taxable presence in another country?'
+  answer: yes_no
+  why: Tax across a border takes cash on its way to the lender or on its way up from a subsidiary. Prices between related
+    parties in different countries are what tax authorities challenge most often.
+  look_in: [03.01.a, 03.01.d, 08.01.a]
+  evidence:
+    best: [audited_annual_report, legal_opinion, consultant_report]
+    supporting: [tax_returns, organizational_chart]
+    stated: [correspondence, call, officer_note]
+  ask: Do you pay or receive interest, dividends, fees or the price of goods across a border, in particular to or from companies
+    in your own group? Is tax withheld on any of these payments?
+  note: Where interest on this loan will be paid across a border, find out whether tax is withheld on it, at what rate,
+    and whether the loan terms make the party pay it on top.
+  leads_to:
+  - {indicator: CAS_TERM_SHEET_001, is: true, reason: Who bears tax withheld on interest paid to the lender is a term of
+      the loan}
+  - {indicator: CAS_RELATED_PARTY_001, is: true, reason: Prices and loans between the party and related parties abroad are
+      tested there}
+- id: OBS_TAX_007
+  question: Is the full amount that the tax authority claims, with penalties and interest, either paid or provided for in
+    the latest audited accounts?
+  answer: yes_no
+  mitigant: true
+  assumption: What the tax authority claims is already paid or counted in the accounts
+  disproved_by: 'no'
+  when:
+  - {check: OBS_TAX_005, against: true}
+  look_in: [03.01.a, 07.01.a]
+  evidence:
+    best: [audited_annual_report, regulatory_document]
+    supporting: [bank_statement, management_accounts, board_minutes]
+    stated: [correspondence, call, officer_note]
+  note: A provision is the party's own estimate. Set it against the amount in the tax authority's notice.

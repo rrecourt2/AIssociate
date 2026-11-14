@@ -4,6 +4,6 @@
  {"do": "add", "to": "CAS_INPUT_CONC_001", "by": "officer",
   "reason": "The CFO put the 2025 margin drop down to milk prices.",
   "check": {"id": "DEAL_MILK_PRICE_001", "question": "Do the supply contracts with the cooperatives cap the raw milk price?",
-            "answer": "yes_no", "assumption": "Cedar carries the full risk of the raw milk price", "disproved_by": "yes",
-            "after": ["OBS_INPUT_001"]}}
+            "answer": "yes_no", "assumption": "The supply contracts cap the price Cedar pays for raw milk", "disproved_by": "no",
+            "when": [{"check": "OBS_INPUT_001", "is": true}]}}
 ]

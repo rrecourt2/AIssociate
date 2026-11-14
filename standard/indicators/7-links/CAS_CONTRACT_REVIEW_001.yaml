@@ -1,0 +1,152 @@
+id: CAS_CONTRACT_REVIEW_001
+title: Material contract
+pillar: links
+claim: The contract gives the party that the lender counts on what the projections assume, and it stays in force until the
+  loan is repaid.
+due_by: diligence
+applies_to: [contract]
+matters_more_when:
+- {check: OBS_CASHFLOW_BASIS_001, is: contracted, reason: The first way out rests on what the contract says}
+- {check: OBS_SECTOR_001, is: project, reason: A project lives on a few contracts and has no other business to fall back
+    on}
+look_again_when:
+- {new_source: material_contract, reason: 'An amendment or a new draft can change the price, the volume, the term or the
+    right to end the contract'}
+- {new_source: offtake_agreement, reason: 'An amendment or a new draft can change the price, the volume, the term or the
+    right to end the contract'}
+- {new_source: financial_model, reason: A new model may count on more than the contract gives}
+checks:
+- id: OBS_CONT_001
+  question: Would the party be unable to service the loan if this contract ended or was not performed?
+  answer: yes_no
+  why: Opens the review. A contract is in the structure because someone judged that repayment depends on it. This answer
+    says so plainly, and most of the checks that follow are asked only if it does.
+  due_by: screening
+  calls_for:
+  - is: true
+    link: [party_to]
+  look_in: [06.01.a, 03.02.b]
+  evidence:
+    best: [material_contract, offtake_agreement, supply_agreement]
+    supporting: [financial_model, management_accounts, internal_memo]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: If this contract ended tomorrow, could you still pay your lenders?
+  note: '"The party" is the party to the contract that the lender counts on. "The other side" is whoever it has contracted
+    with. Examples are a sales contract that brings most of the revenue, and a supply, lease, concession or licence contract
+    that the business cannot run without.'
+  leads_to:
+  - {indicator: CAS_OFFTAKER_CREDIT_001, is: true, reason: 'Whether the customer under a sales contract can pay, and can
+      be replaced, is asked on the link to it'}
+  - {indicator: CAS_SUPPLIER_LINK_001, is: true, reason: 'Whether the supplier under a supply contract can deliver, and
+      can be replaced, is asked on the link to it'}
+- id: OBS_CONT_002
+  question: 'What does the contract give the party and what does it ask of it: who the parties are, the term, the volume,
+    the price or price formula, and the main duties of each side?'
+  answer: text
+  why: The terms are set against what the projections assume (OBS_CONT_008).
+  due_by: concept
+  when:
+  - {check: OBS_CONT_001, is: true}
+  look_in: [06.01.a, 06.04.a, 06.05.a]
+  evidence:
+    best: [material_contract, offtake_agreement, supply_agreement]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Please share the signed contract, or a summary of its parties, term, volume, price and termination rights.
+- id: OBS_CONT_005
+  question: Does the contract end, or come up for renewal, before the final repayment date of the loan?
+  answer: yes_no
+  assumption: The contract runs until the loan is repaid
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [06.01.a, 06.04.a, 06.05.a]
+  evidence:
+    best: [material_contract, offtake_agreement, supply_agreement]
+    supporting: [term_sheet, internal_memo, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: When does this contract end? Is there a right to extend it, and whose right is it?
+  if_unknown: The projections may count on the contract in years in which it no longer exists.
+  note: This check does not hang on OBS_CONT_001, so that the review cannot close on one answer. An option to extend that
+    only the other side can use does not lengthen the term.
+  leads_to:
+  - {indicator: CAS_PROJECTIONS_001, is: true, reason: 'The years after the contract ends should be projected at market
+      terms, not at contract terms'}
+- id: OBS_CONT_008
+  question: Do the volume, the price and the term that the financial model takes from this contract match the signed contract,
+    or the latest draft where it is not yet signed?
+  answer: yes_no
+  assumption: The projections take from the contract no more than the contract gives
+  disproved_by: 'no'
+  when:
+  - {check: OBS_CONT_001, is: true}
+  look_in: [06.01.a, 03.02.b]
+  evidence:
+    best: [material_contract, offtake_agreement, consultant_report]
+    supporting: [financial_model, term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Check the price formula, the indexation, the minimum and maximum volumes, the start date and any ramp-up. Where
+    only a draft exists, say so. The answer is then looked at again when the contract is signed.
+- id: OBS_CONT_006
+  question: Can the other side end the contract without a breach by the party, or change the price or the volume without
+    the party's consent?
+  answer: yes_no
+  assumption: The other side is held to the contract, its price and its volume for the whole term
+  disproved_by: 'yes'
+  when:
+  - {check: OBS_CONT_001, is: true}
+  look_in: [06.01.a, 06.04.a, 06.05.a]
+  evidence:
+    best: [material_contract, offtake_agreement, supply_agreement]
+    supporting: [legal_opinion, term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Look for a right to end for convenience or on notice, price review and benchmarking clauses, most-favoured-customer
+    clauses, volume flexibility, and wide rights on force majeure or change in law.
+- id: OBS_CONT_003
+  question: Can the other side end or change the contract if the ownership of the party changes, or if the lender enforces
+    its security over the party's shares or assets?
+  answer: yes_no
+  assumption: The contract survives a change of ownership of the party and the enforcement of the lender's security
+  disproved_by: 'yes'
+  when:
+  - {check: OBS_CONT_001, is: true}
+  look_in: [06.01.a, 08.01.a]
+  evidence:
+    best: [material_contract, offtake_agreement, legal_opinion]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Does this contract let the other side end or renegotiate it if the ownership or control of your company changes,
+    or if a lender takes over the company or its assets?
+  note: Read the clauses on change of control, on assignment and on insolvency. A ban on assignment without consent has
+    the same effect when the lender sells the business.
+- id: OBS_CONT_007
+  question: Does the contract name a governing law, and a court or arbitral tribunal, whose decision could be enforced against
+    the other side where the other side has its assets?
+  answer: yes_no
+  assumption: A claim under the contract can be decided and enforced against the other side
+  disproved_by: 'no'
+  when:
+  - {check: OBS_CONT_001, is: true}
+  look_in: [08.01.a, 06.01.a]
+  evidence:
+    best: [legal_opinion]
+    supporting: [material_contract, offtake_agreement, consultant_report]
+    stated: [correspondence, call, officer_note]
+  note: The contract shows the law and the forum. Whether a decision can be enforced is for a lawyer to say. Where the other
+    side is a state or a state-owned body, ask whether it has waived immunity.
+- id: OBS_CONT_MIT_001
+  question: 'Can the lender keep the contract alive when it enforces: are the party''s rights under the contract assigned
+    to the lender as security, or has the other side signed a direct agreement that gives the lender notice, time to cure
+    and the right to step in or to put a new party in?'
+  answer: yes_no
+  mitigant: true
+  assumption: The lender can take over the contract, or keep it alive, when it enforces
+  disproved_by: 'no'
+  when:
+  - {check: OBS_CONT_003, against: true}
+  look_in: [04.02.b, 06.01.a, 08.01.a]
+  evidence:
+    best: [security_agreement, material_contract, legal_opinion]
+    supporting: [term_sheet]
+    stated: [correspondence, call, officer_note]
+  note: An assignment needs the other side's consent where the contract forbids assignment. Say whether the consent has
+    been given.

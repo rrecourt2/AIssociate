@@ -1,0 +1,108 @@
+id: CAS_SUPPLIER_LINK_001
+title: Key supplier
+pillar: links
+claim: The supplier will keep delivering until the loan is repaid, or the buyer can replace it before its own production
+  stops.
+due_by: diligence
+applies_to: [supplies_to]
+matters_more_when:
+- {check: OBS_SECTOR_001, is: project, reason: 'A project usually has one supplier of its fuel, its feedstock or a key service'}
+- {check: OBS_SECTOR_002, is: agribusiness, reason: A crop that is not delivered cannot be made up before the next harvest}
+look_again_when:
+- {new_source: supply_agreement, reason: 'A new draft or an amendment can change the volume, the price formula or the term'}
+checks:
+- id: OBS_SUPPLIER_001
+  question: What share of the buyer's need for this input does the supplier deliver?
+  answer: number
+  unit: percent
+  why: The share says how much of the buyer's production stops with the supplier.
+  due_by: screening
+  look_in: [06.04.a, 03.01.b]
+  evidence:
+    best: [supply_agreement, audited_annual_report]
+    supporting: [company_record, management_accounts]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: How much of this input do you buy from this supplier, as a share of all you need?
+  note: Take the last full financial year, by volume, or by value where volume is not recorded. Name the input in the reason.
+- id: OBS_SUPPLIER_002
+  question: If this supplier stopped delivering, could the buyer get the same input in the volume it needs from other suppliers
+    within three months, at a cost no more than about a tenth higher?
+  answer: yes_no
+  assumption: The buyer could replace the supplier within a quarter, without a large rise in cost
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [06.04.a, 01.03.a, 10.03.a]
+  evidence:
+    best: [market_study, consultant_report, supply_agreement]
+    supporting: [company_record, management_accounts]
+    stated: [correspondence, call, officer_note, business_plan]
+  ask: If this supplier stopped delivering tomorrow, who else could supply you, how soon, and at what price?
+  note: Three months and a tenth are guides. Count the time needed to approve a new supplier (tests, certification, a customer's
+    sign-off) and to move the goods. A supplier that owns the only pipeline, grid connection, licence or technology cannot
+    be replaced.
+- id: OBS_SUPPLIER_003
+  question: 'In the last 24 months, has the supplier shown a sign that it may not keep delivering: a missed or short delivery
+    to the buyer, a loss or a default in its own accounts, an insolvency or restructuring filing, or the loss of a licence
+    it needs?'
+  answer: yes_no
+  assumption: The supplier is able to keep delivering
+  disproved_by: 'yes'
+  look_in: [10.03.a, 02.06.d]
+  evidence:
+    best: [credit_rating_report, audited_annual_report, adverse_media_screen]
+    supporting: [company_record, public_source]
+    stated: [correspondence, call, officer_note]
+  note: Check the buyer's delivery records, the supplier's accounts or a credit report on it, the insolvency register and
+    the press. If the search finds nothing, record what was searched, where and when.
+- id: OBS_SUPPLIER_004
+  question: Does a signed contract oblige the supplier to deliver the volume the buyer needs, at a fixed price or under
+    a price formula, until the final repayment date of the loan?
+  answer: yes_no
+  assumption: The supplier is bound to deliver the volume the buyer needs, at an agreed price, until the loan is repaid
+  disproved_by: 'no'
+  why: Asked where the supplier cannot be replaced. Then the contract is all that holds it.
+  when:
+  - {check: OBS_SUPPLIER_002, against: true}
+  calls_for:
+  - {is: true, kind: contract}
+  look_in: [06.04.a, 06.01.a]
+  evidence:
+    best: [supply_agreement, material_contract]
+    supporting: [term_sheet, company_record]
+    stated: [correspondence, call, officer_note]
+  leads_to:
+  - {indicator: CAS_CONTRACT_REVIEW_001, is: true, reason: The contract is reviewed as a subject of its own}
+- id: OBS_SUPPLIER_005
+  question: Has the buyer paid the supplier in advance for more than about one month of deliveries (advances, deposits or
+    loans), without a bank guarantee or other security for the money?
+  answer: yes_no
+  assumption: The buyer's advances to the supplier are small or secured
+  disproved_by: 'yes'
+  look_in: [03.01.a, 03.01.b, 06.04.a]
+  evidence:
+    best: [audited_annual_report, supply_agreement]
+    supporting: [management_accounts, company_record, bank_statement]
+    stated: [correspondence, call, officer_note]
+  ask: Do you pay this supplier before it delivers? How much is outstanding with it at the highest point in the year, and
+    is any of it covered by a bank guarantee?
+  note: One month of deliveries is a guide. Advances to growers, deposits for equipment and goods of the buyer held at the
+    supplier's site all count. Give the amount at its highest point in the year.
+- id: OBS_SUPPLIER_MIT_001
+  question: 'What would keep the buyer supplied if this supplier stopped: stock of the input that lasts until a new supplier
+    delivers, a second supplier that already delivers and could cover the full need, both, or neither?'
+  answer: choice
+  options: [stock, second_source, both, neither]
+  mitigant: true
+  assumption: Stock or a second supplier would carry the buyer until the supplier is replaced
+  flag_when: is neither
+  why: Stock, and a second source that already delivers, buy the time it takes to replace a supplier. A second source that
+    has only been named, and has never delivered, buys none.
+  when:
+  - {check: OBS_SUPPLIER_002, against: true}
+  - {check: OBS_SUPPLIER_003, against: true}
+  look_in: [06.04.a, 03.01.b]
+  evidence:
+    best: [supply_agreement, consultant_report]
+    supporting: [company_record, management_accounts]
+    stated: [correspondence, call, officer_note]
+  note: Give the stock in days of use, and the share of the need that the second supplier delivers today.

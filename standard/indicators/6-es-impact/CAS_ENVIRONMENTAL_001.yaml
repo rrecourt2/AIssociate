@@ -1,0 +1,179 @@
+id: CAS_ENVIRONMENTAL_001
+title: Environment
+pillar: es_impact
+claim: No environmental harm done by the party's operations, now or in the past, could close a site, cost more than the
+  party has set aside, or come back on the lender.
+due_by: diligence
+applies_to: [borrower, repayment_source, project]
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'A new site needs its assessment and its permits before work starts,
+    and has no record to be judged by'}
+- {check: OBS_SECTOR_002, is: manufacturing, reason: 'Process industry brings emissions, effluent, waste and, on old sites,
+    contamination'}
+- {check: OBS_COLLATERAL_001, is: single_asset, reason: 'A site that is the only security loses its value, and may bring
+    a clean-up cost, if it is contaminated'}
+look_again_when:
+- {new_source: esia_report, reason: 'A new assessment can show harm, or a missing permit, that was not known'}
+- {new_source: regulatory_document, reason: 'A notice, a fine or an order from an environmental authority bears directly
+    on the claim'}
+- {check: OBS_CAPEX_PLAN_001, is: true, reason: An expansion can need a new assessment and new permits}
+checks:
+- id: OBS_ENV_001
+  question: Has every environmental impact assessment that the law or the lender's risk category requires, for the party's
+    sites and for anything the loan finances, been carried out, and approved by the environmental authority where the law
+    asks for its approval?
+  answer: yes_no
+  assumption: Every impact assessment that the law or the lender's risk category requires has been done and, where the law
+    asks for it, approved
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [07.02.a, 07.01.a]
+  evidence:
+    best: [esia_report, operational_license, regulatory_document]
+    supporting: [consultant_report, company_record, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Has an environmental impact assessment been done for your sites, or for the investment this loan would pay for? Please
+    share the report and the authority's approval of it. If none was needed, who confirmed that?
+  if_unknown: Without the assessment, nobody has set out what harm the operations can do.
+  note: Where neither the law nor the category requires an assessment, answer yes and record who confirmed that and on what
+    basis. An assessment done for an earlier, smaller plant does not cover an expansion.
+- id: OBS_ENV_003
+  question: Does the party hold, in force, every environmental permit that its sites need (for example for emissions to
+    air, discharge to water, waste, and the taking of water), and do its latest monitoring results meet the limits those
+    permits set?
+  answer: yes_no
+  assumption: The party holds its environmental permits and operates within their limits
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [07.01.a, 10.03.a]
+  evidence:
+    best: [operational_license, regulatory_document, consultant_report]
+    supporting: [company_record, esms_policy]
+    stated: [correspondence, call, officer_note]
+  ask: Please share your environmental permits and your latest monitoring results for emissions, effluent and waste. Is
+    any permit expired, under renewal or held in another name?
+  note: Compare the monitoring results with the limits written in the permit itself. Record the expiry date of each permit.
+  leads_to:
+  - {indicator: CAS_REGULATORY_001, is: false, reason: A missing environmental permit can also mean the party may not operate
+      at all}
+- id: OBS_ENV_006
+  question: In the last three years, has the party had a spill, a release or another environmental incident that had to
+    be reported to an authority, or received a fine, a notice of breach or an order to stop work on environmental grounds?
+  answer: yes_no
+  assumption: The party's operations have run for three years without a reportable incident and without a sanction on environmental
+    grounds
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [07.01.a, 10.03.a, 02.06.d]
+  evidence:
+    best: [regulatory_document, consultant_report, adverse_media_screen]
+    supporting: [company_record, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: In the last three years, has there been a spill, a leak or any other environmental incident at your sites? Has an
+    environmental authority fined you, sent you a notice or told you to stop work? What happened, and how did it end?
+  note: A party that says yes is believed. A party that says no is believed once its incident log, the authority's record
+    or a press search bears it out. If the search finds nothing, record what was searched, where and when. A site that is
+    not yet built has no record. Say so instead of answering no.
+- id: OBS_ENV_002
+  question: Is soil or groundwater known or suspected to be contaminated at any site that the party owns, leases or used
+    to operate, or does the party owe a cost to clean up, decommission or restore a site?
+  answer: yes_no
+  assumption: No site of the party is contaminated, and the party owes no cost to clean up or restore one
+  disproved_by: 'yes'
+  look_in: [10.03.a, 07.02.a, 03.01.a]
+  evidence:
+    best: [consultant_report, esia_report, audited_annual_report]
+    supporting: [company_record, board_minutes, management_accounts]
+    stated: [correspondence, call, officer_note]
+  ask: Do you know of any contamination of soil or water at your sites, or at sites you used before? Do you have to clean
+    up, dismantle or restore any site, now or when operations end? Is there a provision for it in your accounts?
+  if_unknown: Old contamination tends to come to light at a sale, an expansion or an enforcement.
+  note: A site with a long industrial past that nobody has tested is not known to be clean. Ask what the land was used for
+    before the party came.
+  leads_to:
+  - {indicator: CAS_SECURITY_ASSET_001, is: true, reason: 'A contaminated site is worth less as security, and whoever takes
+      it over may be asked to pay for the clean-up'}
+- id: OBS_ENV_007
+  question: Has the party named a person who answers to senior management for environmental and social matters, and does
+    it keep a written management system that sets out the risks, the procedures, the monitoring and who does what?
+  answer: yes_no
+  assumption: A named person and a written system manage the party's environmental and social risks
+  disproved_by: 'no'
+  look_in: [07.02.b, 10.03.a]
+  evidence:
+    best: [consultant_report]
+    supporting: [esms_policy, organizational_chart, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Who in your company is responsible for environmental and social matters, and to whom does that person report? Please
+    share your environmental and social policy and procedures, and the latest monitoring report made under them.
+  note: A policy on paper is not a system. Look for monitoring records made under it in the last twelve months. A current
+    certificate under a standard such as ISO 14001, with its audit report, counts as best evidence. For a financial institution,
+    the system is the one by which it screens and follows the loans it makes, including against the exclusion lists.
+- id: OBS_ENV_005
+  question: Has the exposure of the party's main sites to flood, drought, heat, storm and rising sea level over the life
+    of the loan been assessed, site by site, from hazard data and not from experience alone?
+  answer: yes_no
+  assumption: The physical climate hazards at the party's main sites over the life of the loan have been assessed
+  disproved_by: 'no'
+  look_in: [10.03.a, 07.02.a, 08.03.b]
+  evidence:
+    best: [consultant_report, esia_report, technical_feasibility, insurance_broker_report]
+    supporting: [company_record, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Have your main sites been assessed for flood, drought, heat, storm or rising sea level? Who did the assessment, and
+    what did it find?
+  note: An assessment that finds a high hazard is still a yes. Record the hazards found, so that the operations and the
+    insurance can be read against them. Risks from climate policy, such as a carbon price or a ban, belong to CAS_REGULATORY_001.
+  leads_to:
+  - {indicator: CAS_COVERAGE_001, is: true, reason: The hazards found should be set against the insurance cover}
+- id: OBS_ENV_004
+  question: Does the party measure its greenhouse gas emissions every year, at least those from its own operations and from
+    the energy it buys?
+  answer: yes_no
+  why: A lender that reports the emissions it finances needs the figure, and a party that measures them can show what the
+    loan changes. To have to report emissions is not a fault.
+  look_in: [10.03.a, 03.01.a]
+  evidence:
+    best: [consultant_report, audited_annual_report]
+    supporting: [company_record, regulatory_document]
+    stated: [correspondence, call, officer_note]
+  ask: Do you measure your greenhouse gas emissions? If so, please share the latest figures and say who calculated them.
+- id: OBS_ENV_008
+  question: Has the party agreed with the lender a written action plan that deals with every environmental gap found, with
+    a responsible person, a budget and a date for each action?
+  answer: yes_no
+  mitigant: true
+  assumption: An action plan agreed with the lender closes every gap found, with a person, a budget and a date for each
+    action
+  disproved_by: 'no'
+  due_by: approval
+  when:
+  - {check: OBS_ENV_001, against: true}
+  - {check: OBS_ENV_003, against: true}
+  - {check: OBS_ENV_006, against: true}
+  - {check: OBS_ENV_002, against: true}
+  - {check: OBS_ENV_007, against: true}
+  look_in: [07.02.c, 04.01.b]
+  evidence:
+    best: [esap, facility_agreement]
+    supporting: [term_sheet, board_minutes, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: The plan counts once the party has signed it or it is part of the facility agreement. A draft is not an agreement.
+    An action that needs money counts only if the money is in the party's budget or in the loan.
+- id: OBS_ENV_009
+  question: Has a specialist who is independent of the party estimated the cost of the clean-up or restoration, and is that
+    cost provided for in the audited accounts or covered by a funded reserve, an indemnity from a previous owner or insurance?
+  answer: yes_no
+  mitigant: true
+  assumption: The cost of the clean-up or restoration is estimated by someone independent and is covered by a provision,
+    a funded reserve, an indemnity or insurance
+  disproved_by: 'no'
+  when:
+  - {check: OBS_ENV_002, against: true}
+  look_in: [10.03.a, 03.01.a, 08.03.a]
+  evidence:
+    best: [consultant_report, audited_annual_report, insurance_policy]
+    supporting: [management_accounts, company_record, material_contract]
+    stated: [correspondence, call, officer_note]
+  note: An indemnity is worth what the one who gave it can pay. A provision is not cash. Say when the money will be needed
+    and where it will come from.

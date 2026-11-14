@@ -1,0 +1,148 @@
+id: CAS_REGULATORY_001
+title: Licences and regulation
+pillar: environment
+claim: The party holds every licence, permit and concession it needs, and none will lapse, be withdrawn or be overtaken
+  by a new rule before the loan is repaid.
+due_by: concept
+applies_to: [borrower, repayment_source]
+matters_more_when:
+- {check: OBS_SECTOR_003, is: true, reason: A supervised financial institution cannot trade for a day without its licence}
+- {check: OBS_VALUE_CHAIN_001, is: concessionaire, reason: 'The concession is the business, and its terms say when the grantor
+    can end it'}
+- {check: OBS_SECTOR_002, is: infrastructure, reason: Infrastructure is usually run under a licence or a concession from
+    the state}
+look_again_when:
+- {new_source: operational_license, reason: A new or renewed licence can carry a new expiry date and new conditions}
+- {new_source: regulatory_document, reason: 'A letter, a notice or an order from an authority bears directly on the claim'}
+- {new_source: legal_opinion, reason: Counsel's review can find a licence that is missing or a condition that is not met}
+checks:
+- id: OBS_REG_001
+  question: Does the party need a licence, a permit or a concession from an authority to carry on its main business?
+  answer: yes_no
+  why: Opens the topic. A "no" is not the end of it. OBS_REG_002 and OBS_REG_004 are asked whatever the answer.
+  due_by: screening
+  look_in: [07.01.a, 08.01.a]
+  evidence:
+    best: [legal_opinion, operational_license, regulatory_document]
+    supporting: [company_record, internal_memo]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Do you need a licence, a permit or a concession to run your main business? Examples are a banking or telecom licence,
+    a mining or water permit, a generation licence or a concession to run a port or a road.
+- id: OBS_REG_002
+  question: Does the party hold, in force today and in its own name, every licence, permit and concession that the law requires
+    for its main business?
+  answer: yes_no
+  assumption: The party holds, in force and in its own name, every licence its business needs
+  disproved_by: 'no'
+  look_in: [07.01.a, 08.01.a, 06.05.a]
+  evidence:
+    best: [operational_license, lease_agreement, legal_opinion, regulatory_document]
+    supporting: [company_record, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Please share your key licences and permits, or a confirmation from the authority that they are in force. Is any of
+    them held by another company of the group, or by a person?
+  note: This check does not hang on OBS_REG_001, so that the topic cannot close on one answer. Where the party says it needs
+    no licence, a legal opinion or the authority's own register should bear that out. A licence held by a sister company
+    or by the owner in person is not held by the party.
+- id: OBS_REG_003
+  question: In the last three years, has a regulator or a licensing authority sent the party a warning, a notice of breach,
+    a fine or an order to show cause?
+  answer: yes_no
+  assumption: No authority has found the party in breach of its licences or of the rules of its sector in the last three
+    years
+  disproved_by: 'yes'
+  when:
+  - {check: OBS_REG_001, is: true}
+  look_in: [07.01.a, 08.01.a, 03.01.a]
+  evidence:
+    best: [regulatory_document, legal_opinion, audited_annual_report]
+    supporting: [board_minutes, company_record, company_certificate]
+    stated: [correspondence, call, officer_note]
+  ask: In the last three years, has any regulator or authority sent you a warning, a notice of breach, a fine or a request
+    to explain yourself? What was it about, and how did it end?
+  note: A party that says yes is believed. A party that says no is believed once the authority's record or counsel's review
+    bears it out. If the search finds nothing, record what was searched, where and when.
+  leads_to:
+  - {indicator: CAS_LITIGATION_001, is: true, reason: A notice from a regulator can turn into proceedings}
+- id: OBS_REG_005
+  question: Does any licence, permit or concession that the business depends on expire, or come up for renewal, before the
+    final maturity of the loan?
+  answer: yes_no
+  assumption: Every licence the business depends on runs beyond the final maturity of the loan
+  disproved_by: 'yes'
+  when:
+  - {check: OBS_REG_001, is: true}
+  look_in: [07.01.a, 06.05.a]
+  evidence:
+    best: [operational_license, lease_agreement, regulatory_document]
+    supporting: [company_record, legal_opinion]
+    stated: [correspondence, call, officer_note]
+  ask: When does each of your key licences and permits expire? What do you have to do to renew it?
+  note: Record the expiry date of each licence, not only the answer.
+- id: OBS_REG_006
+  question: Can any licence or concession be withdrawn, or does it need a fresh approval, when the ownership of the party
+    changes or when a lender enforces its security?
+  answer: yes_no
+  assumption: The licences stay with the business through a change of ownership and through enforcement of security
+  disproved_by: 'yes'
+  due_by: diligence
+  when:
+  - {check: OBS_REG_001, is: true}
+  look_in: [08.01.a, 07.01.a, 06.05.a]
+  evidence:
+    best: [legal_opinion, operational_license, lease_agreement]
+    supporting: [company_record, internal_memo]
+    stated: [correspondence, call, officer_note]
+  if_unknown: Security over the shares or the business may be worth little if the licence does not pass to a buyer.
+  leads_to:
+  - {indicator: CAS_SECURITY_PACKAGE_001, is: true, reason: 'A lender that cannot pass the licence to a buyer needs a direct
+      agreement with the authority, or other security'}
+- id: OBS_REG_004
+  question: Has a law, a regulation or a change to licence terms been proposed, or passed but not yet brought into force,
+    that would raise the party's costs, cap its prices or restrict its main business?
+  answer: yes_no
+  assumption: No rule now proposed or passed would restrict the party's business or cut its margin
+  disproved_by: 'yes'
+  look_in: [07.01.a, 08.01.a, 10.03.a]
+  evidence:
+    best: [regulatory_document, legal_opinion, consultant_report]
+    supporting: [public_source, internal_memo, board_minutes]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Do you know of any new law, regulation or change to your licence that is being prepared? Think of licensing rules,
+    price controls, taxes on your product, or environmental standards. What would it cost you?
+  if_unknown: Nobody has looked at what is in preparation.
+  note: Name the measure and the date it is due. If the search finds nothing, record what was searched, where and when.
+- id: OBS_REG_007
+  question: Does the licence or the law give the party a right to renewal if it has met its conditions, or has the same
+    licence been renewed at every expiry so far without a break?
+  answer: yes_no
+  mitigant: true
+  assumption: Renewal is a right, or has been granted at every expiry so far
+  disproved_by: 'no'
+  due_by: diligence
+  when:
+  - {check: OBS_REG_005, against: true}
+  look_in: [07.01.a, 08.01.a, 06.05.a]
+  evidence:
+    best: [operational_license, lease_agreement, legal_opinion, regulatory_document]
+    supporting: [company_record]
+    stated: [correspondence, call, officer_note]
+  note: Say which of the two it is. A record of renewals is weaker than a right, and weaker still where the authority or
+    the policy has changed since the last renewal.
+- id: OBS_REG_008
+  question: Has the authority concerned confirmed in writing that the breach is put right, or that the missing licence is
+    now granted?
+  answer: yes_no
+  mitigant: true
+  assumption: The authority concerned has confirmed that the breach is put right
+  disproved_by: 'no'
+  due_by: diligence
+  when:
+  - {check: OBS_REG_002, against: true}
+  - {check: OBS_REG_003, against: true}
+  look_in: [07.01.a, 08.01.a]
+  evidence:
+    best: [regulatory_document, operational_license]
+    supporting: [legal_opinion, board_minutes]
+    stated: [correspondence, call, officer_note]
+  note: The confirmation must come from the authority. The party's own account of it is not a confirmation.

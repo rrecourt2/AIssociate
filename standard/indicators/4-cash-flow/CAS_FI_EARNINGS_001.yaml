@@ -1,0 +1,112 @@
+id: CAS_FI_EARNINGS_001
+title: 'Bank: earnings'
+pillar: cash_flow
+claim: The institution's lasting earnings cover its loan losses, in a bad year too, and leave a profit that adds to its
+  capital.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+applies_when:
+- {check: OBS_SECTOR_001, is: financial_institution}
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: expanding, reason: A growing institution needs its profit as capital for the new lending}
+- {check: OBS_INVESTOR_ROLE_001, is: subordinated, reason: A subordinated lender is paid only while the institution earns
+    enough to keep its capital whole}
+look_again_when:
+- {new_source: audited_annual_report, reason: A new year of earnings and loan-loss charges can be the new worst year}
+- {new_source: interim_financial_statements, reason: Half-year figures show a turn in the margin or in loan losses before
+    the annual accounts do}
+checks:
+- id: OBS_FIE_001
+  question: What was the institution's return on average assets (profit after tax as a percentage of average total assets)
+    in the last financial year?
+  answer: number
+  unit: percent
+  why: The headline measure of a bank's earnings. It is read against the last three years, against the banks in its market,
+    and against the growth of the balance sheet. Profit that does not keep pace with that growth does not build capital.
+  due_by: screening
+  look_in: [03.01.a, 03.01.i]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, interim_financial_statements, credit_rating_report]
+    stated: [management_presentation, call, officer_note]
+  note: Say which year the figure is for. Where inflation is high, record it beside the figure, because a return below inflation
+    shrinks the capital in real terms.
+- id: OBS_FIE_002
+  question: Would the institution's profit before loan-loss charges and tax of the last financial year have covered a loan-loss
+    charge as heavy, as a share of the loan book, as in the worst of its last five financial years?
+  answer: yes_no
+  assumption: The institution's earnings absorb a bad year of loan losses without a loss
+  disproved_by: 'no'
+  why: Profit before loan-loss charges is the first cushion. What it cannot absorb comes out of capital. The institution's
+    own worst recent year is a bad year that has already happened.
+  due_by: concept
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, financial_model, credit_rating_report, internal_memo]
+    stated: [call, officer_note]
+  note: Take the loan-loss charge of each year as a percentage of average gross loans, and apply the highest to today's
+    loan book. With fewer than five years of accounts, use the years there are and say how many. Where the provisions have
+    been short (OBS_FIP_002), the past charges understate the cost. Say so.
+  leads_to:
+  - {indicator: CAS_FI_CAPITAL_001, is: false, reason: A loss comes straight out of capital}
+- id: OBS_FIE_003
+  question: Over the last three financial years, has the institution's net interest margin (net interest income as a percentage
+    of average earning assets) widened, held or narrowed?
+  answer: choice
+  options: [widened, stable, narrowed]
+  why: The margin is where a bank's profit starts. A margin that narrows means dearer funding, cheaper lending or more loans
+    that pay no interest, and each of them points to another indicator. A margin that widens fast can mean riskier lending.
+  look_in: [03.01.a, 03.01.i]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, interim_financial_statements, credit_rating_report]
+    stated: [management_presentation, call, officer_note]
+  note: Stable means a change of less than about a quarter of a percentage point over the three years. Record the margin
+    of each year.
+  leads_to:
+  - {indicator: CAS_FI_LIQUIDITY_001, is: narrowed, reason: 'Dearer funding is a common cause of a narrowing margin, and
+      it shows which funding the institution has to pay up for'}
+- id: OBS_FIE_004
+  question: What was the institution's cost-to-income ratio (operating costs before loan-loss charges, as a percentage of
+    operating income) in the last financial year?
+  answer: number
+  unit: percent
+  why: The ratio says how much of each unit of income is left to pay for loan losses and to build capital. It is read against
+    banks of the same kind in the same market. A branch network that serves small borrowers costs more than a bank that
+    lends to large companies.
+  look_in: [03.01.a, 03.01.i]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, interim_financial_statements, credit_rating_report]
+    stated: [management_presentation, call, officer_note]
+- id: OBS_FIE_005
+  question: 'Did more than about a third of the institution''s profit before tax in the last financial year come from gains
+    that need not come again: trading and revaluation gains, currency gains, the sale of assets, or the release of provisions?'
+  answer: yes_no
+  assumption: The profit comes from lending and fees, which come again each year
+  disproved_by: 'yes'
+  look_in: [03.01.a, 03.01.i]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, interim_financial_statements, credit_rating_report]
+    stated: [call, officer_note]
+  note: A third is a guide. Where the institution would have made a loss without such gains, the answer is yes. Look at
+    each of the last three years. A one-off that comes back every year under another name is still not income from lending.
+- id: OBS_FIE_006
+  question: In the last financial year, was more than about a tenth of the institution's interest income booked but not
+    received in cash (interest accrued on loans in arrears or under a grace period, or added to the loan balance)?
+  answer: yes_no
+  assumption: The interest the institution reports as income is paid to it in cash
+  disproved_by: 'yes'
+  why: Interest that is booked and not paid is profit on paper. It raises capital in the accounts without adding any, and
+    it grows fastest when borrowers are in trouble.
+  look_in: [03.01.a, 10.03.a, 03.01.e]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [company_record, management_accounts, audit_management_letter]
+    stated: [call, officer_note]
+  note: A tenth is a guide. Set the interest income in the profit and loss account against the interest received in the
+    cash flow statement, and the growth of accrued interest receivable against the growth of the loan book. Loans with long
+    grace periods (to farmers, to projects) accrue interest by design. Say so, and record what happened when earlier grace
+    periods ended.

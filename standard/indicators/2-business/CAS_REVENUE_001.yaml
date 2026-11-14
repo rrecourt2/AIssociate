@@ -1,0 +1,222 @@
+id: CAS_REVENUE_001
+title: Revenue and customers
+pillar: business
+claim: No single customer, contract or product, if lost or left unpaid, would stop the party from servicing its debt.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+applies_when:
+- {check: OBS_SECTOR_001, is: corporate}
+- {check: OBS_SECTOR_001, is: project}
+matters_more_when:
+- {check: OBS_CASHFLOW_BASIS_001, is: contracted, reason: 'Repayment rests on contracts, so the customers behind those contracts
+    carry the loan'}
+- {check: OBS_SECTOR_001, is: project, reason: A single project usually sells one product to one buyer or one market}
+look_again_when:
+- {new_source: audited_annual_report, reason: 'New accounts show another year of revenue, the customers behind it and what
+    they still owe'}
+- {new_source: offtake_agreement, reason: A new or changed sales contract changes how much revenue is fixed and who owes
+    it}
+checks:
+- id: OBS_REV_001
+  question: Does the party earn revenue from sales today?
+  answer: yes_no
+  why: 'Opens the topic. A business with no revenue yet is a different deal: its customers are judged from signed contracts
+    and a market study, not from a sales record. OBS_BUYER_CONC_001 is asked either way.'
+  due_by: screening
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, interim_financial_statements, bank_statement]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Does the company earn revenue from selling goods or services today? A yes or no is enough to start with.
+  leads_to:
+  - {indicator: CAS_FEASIBILITY_001, is: false, reason: 'With no sales record, the case for future revenue rests on the
+      feasibility work'}
+- id: OBS_REV_002
+  question: How does the party mainly earn its revenue?
+  answer: choice
+  options: [product_sales, services, subscriptions, project_based, mixed]
+  why: The model says how revenue is lost. Product sales fall with volume or price, project work with an empty order book,
+    subscriptions with cancellations.
+  due_by: screening
+  when:
+  - {check: OBS_REV_001, is: true}
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [business_plan, management_presentation, call, officer_note]
+  ask: How does the company mainly earn its money? By selling products, by providing services, from subscriptions, from
+    project contracts, or from a mix of these?
+  note: Choose mixed only where no one model brings in more than about half of revenue.
+- id: OBS_BUYER_CONC_001
+  question: Does any single customer bring in about a tenth or more of the party's revenue, or would it under contracts
+    already signed?
+  answer: yes_no
+  assumption: The party's revenue does not hang on any one customer
+  disproved_by: 'yes'
+  due_by: concept
+  calls_for:
+  - is: true
+    link: [sells_to]
+    end: from
+  look_in: [03.01.a, 06.01.a]
+  evidence:
+    best: [audited_annual_report, offtake_agreement]
+    supporting: [management_accounts, company_record, material_contract]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Is there a customer that brings in a tenth or more of your sales, or that will once a signed contract starts? If
+    so, who is it and what share does it bring?
+  note: 'A tenth is a guide, not a gate. Listed companies that report under IFRS disclose reliance on a customer of that
+    size (IFRS 8), so look for that note in their accounts. Count customers under common control as one. This check does
+    not hang on OBS_REV_001: a business with no revenue yet can already depend on one buyer.'
+  leads_to:
+  - {indicator: CAS_OFFTAKER_CREDIT_001, is: true, reason: The customer's own ability and obligation to pay then decide
+      part of the party's revenue}
+- id: OBS_REV_003
+  question: Do the three largest customers together bring in more than half of the party's revenue?
+  answer: yes_no
+  assumption: The party would keep most of its revenue if it lost its three largest customers
+  disproved_by: 'yes'
+  due_by: concept
+  when:
+  - {check: OBS_REV_001, is: true}
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: What share of last year's sales came from your three largest customers? A list of sales by customer would answer
+    this.
+  if_unknown: Without sales by customer, nobody can say how much revenue one lost account would take with it.
+  note: Half is a guide. Count customers under common control as one.
+- id: OBS_REV_007
+  question: Does one product, or one market (a country or a kind of customer), bring in more than half of the party's gross
+    profit?
+  answer: yes_no
+  assumption: The party's gross profit does not hang on one product or one market
+  disproved_by: 'yes'
+  when:
+  - {check: OBS_REV_001, is: true}
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Which product, and which market, earns you the most gross profit, and what share of the total is it?
+  note: 'Half is a guide. Measure gross profit, not revenue: a product can be a small part of sales and most of the profit.'
+  leads_to:
+  - {indicator: CAS_SECTOR_MARKET_001, is: true, reason: The outlook for that one product or market then decides the party's
+      revenue}
+- id: OBS_REV_004
+  question: By what percentage a year did the party's revenue change, on average, over the last three full financial years?
+  answer: number
+  unit: percent
+  assumption: The party's revenue has not fallen over the last three years
+  flag_when: below 0
+  why: Zero is where revenue turns from growing to shrinking. Revenue that has fallen over three years means that customers,
+    volume or price are already being lost.
+  when:
+  - {check: OBS_REV_001, is: true}
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, interim_financial_statements]
+    stated: [call, officer_note, management_presentation]
+  ask: What were your sales in each of the last three financial years?
+  note: 'Record each year as well as the average, since one bad year can hide in it. Where inflation is high, measure in
+    volume or in a stable currency: growth below inflation is a fall. With fewer than three full years, use the years there
+    are and say so.'
+- id: OBS_REV_005
+  question: Is revenue in the party's strongest quarter of the year regularly at least one and a half times revenue in its
+    weakest quarter?
+  answer: yes_no
+  why: Seasonal revenue means that cash and borrowing swing through the year. Debt, liquidity and repayment dates are then
+    read against the low season, not against the year-end.
+  when:
+  - {check: OBS_REV_001, is: true}
+  look_in: [03.01.i, 03.01.b]
+  evidence:
+    best: [interim_financial_statements, quarterly_report]
+    supporting: [management_accounts, bank_statement]
+    stated: [call, officer_note, correspondence]
+  ask: Do your sales peak in certain months? Monthly or quarterly sales for the last two years would show it.
+  note: One and a half times is a guide.
+  leads_to:
+  - {indicator: CAS_WORKING_CAP_001, is: true, reason: 'Stock, receivables and borrowing peak with the season'}
+  - {indicator: CAS_LIQUIDITY_001, is: true, reason: Cash is thinnest just before the season pays}
+- id: OBS_REV_006
+  question: Is part of the party's revenue fixed under signed contracts that run for more than a year, or under subscriptions
+    that renew?
+  answer: yes_no
+  why: Contracted revenue is steadier than spot sales, but only as good as the customer and the contract behind it.
+  due_by: concept
+  look_in: [06.01.a, 03.01.a]
+  evidence:
+    best: [offtake_agreement, audited_annual_report]
+    supporting: [material_contract, management_accounts, company_record]
+    stated: [call, officer_note, management_presentation]
+  ask: Do you sell under contracts that run for more than a year, or under subscriptions? Roughly what share of your sales
+    do they bring?
+  leads_to:
+  - {indicator: CAS_CONTRACT_REVIEW_001, is: true, reason: 'What the contract fixes, and how it can end, has to be read
+      in the contract itself'}
+- id: OBS_REC_GOV_001
+  question: What share of the party's receivables is owed by government bodies (unpaid sales to the state, subsidies, tax
+    and duty refunds)?
+  answer: number
+  unit: percent
+  assumption: The party does not wait on government bodies for a large part of what it is owed
+  flag_when: above 20
+  why: Government bodies pay when their budget allows, and a supplier can rarely press them or take them to court. At about
+    a fifth of receivables, a delay of some months takes a large part of the party's working capital. A fifth is a guide.
+  when:
+  - {check: OBS_REV_001, is: true}
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note, correspondence]
+  ask: 'How much of what you are owed is owed by government bodies: unpaid sales to state bodies, subsidies, tax or duty
+    refunds? How old are those balances?'
+  note: 'Count all receivables, not only trade receivables: tax and subsidy claims often sit under other receivables. Record
+    how long the balances have been outstanding.'
+- id: OBS_PREPAY_001
+  question: What share of a year's revenue has the party collected from customers before delivery (advances received, contract
+    liabilities)?
+  answer: number
+  unit: percent
+  why: A prepayment is a debt owed in goods. It funds the business for as long as orders keep coming. When they stop, the
+    party has to deliver or repay with no new advances to fund it, and customers that have prepaid stand beside the lender
+    as creditors.
+  when:
+  - {check: OBS_REV_001, is: true}
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note, correspondence]
+  ask: Do customers pay you before delivery? How much do you hold in customer advances, at the year-end and at the highest
+    point in the year?
+  note: Take the balance at its highest point in the year where it swings, and say which date it is for.
+- id: OBS_REC_SECURITY_001
+  question: What share of the party's trade receivables is backed by a letter of credit, a bank guarantee, credit insurance
+    or collateral?
+  answer: number
+  unit: percent
+  mitigant: true
+  assumption: Most of what customers owe the party is backed by a bank, an insurer or collateral
+  flag_when: below 50
+  why: Where less than half is backed, most of the loss from a customer that does not pay stays with the party. Half is
+    a guide.
+  when:
+  - {check: OBS_BUYER_CONC_001, against: true}
+  - {check: OBS_REV_003, against: true}
+  look_in: [03.01.a, 03.01.b, 08.03.a]
+  evidence:
+    best: [audited_annual_report, insurance_policy]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note, correspondence]
+  ask: Of the money customers owe you, what share is covered by a letter of credit, a bank guarantee, credit insurance or
+    collateral?
+  note: This protects what customers already owe. It does not replace the sales that a lost customer would have brought.

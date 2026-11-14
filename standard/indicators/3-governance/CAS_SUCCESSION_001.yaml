@@ -1,0 +1,123 @@
+id: CAS_SUCCESSION_001
+title: Management
+pillar: governance
+claim: The people who run the party have run a business like this before, and it would survive the loss of any one of them.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'A new business has no record of its own: the only record is that of
+    its managers'}
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: A turnaround asks more of management than the years that led to it}
+look_again_when:
+- {new_source: organizational_chart, reason: A new chart can show that a key person has left or that a function has changed
+    hands}
+- {new_source: registry_extract, reason: A new extract can show a change of directors}
+checks:
+- id: OBS_MGMT_001
+  question: 'Has the present management run this business, or one of the same kind and at least the same size, through a
+    bad year: a fall in sales, a collapse in prices or a crisis in its market?'
+  answer: yes_no
+  assumption: Management has been tested by a bad year in a business like this one
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [02.05.b, 03.01.a, 10.03.a]
+  evidence:
+    best: [audited_annual_report, consultant_report]
+    supporting: [management_cv, board_minutes]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: When was the last bad year for this business, who was in charge then, and what did they do?
+  note: Where the loan pays for a step up in size or for a new line of business, measure against the business as it will
+    be, not as it is. The accounts of the bad year show how it was handled.
+- id: OBS_MGMT_002
+  question: Has the chief executive or the head of finance changed in the last two years, and if so, how?
+  answer: choice
+  options: [no_change, planned_handover, unplanned_departure, dismissal_or_dispute, reason_not_known]
+  assumption: The people who built the record the lender relies on are still in charge, or handed over in a planned way
+  flag_when: is unplanned_departure or dismissal_or_dispute or reason_not_known
+  why: An unplanned change at the top, above all in finance, often comes before bad news in the accounts. A planned handover
+    does not. Two years is the span in which such news usually comes out.
+  due_by: concept
+  look_in: [02.01.c, 02.02.a, 03.01.a]
+  evidence:
+    best: [registry_extract, audited_annual_report]
+    supporting: [board_minutes, organizational_chart]
+    stated: [correspondence, call, officer_note]
+  ask: Has your chief executive or head of finance changed in the last two years? Why did the previous one leave, and where
+    is that person now?
+  note: If both changed, give the worse of the two. A change of auditor in the same period is worth noting beside it.
+- id: OBS_MGMT_003
+  question: In the last ten years, has the chief executive, the head of finance or the controlling owner led a business
+    that became insolvent or defaulted on its lenders?
+  answer: yes_no
+  assumption: None of those in charge has led a business into insolvency or default in the last ten years
+  disproved_by: 'yes'
+  look_in: [10.03.a, 02.06.d, 02.05.b]
+  evidence:
+    best: [credit_rating_report, adverse_media_screen, registry_extract]
+    supporting: [management_cv, kyc_package]
+    stated: [correspondence, call, officer_note]
+  note: 'Ten years is a guide. A party that says yes is believed: ask what the lenders of that business recovered. If the
+    search finds nothing, record what was searched, where and when.'
+- id: OBS_SUCC_001
+  question: 'Does the business depend on one or two people for something nobody else at the party could take over within
+    about six months: its main customers, its know-how, its licences or its bank lines?'
+  answer: yes_no
+  assumption: The business would carry on if any one person left
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [02.03.a, 02.05.b, 10.03.a]
+  evidence:
+    best: [consultant_report, audited_annual_report]
+    supporting: [organizational_chart, management_cv, board_minutes]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: If you, or your most important colleague, could not work for six months, who would deal with the main customers,
+    the bank and the technical side?
+  note: Six months is a guide. Look at whose name is on the customer contracts, the licences and the personal guarantees,
+    and who signs at the bank.
+- id: OBS_SUCC_004
+  question: Is there a second line of managers who already run finance, operations and sales day to day, without the key
+    person signing off each decision?
+  answer: yes_no
+  mitigant: true
+  assumption: A second line of managers already runs the main functions
+  disproved_by: 'no'
+  when:
+  - {check: OBS_SUCC_001, against: true}
+  look_in: [02.03.a, 02.05.b, 10.03.a]
+  evidence:
+    best: [consultant_report, audit_management_letter]
+    supporting: [organizational_chart, management_cv, board_minutes]
+    stated: [correspondence, call, officer_note, management_presentation]
+  note: Titles on a chart are not a second line. Ask who decided the last price change, the last hire and the last large
+    purchase.
+- id: OBS_SUCC_002
+  question: Is there a written succession plan, approved by the board or the owners, that names who would take over from
+    each key person?
+  answer: yes_no
+  mitigant: true
+  assumption: A named successor stands ready for each key role
+  disproved_by: 'no'
+  when:
+  - {check: OBS_SUCC_001, against: true}
+  look_in: [02.02.a, 02.02.c]
+  evidence:
+    best: [board_resolution, shareholder_resolution]
+    supporting: [board_minutes, company_record, corporate_governance_policy]
+    stated: [correspondence, call, officer_note]
+  ask: Is there a written plan for who would take over from each key person? Has the board approved it, and do the people
+    named know?
+- id: OBS_SUCC_003
+  question: Is the life and the ability to work of each key person insured, with the party or the lender as beneficiary?
+  answer: yes_no
+  mitigant: true
+  assumption: Insurance would pay the party, or the lender, if a key person died or could no longer work
+  disproved_by: 'no'
+  when:
+  - {check: OBS_SUCC_001, against: true}
+  look_in: [08.03.a, 08.03.b]
+  evidence:
+    best: [insurance_policy]
+    supporting: [insurance_broker_report, board_minutes]
+    stated: [correspondence, call, officer_note]
+  note: 'Insurance pays money: it does not replace the person. Set the sum insured against what the party would lose in
+    the year it takes to find someone else.'

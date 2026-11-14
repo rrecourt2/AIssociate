@@ -1,0 +1,157 @@
+id: CAS_ENERGY_CONSTRUCTION_001
+title: Construction
+pillar: business
+claim: The project will be complete and performing as designed before the first repayment falls due, for no more money than
+  is committed.
+due_by: diligence
+applies_to: [project]
+applies_when:
+- {check: OBS_LIFECYCLE_001, is: greenfield}
+- {check: OBS_CAPEX_PLAN_001, is: true}
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: There is no cash flow at all until the project is complete}
+- {check: OBS_BORROWER_001, is: spv, reason: A single-purpose company has no other business to carry a delay or an overrun}
+look_again_when:
+- {new_source: epc_contract, reason: 'A signed or amended construction contract changes the price, the date and the remedies'}
+- {new_source: technical_feasibility, reason: A progress report from the independent engineer shows cost and schedule at
+    a new date}
+checks:
+- id: OBS_ECON_001
+  question: Has the project signed a construction contract, or a set of contracts, that covers all the works needed to complete
+    it?
+  answer: yes_no
+  assumption: A builder is bound by contract to carry out all the works
+  disproved_by: 'no'
+  due_by: screening
+  calls_for:
+  - is: true
+    link: [builds]
+  look_in: [06.02.a, 05.01.a]
+  evidence:
+    best: [epc_contract]
+    supporting: [technical_feasibility, investment_plan, company_record]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Is the construction contract signed? Please share it. If the works are split between several contracts, please list
+    them and say who answers for the whole.
+  if_unknown: Until a contract is signed, the scope, the price and the completion date are estimates.
+  note: A letter of intent, a preferred bidder or a contract still under negotiation is a no. The terms of the contract
+    and the builder itself are examined on the link to the builder (CAS_BUILDER_OPERATOR_001).
+- id: OBS_ECON_002
+  question: Has the builder chosen for the project completed at least one project of the same technology and of about the
+    same size?
+  answer: yes_no
+  assumption: The builder has built a project like this one before
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [05.01.a, 10.03.a]
+  evidence:
+    best: [technical_feasibility, consultant_report]
+    supporting: [company_record, public_source]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Which comparable projects has your builder completed? Please give the name, size, technology, country and year of
+    each, and a contact at the client.
+  note: The builder's own list of references is its own word until a client, a lender or an independent engineer confirms
+    it. "About the same size" is a guide. How that earlier work went is asked on the link to the builder (OBS_BUILDOP_001).
+- id: OBS_ECON_003
+  question: Does the construction contract make handover depend on performance tests against stated figures (such as capacity,
+    output or efficiency), with damages or a right to reject the works if the figures are not met?
+  answer: yes_no
+  assumption: The builder must hand over works that pass stated performance tests, or pay
+  disproved_by: 'no'
+  when:
+  - {check: OBS_ECON_001, is: true}
+  look_in: [06.02.a, 05.01.a]
+  evidence:
+    best: [epc_contract]
+    supporting: [technical_feasibility, internal_memo]
+    stated: [correspondence, call, officer_note]
+  if_unknown: The project may have to accept and pay for a plant that does not perform as designed.
+- id: OBS_ECON_004
+  question: Would the damages the builder must pay for delay, up to their cap, cover the interest and repayments that fall
+    due during a delay of six months?
+  answer: yes_no
+  assumption: Damages for delay cover the debt service that falls due while the project is late
+  disproved_by: 'no'
+  when:
+  - {check: OBS_ECON_001, is: true}
+  look_in: [06.02.a, 03.02.b]
+  evidence:
+    best: [epc_contract, technical_feasibility]
+    supporting: [financial_model, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Six months is a guide. Use the delay the independent engineer thinks plausible where there is one. Record the daily
+    rate, the cap as a share of the contract price, and for how long after handover the builder must repair defects.
+- id: OBS_ECON_005
+  question: How does the construction budget compare with the cost incurred so far and an independent estimate of the cost
+    to complete?
+  answer: choice
+  options: [within_budget, minor_overrun, material_overrun, no_comparison_available]
+  assumption: The budget, with its contingency, covers the cost to complete as someone independent estimates it
+  flag_when: is material_overrun or no_comparison_available
+  why: An overrun larger than the contingency that is left means the committed money will not finish the project. Where
+    nobody independent has compared, the budget is the sponsor's own word.
+  look_in: [05.01.a, 10.03.a, 01.02.a]
+  evidence:
+    best: [technical_feasibility, consultant_report]
+    supporting: [company_record, management_accounts, financial_model]
+    stated: [correspondence, call, officer_note]
+  ask: Has an independent engineer or cost consultant reviewed the budget? If construction has started, please share the
+    latest report on cost to date and cost to complete.
+  note: minor_overrun means the overrun fits within the contingency that is left. material_overrun means it does not. For
+    a project that has not started, compare the budget with the independent engineer's or cost consultant's own estimate.
+- id: OBS_ECON_006
+  question: Do signed commitments (equity, other loans and grants) cover the whole budget, contingency included, so that
+    no part of the funding is still to be found when the lender first pays out?
+  answer: yes_no
+  assumption: All the money needed to finish the project is committed before the lender pays out
+  disproved_by: 'no'
+  look_in: [01.02.a, 04.01.b, 04.03.b]
+  evidence:
+    best: [facility_agreement, dfi_facility_document, jv_agreement, bank_statement]
+    supporting: [investment_plan, financial_model, board_resolution]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Please list every source of funds for the project, with the amount, who provides it, and whether it is signed, approved
+    or still under discussion.
+  note: Equity the sponsor intends to put in, or a loan still in another lender's approval process, is not committed. Say
+    how much is still open and who is expected to provide it.
+  leads_to:
+  - {indicator: CAS_CONDITIONS_001, is: false, reason: Funding that is not yet committed is usually made a condition of
+      the first drawdown}
+- id: OBS_ECON_007
+  question: Is the first repayment of principal due at least six months after the date on which the project is expected
+    to be complete?
+  answer: yes_no
+  assumption: The first repayment falls due only after the project is complete and earning, with room for a delay
+  disproved_by: 'no'
+  look_in: [04.01.a, 06.02.a, 05.01.a]
+  evidence:
+    best: [facility_agreement, epc_contract, technical_feasibility]
+    supporting: [term_sheet, financial_model, company_record]
+    stated: [correspondence, call, officer_note]
+  note: Take the completion date the independent engineer expects where there is one, and the date in the contract otherwise.
+    Say which. Six months is a guide. What counts is that a plausible delay does not leave a repayment due before the project
+    earns.
+- id: OBS_ECON_008
+  question: Has a sponsor or another party signed an undertaking to pay for cost overruns or to see the project completed?
+  answer: yes_no
+  mitigant: true
+  assumption: A party other than the project is bound to pay for overruns or to complete the project
+  disproved_by: 'no'
+  when:
+  - {check: OBS_ECON_001, against: true}
+  - {check: OBS_ECON_002, against: true}
+  - {check: OBS_ECON_004, against: true}
+  - {check: OBS_ECON_005, against: true}
+  - {check: OBS_ECON_006, against: true}
+  calls_for:
+  - is: true
+    link: [completion_support]
+  look_in: [04.02.a, 02.02.g, 04.01.b]
+  evidence:
+    best: [guarantee_agreement, jv_agreement, facility_agreement]
+    supporting: [term_sheet, board_resolution]
+    stated: [correspondence, call, officer_note]
+  note: A letter of comfort or a statement of intent is a no.
+  leads_to:
+  - {indicator: CAS_COMPLETION_SUPPORT_001, is: true, reason: 'The undertaking is worth what its triggers, its cap and its
+      giver are worth'}

@@ -6,6 +6,7 @@ markers, "At a glance" and "Sources", and never touches the rest.
 import re
 
 from . import files
+from .assess import VERDICTS, claims, view
 from .store import DEAL, TABLES
 
 SHELVES = ("deal", "parties", "people", "topics", "terms", "work")
@@ -98,13 +99,44 @@ def check_lines(rows, memory, std):
     lines = ["| Check | For | State | Answer | Assumption | Rests on |", "|---|---|---|---|---|---|"]
     for row in rows:
         check = std["checks"][row["check"]]
-        state = ", ".join([row["state"], *row["flags"]])
-        tested = check.get("assumption", "")
-        if "assumption" in row:
-            tested += f" (**{row['assumption']}**)"
+        state = ", ".join([row["state"], *row["flags"]]) + (f", action {row['action']}" if "action" in row else "")
+        tested = ("Mitigant: " if check.get("mitigant") else "") + check.get("assumption", "")
+        if "against" in row:
+            tested += " (**the answer goes against it**)" if row["against"] else (
+                " (**stands" + (", on someone's own word" if row.get("own_word") else "") + "**)")
         rests = ", ".join(row.get("facts", [])) + (f" ({row['evidence']})" if "evidence" in row else "")
         lines.append(f"| {row['check']} {check['question']} | {name_of(row['for'], memory)} | {state} | "
                      f"{shown(row.get('value', ''))} | {tested} | {rests} |")
+    return lines
+
+
+def claim_lines(found, memory, std):
+    """The claims that need attention, one per line, and a count of the others."""
+    lines, counts = [], {}
+    for claim in found:
+        ind = std["by_id"][claim["indicator"]]
+        counts[claim["stands"]] = counts.get(claim["stands"], 0) + 1
+        about = f"{ind['title']} ({name_of(claim['for'], memory)})"
+        if claim["stands"] == "challenged":
+            tested = "; ".join(f"{std['checks'][cid]['assumption']} [{cid}]" for cid in claim["against"])
+            parts = [f"- **Challenged:** {about}. The claim: {ind['claim']} The answers go against: {tested}."]
+            known = [f"{std['checks'][cid]['assumption']} [{cid}]: {state}" for cid, state in claim["mitigants"].items()
+                     if state != "not known"]
+            unknown = [cid for cid, state in claim["mitigants"].items() if state == "not known"]
+            if known:
+                parts.append("Mitigants: " + "; ".join(known) + ".")
+            if unknown:
+                parts.append(f"Mitigants not known yet: {', '.join(unknown)}.")
+            if claim["actions"]:
+                parts.append(f"Agreed action: {', '.join(claim['actions'])}.")
+            lines.append(" ".join(parts))
+        elif claim["stands"] == "contested":
+            lines.append(f"- **Contested:** {about}. Facts disagree on {', '.join(claim['contested'])}.")
+        lines += [f"- **Look again:** {about}. {reason}." for reason in claim["look_again"]]
+    said = sum(claim["own_word"] for claim in found)
+    if counts:
+        lines.append("- **Claims:** " + ", ".join(f"{counts[name]} {name}" for name in VERDICTS if name in counts)
+                     + (f". Answers that rest only on someone's own word: {said}" if said else "") + ".")
     return lines
 
 
@@ -119,7 +151,9 @@ def glance(rid, memory, std, rows, held):
                   + "".join(f", {role}" for role in sorted(held.get(sid, ()))) for sid, subject in memory["subjects"].items()]
     elif rid in std["by_id"]:
         own = [row for row in rows if row["indicator"] == rid and row["state"] != "not relevant"]
-        return [f"**{std['by_id'][rid]['title']}**", "", *check_lines(own, memory, std)]
+        mine = [claim for claim in claims(rows, memory, std) if claim["indicator"] == rid]
+        return [f"**{std['by_id'][rid]['title']}.** The claim: {std['by_id'][rid]['claim']}", "",
+                *claim_lines(mine, memory, std), "", *check_lines(own, memory, std)]
     elif rid in memory["subjects"]:
         subject = memory["subjects"][rid]
         lines.append(f"- **{rid}:** {subject['kind']}" + "".join(f", {role}" for role in sorted(held.get(rid, ()))))
@@ -145,8 +179,14 @@ def glance(rid, memory, std, rows, held):
             counts[name] = counts.get(name, 0) + 1
     if counts:
         lines += ["", "- **Checks:** " + ", ".join(f"{count} {name}" for name, count in counts.items())]
-    lines += [f"- **Assumption disproved:** {std['checks'][row['check']]['assumption']} ({', '.join(row['facts'])})"
-              for row in mine if row.get("assumption") == "disproved"]
+    found = claims(rows, memory, std)
+    if rid == DEAL:
+        lines += ["", "| Pillar | " + " | ".join(name.capitalize() for name in VERDICTS) + " |", "|---|" + "---|" * len(VERDICTS)]
+        lines += [f"| {pillar['title']} | " + " | ".join(map(str, view(found, std)[pillar["id"]])) + " |"
+                  for pillar in std["pillars"]]
+        lines.append("")
+    near = {rid} | {lid for lid, link in memory["links"].items() if rid in (link["from"], link["to"])}
+    lines += claim_lines([claim for claim in found if rid == DEAL or claim["for"] in near], memory, std)
     lines += [f"- **Looked for and not found:** {fact['statement']} ({fid})" for fid, fact in about if fact.get("nothing_found")]
     lines += [f"- **Open question** {qid} to {q['asked_of']}: {q['text']}" for qid, q in memory["questions"].items()
               if q["state"] == "open" and q.get("about") == rid]

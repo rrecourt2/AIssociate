@@ -3,6 +3,11 @@ link_types:
   title: Borrows under
   description: The party borrows under the facility.
   role_from: borrower
+- id: relies_on
+  title: Relies on
+  description: Repayment of the facility relies on the cash flow of this party or group, whether or not it is the
+    borrower.
+  role_to: repayment_source
 - id: guarantees
   title: Guarantees
   description: The party guarantees the facility or another party's obligations.
@@ -18,6 +23,7 @@ link_types:
 - id: controls
   title: Controls
   description: The party controls another party without owning it, for example through voting rights or management.
+  role_from: controller
 - id: member_of
   title: Is a member of
   description: The party belongs to a group.
@@ -55,10 +61,14 @@ link_types:
   description: One thing is part of another, such as a tranche of a facility or an asset of a project.
 - id: supports
   title: Gives support to
-  description: The party has given a support undertaking that is not a guarantee.
+  description: The party has given a support undertaking that is not a guarantee. Like a guarantor, it is examined for whether
+    it can and must stand behind the loan.
+  role_from: guarantor
 - id: completion_support
   title: Supports completion of
-  description: The party supports the completion of a project or the facility that finances it.
+  description: The party supports the completion of a project or the facility that finances it. Like a guarantor, it is
+    examined for whether it can and must stand behind that promise.
+  role_from: guarantor
 - id: portfolio_support
   title: Supports within a portfolio
   description: One project or party supports another, for example through a cash sweep or shared reserves.

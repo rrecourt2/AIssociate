@@ -27,11 +27,12 @@ def read(name):
 
 def load():
     std = read("standard.yaml")
-    for name in ("stages", "workstreams", "subject-kinds", "link-types", "source-kinds"):
+    for name in ("stages", "pillars", "subject-kinds", "link-types", "source-kinds"):
         std.update(read(f"lists/{name}.yaml"))
     std["dataroom"] = read("dataroom.yaml")
     paths = sorted(glob.glob(os.path.join(HERE, "indicators", "*", "*.yaml")))
-    std["indicators"] = [read(os.path.relpath(p, HERE)) for p in paths]
+    order = [pillar["id"] for pillar in std["pillars"]]
+    std["indicators"] = sorted((read(os.path.relpath(p, HERE)) for p in paths), key=lambda ind: order.index(ind["pillar"]) if ind.get("pillar") in order else len(order))
     return std
 
 
@@ -46,16 +47,21 @@ def page(path, title, lines):
 def said(cond):
     if cond.get("answered"):
         return "is answered"
+    if cond.get("against"):
+        return "goes against its assumption"
+    if "is" not in cond:
+        return "is given"
     value = cond["is"]
     return "is " + ("yes" if value is True else "no" if value is False else f"`{value}`")
 
 
 def check_lines(check, std_names):
     title, slot_page = std_names
-    lines = [f"### {check['id']}", "", check["question"], ""]
+    job = "Mitigant" if check.get("mitigant") else "Test" if "assumption" in check else "Question"
+    lines = [f"### {check['id']}", "", check["question"], "", f"- **Job:** {job}"]
     if "assumption" in check:
         by = f" A {check['disproved_by']} disproves it." if "disproved_by" in check else ""
-        lines.append(f"- **Assumption tested:** {check['assumption']}.{by}")
+        lines.append(f"- **Assumption:** {check['assumption']}.{by}")
     for key, label in (("why", "Why it is asked"), ("flag_when", "Reference point"), ("unit", "Unit"),
                        ("due_by", "Ideally answered by")):
         if key in check:
@@ -66,6 +72,10 @@ def check_lines(check, std_names):
         lines.append("- **Asked after:** " + ", ".join(check["after"]))
     if "when" in check:
         lines.append("- **Asked when:** " + " or ".join(f"{c['check']} {said(c)}" for c in check["when"]))
+    for call in check.get("calls_for", []):
+        wanted = f"a {call['kind']}" if "kind" in call else "a link of kind " + " or ".join(f"`{name}`" for name in call["link"])
+        wanted += f", with the subject asked about at its `{call['end']}` end" if "end" in call else ""
+        lines.append(f"- **Calls for:** {wanted} in the structure, when the answer {said(call)}")
     if "look_in" in check:
         lines.append("- **Where to look:** " + ", ".join(f"[{s}]({slot_page(s)})" for s in check["look_in"]))
     for tier in TIERS:
@@ -82,27 +92,22 @@ def check_lines(check, std_names):
 
 
 def write_site(std, out):
-    title = {x["id"]: x["title"] for key in ("stages", "workstreams", "source_kinds", "link_types", "subject_kinds")
+    title = {x["id"]: x["title"] for key in ("stages", "pillars", "source_kinds", "link_types", "subject_kinds")
              for x in std[key]}
 
     def slot_page(slot, up="../"):
         return f"{up}dataroom/{slot[:2]}.md#{slot.replace('.', '')}"
 
     for ind in std["indicators"]:
-        lines = [f"- **Workstream:** {title[ind['workstream']]}", f"- **Ideally done by:** {title[ind['due_by']]}",
-                 "- **Applies to:** " + ", ".join(ind["applies_to"])]
+        lines = [f"**The claim:** {ind['claim']}", "", f"- **Pillar:** {title[ind['pillar']]}",
+                 f"- **Ideally done by:** {title[ind['due_by']]}", "- **Asked about:** " + ", ".join(ind["applies_to"])]
         if "applies_when" in ind:
             lines.append("- **Only when:** " + " or ".join(f"{c['check']} {said(c)}" for c in ind["applies_when"]))
-        for side in ("risk", "mitigant"):
-            if side in ind:
-                lines.append(f"- **{side.capitalize()} statement:** {ind[side]['statement']}")
-        for who, why in ind.get("why_it_matters", {}).items():
-            lines.append(f"- **Why it matters, {who}:** {why}")
         for key, label in (("matters_more_when", "Matters more"), ("matters_less_when", "Matters less")):
             for item in ind.get(key, []):
                 lines.append(f"- **{label}** when {item['check']} {said(item)}. {item['reason']}.")
         for item in ind.get("look_again_when", []):
-            lines.append(f"- **Look again:** {item['reason']}.")
+            lines.append(f"- **Look again:** {item['reason'].rstrip('.')}.")
         lines += ["", "## Checks", ""]
         for check in ind["checks"]:
             lines += check_lines(check, (title, slot_page))
@@ -129,9 +134,9 @@ def write_site(std, out):
         page(os.path.join(out, "dataroom", folder["id"] + ".md"), f"{folder['id']} {folder['title']}", lines)
 
     lines = [std["description"], "", f"Version {std['version']}.", "", "## Indicators", ""]
-    for ws in std["workstreams"]:
-        lines += [f"### {ws['title']}", ""]
-        lines += [f"- [{i['title']}](indicators/{i['id']}.md)" for i in std["indicators"] if i["workstream"] == ws["id"]]
+    for pillar in std["pillars"]:
+        lines += [f"### {pillar['title']}", "", pillar["description"], ""]
+        lines += [f"- [{i['title']}](indicators/{i['id']}.md): {i['claim']}" for i in std["indicators"] if i["pillar"] == pillar["id"]]
         lines.append("")
     lines += ["## Data room", ""]
     lines += [f"- [{f['id']} {f['title']}](dataroom/{f['id']}.md)" for f in std["dataroom"]["folders"]]
@@ -143,7 +148,8 @@ def write_site(std, out):
     lines += ["", "## Kinds of subject", "", "| Kind | What it is |", "|---|---|"]
     lines += [f"| {k['title']} | {k['description']} |" for k in std["subject_kinds"]]
     lines += ["", "## Kinds of link", "", "| Link | What it means | Role it gives |", "|---|---|---|"]
-    lines += [f"| {l['title']} | {l['description']} | {l.get('role_from') or l.get('role_to') or ''} |" for l in std["link_types"]]
+    lines += [f"| {l['title']} (`{l['id']}`) | {l['description']} | {l.get('role_from') or l.get('role_to') or ''} |"
+              for l in std["link_types"]]
     lines += ["", "## Kinds of source", "", "| Kind | What it is | Data-room slot |", "|---|---|---|"]
     lines += [f"| {k['title']} | {k['description']} | {k.get('slot', 'internal folder')} |" for k in std["source_kinds"]]
     page(os.path.join(out, "lists.md"), "Lists", lines)

@@ -1,0 +1,113 @@
+id: CAS_DISCOVERY_SECTOR_001
+title: Kind of business
+pillar: deal
+claim: The business earns its revenue and its profit from the activity it is described as, and not mainly from something
+  else.
+due_by: screening
+applies_to: [deal]
+look_again_when:
+- {new_source: audited_annual_report, reason: New accounts can show a different mix of revenue and profit}
+checks:
+- id: OBS_SECTOR_001
+  question: 'What kind of credit is this: a company repaid from its business as a whole, a project or single asset repaid
+    from its own cash flow, a financial institution, or a fund?'
+  answer: choice
+  options: [corporate, project, financial_institution, fund]
+  why: The answer decides which view applies. A company and a project are examined with the corporate view, and a bank or
+    another lender with the bank module.
+  look_in: [03.01.a, 04.01.a, 01.01.a]
+  evidence:
+    best: [audited_annual_report, facility_agreement]
+    supporting: [term_sheet, organizational_chart, internal_memo]
+    stated: [executive_summary, call, officer_note]
+  ask_whom: lender
+  if_unknown: Until the kind of credit is known, the tool cannot say which indicators apply.
+  note: The answer is for the deal. It can be recorded for one party alone when that party is a different kind of credit
+    from the rest of the deal, for example a bank that guarantees a factory's loan.
+- id: OBS_SECTOR_002
+  question: Which sector is the business in?
+  answer: choice
+  options: [agribusiness, manufacturing, trade_and_services, power, infrastructure, real_estate, financial_services, other]
+  why: The sector switches on the checks that belong to it, such as those for power and for agribusiness.
+  look_in: [03.01.a, 01.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, operational_license]
+    stated: [business_plan, executive_summary, public_source, call, officer_note]
+  ask: What does the business do, and which activity brings in the largest part of its revenue?
+  note: Choose the sector that the largest part of revenue comes from. Agribusiness covers growing, processing and trading
+    farm produce. Power covers generating, transmitting and selling electricity.
+- id: OBS_SECTOR_003
+  question: Is the business supervised as a financial institution, by a central bank or another financial regulator (as
+    a bank, an insurer, a leasing or microfinance company, or a fund manager)?
+  answer: yes_no
+  why: A supervised business answers to a regulator that can limit what it lends, pays out and repays.
+  look_in: [07.01.a, 03.01.a]
+  evidence:
+    best: [regulatory_document, operational_license, audited_annual_report]
+    supporting: [internal_memo]
+    stated: [public_source, correspondence, call, officer_note]
+  ask: Does the business hold a licence from a central bank or another financial regulator, and does that regulator supervise
+    it?
+  note: If the answer is yes and the kind of credit is not recorded as a financial institution, look at the kind of credit
+    again.
+  leads_to:
+  - {indicator: CAS_FI_GOVERNANCE_001, is: true, reason: 'What the supervisor requires, and what it has found, is examined
+      there'}
+- id: OBS_VALUE_CHAIN_001
+  question: Where does the business sit in its value chain?
+  answer: choice
+  options: [primary_producer, manufacturer, trader, distributor, retailer, service_provider, developer, owner_operator,
+    concessionaire, lender, fund_manager]
+  why: The place in the chain says whom the business depends on. A trader depends on its suppliers and its bank lines, a
+    concessionaire on the authority that granted the concession.
+  look_in: [03.01.a, 01.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, internal_memo]
+    stated: [business_plan, executive_summary, call, officer_note]
+  ask: What is the main role of the business? Does it grow or extract, make, trade, distribute, sell to consumers, provide
+    a service, develop assets, own and operate them, hold a concession, lend, or manage funds?
+  note: Choose the role that earns the largest part of the profit. Choose developer where the business builds assets to
+    sell them, and owner_operator where it keeps and runs them.
+- id: OBS_SECTOR_CONFIRM_003
+  question: Is the largest revenue line in the latest audited accounts the activity that the business is described as?
+  answer: yes_no
+  assumption: The largest source of revenue is the activity the business is described as
+  disproved_by: 'no'
+  due_by: concept
+  when:
+  - {check: OBS_LIFECYCLE_001, is: expanding}
+  - {check: OBS_LIFECYCLE_001, is: established}
+  - {check: OBS_LIFECYCLE_001, is: distressed}
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, interim_financial_statements, tax_returns]
+    stated: [management_presentation, call, officer_note]
+  note: Read the revenue note or the segment note, not the description at the front of the report. The check is not asked
+    of a business that does not operate yet, because it has no revenue to read.
+- id: OBS_SECTOR_CONFIRM_004
+  question: Does more than half of the revenue, or more than half of the profit, come from something other than the stated
+    business (for example trading, the sale or revaluation of property, financial income or dealings with related parties)?
+  answer: yes_no
+  assumption: Most of the revenue and most of the profit come from the stated business
+  disproved_by: 'yes'
+  due_by: concept
+  when:
+  - {check: OBS_LIFECYCLE_001, is: expanding}
+  - {check: OBS_LIFECYCLE_001, is: established}
+  - {check: OBS_LIFECYCLE_001, is: distressed}
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, interim_financial_statements, tax_returns]
+    stated: [management_presentation, call, officer_note]
+  note: Take the profit before tax over the last three years where the accounts allow it, and count gains from revaluation
+    as something else. Half is a guide. What counts is whether the business that was described is the one that earns the
+    money.
+  leads_to:
+  - {indicator: CAS_RELATED_PARTY_001, is: true, reason: 'Income from related parties may not be earned at market terms,
+      and may not last'}
+  - {indicator: CAS_COST_001, is: true, reason: Profit that does not come from the stated business has to be understood
+      before it is counted on}

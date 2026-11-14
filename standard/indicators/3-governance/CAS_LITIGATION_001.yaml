@@ -1,0 +1,143 @@
+id: CAS_LITIGATION_001
+title: Litigation and disputes
+pillar: governance
+claim: No lawsuit or investigation could take away the cash or the assets the lender counts on.
+due_by: diligence
+applies_to: [borrower, repayment_source, guarantor]
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: The creditors of a business in distress go to court before they come
+    to the table}
+- {check: OBS_COLLATERAL_001, is: unsecured, reason: Without security the lender stands in line beside whoever wins a claim}
+look_again_when:
+- {new_source: audited_annual_report, reason: New accounts can show a new provision or a new contingent liability}
+- {new_source: legal_opinion, reason: A new letter from the lawyers can change the amounts and the odds}
+- {check: OBS_LIT_001, is: true, reason: A new case has to be measured against what the party can pay}
+checks:
+- id: OBS_LIT_001
+  question: Is a court case, an arbitration or a written claim pending against the party?
+  answer: yes_no
+  why: Opens the topic. A no is checked by OBS_LIT_007 against the registers and the accounts, and OBS_LIT_004 asks about
+    investigations whatever the answer.
+  due_by: screening
+  look_in: [08.01.a, 03.01.a]
+  evidence:
+    best: [legal_opinion, audited_annual_report]
+    supporting: [company_certificate, board_minutes, management_accounts]
+    stated: [correspondence, call, officer_note]
+  ask: Is anyone suing you, or has anyone sent you a written claim? Please include arbitrations and cases you expect to
+    win.
+  leads_to:
+  - {indicator: CAS_SECURITY_ASSET_001, is: true, reason: See whether a claim touches an asset that is to be given as security}
+- id: OBS_LIT_002
+  question: What is the total amount claimed against the party in all pending cases, with interest and costs?
+  answer: number
+  unit: currency
+  why: The starting figure. OBS_LIT_006 asks what it would mean if it had to be paid.
+  due_by: concept
+  when:
+  - {check: OBS_LIT_001, is: true}
+  look_in: [08.01.a, 03.01.a]
+  evidence:
+    best: [legal_opinion, audited_annual_report]
+    supporting: [management_accounts, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: What is claimed in each pending case, and what do your lawyers say about each?
+  note: Take the amount claimed, not the party's own view of what it will lose, and say at which date. List the cases one
+    by one where there are more than one.
+- id: OBS_LIT_006
+  question: If the party lost every pending case at the amount claimed, could it pay and still meet what it owes its lenders
+    (and, for a guarantor, what it has guaranteed)?
+  answer: yes_no
+  assumption: The party could lose every pending case and still pay its lenders
+  disproved_by: 'no'
+  when:
+  - {check: OBS_LIT_001, is: true}
+  look_in: [08.01.a, 03.01.a, 03.02.b]
+  evidence:
+    best: [legal_opinion, audited_annual_report]
+    supporting: [financial_model, management_accounts, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: This is the worst case, and it is meant to be. If the answer is no, OBS_LIT_003 and OBS_LIT_008 show how likely
+    the loss is and who else would bear it.
+- id: OBS_LIT_003
+  question: Do the latest audited accounts carry a provision for every case the party's lawyers expect it to lose, at the
+    amount they expect?
+  answer: yes_no
+  assumption: The accounts already carry the losses that the party's own lawyers expect
+  disproved_by: 'no'
+  applies_to: [borrower, repayment_source]
+  when:
+  - {check: OBS_LIT_001, is: true}
+  look_in: [03.01.a, 08.01.a]
+  evidence:
+    best: [audited_annual_report, legal_opinion]
+    supporting: [management_accounts, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: Which of the pending cases have you provided for in your accounts, and for how much?
+  note: Set the lawyers' letter to the auditor beside the note on provisions and contingent liabilities. A case the lawyers
+    call likely to be lost, with no provision, means that profit and equity are overstated by that amount.
+- id: OBS_LIT_004
+  question: Is a regulator, a tax authority, a competition authority or a prosecutor investigating the party, or has one
+    given notice that it will?
+  answer: yes_no
+  assumption: No authority has an inquiry open that could end in a penalty, a tax bill or the loss of a licence
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [07.01.a, 08.01.a, 03.01.a]
+  evidence:
+    best: [regulatory_document, legal_opinion, audited_annual_report]
+    supporting: [board_minutes, company_certificate, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: 'Is any authority looking into your company at the moment: the tax office, a regulator, the competition authority,
+    a prosecutor? A routine inspection with no findings does not count.'
+  note: This check does not hang on OBS_LIT_001. A tax audit that every company of this size gets is routine until it ends
+    in an assessment.
+  leads_to:
+  - {indicator: CAS_KYC_AML_001, is: true, reason: 'An inquiry into fraud, bribery or money laundering is also a matter
+      of integrity'}
+  - {indicator: CAS_REGULATORY_001, is: true, reason: An inquiry by a regulator can put a licence at risk}
+- id: OBS_LIT_005
+  question: In the last five years, has a regulator, a tax authority or another public body fined the party, ordered it
+    to pay or to stop an activity, or suspended a licence or a permit?
+  answer: yes_no
+  assumption: No public body has fined the party, stopped an activity or suspended a licence in the last five years
+  disproved_by: 'yes'
+  applies_to: [borrower, repayment_source]
+  look_in: [07.01.a, 03.01.a, 08.01.a]
+  evidence:
+    best: [regulatory_document, audited_annual_report, legal_opinion]
+    supporting: [board_minutes, company_record, company_certificate]
+    stated: [correspondence, call, officer_note]
+  ask: In the last five years, has any authority fined you, ordered you to pay or to stop something, or suspended a licence
+    or a permit?
+  note: Five years is a guide. One small fine is an incident. Several from the same authority are a pattern, and the next
+    step is often a suspension. A penalty for fraud, bribery or money laundering also goes under OBS_KYC_003.
+- id: OBS_LIT_007
+  question: Does a search of the court and insolvency registers, a credit report or the lawyers' letter to the auditor show
+    a case, a judgment or an attachment against the party that it had not mentioned?
+  answer: yes_no
+  assumption: The party has told the lender of every case, judgment and attachment against it
+  disproved_by: 'yes'
+  look_in: [08.01.a, 10.03.a, 02.06.d]
+  evidence:
+    best: [legal_opinion, credit_rating_report, adverse_media_screen]
+    supporting: [audited_annual_report, registry_extract, public_source]
+    stated: [call, officer_note]
+  note: This check does not hang on OBS_LIT_001, so that the topic cannot close on one answer. Search where the party is
+    registered and where its main assets are. If the search finds nothing, record what was searched, where and when.
+- id: OBS_LIT_008
+  question: Is the amount at stake covered by insurance, or by an indemnity from someone able to pay it, and has the insurer
+    or the giver of the indemnity confirmed cover for these cases in writing?
+  answer: yes_no
+  mitigant: true
+  assumption: Someone other than the party will pay if the cases are lost, and has said so in writing
+  disproved_by: 'no'
+  when:
+  - {check: OBS_LIT_006, against: true}
+  look_in: [08.03.a, 10.02.a, 06.01.a]
+  evidence:
+    best: [insurance_policy, correspondence, material_contract]
+    supporting: [insurance_broker_report, legal_opinion]
+    stated: [call, officer_note]
+  note: 'The letter has to come from the insurer or from whoever gave the indemnity. A policy that exists is not cover that
+    has been confirmed: insurers reserve their rights. An indemnity is worth what its giver can pay.'

@@ -1,0 +1,159 @@
+id: CAS_GUARANTOR_CAPACITY_001
+title: The guarantor's capacity
+pillar: links
+claim: The guarantor can pay the guaranteed amount when it is called, and would not fail for the same reason as the borrower.
+due_by: diligence
+applies_to: [guarantor]
+matters_more_when:
+- {check: OBS_COLLATERAL_001, is: unsecured, reason: Without security the guarantor's means are the only second way out}
+- {check: OBS_BORROWER_001, is: spv, reason: 'A special-purpose borrower has nothing of its own to fall back on, so the
+    guarantor carries the credit'}
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'Before the business earns anything, a call on the guarantee is more
+    likely'}
+look_again_when:
+- {new_source: audited_annual_report, reason: 'New accounts of the guarantor show its net worth, its debt and its guarantees
+    at a new date'}
+- {new_source: guarantee_agreement, reason: A new draft can change the amount the guarantor must be able to pay}
+checks:
+- id: OBS_GTOR_001
+  question: 'What kind of guarantor is this: a company, a natural person, a bank or insurer, or a government or public body?'
+  answer: choice
+  options: [company, person, bank_or_insurer, public_body]
+  why: 'The kind of guarantor decides where its means are looked for: accounts for a company, a statement of net worth and
+    title documents for a person, a rating for a bank or an insurer, a budget for a public body.'
+  due_by: screening
+  look_in: [02.01.a, 02.06.a]
+  evidence:
+    best: [certificate_of_incorporation, registry_extract, kyc_package]
+    supporting: [organizational_chart, term_sheet]
+    stated: [correspondence, call, officer_note]
+- id: OBS_GTOR_002
+  question: What is the guarantor's net worth (all it owns less all it owes), leaving out its shares in the borrower and
+    what the borrower owes it?
+  answer: number
+  unit: currency
+  why: The figure is read against the most the guarantor can be made to pay (OBS_GUARANTEE_CAP_001). The stake in the borrower
+    is left out because it is worth least on the day the guarantee is called.
+  due_by: concept
+  look_in: [03.01.a, 05.02.a]
+  evidence:
+    best: [audited_annual_report, valuation_report]
+    supporting: [management_accounts, company_certificate, tax_returns]
+    stated: [correspondence, call, officer_note]
+  ask: What do you own and what do you owe, in total, as of the latest date you have figures for? Please leave out your
+    shares in the borrower and anything the borrower owes you.
+  note: Give the date of the figure. For a person, use a signed statement of net worth and check the larger assets against
+    title documents, registers or valuations.
+- id: OBS_GTOR_003
+  question: Could the guarantor pay the full guaranteed amount within 90 days of a demand, from cash, committed credit lines
+    it has not drawn, and assets that are pledged to no one and could be sold in that time?
+  answer: yes_no
+  assumption: The guarantor can find the guaranteed amount in cash within the time a demand gives it
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report, valuation_report, credit_rating_report]
+    supporting: [management_accounts, bank_statement, company_certificate]
+    stated: [correspondence, call, officer_note]
+  if_unknown: A guarantor whose wealth is in land, unlisted shares or the borrower itself can be worth the amount and still
+    be unable to pay it.
+  note: 90 days is a guide. Use the period the guarantee gives the guarantor to pay where that is shorter. Shares in the
+    borrower and claims on the borrower do not count.
+- id: OBS_GTOR_004
+  question: Do the guarantees, sureties and other contingent liabilities that the guarantor has already given, added to
+    this guarantee, come to more than its net worth?
+  answer: yes_no
+  assumption: The guarantor's net worth covers all the guarantees it has given, this one included
+  disproved_by: 'yes'
+  look_in: [03.01.a, 04.03.a, 10.03.a]
+  evidence:
+    best: [audited_annual_report, credit_rating_report]
+    supporting: [debt_schedule, company_certificate, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: Please list every guarantee you have given for someone else's debt, with the amount, the lender and the borrower.
+  note: Count guarantees for group companies, for other borrowers and for the guarantor's owners, and capital it has promised
+    but not yet paid in. Use the net worth given under OBS_GTOR_002. A person's guarantees appear in no accounts. Ask for
+    a signed list and check it against a credit bureau report where there is one.
+- id: OBS_GTOR_005
+  question: Leaving out everything that comes from the borrower and the borrower's group (dividends, fees, sales to them,
+    loans to them and the value of its shares in them), do the guarantor's income and net worth still cover the guaranteed
+    amount?
+  answer: yes_no
+  assumption: The guarantor's means to pay do not come from the borrower or the borrower's group
+  disproved_by: 'no'
+  why: A guarantee from someone who lives off the borrower adds a signature, not a second way out. The two would fail together.
+  due_by: concept
+  look_in: [03.01.a, 02.03.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, organizational_chart, company_certificate]
+    stated: [correspondence, call, officer_note]
+  note: A guarantor in the same business and the same market as the borrower can fail with it even where the two have no
+    dealings with each other. Where that is so, say it in the reason.
+  leads_to:
+  - {indicator: CAS_REPAYMENT_THESIS_001, is: false, reason: A guarantor that would fail together with the borrower is not
+      a second way out}
+- id: OBS_GTOR_006
+  question: Has the guarantor named assets worth at least the guaranteed amount (what each is, where it is, and the register
+    or account that shows it), and are those assets free of any pledge or charge to others?
+  answer: yes_no
+  assumption: A creditor with a judgment against the guarantor would find assets to seize that are worth the guaranteed
+    amount
+  disproved_by: 'no'
+  look_in: [02.01.c, 05.02.a, 03.01.a]
+  evidence:
+    best: [registry_extract, valuation_report, audited_annual_report]
+    supporting: [company_certificate, bank_statement, management_accounts]
+    stated: [correspondence, call, officer_note]
+  note: Whether a judgment can be enforced in the country where the assets are is asked about the guarantee (OBS_GUARANTEE_ENFORCE_001).
+    This check asks whether there is anything there to enforce against. Where the guarantor is a holding company, its assets
+    are shares in subsidiaries, and the subsidiaries' own lenders are paid first.
+- id: OBS_GTOR_007
+  question: When a guarantee given by the guarantor was called in the past, or a company it stood behind ran short of money,
+    what did the guarantor do?
+  answer: choice
+  options: [paid_or_supported, refused_or_disputed, never_called]
+  assumption: The guarantor has never walked away from a guarantee or from a company it stood behind
+  flag_when: is refused_or_disputed
+  why: A guarantor that has fought or avoided a call before is likely to do so again. A guarantor that was never called
+    has shown nothing either way, so that answer is recorded and does not count against it.
+  look_in: [02.06.d, 03.01.a, 10.03.a]
+  evidence:
+    best: [adverse_media_screen, credit_rating_report, audited_annual_report]
+    supporting: [board_minutes, bank_statement, public_source]
+    stated: [correspondence, call, officer_note]
+  ask: Have you ever been asked to pay under a guarantee, or to put money into a company you owned or backed when it was
+    short? What happened?
+  note: Ask the borrower's other lenders, and search court records and the press. If the search finds nothing, record what
+    was searched, where and when.
+- id: OBS_GTOR_008
+  question: Are the assets that the guarantor has named as its means to pay held in the guarantor's own name alone, and
+    not by a spouse, a relative, a trust, a foundation or a company?
+  answer: yes_no
+  assumption: The assets the lender counts on belong to the guarantor in law
+  disproved_by: 'no'
+  when:
+  - {check: OBS_GTOR_001, is: person}
+  look_in: [02.01.c, 04.02.b, 08.01.a]
+  evidence:
+    best: [registry_extract, security_agreement, legal_opinion]
+    supporting: [company_certificate, bank_statement, tax_returns]
+    stated: [correspondence, call, officer_note]
+  note: Assets held jointly, or within a marriage in which property is shared, may be only partly within reach. Say which
+    assets these are and take legal advice. Assets held through a company are reached only after that company's own creditors.
+- id: OBS_GTOR_009
+  question: What is the guarantor's credit rating from a rating agency?
+  answer: choice
+  options: [investment_grade, below_investment_grade, not_rated]
+  why: For a bank or an insurer, a rating says more about its ability to pay than its balance sheet does. Many lenders accept
+    a guarantee only from a bank above a minimum rating. Each lender sets that minimum for itself.
+  due_by: concept
+  when:
+  - {check: OBS_GTOR_001, is: bank_or_insurer}
+  look_in: [10.03.a]
+  evidence:
+    best: [credit_rating_report]
+    supporting: [audited_annual_report, public_source]
+    stated: [correspondence, call, officer_note]
+  note: Record the agency, the rating, whether it is on the international or a national scale, and its date.

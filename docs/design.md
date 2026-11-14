@@ -120,7 +120,8 @@ Who the borrower is, who guarantees, which customers, suppliers and related part
 - **A role can be an empty seat**, such as a guarantor who is not yet known. Its checks wait until it has a name. Analysis of the rest goes ahead.
 - **Anything can propose.** The AI proposes parties and links as it reads, and the officer can simply say so. A proposed link is usable at once.
 - **A link carries its reason:** why this party matters for repayment. What is left out is a decision, with a reason that points to facts.
-- **A link in the graph creates a wiki page and brings the checks that fit the role.**
+- **A link in the graph creates a wiki page and brings the checks that fit the role**, and the checks on the link itself.
+- **Repayment may rest on someone other than the borrower.** A facility `relies_on` the party or group whose cash flow repays it. That party gets the full set of checks, whoever signs the loan.
 - **The AI states the structure once**, mentions it again when it changes, and asks only when it cannot decide.
 
 Decisions and questions to the client are recorded as well.
@@ -143,7 +144,7 @@ Six shelves, two levels deep:
 Every page has the same four parts:
 
 1. **What it is.** One to three plain sentences. The first can stand alone, and is the page's line in the table of contents.
-2. **At a glance.** Filled in by the tool from the graph and the records: roles, links, key values, the checks and what they rest on, assumptions that are disproved, searches that found nothing, open questions and decisions.
+2. **At a glance.** Filled in by the tool from the graph and the records: roles, links, key values, where the claims stand, searches that found nothing, open questions and decisions. The Deal page also shows the claims by pillar.
 3. **What we know.** Description, context and facts, each with the ID of the fact or source it rests on. The AI orders this part as the subject needs.
 4. **Assumptions and open points.** Each assumption with what it rests on. Then what is unknown, and what was looked for and not found.
 
@@ -176,19 +177,25 @@ The standard says what a deal folder holds and what must be known. It is data on
 | Structure | Holds | Size |
 |---|---|---|
 | Data room | Where each document belongs | 10 folders, 32 sub-folders, 64 slots |
-| Checks | What must be known, grouped into indicators and workstreams | 8 workstreams, 50 indicators, 267 checks |
+| Checks | What must be known, as claims in nine pillars | 9 pillars, 70 indicators, 570 checks |
 | Systems | What each of the bank's systems asks for | Private to the institution |
 
-### 6.1 Checks
+### 6.1 Claims and checks
 
-The checks are copied over from the first Bankability and repaired on the way. [standard/CHANGES.md](../standard/CHANGES.md) lists what changed.
+[standard/FRAMEWORK.md](../standard/FRAMEWORK.md) explains the framework. In short:
 
-- **Falsification is the backbone.** A check tests a stated assumption. "Does the entity have material foreign currency revenue?" tests "Entity has no FX exposure". For a yes/no check the standard says which answer disproves the assumption, and the tool says whether it stands or is disproved.
-- **Checks branch.** An answer decides which checks follow.
-- **Checks apply by role.** The checks for a guarantor apply to whoever holds that seat. Some apply to the deal, to a kind of subject, or to a link.
-- **A check is answered by facts.** Its state is computed: open, waiting, not relevant, answered, contested, parked or off. An answer can be thin, old or flagged.
-- **Strength of evidence.** Each check says which kinds of source are the best evidence, which support, and which are only what someone said. Each stage names what is ideal by then: what the client says is fine at screening, and by approval it should be the best kind. The tool shows what each answer rests on. It demands nothing.
-- **Reference points, not thresholds.** Sixteen checks carry a reference point, such as "above 20". An answer that meets it is flagged. Nothing else follows from it.
+- **It starts from repayment.** The structure of the deal is discovered. The loan has two ways out, and each points at something in the structure: a party's cash flow, a guarantor's promise, an asset. The analysis follows that reliance, wherever it points. Nothing is tied to the word "borrower".
+- **Four layers, kept apart**, as a rating agency keeps them: the deal, each party on its own, the links between parties, and the facility. A weak layer is not averaged away by a strong one.
+- **Nine pillars**: the deal; environment; business; people and governance; cash flow and debt; liquidity and financial risks; environmental, social and impact; links; the facility.
+- **Falsification is the backbone.** An indicator is one claim: what the lender relies on, in a sentence that can turn out false. A check is a question, a test or a mitigant. A test states its own assumption and which answer goes against it. A mitigant is asked once a test has gone against the claim.
+- **The tool says where each claim stands**, for each party or link it is made about: not tested, stands, challenged (with each mitigant holding, failing or not known) or contested. There are no scores and no weights.
+- **Checks apply by role and by link.** A role is the end of a link, so the checks follow the role when a party changes. A guarantor is asked whether it can pay and must pay, not how it runs a factory. A link that exists brings its own checks: a guarantee, an owner, a key customer, a key supplier, another lender.
+- **Discovery opens what applies and calls for structure.** The kind of credit and the sector decide which checks apply. Until they are answered, those checks wait. Some answers mean a party or a link must exist. The tool says so until it is added, or until a decision says why not.
+- **Who speaks matters.** An answer that goes against a claim is believed whatever it rests on. A favourable answer that rests only on what a party said is marked as someone's own word, and a claim does not stand on that alone.
+- **Strength of evidence.** Each check says which kinds of source are the best evidence, which support, and which are only what someone said. Each stage names what is ideal by then. The tool shows what each answer rests on. It demands nothing.
+- **Reference points, not thresholds.** A few checks carry a reference point, such as "above 20", each with its reason. An institution or a deal can change it.
+- **A gap with an agreed action.** A check can stay open with a condition, a covenant or a task, an owner and a date. That is a decision that covers the check.
+- **A claim is looked at again** when a source of a kind that bears on it arrives, or an answer elsewhere changes.
 - **Looking for disproof is recorded**, also when nothing is found.
 
 ### 6.2 Adjusting the standard
@@ -224,9 +231,11 @@ The standard carries a version. A deal records which version it uses.
 
 The tool always outlines what to do and collect next. `status` lists every candidate:
 
-- structure that is still open: a role nobody holds yet, a link that is proposed and not confirmed;
+- claims that are challenged, contested or to look at again;
+- structure that is still open: a role nobody holds yet, a link that is proposed and not confirmed, a party or link that an answer calls for and that is not there;
 - documents the data-room structure always expects, or that open checks look for, and that the folder lacks;
 - checks that are open, contested, or answered on evidence that is thin or old, each with the stage it is ideally answered by and how many checks wait on it;
+- gaps with an agreed action;
 - questions that were asked and are not answered;
 - facts that rest on a source that was replaced;
 - system fields without a value.
@@ -288,11 +297,11 @@ Designed, and deliberately not built yet:
 
 1. **Checking a fact against the text of its source.** The tool checks the pages against the facts. It does not read documents.
 2. **Marking a system value as entered**, and flagging a value that changes after it was entered.
-3. **Acting on the standard's hints.** The standard says what should make someone look at a topic again, which indicator an answer leads to, and when a topic matters more or less. `show` prints these. The next list does not use them yet.
+3. **Acting on two of the standard's hints.** The standard says which indicator an answer leads to, and when a topic matters more or less. `show` prints these. The next list does not use them yet.
 4. **Document expectations per party.** The tool looks at the deal as a whole: an annual report in the folder counts, whoever's it is.
 5. **A command to move an adjustment up** to the institution's layer, and one to take a newer version of the standard into a running deal.
 6. **A local MCP shell** for Copilot Code.
-7. **In the standard:** checks for the stages after due diligence, and a risk and a mitigant statement for more than two indicators.
+7. **In the standard:** a module for funds, and modules for more sectors than banks, power and agribusiness.
 
 One thing comes before first use: a ten-minute test in the tenant of how Cowork saves and overwrites files, and whether a script shipped in a skill is found and run. If saving many files proves unreliable, the wiki pages move inside the memory file and the Markdown files become views.
 

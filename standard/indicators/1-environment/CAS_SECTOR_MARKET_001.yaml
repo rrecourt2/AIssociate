@@ -1,0 +1,152 @@
+id: CAS_SECTOR_MARKET_001
+title: Sector and market
+pillar: environment
+claim: For the life of the loan, the market the party sells into will take its output at a price that covers its costs and
+  its debt service.
+due_by: concept
+applies_to: [borrower, repayment_source]
+applies_when:
+- {check: OBS_SECTOR_001, is: corporate}
+- {check: OBS_SECTOR_001, is: project}
+matters_more_when:
+- {check: OBS_CASHFLOW_BASIS_001, is: projected, reason: Repayment rests on sales that have not been made yet}
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: A new business has no record of selling through a downturn}
+- {check: OBS_VALUE_CHAIN_001, is: primary_producer, reason: 'A primary producer sells what buyers can get elsewhere, at
+    the price the market gives'}
+look_again_when:
+- {new_source: market_study, reason: 'A new market study can change the view on demand, prices and competitors'}
+- {new_source: offtake_agreement, reason: A signed sales contract changes how much of the revenue is exposed to the market}
+checks:
+- id: OBS_MARKET_001
+  question: In the party's main market, has the volume sold grown, stayed level or fallen over the last five years?
+  answer: choice
+  options: [growing, level, falling]
+  why: The trend so far is where any forecast starts. A forecast that breaks with it needs a reason.
+  due_by: screening
+  look_in: [01.03.a, 10.03.a]
+  evidence:
+    best: [market_study, consultant_report]
+    supporting: [public_source, internal_memo]
+    stated: [business_plan, management_presentation, call, officer_note]
+  ask: Over the last five years, has your market as a whole sold more, about the same or less, in volume? What figures do
+    you rely on?
+  note: The main market is the product and the place that bring in the largest share of the party's revenue. Say which it
+    is.
+  leads_to:
+  - {indicator: CAS_PROJECTIONS_001, is: falling, reason: A forecast of growth in a market that is falling needs a reason}
+- id: OBS_MARKET_002
+  question: In the worst downturn of the last ten years, by how much did the market price of the party's main product fall
+    from its peak to its lowest point?
+  answer: number
+  unit: percent
+  why: The size of the last downturn is the first measure of what the next one could do. It is the fall to set against the
+    party's margin and its projections.
+  look_in: [01.03.a, 10.03.a]
+  evidence:
+    best: [market_study, consultant_report]
+    supporting: [public_source, company_record, internal_memo]
+    stated: [management_presentation, call, officer_note]
+  note: Where the price is fixed and the market adjusts through volume (a regulated price, a service), give the fall in
+    volume and say so. Give the years of the peak and of the low.
+  leads_to:
+  - {indicator: CAS_PROJECTIONS_001, reason: The downside case should be at least as hard as the last downturn}
+- id: OBS_MARKET_003
+  question: Is the party's selling price set by a market or by its buyers, so that the party cannot raise it when its own
+    costs rise?
+  answer: yes_no
+  assumption: The party has a say in its selling price and can pass on a rise in its costs
+  disproved_by: 'yes'
+  look_in: [06.01.a, 01.03.a]
+  evidence:
+    best: [offtake_agreement, market_study]
+    supporting: [company_record, management_accounts]
+    stated: [management_presentation, call, officer_note]
+  ask: Who sets the price you sell at? When your costs last went up, could you raise your price, and how long did it take?
+  leads_to:
+  - {indicator: CAS_RATE_PRICE_RISK_001, is: true, reason: A party that takes the market's price carries price risk on its
+      stock and its forward sales}
+- id: OBS_MARKET_004
+  question: At the lowest price of the last ten years, would the party's revenue still cover its cash operating costs and
+    its debt service, the proposed loan included?
+  answer: yes_no
+  assumption: The party covers its cash costs and its debt service at the lowest price of the last ten years
+  disproved_by: 'no'
+  due_by: diligence
+  look_in: [03.01.a, 01.03.a, 03.02.b]
+  evidence:
+    best: [audited_annual_report, market_study, consultant_report]
+    supporting: [financial_model, management_accounts]
+    stated: [business_plan, management_presentation, call, officer_note]
+  note: Use the party's accounts for that year where it was already trading. Otherwise set today's cash cost per unit against
+    that price. Where the price is fixed and the market adjusts through volume, use the lowest volume. A producer whose
+    costs are among the highest in its market is the first to lose money when the price falls.
+- id: OBS_MARKET_005
+  question: In the last five years, has a direct competitor of the party, of similar size or larger, become insolvent, defaulted
+    on its debt or had its debt restructured?
+  answer: yes_no
+  assumption: Businesses of this kind and size in this market have serviced their debt through the last five years
+  disproved_by: 'yes'
+  why: A base rate. What brought down a business of the same kind in the same market is the first thing to rule out for
+    this one.
+  look_in: [01.03.a, 10.03.a]
+  evidence:
+    best: [market_study, consultant_report, credit_rating_report]
+    supporting: [public_source, internal_memo]
+    stated: [management_presentation, call, officer_note]
+  ask: Has any of your competitors failed or had to restructure its debt in the last five years? What went wrong?
+  note: Record who failed and why. If the search finds nothing, record what was searched, where and when.
+- id: OBS_MARKET_006
+  question: Does the party's margin depend on an import tariff, a quota, a subsidy, a tax break or a regulated price that
+    the government can change or end during the life of the loan?
+  answer: yes_no
+  assumption: The party's margin does not rest on a measure that the government can withdraw
+  disproved_by: 'yes'
+  look_in: [07.01.a, 03.01.a, 01.03.a]
+  evidence:
+    best: [regulatory_document, tax_clearance, audited_annual_report]
+    supporting: [market_study, consultant_report, financial_model]
+    stated: [business_plan, management_presentation, call, officer_note]
+  ask: Would you still make money if the import duty, the subsidy, the tax break or the regulated price you benefit from
+    were taken away?
+  leads_to:
+  - {indicator: CAS_REGULATORY_001, is: true, reason: A measure the margin rests on should be checked for any change that
+      is pending}
+- id: OBS_MARKET_007
+  question: Is there a substitute product, a source of cheaper imports, or new capacity already announced or being built,
+    that would take sales from the party or force its price down during the life of the loan?
+  answer: yes_no
+  assumption: No substitute, import or new capacity now in sight would take the party's sales or force its price down
+  disproved_by: 'yes'
+  look_in: [01.03.a, 10.03.a]
+  evidence:
+    best: [market_study, consultant_report]
+    supporting: [public_source, internal_memo, company_record]
+    stated: [business_plan, management_presentation, call, officer_note]
+  ask: Who could take your customers in the next few years? Is anyone building new capacity, or importing at a lower price
+    than yours?
+  note: Count only what can be named today, such as a plant under construction, an import that is already landing or a product
+    that buyers are already switching to. If the search finds nothing, record what was searched, where and when.
+- id: OBS_MARKET_008
+  question: Does the party hold signed sales contracts, at a fixed or floor price and for volumes the buyer must take or
+    pay for, that cover its debt service in each year of the loan?
+  answer: yes_no
+  mitigant: true
+  assumption: Sales under contract cover the debt service in each year of the loan
+  disproved_by: 'no'
+  due_by: diligence
+  when:
+  - {check: OBS_MARKET_003, against: true}
+  - {check: OBS_MARKET_004, against: true}
+  - {check: OBS_MARKET_007, against: true}
+  calls_for:
+  - is: true
+    link: [sells_to]
+    end: from
+  look_in: [06.01.a]
+  evidence:
+    best: [offtake_agreement, material_contract]
+    supporting: [company_record, financial_model]
+    stated: [business_plan, management_presentation, call, officer_note]
+  note: A contract that follows the market price, or that the buyer can end at short notice, does not count.
+  leads_to:
+  - {indicator: CAS_OFFTAKER_CREDIT_001, is: true, reason: A sales contract is worth what the buyer behind it can pay}

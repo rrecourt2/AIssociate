@@ -11,8 +11,8 @@ You draft these in Word with your own tools. The tool gives you the material.
 ## What each document is
 
 - **A scan** says what the deal is and whether it fits. It may rest on what the client said. Say so.
-- **A CIP** describes the deal and lists the assumptions that still need testing. Take them from "Assumptions and open points" on the pages, and from the checks that are open or thin.
-- **An FP** is driven by conclusions on risk. For each risk: what the assumption was, what tested it, what the evidence is and how strong, and what mitigates it. Take the evidence from the facts. An assumption that is disproved, contested or thin is said to be so.
+- **A CIP** describes the deal and lists the claims that still need testing. Take them from `status` (the claims that are not tested, or that rest on someone's own word), from "Assumptions and open points" on the pages, and from the checks that are open or thin.
+- **An FP** is driven by conclusions on risk. Go through the pillars. For each claim that matters: what the lender relies on, what tested it, what the evidence is and how strong, and for a claim that is challenged what mitigates it or which action is agreed. Take the evidence from the facts. A claim that is challenged, contested or thinly supported is said to be so.
 
 ## Rules
 

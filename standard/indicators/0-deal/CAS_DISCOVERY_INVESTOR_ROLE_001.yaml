@@ -1,0 +1,166 @@
+id: CAS_DISCOVERY_INVESTOR_ROLE_001
+title: The request
+pillar: deal
+claim: The lender can provide what is asked for, the money goes to a use that can be checked and not to someone who is already
+  in the business, and with the other sources it pays for the whole plan.
+due_by: screening
+applies_to: [deal]
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: 'In a business in distress, new money is often wanted to pay out those
+    who are already in it'}
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: A new business that runs out of money before it is finished earns nothing
+    to repay with}
+look_again_when:
+- {new_source: term_sheet, reason: 'A new term sheet can change the amount, the rank or the purpose'}
+- {new_source: investment_plan, reason: A new plan of sources and uses can change where the money goes and whether the plan
+    is funded}
+checks:
+- id: OBS_REQUEST_001
+  question: 'What is the lender asked for: how much, in which currency, for how long and for what purpose?'
+  answer: text
+  why: Everything else is read against the request. The answer also puts the facility into the structure.
+  calls_for:
+  - {answered: true, kind: facility}
+  look_in: [04.01.a, 01.02.a, 01.01.a]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [investment_plan, internal_memo]
+    stated: [executive_summary, correspondence, call, officer_note]
+  ask: What are you asking us for? How much, in which currency, for how long, and what will the money pay for?
+- id: OBS_INVESTOR_ROLE_001
+  question: Where would the lender rank against the others who have put money into the business?
+  answer: choice
+  options: [senior_secured, senior_unsecured, subordinated, mezzanine, preferred_equity, common_equity, co_invest, guarantee]
+  why: The rank says who is paid before the lender when there is not enough for everyone, and so what has to be known about
+    those who stand ahead.
+  look_in: [04.01.a, 04.02.c]
+  evidence:
+    best: [term_sheet, facility_agreement, intercreditor_agreement]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: What kind of financing are you looking for? A senior loan with or without security, a loan that ranks behind other
+    lenders, equity, or a guarantee?
+  if_unknown: Until the rank is known, nobody can say who would be paid before the lender.
+  note: Choose guarantee where the lender gives a guarantee and lends no money. Choose co_invest where the lender takes
+    a share in another investor's deal, on that investor's terms.
+- id: OBS_INVESTOR_ROLE_002
+  question: Does the business already have other financing in place (loans from banks or other lenders, bonds, leases, shareholder
+    loans)?
+  answer: yes_no
+  why: Opens the topic. The new loan has to fit beside what is already there. A "no" is checked against the accounts and
+    the registry under existing debt.
+  calls_for:
+  - is: true
+    link: [lends_to, ranks_behind]
+  look_in: [03.01.a, 04.03.a]
+  evidence:
+    best: [audited_annual_report, facility_agreement]
+    supporting: [debt_schedule, management_accounts, term_sheet]
+    stated: [correspondence, call, officer_note]
+  ask: Does the business already have loans, bonds, leases or shareholder loans? A yes or no is enough to start with.
+  leads_to:
+  - {indicator: CAS_OTHER_LENDERS_001, is: true, reason: 'Each lender that is already there can rank ahead, hold security
+      or call its loan first'}
+  - {indicator: CAS_DEBT_001, is: true, reason: 'What is already owed, and how it has been paid, is examined there'}
+- id: OBS_INVESTOR_ROLE_003
+  question: 'What does the financing of the business consist of: for each loan or other financing the provider, the amount,
+    the rank, the security and the final maturity, and the equity the owners have paid in?'
+  answer: text
+  why: Shows what stands ahead of the lender, beside it and behind it, and when the others must be repaid.
+  due_by: concept
+  when:
+  - {check: OBS_INVESTOR_ROLE_002, is: true}
+  look_in: [04.03.a, 03.01.a, 04.02.c]
+  evidence:
+    best: [audited_annual_report, facility_agreement, intercreditor_agreement]
+    supporting: [debt_schedule, management_accounts, shareholder_register]
+    stated: [correspondence, call, officer_note]
+  ask: Please list all the financing of the business. For each loan or lease we need the lender, the amount, the security
+    and the final repayment date, and we need the equity that has been paid in. A table is ideal.
+  if_unknown: Without the full list, nobody can say what ranks ahead of the lender or what falls due before its loan.
+- id: OBS_REQUEST_002
+  question: Are the amount, the currency, the tenor and the rank that are asked for all within what the lender's own policies
+    and limits allow for this country, this sector and this client?
+  answer: yes_no
+  assumption: The lender can provide what is asked for under its own policies and limits
+  disproved_by: 'no'
+  evidence:
+    best: [internal_memo]
+    stated: [officer_note, call]
+  ask_whom: lender
+  note: This is about the lender's own products and limits. Whether the lender is the right source of the money is asked
+    under impact and additionality.
+- id: OBS_USE_001
+  question: Is the use of the money set out item by item, each with an amount, so that every item can later be checked against
+    an invoice, a contract or a payment?
+  answer: yes_no
+  assumption: The use of the money is specific enough to be checked after it is paid out
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [01.02.a, 04.01.a]
+  evidence:
+    best: [facility_agreement, technical_feasibility]
+    supporting: [investment_plan, term_sheet, financial_model]
+    stated: [business_plan, executive_summary, call, officer_note]
+  ask: Could you give us a list of what the money will pay for, with an amount for each item?
+  note: A purpose such as "general corporate purposes", "expansion" or "working capital", without a list of what is to be
+    paid for, is a no.
+- id: OBS_USE_002
+  question: Does any part of the money go to shareholders, related parties or existing lenders (to repay a loan, buy shares,
+    pay a dividend or settle an amount owed to them)?
+  answer: yes_no
+  assumption: All of the money goes into the business, and none of it pays out someone who is already in it
+  disproved_by: 'yes'
+  calls_for:
+  - is: true
+    link: [lends_to, owns]
+  look_in: [01.02.a, 04.01.a, 03.01.a]
+  evidence:
+    best: [facility_agreement, audited_annual_report]
+    supporting: [investment_plan, term_sheet, debt_schedule]
+    stated: [executive_summary, correspondence, call, officer_note]
+  ask: Will any of the money be used to repay an existing loan or a shareholder loan, to settle an amount owed to a related
+    company, to pay a dividend or to buy shares?
+  note: Record with the answer who is paid, how much, and why that party wants its money now. A refinancing is not a fault
+    in itself. The point is to know who leaves, and whether they leave because they know something.
+  leads_to:
+  - {indicator: CAS_OTHER_LENDERS_001, is: true, reason: A lender that is repaid may know the business better than the lender
+      that replaces it}
+  - {indicator: CAS_RELATED_PARTY_001, is: true, reason: Money that goes to owners or related parties leaves the business
+      the loan is repaid from}
+- id: OBS_USE_003
+  question: Do the committed sources of money (this loan, other loans and the owners' own money) cover the whole cost of
+    what is planned, including an allowance for cost overruns and the working capital needed until the plan pays for itself?
+  answer: yes_no
+  assumption: The whole plan is funded from committed sources, with room for overruns and for working capital
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [01.02.a, 03.02.b, 04.03.b]
+  evidence:
+    best: [technical_feasibility, facility_agreement, dfi_facility_document]
+    supporting: [investment_plan, financial_model, board_resolution, bank_statement]
+    stated: [business_plan, correspondence, call, officer_note]
+  ask: Could you show us the full cost of the plan and where each part of the money comes from? Which of these sources are
+    signed or already paid in, and which are still being discussed?
+  if_unknown: A plan that is only partly funded can stop half way, with the lender's money already spent.
+  note: Committed means signed or paid in. A source that is still being negotiated is not committed.
+  leads_to:
+  - {indicator: CAS_COMPLETION_SUPPORT_001, is: false, reason: A gap in the funding has to be closed by someone who is bound
+      to close it}
+- id: OBS_USE_MIT_001
+  question: Is everything that is paid out owed to a lender that is neither a shareholder nor a related party, on a loan
+    that was being paid as agreed (no missed payment, waiver or rescheduling in the last twelve months)?
+  answer: yes_no
+  mitigant: true
+  assumption: Only outside lenders are repaid, on loans that were being paid as agreed, so the lender replaces a creditor
+    and neither rescues one nor pays out an owner
+  disproved_by: 'no'
+  due_by: diligence
+  when:
+  - {check: OBS_USE_002, against: true}
+  look_in: [03.01.a, 04.03.a, 10.02.a]
+  evidence:
+    best: [audited_annual_report, correspondence]
+    supporting: [debt_schedule, bank_statement, management_accounts]
+    stated: [call, officer_note]
+  note: A letter counts as best evidence only if it comes from the lender that is repaid. Twelve months is a guide.

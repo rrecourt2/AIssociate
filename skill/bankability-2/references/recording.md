@@ -51,7 +51,7 @@ Record what would go into a table or a system field: names, amounts, dates, term
 | `label`, `value`, `unit` | Give a label to a value that belongs in a table, such as `Revenue`. |
 | `as_of` | The date the fact refers to. For a standing fact, the date of the source. |
 | `source`, `place` | Where it comes from, and the page, note or minute. |
-| `said_by` | `document`, `client`, `officer`, `third_party` or `inference`. Mark your own conclusions as `inference`. |
+| `said_by` | Who says so: `document`, `client`, `officer`, `third_party` or `inference`. Use `client` for what any party to the deal says about itself: the borrower, its owners, a guarantor. Mark your own conclusions as `inference`. A favourable answer that only a `client` gave is marked as someone's own word. |
 | `answers` | The checks it answers, as a list: `[{"check": "OBS_REV_001", "value": true}]`. Yes or no is `true` or `false`, a number is a number, a choice is one of the check's options. An answer counts for the subject the fact is about. Add `"for": "P-002"` if it is about another subject. An answer to a check that is asked about the deal counts for the deal. An answer for a subject the check is not asked about is recorded and does not count: look at the check with `show` afterwards. |
 | `fills` | The system fields it fills, such as `["CRM.country"]`. A field the institution's layer does not list is refused. |
 | `nothing_found` | `true` for a search that found nothing. Say in the statement what was looked for and where. |
@@ -65,18 +65,24 @@ A subject is a party, a facility, a contract, an asset, a project or a group. A 
 - A subject needs a `kind`. Leave `name` empty for a role nobody holds yet, and say what is known in `note`.
 - A link needs `from`, `type` and `to`. It starts as `proposed`. Set `state` to `confirmed` when a source confirms it, and to `ended` when it no longer holds.
 - Give a link its `why`: why it matters for repayment.
-- Kinds of link: `borrows`, `guarantees`, `sponsors`, `owns`, `controls`, `member_of`, `supplies_to`, `sells_to`, `lends_to`, `operates`, `builds`, `party_to`, `secures`, `ranks_behind`, `part_of`, `supports`, `completion_support`, `portfolio_support`, `other`.
+- Kinds of link: `borrows`, `relies_on`, `guarantees`, `sponsors`, `owns`, `controls`, `member_of`, `supplies_to`, `sells_to`, `lends_to`, `operates`, `builds`, `party_to`, `secures`, `ranks_behind`, `part_of`, `supports`, `completion_support`, `portfolio_support`, `other`.
 
-A new link brings the checks that fit the role. Run `status` to see them.
+A new link brings the checks that fit the role, and the checks on the link itself. Run `status` to see them.
+
+Repayment does not always come from the borrower. When it rests on the cash flow of another party or of a group, link the facility to it with `relies_on`: `{"from": "L-001", "type": "relies_on", "to": "G-001"}`. That party then gets the full set of checks.
 
 ## Decisions and questions
 
 ```json
 {"decisions": [{"about": "P-001", "decision": "Lakeside Distributors gets no page and no checks of its own.",
                 "reason": "It buys 14% of revenue and three other distributors serve the same region.",
-                "rests_on": ["F-009", "F-015"], "by": "assistant"}],
+                "rests_on": ["F-009", "F-015"], "by": "assistant"},
+               {"about": "R-002", "decision": "The guarantee is to be backed by a standby letter of credit.",
+                "reason": "The guarantor pays only after enforcement against the borrower.",
+                "rests_on": ["F-021"], "by": "officer", "covers": ["OBS_GUARANTEE_MIT_001"],
+                "owner": "officer", "due": "2027-01-31"}],
  "questions": [{"asked_of": "CFO of Cedar Foods", "text": "Please send the supply contracts.",
                 "about": "P-001", "asked": "2026-11-12", "via": "S-003", "checks": ["OBS_INPUT_006"]}]}
 ```
 
-A decision needs a `decision` and a `reason`, and should name the facts it rests on. A question needs `asked_of` and `text`. When it is answered, change it: `{"id": "Q-001", "state": "answered", "answered_by": ["F-020"]}`.
+A decision needs a `decision` and a `reason`, and should name the facts it rests on. A decision that `covers` checks is a gap with an agreed action: a condition, a covenant or a task. Give it an `owner` and a `due` date. It is also how you record that an answer calls for nothing more in the structure, and why. A question needs `asked_of` and `text`. When it is answered, change it: `{"id": "Q-001", "state": "answered", "answered_by": ["F-020"]}`.

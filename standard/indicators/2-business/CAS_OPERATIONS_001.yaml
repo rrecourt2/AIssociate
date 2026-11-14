@@ -1,0 +1,158 @@
+id: CAS_OPERATIONS_001
+title: Operations
+pillar: business
+claim: The party can keep producing and delivering at the volume and quality its projections assume.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+applies_when:
+- {check: OBS_SECTOR_001, is: corporate}
+- {check: OBS_SECTOR_001, is: project}
+matters_more_when:
+- {check: OBS_VALUE_CHAIN_001, is: manufacturer, reason: A manufacturer earns only while its plant runs}
+- {check: OBS_COLLATERAL_001, is: single_asset, reason: The asset that secures the loan is also the one that earns the money
+    to repay it}
+- {check: OBS_CASHFLOW_BASIS_001, is: projected, reason: Repayment rests on a volume that the party has not yet reached}
+look_again_when:
+- {new_source: technical_feasibility, reason: An engineer's report can change the view of capacity and of the weak points}
+- {new_source: financial_model, reason: New projections can assume a different volume}
+checks:
+- id: OBS_OPS_001
+  question: What share of its production or delivery capacity did the party use over the last full financial year?
+  answer: number
+  unit: percent
+  why: Capacity in use cuts both ways. High use leaves no room for the growth in the projections without new investment.
+    Low use means that fixed costs are spread over little output.
+  due_by: concept
+  look_in: [05.01.a, 03.01.a]
+  evidence:
+    best: [technical_feasibility, audited_annual_report]
+    supporting: [company_record, management_accounts]
+    stated: [call, officer_note, management_presentation]
+  ask: How much could your plant or fleet produce or deliver in a year, and how much did it produce or deliver last year?
+  note: Say what capacity is measured in (tonnes, units, hours, beds, vehicles), and whether it is the capacity the plant
+    was designed for or the best output it has reached in a full year.
+- id: OBS_OPS_002
+  question: Can the party's existing plant, equipment and staff produce the highest yearly volume in the projections, counting
+    new capacity only where its cost and funding are in the same projections?
+  answer: yes_no
+  assumption: The capacity that the projections need is in place, or is paid for in the plan
+  disproved_by: 'no'
+  look_in: [05.01.a, 03.02.b, 03.02.a]
+  evidence:
+    best: [technical_feasibility]
+    supporting: [financial_model, financial_projections, company_record]
+    stated: [call, officer_note, management_presentation]
+  ask: What is the highest yearly volume in your projections, and what would have to be added to the plant, the fleet or
+    the staff to reach it?
+  note: Compare with the best output reached in a full year, not with the capacity the plant was designed for.
+  leads_to:
+  - {indicator: CAS_PROJECTIONS_001, is: false, reason: 'The volumes in the projections then have to be cut, or the missing
+      investment added'}
+- id: OBS_OPS_003
+  question: Would the loss of one site, one production line or one machine stop more than half of the party's output for
+    longer than a month?
+  answer: yes_no
+  assumption: No single site, line or machine carries most of the party's output
+  disproved_by: 'yes'
+  due_by: concept
+  calls_for:
+  - {is: true, kind: asset}
+  look_in: [05.01.a, 08.03.b]
+  evidence:
+    best: [technical_feasibility, consultant_report]
+    supporting: [company_record, insurance_broker_report, management_accounts]
+    stated: [call, officer_note, management_presentation]
+  ask: If you lost your main site, line or machine tomorrow, how much of your output would stop, and for how long?
+  note: Half and a month are guides. Think of fire, flood and breakdown, and of the time it takes to have a replacement
+    delivered and running.
+  leads_to:
+  - {indicator: CAS_ASSET_CONDITION_001, is: true, reason: The condition of that one asset then decides the party's output}
+  - {indicator: CAS_COVERAGE_001, is: true, reason: Cover for the asset and for lost profit counts most where everything
+      hangs on one asset}
+- id: OBS_OPS_004
+  question: In the last 24 months, did a failure of power, water or transport (grid outages, a water shortage, a closed
+    road, port or rail line) stop or cut the party's production or deliveries for more than a week in total?
+  answer: yes_no
+  assumption: Failures of power, water or transport have not cut the party's production or deliveries
+  disproved_by: 'yes'
+  look_in: [05.01.a, 03.01.a]
+  evidence:
+    best: [technical_feasibility, audited_annual_report]
+    supporting: [company_record, management_accounts, public_source]
+    stated: [call, officer_note, correspondence]
+  ask: In the last two years, on how many days did you stop or slow production or deliveries because power, water or transport
+    failed?
+  note: 'A week in total is a guide. The party has a reason to understate this: compare its answer with production records
+    and with what stand-by power and fuel have cost. Where the utility is itself the party''s critical input, OBS_INPUT_005
+    asks about the same events.'
+- id: OBS_OPS_005
+  question: In any of the last three financial years, did the party's output or deliveries fall short of its own budget
+    for that year by more than about a tenth?
+  answer: yes_no
+  assumption: The party has produced and delivered what it planned in each of the last three years
+  disproved_by: 'yes'
+  look_in: [03.01.a, 05.01.a]
+  evidence:
+    best: [audited_annual_report, technical_feasibility]
+    supporting: [company_record, board_minutes, management_accounts]
+    stated: [call, officer_note, correspondence]
+  ask: For each of the last three years, what volume did you budget and what volume did you produce or deliver?
+  if_unknown: A party that cannot set its output against its own budget gives the lender no record to hold the projections
+    against.
+  note: 'A tenth is a guide. Record the cause of each shortfall: it points at the topic to look at next.'
+- id: OBS_OPS_006
+  question: In the last three years, because of quality or safety, was a product of the party recalled, a whole batch or
+    shipment rejected by a customer, the product taken off a customer's list, or its sale stopped by an authority?
+  answer: yes_no
+  assumption: The party's products have met the quality and safety that its customers and the authorities require
+  disproved_by: 'yes'
+  look_in: [07.01.a, 03.01.a]
+  evidence:
+    best: [regulatory_document, audited_annual_report]
+    supporting: [company_record, board_minutes, public_source]
+    stated: [call, officer_note, correspondence]
+  ask: In the last three years, has a product of yours been recalled, sent back in bulk, taken off a customer's list or
+    stopped by an authority?
+  note: If the search finds nothing, record what was searched, where and when. For an agribusiness, rejected shipments and
+    lost certificates are asked in OBS_AGRI_007.
+- id: OBS_OPS_007
+  question: Does the party's production depend on a plant that someone else owns or runs, or on a brand, a technology or
+    a franchise that it uses under licence from someone else?
+  answer: yes_no
+  assumption: The party owns or controls the plant, the technology and the brands it produces with
+  disproved_by: 'yes'
+  calls_for:
+  - is: true
+    link: [operates, supplies_to]
+    end: to
+  look_in: [06.01.a, 06.03.a, 06.05.a]
+  evidence:
+    best: [lease_agreement, om_agreement, material_contract]
+    supporting: [company_record, management_accounts]
+    stated: [call, officer_note, correspondence, management_presentation]
+  ask: Do you produce in a plant that someone else owns or runs for you? Do you make or sell your products under someone
+    else's brand, technology or franchise?
+  note: 'A permit from an authority is not meant here: those are asked under Licences and regulation. Record who the other
+    party is and when its contract or licence ends.'
+  leads_to:
+  - {indicator: CAS_CONTRACT_REVIEW_001, is: true, reason: 'The lease, the operating contract or the licence is then a contract
+      the party cannot afford to lose'}
+- id: OBS_OPS_MIT_001
+  question: Does the party have a second site or line, or a back-up (stand-by power, a second water source, another route
+    or a contract manufacturer), that could carry at least half of its normal output within a month of a failure?
+  answer: yes_no
+  mitigant: true
+  assumption: A second site or a back-up can carry at least half of the party's output when the main one fails
+  disproved_by: 'no'
+  when:
+  - {check: OBS_OPS_003, against: true}
+  - {check: OBS_OPS_004, against: true}
+  look_in: [05.01.a, 06.01.a]
+  evidence:
+    best: [technical_feasibility, consultant_report]
+    supporting: [company_record, material_contract]
+    stated: [call, officer_note, correspondence]
+  ask: If your main site or your power, water or transport failed, where would you produce, and how much could you produce
+    there within a month?
+  note: 'Half and a month are guides. A back-up that has never carried production is a plan: ask when it last did. Insurance
+    for the profit lost is asked under Insurance.'

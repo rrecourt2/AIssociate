@@ -1,0 +1,184 @@
+id: CAS_AGRI_SUPPLY_001
+title: 'Agribusiness: crop, supply and season'
+pillar: business
+claim: A bad season, a broken supply chain or a rejected shipment would not stop the party from servicing its debt.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+applies_when:
+- {check: OBS_SECTOR_002, is: agribusiness}
+matters_more_when:
+- {check: OBS_VALUE_CHAIN_001, is: primary_producer, reason: 'A grower carries the weather, the pests and the disease itself'}
+- {check: OBS_VALUE_CHAIN_001, is: manufacturer, reason: A processor has fixed costs to cover and needs its full intake
+    every season}
+look_again_when:
+- {check: OBS_AGRI_005, is: true, reason: 'A season has been lost, so what it cost and whether the protections worked need
+    a new look'}
+- {new_source: audited_annual_report, reason: 'The accounts of a new season show intake, advances recovered and stock written
+    off'}
+checks:
+- id: OBS_AGRI_001
+  question: What share of the crop or other farm produce that the party processes or trades, by volume, does it buy from
+    farmers or outgrowers that it does not control?
+  answer: number
+  unit: percent
+  why: Produce from the party's own farms is in its hands. Produce bought from independent farmers can go to another buyer
+    in any season. The larger this share, the more the checks on side-selling and on advances count.
+  due_by: screening
+  look_in: [03.01.a, 05.01.a]
+  evidence:
+    best: [audited_annual_report, technical_feasibility]
+    supporting: [company_record, management_accounts]
+    stated: [call, officer_note, management_presentation, business_plan]
+  ask: How much of the crop you process or trade comes from your own farms, and how much do you buy from farmers or outgrowers?
+  note: Give the figure for the last full season, and say whether it changes much from year to year.
+- id: OBS_AGRI_002
+  question: In any of the last five seasons, did farmers that the party had contracted or financed deliver less than about
+    four fifths of the agreed volume because they sold to other buyers?
+  answer: yes_no
+  assumption: The farmers that the party contracts or finances deliver their crop to it, also in seasons when other buyers
+    pay more
+  disproved_by: 'yes'
+  look_in: [05.01.a, 10.03.a]
+  evidence:
+    best: [technical_feasibility, consultant_report]
+    supporting: [company_record, management_accounts, board_minutes]
+    stated: [call, officer_note, correspondence]
+  ask: In each of the last five seasons, how much did your contracted farmers agree to deliver and how much did they deliver?
+    Was there a season in which they sold to others?
+  note: 'Four fifths is a guide. Look at the seasons in which the market price rose above the contract price: that is when
+    side-selling shows. Answer no, and say so, where the party buys nothing from contracted or financed farmers.'
+- id: OBS_AGRI_003
+  question: In any of the last three seasons, did farmers fail to repay more than about a tenth of the advances or inputs
+    that the party gave them on credit?
+  answer: yes_no
+  assumption: Farmers repay the advances and inputs that the party gives them on credit
+  disproved_by: 'yes'
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [company_record, management_accounts]
+    stated: [call, officer_note, correspondence]
+  ask: How much did you advance to farmers in cash, seed or fertiliser in each of the last three seasons, and how much of
+    it had come back by the end of each season?
+  note: A tenth is a guide. Count an advance that was carried over into the next season as not repaid. Answer no, and say
+    so, where the party gives no advances.
+  leads_to:
+  - {indicator: CAS_WORKING_CAP_001, is: true, reason: 'Advances that do not come back are working capital that is lost,
+      not tied up'}
+- id: OBS_AGRI_004
+  question: What was the party's lowest yearly harvest or intake in the last ten years, as a percentage of the average of
+    those years?
+  answer: number
+  unit: percent
+  why: The gap between the worst year and the average is the size of a bad season for this party. The downside case in the
+    projections should be at least as bad.
+  look_in: [05.01.a, 03.01.a]
+  evidence:
+    best: [technical_feasibility, audited_annual_report]
+    supporting: [company_record, public_source]
+    stated: [call, officer_note, management_presentation]
+  ask: What was your harvest or intake in each of the last ten years? Which was the worst year, and what caused it?
+  note: Use volume, not value. With fewer than ten years of record, use the record of the district or of the crop and say
+    so.
+- id: OBS_AGRI_005
+  question: In the last five years, has drought, flood, frost, a pest or a disease cut the party's harvest or intake in
+    a season to less than about four fifths of its average?
+  answer: yes_no
+  assumption: The party's harvest or intake has held up through the weather, pests and disease of the last five years
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [05.01.a, 03.01.a]
+  evidence:
+    best: [technical_feasibility, audited_annual_report]
+    supporting: [company_record, management_accounts, public_source]
+    stated: [call, officer_note, correspondence]
+  ask: In the last five years, was there a season in which drought, flood, frost, a pest or a disease cut your harvest or
+    intake? By how much?
+  note: Four fifths is a guide. Record the event, the season and the fall in volume. If a search of weather and disease
+    records finds nothing, record what was searched, where and when.
+  leads_to:
+  - {indicator: CAS_PROJECTIONS_001, is: true, reason: The downside case should repeat a season of that kind}
+- id: OBS_AGRI_006
+  question: Does a government body set, cap or put a floor under the price that the party pays for its crop or the price
+    at which it sells its product?
+  answer: yes_no
+  assumption: The party buys its crop and sells its product at prices that no government body sets
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [07.01.a, 01.03.a]
+  evidence:
+    best: [regulatory_document, market_study]
+    supporting: [company_record, public_source]
+    stated: [call, officer_note, correspondence]
+  ask: Is the price you pay farmers, or the price at which you sell, set or limited by a government body?
+  note: 'A fixed price can protect the party in one year and squeeze it in the next. The test is whether a decision the
+    party does not control can change its margin. Export bans, quotas and levies work the same way: record them here.'
+  leads_to:
+  - {indicator: CAS_REGULATORY_001, is: true, reason: 'The rule that sets the price, and how it can change, is examined
+      there'}
+- id: OBS_AGRI_007
+  question: In the last five years, was a shipment of the party rejected by a buyer or at a border for food safety, residues,
+    pests or quality, or was a certificate that it needs in order to sell (food safety, organic, plant health or export
+    approval) suspended or withdrawn?
+  answer: yes_no
+  assumption: The party's product meets the food safety and plant health rules of its markets, and the party has kept the
+    certificates it needs in order to sell
+  disproved_by: 'yes'
+  look_in: [07.01.a, 10.03.a]
+  evidence:
+    best: [regulatory_document, consultant_report]
+    supporting: [company_record, board_minutes, public_source]
+    stated: [call, officer_note, correspondence]
+  ask: In the last five years, was any shipment of yours rejected by a buyer or at a border? Was any of your certificates
+    suspended or withdrawn?
+  note: If the search finds nothing, record what was searched, where and when. Some importing markets publish their border
+    rejections.
+- id: OBS_AGRI_008
+  question: Does the party own, or hold under a contract that runs through the season, the storage and (for a product that
+    spoils) the cold chain needed to keep its product saleable until it is sold?
+  answer: yes_no
+  assumption: The party controls the storage and the cold chain that its product needs until it is sold
+  disproved_by: 'no'
+  look_in: [05.01.a, 06.05.a, 06.01.a]
+  evidence:
+    best: [technical_feasibility, lease_agreement, material_contract]
+    supporting: [company_record]
+    stated: [call, officer_note, correspondence]
+  ask: Where is your product stored between harvest and sale, and who owns the stores, the cold rooms and the refrigerated
+    transport?
+  note: Products that spoil include fresh fruit and vegetables, flowers, milk, meat and fish. For grain and other dry crops,
+    ask about drying and about storage free of pests and damp.
+- id: OBS_AGRI_009
+  question: In which months of the year is the party's cash lowest and its borrowing highest, and what causes it?
+  answer: text
+  why: An agribusiness buys its crop in a few weeks and sells it over many months. Its debt and its liquidity are read at
+    that peak, and repayment dates are set after the crop is sold.
+  look_in: [03.01.b, 03.01.i]
+  evidence:
+    best: [interim_financial_statements]
+    supporting: [management_accounts, bank_statement, financial_model]
+    stated: [call, officer_note, correspondence]
+  ask: In which months do you buy your crop, and in which months is your overdraft or seasonal borrowing at its highest?
+  leads_to:
+  - {indicator: CAS_LIQUIDITY_001, reason: 'Cash has to be read in the months this answer names, not at the year-end'}
+  - {indicator: CAS_WORKING_CAP_001, reason: Stock and seasonal borrowing peak in the months this answer names}
+- id: OBS_AGRI_MIT_001
+  question: What protects the party against a bad season?
+  answer: choice
+  options: [irrigation, sourcing_from_several_regions, crop_or_weather_insurance, none]
+  many: true
+  mitigant: true
+  assumption: Irrigation, supply from regions with different weather, or crop or weather insurance limits what a bad season
+    costs the party
+  flag_when: is none
+  why: With none of the three, the whole loss of a bad season falls on the party's cash flow in the year it happens.
+  when:
+  - {check: OBS_AGRI_005, against: true}
+  look_in: [05.01.a, 08.03.a]
+  evidence:
+    best: [technical_feasibility, insurance_policy]
+    supporting: [company_record, insurance_broker_report]
+    stated: [call, officer_note, correspondence]
+  ask: 'What protects you in a bad season: irrigation, buying from several regions, or crop or weather insurance?'
+  note: 'Say which event each protection answers: irrigation does not help against a flood or a disease, and insurance pays
+    only for the perils and the area it names.'

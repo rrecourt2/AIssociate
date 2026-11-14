@@ -1,0 +1,134 @@
+id: CAS_CHANGES_001
+title: Changes that need a cause
+pillar: cash_flow
+claim: Every large change in the party's figures over the last three years has a cause that is known and that a document
+  supports.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+applies_when:
+- {check: OBS_SECTOR_001, is: corporate}
+- {check: OBS_SECTOR_001, is: project}
+matters_more_when:
+- {check: OBS_CASHFLOW_BASIS_001, is: historical, reason: 'The first way out rests on past figures, so a move in them that
+    nobody can explain undermines it'}
+- {check: OBS_LIFECYCLE_001, is: expanding, reason: 'A growing business changes fast, and growth can hide sales that are
+    not collected'}
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: 'In distress the figures move most, and the causes are the ones the
+    lender needs to know'}
+look_again_when:
+- {new_source: audited_annual_report, reason: A new year of accounts brings new changes to explain}
+- {new_source: management_accounts, reason: Interim figures can show a change before the audit does}
+checks:
+- id: OBS_CHG_001
+  question: Did the party's revenue rise or fall by about a fifth or more in any of the last three years, without a cause
+    that a document supports?
+  answer: yes_no
+  assumption: Every large move in the party's revenue has a cause that a document supports
+  disproved_by: 'yes'
+  why: A jump in revenue can be one large order, a new customer, an acquisition, or sales booked early. A fall can be a
+    lost customer or a lost licence. Each points somewhere else in the analysis.
+  due_by: concept
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report, consultant_report]
+    supporting: [management_accounts, company_record, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: Revenue moved a good deal between these years. What was behind it, and which document shows that?
+  note: A fifth is a guide. If there was no such change, answer no and say so. A cause is supported when a contract, a sales
+    record, a bank statement or a note to the audited accounts bears it out. Management's explanation alone is not support.
+  leads_to:
+  - {indicator: CAS_REVENUE_001, is: true, reason: 'The cause of a move in revenue usually lies with customers, contracts
+      or prices'}
+- id: OBS_CHG_002
+  question: Did the party's gross or operating margin move by about three percentage points or more in any of the last three
+    years, without a cause that a document supports?
+  answer: yes_no
+  assumption: Every large move in the party's margin has a cause that a document supports
+  disproved_by: 'yes'
+  why: A margin that moves by several points means that prices, input costs or the mix of products changed, or that costs
+    were moved from one year to another.
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report, consultant_report]
+    supporting: [management_accounts, company_record, board_minutes]
+    stated: [correspondence, call, officer_note]
+  note: Three points is a guide. For a trader on thin margins, take a move of about a fifth of the margin itself. If there
+    was no such change, answer no and say so. Management's explanation alone is not support.
+  leads_to:
+  - {indicator: CAS_COST_001, is: true, reason: Whether the margin holds over good years and bad is tested there}
+  - {indicator: CAS_INPUT_CONC_001, is: true, reason: The cause of a move in margin often lies with the price of inputs}
+- id: OBS_CHG_003
+  question: Did the party's receivables or stock, counted in days of sales, grow by about a fifth or more in any of the
+    last three years, without a cause that a document supports?
+  answer: yes_no
+  assumption: Receivables and stock have grown in step with sales, or the cause is known and supported
+  disproved_by: 'yes'
+  why: Receivables that outgrow sales can mean customers who are not paying, or sales that were booked and not made. Stock
+    that outgrows sales can mean goods that will not sell at their book value.
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report, consultant_report]
+    supporting: [management_accounts, company_record]
+    stated: [correspondence, call, officer_note]
+  note: A fifth is a guide. If there was no such change, answer no and say so. Support for a cause is an ageing list, a
+    stock count or a contract with new payment terms. Management's explanation alone is not support.
+  leads_to:
+  - {indicator: CAS_WORKING_CAP_001, is: true, reason: Whether the receivables can be collected and the stock sold is tested
+      there}
+- id: OBS_CHG_004
+  question: Did the party's debt rise in any of the last three years by more than it spent in that year on fixed assets,
+    acquisitions and added working capital, without a cause that a document supports?
+  answer: yes_no
+  assumption: The money the party borrowed went into assets that are still there
+  disproved_by: 'yes'
+  why: Borrowed money that did not go into assets went somewhere else, such as into losses, to the owners or to related
+    parties.
+  look_in: [03.01.a, 04.03.a]
+  evidence:
+    best: [audited_annual_report, consultant_report]
+    supporting: [debt_schedule, management_accounts, bank_statement]
+    stated: [correspondence, call, officer_note]
+  note: Read the cash flow statement for each year. Set new borrowing against capital spending, acquisitions and the change
+    in working capital. If debt did not rise in this way, answer no and say so.
+  leads_to:
+  - {indicator: CAS_DEBT_001, is: true, reason: 'What the party owes, and to whom, is set out there'}
+  - {indicator: CAS_RELATED_PARTY_001, is: true, reason: Borrowed money that left the business often went to related parties}
+- id: OBS_CHG_005
+  question: Did the party's cash from operations fall while its reported profit rose in any of the last three years, without
+    a cause that a document supports?
+  answer: yes_no
+  assumption: The party's cash and its profit have moved together, or the cause of the gap is known and supported
+  disproved_by: 'yes'
+  why: Profit that rises while cash falls is profit that has not been paid for. The gap is either tied up in receivables
+    and stock, or it was never there.
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report, consultant_report]
+    supporting: [management_accounts, bank_statement]
+    stated: [correspondence, call, officer_note]
+  note: Compare cash from operations in the cash flow statement with profit before tax, year by year. If the two did not
+    part in this way, answer no and say so.
+  leads_to:
+  - {indicator: CAS_ACCOUNTS_001, is: true, reason: Profit without cash can come from revaluations or from costs moved to
+      the balance sheet}
+  - {indicator: CAS_WORKING_CAP_001, is: true, reason: Profit without cash can be tied up in receivables and stock}
+- id: OBS_CHG_006
+  question: Did the party's equity change in any of the last three years by an amount that the year's profit or loss does
+    not explain (a revaluation, a dividend, capital paid in or taken out, a restatement, a merger), without a cause that
+    a document supports?
+  answer: yes_no
+  assumption: Every move in the party's equity beyond its profit or loss has a cause that a document supports
+  disproved_by: 'yes'
+  why: Equity is the cushion under the lender. A revaluation raises it without cash, and capital taken out lowers it without
+    a loss. Either changes what the leverage figures mean.
+  look_in: [03.01.a, 02.02.c]
+  evidence:
+    best: [audited_annual_report, consultant_report]
+    supporting: [shareholder_resolution, board_minutes, valuation_report]
+    stated: [correspondence, call, officer_note]
+  note: Read the statement of changes in equity for each year. Support for a cause is a shareholder resolution, a valuation
+    report or a note to the audited accounts. If equity moved only by profit or loss, answer no and say so.
+  leads_to:
+  - {indicator: CAS_ACCOUNTS_001, is: true, reason: A revaluation or a restatement bears on how far the accounts can be
+      relied on}
+  - {indicator: CAS_RELATED_PARTY_001, is: true, reason: 'Capital taken out goes to the owners, who are related parties'}

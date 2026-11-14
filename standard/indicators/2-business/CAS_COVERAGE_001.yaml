@@ -1,0 +1,149 @@
+id: CAS_COVERAGE_001
+title: Insurance
+pillar: business
+claim: A loss the party could not absorb is insured, and the insurer would pay.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+applies_when:
+- {check: OBS_SECTOR_001, is: corporate}
+- {check: OBS_SECTOR_001, is: project}
+matters_more_when:
+- {check: OBS_COLLATERAL_001, is: single_asset, reason: One uninsured loss would take both the cash flow and the security}
+- {check: OBS_SECTOR_001, is: project, reason: A single project has no other business to carry it through a loss}
+look_again_when:
+- {new_source: insurance_policy, reason: 'Policies are renewed each year, and the cover can change at each renewal'}
+- {new_source: insurance_broker_report, reason: 'A broker''s report can show gaps, unpaid premiums or a change of insurer'}
+checks:
+- id: OBS_INS_001
+  question: Does the party hold insurance?
+  answer: yes_no
+  why: 'Opens the topic. A yes says nothing about what is covered: OBS_INS_005 checks it against the policies whatever the
+    answer here.'
+  due_by: screening
+  look_in: [08.03.a, 08.03.b]
+  evidence:
+    best: [insurance_policy]
+    supporting: [insurance_broker_report, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Does the company hold any insurance? A policy schedule, a certificate or a letter from your broker would be ideal,
+    but a list of the policies is enough to start with.
+- id: OBS_INS_002
+  question: Which kinds of insurance does the party hold?
+  answer: choice
+  options: [property, machinery_breakdown, business_interruption, liability, goods_in_transit, key_person, other]
+  many: true
+  why: 'The kinds held are set against the losses the party could not absorb: damage to its assets, the profit lost while
+    they are repaired, and claims by others.'
+  due_by: concept
+  when:
+  - {check: OBS_INS_001, is: true}
+  look_in: [08.03.a, 08.03.b]
+  evidence:
+    best: [insurance_policy]
+    supporting: [insurance_broker_report, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Which kinds of insurance do you hold? For example property, machinery breakdown, business interruption, liability,
+    goods in transit, key person.
+- id: OBS_INS_005
+  question: Do the policy schedules, or a confirmation from the insurer or the broker, show that the party's policies are
+    in force today and that all premiums due are paid?
+  answer: yes_no
+  assumption: The party's insurance is in force and paid for
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [08.03.a, 08.03.b]
+  evidence:
+    best: [insurance_policy, insurance_broker_report]
+    supporting: [bank_statement, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Are all your policies in force and all premiums paid to date? A confirmation from your broker or insurer would show
+    this.
+  note: 'This check does not hang on OBS_INS_001, so that the topic cannot close on one answer. Answer no where the party
+    holds no insurance or cannot show a policy. Policies usually run for a year: record the renewal dates.'
+- id: OBS_INS_003
+  question: Do the sums insured cover the cost of replacing the party's operating assets as new, and at least twelve months
+    of lost gross profit?
+  answer: yes_no
+  assumption: The sums insured would pay for replacing the assets and for the profit lost while they are replaced
+  disproved_by: 'no'
+  when:
+  - {check: OBS_INS_001, is: true}
+  look_in: [08.03.a, 05.02.a, 08.03.b]
+  evidence:
+    best: [insurance_policy, valuation_report]
+    supporting: [insurance_broker_report, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: What are the sums insured for your assets and for lost profit, and how were they set? We will compare them with the
+    replacement cost of the assets and with a year's gross profit.
+  if_unknown: Until the sums insured are set against replacement cost, the party may be insured for less than a loss would
+    cost.
+  note: 'Twelve months is a guide: use the time it would take to rebuild and restart where that is longer. Compare the sums
+    insured with a valuation at replacement cost, not with book value. Under many policies the insurer may cut every claim
+    in proportion where the sum insured is below the value.'
+- id: OBS_INS_004
+  question: Do the policies exclude, or leave uninsured, a peril that could stop the party's operations at its sites (for
+    example fire, flood, earthquake, machinery breakdown, riot or political violence)?
+  answer: yes_no
+  assumption: The perils that could stop the party's operations at its sites are insured
+  disproved_by: 'yes'
+  when:
+  - {check: OBS_INS_001, is: true}
+  look_in: [08.03.a, 08.03.b, 10.03.a]
+  evidence:
+    best: [insurance_policy, consultant_report]
+    supporting: [insurance_broker_report, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Which risks do your policies exclude? For example flood, earthquake, machinery breakdown, riot or political violence.
+  note: Start from the hazards of the sites and of the sector, then read the exclusions and the deductibles. A deductible
+    larger than the cash the party holds works like an exclusion.
+- id: OBS_INS_006
+  question: Is the insurer that carries the property and business interruption cover rated investment grade for financial
+    strength, or is the risk passed on to reinsurers that are?
+  answer: yes_no
+  assumption: The insurer, or the reinsurers behind it, can pay a claim of the size insured
+  disproved_by: 'no'
+  when:
+  - {check: OBS_INS_001, is: true}
+  look_in: [08.03.a, 08.03.b, 10.03.a]
+  evidence:
+    best: [credit_rating_report, insurance_policy]
+    supporting: [insurance_broker_report, consultant_report]
+    stated: [correspondence, call, officer_note]
+  ask: Which insurer carries your property and business interruption cover? Is it rated, and is the risk reinsured?
+  note: Investment grade (BBB- or its equal on the scale of an international rating agency) is a guide, and many lenders
+    ask for more. A local insurer that keeps the whole risk on its own books may be unable to pay a large claim. Where the
+    cover is reinsured, ask whether the insured can claim from the reinsurers directly.
+- id: OBS_INS_007
+  question: In the last five years, has an insurer refused a claim by the party, paid less than was claimed after a dispute,
+    or cancelled or declined to renew a policy?
+  answer: yes_no
+  assumption: Insurers have paid the party's claims and kept its cover
+  disproved_by: 'yes'
+  when:
+  - {check: OBS_INS_001, is: true}
+  look_in: [08.03.b, 03.01.a]
+  evidence:
+    best: [insurance_broker_report, audited_annual_report]
+    supporting: [company_record, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: In the last five years, has an insurer refused or reduced a claim of yours, or cancelled or declined to renew a policy?
+    May we see the claims record from your broker or insurer?
+  note: Ask for the claims record from the insurer or the broker, not only from the party.
+- id: OBS_INS_008
+  question: Is the lender named as loss payee (the one to whom the insurer pays a claim), or as co-insured, on the policies
+    that cover the assets given as security?
+  answer: yes_no
+  assumption: Insurance money for an asset given as security is paid to the lender
+  disproved_by: 'no'
+  due_by: disbursement
+  when:
+  - {check: OBS_COLLATERAL_001, is: single_asset}
+  - {check: OBS_COLLATERAL_001, is: multi_asset}
+  - {check: OBS_COLLATERAL_001, is: enterprise}
+  look_in: [08.03.a, 08.01.b]
+  evidence:
+    best: [insurance_policy]
+    supporting: [conditions_precedent_checklist, insurance_broker_report, security_agreement]
+    stated: [correspondence, call, officer_note]
+  note: 'Asked of the party whose assets secure the loan. An endorsement on the policy, or a notice that the insurer has
+    acknowledged, shows it: a clause in the loan agreement that asks for it does not.'

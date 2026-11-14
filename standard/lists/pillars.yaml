@@ -1,0 +1,37 @@
+pillars:
+- id: deal
+  title: The deal
+  layer: deal
+  description: The request, the two ways out, who is in the deal and the kind of business.
+- id: environment
+  title: Environment
+  layer: party
+  description: Country, sector and market, licences and regulation.
+- id: business
+  title: Business
+  layer: party
+  description: Customers, inputs, operations and assets.
+- id: governance
+  title: People and governance
+  layer: party
+  description: Owners and control, integrity, board and controls, management.
+- id: cash_flow
+  title: Cash flow and debt
+  layer: party
+  description: The accounts, profitability, cash flow against debt service, existing debt.
+- id: liquidity
+  title: Liquidity and financial risks
+  layer: party
+  description: Liquidity and working capital, currency, interest rate and price risk.
+- id: es_impact
+  title: Environmental, social and impact
+  layer: party
+  description: E&S risk and its management, land and supply chain, impact and additionality.
+- id: links
+  title: Links
+  layer: link
+  description: Guarantee, group, key customer, key supplier, builder and operator, other lenders.
+- id: facility
+  title: The facility
+  layer: facility
+  description: Terms, covenants, security, legal standing, conditions.

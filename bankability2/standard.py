@@ -7,7 +7,7 @@ from .files import Refused
 ANSWERS = ("yes_no", "number", "choice", "text")
 TIERS = ("stated", "supporting", "best")  # weakest first
 STRENGTHS = ("not_now", "not_for_this_deal")
-FLAG = re.compile(r"^(above|below|at most|at least) (-?\d+(?:\.\d+)?)$|^is (not )?(\w+)$")
+FLAG = re.compile(r"^(above|below|at most|at least) (-?\d+(?:\.\d+)?)$|^is (not )?(\w+(?: or \w+)*)$")
 
 
 EXPECTS = {"yes_no": "true or false", "number": "a number", "choice": "one of the check's options", "text": "text"}
@@ -23,6 +23,16 @@ def fits(check, value):
         values = value if isinstance(value, list) else [value]
         return bool(values) and all(option in check.get("options", []) for option in values)
     return isinstance(value, str)
+
+
+def flag_fits(check):
+    """Whether a reference point can be met by the kind of answer the check asks for."""
+    rule = FLAG.match(str(check.get("flag_when")))
+    if not rule:
+        return False
+    if rule.group(1):
+        return check["answer"] == "number"
+    return check["answer"] == "choice" and set(rule.group(4).split(" or ")) <= set(check.get("options", []))
 
 
 def slots_of(std):
@@ -121,7 +131,9 @@ def problems(std):
     kinds = {kind["id"] for kind in std["source_kinds"]}
     slots = [slot["id"] for slot in slots_of(std)]
     roles = {link[end] for link in std["link_types"] for end in ("role_from", "role_to") if end in link}
-    groups = [{"deal"}, roles, {kind["id"] for kind in std["subject_kinds"]}, {link["id"] for link in std["link_types"]}]
+    links = {link["id"] for link in std["link_types"]}
+    subject_kinds = {kind["id"] for kind in std["subject_kinds"]}
+    groups = [{"deal"}, roles, subject_kinds, links]
     applicable = set().union(*groups)
     if sum(len(group) for group in groups) != len(applicable):
         found.append("a role, a kind of subject and a kind of link share a name")
@@ -142,23 +154,23 @@ def problems(std):
             need(where, named, f"unknown check {item.get('check')!r}")
             need(where, not named or "is" not in item or fits(named, item["is"]),
                  f"{item.get('check')} cannot have the answer {item.get('is')!r}")
+            need(where, not named or not item.get("against") or "assumption" in named,
+                 f"{item.get('check')} tests no assumption, so no answer can go against it")
 
     for kind in std["source_kinds"]:
         need(kind["id"], kind.get("slot") is None or kind["slot"] in slots, f"unknown slot {kind.get('slot')!r}")
     for ind in std["indicators"]:
         iid, own = ind["id"], {check["id"] for check in ind["checks"]}
-        need(iid, ind.get("title"), "needs a title")
-        need(iid, ind.get("workstream") in {ws["id"] for ws in std["workstreams"]}, "unknown workstream")
+        need(iid, ind.get("title") and ind.get("claim"), "needs a title and a claim")
+        need(iid, ind.get("pillar") in {pillar["id"] for pillar in std["pillars"]}, "unknown pillar")
         need(iid, ind.get("due_by") in stages, f"unknown stage {ind.get('due_by')!r}")
         need(iid, set(ind.get("applies_to", ["?"])) <= applicable, "applies_to names something unknown")
         for key in ("applies_when", "matters_more_when", "matters_less_when"):
             known_checks(iid, ind.get(key))
-        for side in ("risk", "mitigant"):
-            need(iid, set(ind.get(side, {}).get("checks", [])) <= own, f"{side} names a check of another indicator")
         for item in ind.get("look_again_when", []):
             known_checks(iid, [item] if "check" in item else [])
-            need(iid, item.get("new_source") is None or item["new_source"] in kinds, "unknown kind of source")
-            need(iid, set(item.get("checks", [])) <= set(checks), "look_again_when names an unknown check")
+            need(iid, item.get("new_source") in kinds or "check" in item, "look_again_when needs a kind of source or a check")
+            need(iid, item.get("reason"), "look_again_when needs a reason")
         for check in ind["checks"]:
             cid = check["id"]
             need(cid, check.get("question") and check.get("answer") in ANSWERS, "needs a question and a known answer type")
@@ -170,11 +182,23 @@ def problems(std):
             need(cid, set(check.get("look_in", [])) <= set(slots), f"unknown slot in {check.get('look_in')}")
             for tier, names in check.get("evidence", {}).items():
                 need(cid, tier in TIERS and set(names) <= kinds, f"evidence {tier!r} has an unknown name")
+            decides = ("disproved_by" in check) != ("flag_when" in check)  # exactly one of the two
+            need(cid, decides == ("assumption" in check), "an assumption needs disproved_by or flag_when, and they need it")
             if "disproved_by" in check:
-                sound = check["answer"] == "yes_no" and "assumption" in check and check["disproved_by"] in ("yes", "no")
-                need(cid, sound, "disproved_by needs a yes/no check with an assumption")
-            need(cid, "flag_when" not in check or FLAG.match(str(check["flag_when"])), "flag_when is not understood")
+                need(cid, check["answer"] == "yes_no" and check["disproved_by"] in ("yes", "no"),
+                     "disproved_by is yes or no, on a yes/no check")
+            if "flag_when" in check:
+                need(cid, flag_fits(check), "flag_when does not fit the answer the check asks for")
+                need(cid, check.get("why"), "a reference point needs its reason in 'why'")
             need(cid, check.get("ask_whom", "client") in ("client", "lender"), "ask_whom must be client or lender")
+            need(cid, not check.get("mitigant") or ("assumption" in check and check.get("when")),
+                 "a mitigant needs an assumption, and a 'when' that says which test it answers")
+            for call in check.get("calls_for", []):
+                need(cid, call.get("answered") is True or ("is" in call and fits(check, call["is"])),
+                     "calls_for names an answer the check cannot have")
+                need(cid, (set(call.get("link", ["?"])) <= links) != (call.get("kind") in subject_kinds),
+                     "calls_for needs known kinds of link, or one kind of subject")
+                need(cid, call.get("end", "to") in ("from", "to"), "calls_for: 'end' is from or to")
             for lead in check.get("leads_to", []):
                 need(cid, lead.get("indicator") in indicators, f"leads to unknown indicator {lead.get('indicator')!r}")
                 need(cid, "is" not in lead or fits(check, lead["is"]), f"leads_to names an answer the check cannot have")

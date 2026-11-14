@@ -1,0 +1,160 @@
+id: CAS_COUNTRY_RISK_001
+title: Country
+pillar: environment
+claim: Nothing in the country would stop a sound business from paying a foreign lender on time, or stop that lender from
+  enforcing its claim there.
+due_by: screening
+applies_to: [deal]
+matters_more_when:
+- {check: OBS_VALUE_CHAIN_001, is: concessionaire, reason: A concession is granted by the state and can be taken back by
+    it}
+- {check: OBS_COLLATERAL_001, is: single_asset, reason: Security on one asset is worth only what the courts of its country
+    will enforce}
+look_again_when:
+- {new_source: credit_rating_report, reason: 'A change in the rating of the state, or in its outlook, says the state''s
+    own position has moved'}
+- {new_source: legal_opinion, reason: Local counsel's opinion can change the view on exchange controls and on enforcement}
+checks:
+- id: OBS_COUNTRY_001
+  question: In which country is the borrower incorporated, in which are its main assets, and from which does it earn the
+    revenue that services the loan?
+  answer: text
+  why: Every other check of this topic is asked about one of these countries. Where they differ, each is looked at for what
+    happens there.
+  look_in: [02.01.c, 02.01.a, 03.01.a]
+  evidence:
+    best: [registry_extract, certificate_of_incorporation, audited_annual_report]
+    supporting: [term_sheet, organizational_chart, management_accounts]
+    stated: [management_presentation, correspondence, call, officer_note]
+  ask: Where is the company registered, where are its main sites, and in which countries does it sell?
+  if_unknown: Until the countries are named, none of the country checks can be answered.
+- id: OBS_COUNTRY_002
+  question: 'Do the lender''s own rules allow this exposure in each of those countries: no exclusion, and room under the
+    country limit for the amount asked?'
+  answer: yes_no
+  assumption: The lender's own rules allow this exposure in the country
+  disproved_by: 'no'
+  evidence:
+    best: [internal_memo]
+    stated: [call, officer_note]
+  ask_whom: lender
+  note: Ask whoever keeps the country limits, and record the date. A limit that is full today can have room by signing,
+    and the other way round.
+- id: OBS_COUNTRY_003
+  question: Is the government of the country from which the loan is serviced in default on its foreign debt, restructuring
+    it, or drawing emergency financing to meet its payments abroad?
+  answer: yes_no
+  assumption: The state is paying its own foreign creditors and is not short of foreign currency
+  disproved_by: 'yes'
+  why: A state that cannot pay its own foreign creditors usually rations foreign currency for everyone else.
+  look_in: [10.03.a]
+  evidence:
+    best: [credit_rating_report]
+    supporting: [public_source, consultant_report, internal_memo]
+    stated: [call, officer_note]
+  note: A regular programme with the International Monetary Fund is not by itself an emergency. Arrears, a moratorium, a
+    restructuring or rapid financing to close a gap in payments abroad are. If the search finds nothing, record what was
+    searched, where and when.
+  leads_to:
+  - {indicator: CAS_FX_001, is: true, reason: A state short of foreign currency usually has a currency that is falling}
+- id: OBS_COUNTRY_006
+  question: In the last five years, has armed conflict or civil unrest stopped businesses from operating in the region where
+    the main assets are, or has the state seized privately owned assets in the sector or forced their sale?
+  answer: yes_no
+  assumption: The business can keep operating where its main assets are, and keep owning them
+  disproved_by: 'yes'
+  look_in: [10.03.a]
+  evidence:
+    best: [credit_rating_report, consultant_report]
+    supporting: [public_source, internal_memo]
+    stated: [call, officer_note]
+  note: Say which of the two it was, and how close to the assets. If the search finds nothing, record what was searched,
+    where and when.
+- id: OBS_COUNTRY_004
+  question: In the last ten years, has the country delayed or blocked private payments abroad, frozen bank deposits, or
+    forced debts or deposits in foreign currency to be converted into local currency?
+  answer: yes_no
+  assumption: For the last ten years the country has let private borrowers pay foreign lenders without interruption
+  disproved_by: 'yes'
+  why: A base rate. A country that has done this within memory has the rules and the habit to do it again.
+  due_by: concept
+  look_in: [10.03.a]
+  evidence:
+    best: [credit_rating_report, consultant_report]
+    supporting: [public_source, internal_memo]
+    stated: [call, officer_note]
+  note: If the search finds nothing, record what was searched, where and when.
+- id: OBS_FX_CAPITAL_CONTROLS_001
+  question: Under the rules and the practice of today, do exchange controls or a shortage of foreign currency delay or limit
+    the conversion of local currency and its transfer abroad for debt service?
+  answer: yes_no
+  assumption: Local currency can be converted and sent abroad for debt service without delay or limit
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [08.01.a, 07.01.a, 10.03.a]
+  evidence:
+    best: [legal_opinion, regulatory_document, consultant_report]
+    supporting: [internal_memo, public_source, bank_statement]
+    stated: [management_presentation, correspondence, call, officer_note]
+  ask: Do you need an approval, a registration or an allocation of foreign currency to pay a lender abroad? How long did
+    your last transfer abroad take, from the request to the payment?
+  note: Where the loan must be registered or approved before it can be serviced abroad, answer for the position once that
+    is done, and record the registration as a condition.
+- id: OBS_COUNTRY_005
+  question: Could a foreign lender obtain a judgment or an arbitral award against the borrower, have it recognised in the
+    country where the borrower and the security are, and enforce it there within about three years?
+  answer: yes_no
+  assumption: A foreign lender can enforce its loan and its security through the country's courts within about three years
+  disproved_by: 'no'
+  due_by: diligence
+  look_in: [08.01.a]
+  evidence:
+    best: [legal_opinion]
+    supporting: [consultant_report, internal_memo, public_source]
+    stated: [call, officer_note]
+  note: Three years is a guide. Ask local counsel how long contested enforcement by a foreign creditor has taken in recent
+    cases, not how long the law says it takes.
+  leads_to:
+  - {indicator: CAS_SECURITY_LEGAL_001, is: false, reason: 'Where enforcement is slow or uncertain, the security has to
+      be looked at asset by asset'}
+- id: OBS_COUNTRY_007
+  question: Is debt service paid from an account outside the country, into which buyers pay export proceeds or other foreign-currency
+    receipts before the money enters the country?
+  answer: yes_no
+  mitigant: true
+  assumption: Debt service is paid from foreign currency that is collected and held outside the country
+  disproved_by: 'no'
+  due_by: diligence
+  when:
+  - {check: OBS_COUNTRY_003, against: true}
+  - {check: OBS_COUNTRY_004, against: true}
+  - {check: OBS_FX_CAPITAL_CONTROLS_001, against: true}
+  look_in: [04.02.b, 04.01.b, 06.01.a]
+  evidence:
+    best: [security_agreement, facility_agreement, offtake_agreement]
+    supporting: [term_sheet, bank_statement]
+    stated: [correspondence, call, officer_note]
+  note: Ask counsel whether the rules of the country allow export proceeds to be kept abroad. An account that breaks them
+    protects nobody.
+- id: OBS_COUNTRY_008
+  question: Is the lender protected against the event that the test found, by political risk insurance or a guarantee that
+    names that risk, or (for a block on transfers only) by treatment as a preferred creditor that the country honoured the
+    last time it restricted payments?
+  answer: yes_no
+  mitigant: true
+  assumption: Political risk cover, or treatment as a preferred creditor, protects the lender against the event
+  disproved_by: 'no'
+  due_by: diligence
+  when:
+  - {check: OBS_COUNTRY_003, against: true}
+  - {check: OBS_COUNTRY_004, against: true}
+  - {check: OBS_FX_CAPITAL_CONTROLS_001, against: true}
+  - {check: OBS_COUNTRY_006, against: true}
+  look_in: [08.03.a, 04.02.a, 04.03.b]
+  evidence:
+    best: [insurance_policy, guarantee_agreement, dfi_facility_document]
+    supporting: [term_sheet, legal_opinion, internal_memo]
+    stated: [call, officer_note]
+  ask_whom: lender
+  note: 'Cover must name the risk: a block on conversion and transfer, expropriation, or political violence. Treatment as
+    a preferred creditor rests on practice, and it does not help against conflict or expropriation.'

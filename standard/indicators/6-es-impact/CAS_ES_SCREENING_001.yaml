@@ -1,0 +1,158 @@
+id: CAS_ES_SCREENING_001
+title: E&S screening
+pillar: es_impact
+claim: No activity of the business is on an exclusion list that applies to the deal, and the environmental and social risk
+  of the deal is of a kind the lender can assess and take on.
+due_by: screening
+applies_to: [deal]
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'A new site brings land, construction and permits that an operating
+    business has behind it'}
+- {check: OBS_SECTOR_002, is: agribusiness, reason: 'Land conflict, forest clearing and child labour are most common in
+    farming and in its supply'}
+- {check: OBS_SECTOR_001, is: financial_institution, reason: 'The risk sits in the loans the borrower itself makes, which
+    the lender does not see one by one'}
+look_again_when:
+- {new_source: esia_report, reason: An impact assessment can show effects that change the category}
+- {new_source: adverse_media_screen, reason: Press reports can show an activity or a setting that was not mentioned}
+- {check: OBS_CAPEX_PLAN_001, is: true, reason: 'An expansion can bring new land, new effects and a higher category'}
+checks:
+- id: OBS_ESG_MANDATE_001
+  question: 'What does the lender''s own mandate require on environmental, social and impact matters: nothing beyond the
+    law, that these risks are weighed in the credit decision, or that the deal meets a safeguard standard and shows a development
+    impact?'
+  answer: choice
+  options: [none, integration, dfi_impact]
+  why: Sets how deep the rest of this pillar has to go, and whether impact has to be shown at all.
+  evidence:
+    best: [corporate_governance_policy, private_placement_memorandum]
+    supporting: [internal_memo]
+    stated: [call, officer_note]
+  ask_whom: lender
+  note: '''none'' means the law of the country is the only standard. ''integration'' means the risks are weighed in the
+    credit decision, without a fixed standard to meet. ''dfi_impact'' means the deal must meet a safeguard standard, such
+    as the IFC Performance Standards, and the lender must be able to show what the loan achieves.'
+  leads_to:
+  - {indicator: CAS_IMPACT_001, is: dfi_impact, reason: A lender with an impact mandate has to show that it is needed and
+      what the loan achieves}
+- id: OBS_ESG_MANDATE_003
+  question: 'Which exclusion lists apply to the deal: the lender''s own, and any list of those who fund the lender, of other
+    financiers in the deal, or of a guarantor or insurer of the loan?'
+  answer: text
+  why: OBS_ES_001 is answered against these lists. A list that is not named here is not checked.
+  evidence:
+    best: [corporate_governance_policy, private_placement_memorandum, dfi_facility_document]
+    supporting: [internal_memo, term_sheet]
+    stated: [call, officer_note]
+  ask_whom: lender
+  note: Name each list and its version or date. Where no list applies, say so.
+- id: OBS_ESG_MANDATE_002
+  question: Do other lenders or investors in the deal, or those the borrower is approaching, apply environmental, social
+    or exclusion requirements that differ from the lender's own?
+  answer: yes_no
+  why: The strictest requirement among the financiers is the one the borrower has to meet. One action plan agreed between
+    them spares the borrower several.
+  look_in: [04.01.a, 04.03.b]
+  evidence:
+    best: [term_sheet, dfi_facility_document, intercreditor_agreement]
+    supporting: [internal_memo, correspondence]
+    stated: [call, officer_note]
+  ask: Which other lenders or investors are you talking to about this financing? Has any of them set environmental or social
+    requirements, or told you of activities it does not finance?
+- id: OBS_ES_001
+  question: Does the business that the loan finances, including the companies the borrower controls, carry on any activity
+    that is on an exclusion list that applies to the deal?
+  answer: yes_no
+  assumption: No part of the business carries on an activity that an applicable exclusion list forbids
+  disproved_by: 'yes'
+  look_in: [03.01.a, 07.01.a, 02.06.d]
+  evidence:
+    best: [audited_annual_report, operational_license, adverse_media_screen, consultant_report]
+    supporting: [company_record, company_certificate, management_accounts]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Here is the list of activities we cannot finance. Does your company, or any company it controls, do any of these,
+    even as a small part of its business? If so, what share of revenue does it bring?
+  if_unknown: An excluded activity that comes to light after signing can force the lender out of the deal.
+  note: Go through each list named in OBS_ESG_MANDATE_003, activity by activity, against the revenue breakdown, the licences
+    and the product list, and not only against the description of the main business. Where a list sets its own limit (often
+    a share of revenue), apply that limit and record the share. For a financial institution, ask also whether it lends to
+    such activities and how it screens for them. If the review finds nothing, record what was checked, against which lists
+    and when.
+- id: OBS_ES_002
+  question: Which environmental and social topics arise from what the business does and from where it does it?
+  answer: choice
+  options: [labour, pollution, community_health_and_safety, land_and_resettlement, biodiversity, indigenous_peoples, cultural_heritage]
+  many: true
+  why: Says where the rest of this pillar has to look. The topics are those of IFC Performance Standards 2 to 8.
+  look_in: [07.02.a, 10.03.a]
+  evidence:
+    best: [esia_report, consultant_report]
+    supporting: [esms_policy, internal_memo, executive_summary]
+    stated: [call, officer_note, management_presentation]
+  note: Name a topic when the operations, a planned expansion or the main suppliers touch it, whether or not any harm has
+    been found. Labour arises for every business that employs people or uses contractors.
+  leads_to:
+  - {indicator: CAS_ENVIRONMENTAL_001, is: pollution, reason: 'Permits, incidents and contamination are tested there for
+      each party'}
+  - {indicator: CAS_SOCIAL_001, is: community_health_and_safety, reason: Complaints from neighbours and the conduct of guards
+      are tested there}
+  - {indicator: CAS_LAND_SUPPLY_CHAIN_001, is: land_and_resettlement, reason: 'How the land was acquired, and from whom,
+      is tested there'}
+- id: OBS_ES_003
+  question: Is any site of the business, or the source of any of its main raw materials, in an area of armed conflict, in
+    a country and sector that a public list names for child or forced labour, or in a region where natural forest is still
+    being cleared?
+  answer: yes_no
+  assumption: Neither the sites nor the main supplies of the business lie in a setting known for armed conflict, for child
+    or forced labour, or for forest clearing
+  disproved_by: 'yes'
+  look_in: [07.02.a, 10.03.a, 02.06.d]
+  evidence:
+    best: [consultant_report, esia_report, adverse_media_screen]
+    supporting: [public_source, market_study, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Where are your sites, and where do your main raw materials come from? Please name the regions, not only the countries.
+  note: This is about the setting, not about what the business has done. A yes means that the tests on land, labour and
+    supply need evidence from the ground and not from the office. Say which lists, maps or reports were used, and their
+    dates. If the search finds nothing, record what was searched, where and when.
+  leads_to:
+  - {indicator: CAS_LAND_SUPPLY_CHAIN_001, is: true, reason: 'Forest clearing and child or forced labour are tested there,
+      site by site and supplier by supplier'}
+  - {indicator: CAS_COUNTRY_RISK_001, is: true, reason: Armed conflict is also a risk to the operations and to repayment}
+- id: OBS_ES_004
+  question: 'Which environmental and social risk category does the lender give the deal: A, B, C or FI?'
+  answer: choice
+  options: [A, B, C, FI]
+  assumption: The harm the deal could do is limited in extent, can largely be reversed and can be dealt with by known measures
+  flag_when: is A
+  why: Category A is given where the possible harm is diverse, irreversible or without precedent. Lenders that follow the
+    IFC Performance Standards or the Equator Principles then ask for a full impact assessment, its disclosure and an independent
+    review before approval, and some lenders cannot take such a deal at all.
+  look_in: [07.02.a, 10.03.a]
+  evidence:
+    best: [internal_memo, consultant_report]
+    supporting: [esia_report, executive_summary]
+    stated: [call, officer_note]
+  ask_whom: lender
+  note: A is harm that is diverse, irreversible or without precedent. B is limited harm, mostly at the site, that known
+    measures can deal with. C is little or no harm. FI is money passed on through a financial intermediary, where the risk
+    sits in the loans the intermediary makes. A category given at screening is provisional. Say who set it and when.
+- id: OBS_ES_005
+  question: Has a specialist who is independent of the borrower assessed the deal against the environmental and social standard
+    that the lender applies, covering every topic that arises?
+  answer: yes_no
+  mitigant: true
+  assumption: An independent assessment against the lender's standard covers every topic that arises
+  disproved_by: 'no'
+  due_by: diligence
+  when:
+  - {check: OBS_ES_003, against: true}
+  - {check: OBS_ES_004, against: true}
+  look_in: [10.03.a, 07.02.a, 07.02.c]
+  evidence:
+    best: [consultant_report, esia_report]
+    supporting: [esap, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: The topics are those named in OBS_ES_002. An impact assessment written for a permit answers the law of the country,
+    not the lender's standard, and is not enough by itself. The report should say, topic by topic, where the business falls
+    short of the standard.

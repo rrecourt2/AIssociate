@@ -5,7 +5,9 @@ Everything here is worked out from the memory and the standard on every run. Non
 import datetime
 
 from .standard import FLAG, TIERS, slots_of
-from .store import DEAL
+from .store import DEAL, as_list
+
+VERDICTS = ("challenged", "contested", "not tested", "stands")  # worst first
 
 
 def roles(memory, std):
@@ -46,14 +48,23 @@ def answers(memory, std):
     return found
 
 
-def holds(condition, target, found):
+def holds(condition, target, found, std):
     """Whether a condition on an answer holds. None while the answer is not there."""
     given = found.get((condition["check"], target)) or found.get((condition["check"], DEAL)) or []
     if not given:
         return None
     if condition.get("answered"):
         return True
+    if condition.get("against"):
+        return any(against(std["checks"][condition["check"]], value) for _, value in given)
     return any(value == condition["is"] or (isinstance(value, list) and condition["is"] in value) for _, value in given)
+
+
+def against(check, value):
+    """Whether an answer goes against the assumption a check tests."""
+    if "disproved_by" in check:
+        return isinstance(value, bool) and value == (check["disproved_by"] == "yes")
+    return "flag_when" in check and bool(meets(check["flag_when"], value))
 
 
 def meets(rule, value):
@@ -65,7 +76,8 @@ def meets(rule, value):
         number = float(limit.group(2))
         return {"above": value > number, "below": value < number,
                 "at most": value <= number, "at least": value >= number}[limit.group(1)]
-    same = value == limit.group(4) or (isinstance(value, list) and limit.group(4) in value)
+    named = limit.group(4).split(" or ")
+    same = any(option in named for option in (value if isinstance(value, list) else [value]))
     return not same if limit.group(3) else same
 
 
@@ -92,16 +104,18 @@ def answered_row(row, check, given, memory, std, today):
     kinds = {memory["sources"][fact["source"]]["kind"] for fact in facts}
     tiers = [tier for tier in TIERS if kinds & set(check.get("evidence", {}).get(tier, []))]
     row["evidence"] = tiers[-1] if tiers else "unlisted"
-    if "evidence" in check and TIERS.index(tiers[-1] if tiers else TIERS[0]) < TIERS.index(stage["ideal_evidence"]):
+    if "assumption" in check:
+        row["against"] = against(check, values[0])
+        said = tiers[-1:] == ["stated"] or all(fact.get("said_by") == "client" for fact in facts)
+        if said and not row["against"]:
+            row["own_word"] = True  # a favourable answer that rests only on what someone said
+    weak = "evidence" in check and TIERS.index(tiers[-1] if tiers else TIERS[0]) < TIERS.index(stage["ideal_evidence"])
+    if weak and not row.get("against"):  # an answer against the claim is believed whatever it rests on
         row["flags"].append("thin")
     ages = [months_since(fact.get("as_of") or memory["sources"][fact["source"]].get("date"), today) for fact in facts]
     ages = [age for age in ages if age is not None]
     if ages and min(ages) > stage["ideal_max_age_months"]:
         row["flags"].append("old")
-    if "disproved_by" in check and isinstance(values[0], bool):
-        row["assumption"] = "disproved" if values[0] == (check["disproved_by"] == "yes") else "stands"
-    if "flag_when" in check and meets(check["flag_when"], values[0]):
-        row["flags"].append("flagged")
 
 
 def assess(memory, std, today=None):
@@ -109,6 +123,8 @@ def assess(memory, std, today=None):
     today = today or datetime.date.today()
     held, found = roles(memory, std), answers(memory, std)
     rows, states = [], {}
+    actions = {(cid, decision.get("about", DEAL)): did for did, decision in memory["decisions"].items()
+               for cid in decision.get("covers", [])}
 
     def parked(off, check, target):
         """A "not now" lasts until the stage changes or a check it follows gets a new answer."""
@@ -122,7 +138,7 @@ def assess(memory, std, today=None):
 
     def decided(cond, check, target):
         """Whether a condition is met. A condition on a check that is itself not relevant is not met."""
-        result = holds(cond, target, found)
+        result = holds(cond, target, found, std)
         same_topic = std["checks"][cond["check"]]["indicator"] == check["indicator"]
         if result is None and same_topic and state(cond["check"], target) == "not relevant":
             return False
@@ -141,6 +157,10 @@ def assess(memory, std, today=None):
         unnamed = target in memory["subjects"] and not memory["subjects"][target].get("name")  # a seat nobody holds yet
         after = check.get("after", [])
         conds = [decided(cond, check, target) for cond in check.get("when", [])]
+        applies = [holds(cond, target, found, std) for cond in ind.get("applies_when", [])]
+        action = actions.get((cid, target)) or actions.get((cid, DEAL))
+        if action:
+            row["action"] = action  # a decision that covers this check: a gap with an agreed action
         follows_dead_end = any(state(dep, target) == "not relevant" for dep in after
                                if std["checks"][dep]["indicator"] == ind["id"])
         if off and parked(off, check, target):
@@ -150,18 +170,96 @@ def assess(memory, std, today=None):
         elif (conds and all(cond is False for cond in conds)) or follows_dead_end:
             row["state"] = "not relevant"  # none of its conditions can hold any more
         elif (any(not (found.get((dep, target)) or found.get((dep, DEAL))) for dep in after) or unnamed
-              or (conds and True not in conds)):
+              or (conds and True not in conds) or (applies and True not in applies)):
             row["state"] = "waiting"  # for an earlier answer, for a condition, or for the seat to be filled
         return row["state"]
 
     for ind in std["indicators"]:
         for check in ind["checks"]:
             for target in targets(check.get("applies_to", ind["applies_to"]), memory, held):
-                if "applies_when" in ind and not any(holds(cond, target, found) for cond in ind["applies_when"]):
-                    continue
+                applies = [holds(cond, target, found, std) for cond in ind.get("applies_when", [])]
+                if applies and all(cond is False for cond in applies):
+                    continue  # discovery has shown that the indicator does not apply here
                 state(check["id"], target)
                 rows.append(states[check["id"], target])
     return rows
+
+
+def claims(rows, memory, std):
+    """Where each claim stands, for each subject or link it is made about. Questions do not count: tests do."""
+    found, given = {}, answers(memory, std)
+    for row in rows:
+        check = std["checks"][row["check"]]
+        if "assumption" not in check or row["state"] in ("off", "not relevant"):
+            continue
+        claim = found.setdefault((row["indicator"], row["for"]), {
+            "indicator": row["indicator"], "for": row["for"], "tests": 0, "own_word": 0, "thin": 0, "against": [],
+            "contested": [], "mitigants": {}, "actions": [], "look_again": [], "seen": 0})
+        answered = row["state"] == "answered"
+        claim["seen"] = max([claim["seen"], *(memory["facts"][fid]["rev"] for fid in row.get("facts", []))])
+        if row.get("action") and row["action"] not in claim["actions"]:
+            claim["actions"].append(row["action"])
+        if check.get("mitigant"):
+            if answered or row["state"] == "open":
+                claim["mitigants"][row["check"]] = ("fails" if row["against"] else "holds") if answered else "not known"
+        elif row["state"] == "contested":
+            claim["contested"].append(row["check"])
+        elif answered and row["against"]:
+            claim["against"].append(row["check"])
+        elif answered:
+            claim["tests"] += 1
+            claim["own_word"] += bool(row.get("own_word"))
+            claim["thin"] += "thin" in row["flags"]
+    for claim in found.values():
+        claim["stands"] = ("challenged" if claim["against"] else "contested" if claim["contested"]
+                           else "stands" if claim["tests"] > claim["own_word"] else "not tested")
+        for item in std["by_id"][claim["indicator"]].get("look_again_when", []) if claim["seen"] else []:
+            if "new_source" in item:
+                later = any(source["kind"] == item["new_source"] and source["rev"] > claim["seen"]
+                            and (not source.get("about") or {claim["for"], DEAL} & set(as_list(source["about"])))
+                            for source in memory["sources"].values())
+            else:
+                facts = given.get((item["check"], claim["for"])) or given.get((item["check"], DEAL)) or []
+                later = any(memory["facts"][fid]["rev"] > claim["seen"] and value == item.get("is", value)
+                            for fid, value in facts)
+            if later:
+                claim["look_again"].append(item["reason"])
+    return list(found.values())
+
+
+def view(found, std):
+    """For each pillar: how many claims stand where. A claim made about several subjects counts once, at its worst."""
+    worst = {}
+    for claim in found:
+        worst[claim["indicator"]] = min(worst.get(claim["indicator"], len(VERDICTS)), VERDICTS.index(claim["stands"]))
+    counts = {pillar["id"]: [0] * len(VERDICTS) for pillar in std["pillars"]}
+    for indicator, place in worst.items():
+        counts[std["by_id"][indicator]["pillar"]][place] += 1
+    return counts
+
+
+def called_for(rows, memory, std):
+    """Answers that call for a link or a subject which the structure does not hold yet."""
+    found = []
+    for row in rows:
+        asked = row["state"] == "answered" and "action" not in row  # a decision can say why nothing is needed
+        for call in std["checks"][row["check"]].get("calls_for", []) if asked else []:
+            value = row["value"]
+            if not (call.get("answered") or value == call.get("is") or (isinstance(value, list) and call.get("is") in value)):
+                continue
+            link = memory["links"].get(row["for"])
+            ends = {link["from"], link["to"]} if link else {row["for"]}
+            sides = [call["end"]] if "end" in call and not link else ["from", "to"]  # the end the subject must be
+            kinds = {sid: subject["kind"] for sid, subject in memory["subjects"].items()}
+            there = (call["kind"] in kinds.values() if "kind" in call
+                     else any(other["type"] in call["link"] and other["state"] != "ended"
+                              and (row["for"] == DEAL or ends & {other[side] for side in sides}
+                                   or ("end" not in call and kinds.get(other["to"]) == "facility"))  # support for the loan
+                              for other in memory["links"].values()))
+            if not there:
+                wanted = f"a {call['kind']}" if "kind" in call else "a link of kind " + " or ".join(call["link"])
+                found.append({"check": row["check"], "for": row["for"], "wanted": wanted})
+    return found
 
 
 def next_list(memory, std, rows, in_folder=()):
@@ -172,10 +270,11 @@ def next_list(memory, std, rows, in_folder=()):
     order = {stage: place for place, stage in enumerate(std["stage_ids"])}
     unlocks = {}
     for check in std["checks"].values():
-        for earlier in check.get("after", []):
+        opens = [cond["check"] for cond in check.get("when", []) + std["by_id"][check["indicator"]].get("applies_when", [])]
+        for earlier in set(check.get("after", []) + opens):
             unlocks[earlier] = unlocks.get(earlier, 0) + 1
     work = [dict(row, unlocks=unlocks.get(row["check"], 0) if row["state"] == "open" else 0) for row in rows
-            if row["state"] in ("open", "contested") or (row["state"] == "answered" and row["flags"])]
+            if (row["state"] in ("open", "contested") and "action" not in row) or (row["state"] == "answered" and row["flags"])]
     work.sort(key=lambda row: (order[row["due_by"]], -row["unlocks"]))
 
     slot_of = {kind["id"]: kind.get("slot") for kind in std["source_kinds"]}
@@ -197,7 +296,13 @@ def next_list(memory, std, rows, in_folder=()):
         "structure": [f"{sid}: {subject['kind']} not yet named. {subject.get('note', '')}".strip()
                       for sid, subject in memory["subjects"].items() if not subject.get("name")]
                      + [f"{lid}: {link['from']} {link['type']} {link['to']} is proposed, not confirmed"
-                        for lid, link in memory["links"].items() if link["state"] == "proposed"],
+                        for lid, link in memory["links"].items() if link["state"] == "proposed"]
+                     + [f"{memory['subjects'].get(call['for'], {}).get('name') or call['for'].replace(DEAL, 'The deal')}: "
+                        f"the answer to {call['check']} calls for {call['wanted']}, and there is none"
+                        for call in called_for(rows, memory, std)],
+        "actions": [f"{did}: {decision['decision']} (owner: {decision.get('owner', 'not named')}; due: "
+                    f"{decision.get('due', 'no date')}; covers {', '.join(decision['covers'])})"
+                    for did, decision in memory["decisions"].items() if decision.get("covers")],
         "documents": documents,
         "checks": work,
         "questions": [dict(question, id=qid) for qid, question in memory["questions"].items() if question["state"] == "open"],

@@ -1,0 +1,156 @@
+id: CAS_ENERGY_GENERATION_001
+title: 'Power: generation and sale'
+pillar: business
+claim: The plant can deliver to the grid the energy the projections count on, and a buyer is bound to take it or pay for
+  it.
+due_by: concept
+applies_to: [project]
+applies_when:
+- {check: OBS_SECTOR_002, is: power}
+matters_more_when:
+- {check: OBS_CASHFLOW_BASIS_001, is: contracted, reason: 'Repayment rests on the purchase agreement, so its terms on output
+    and curtailment decide the cash flow'}
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: There is no operating record to set the forecast against}
+look_again_when:
+- {new_source: offtake_agreement, reason: 'A new draft or the signed purchase agreement can change the volume, the price
+    and who bears curtailment'}
+- {new_source: technical_feasibility, reason: 'A new yield study, grid study or engineer''s report can change the output
+    the plant is expected to deliver'}
+checks:
+- id: OBS_EGEN_001
+  question: What is the plant's installed or planned generating capacity?
+  answer: number
+  unit: MW
+  why: Capacity sets the scale of the project. With the capacity factor it gives the energy the projections sell.
+  due_by: screening
+  look_in: [05.01.a, 07.01.a]
+  evidence:
+    best: [technical_feasibility, operational_license]
+    supporting: [investment_plan, company_record]
+    stated: [business_plan, correspondence, call, officer_note]
+  ask: What is the capacity of the plant in megawatts, installed or planned?
+  note: Say whether the figure is the capacity of the generating units or the capacity that may be fed into the grid, where
+    the two differ.
+- id: OBS_EGEN_002
+  question: What capacity factor do the projections assume (the energy sold in a year as a share of what the plant would
+    produce if it ran at full capacity all year)?
+  answer: number
+  unit: percent
+  why: The capacity factor turns capacity into energy sold. A figure above what the independent yield study or the plant's
+    own record supports overstates revenue in every year.
+  look_in: [05.01.a, 03.02.b]
+  evidence:
+    best: [technical_feasibility]
+    supporting: [financial_model, financial_projections]
+    stated: [correspondence, call, officer_note]
+  note: Take the figure net of the plant's own use, of losses up to the meter and of planned outages. Say whether it is
+    the central estimate (P50) or a more cautious one.
+- id: OBS_EGEN_004
+  question: Has the project signed a power purchase agreement, or another contract of sale, for its output?
+  answer: yes_no
+  assumption: A buyer is bound by contract to buy the plant's output
+  disproved_by: 'no'
+  due_by: screening
+  calls_for:
+  - {is: true, kind: contract}
+  look_in: [06.01.a]
+  evidence:
+    best: [offtake_agreement]
+    supporting: [regulatory_document, company_record]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Is a power purchase agreement signed? Please share it. If not, who will buy the power, and at what stage are the
+    talks?
+  if_unknown: Without a signed agreement the plant sells at whatever price and volume the market gives it.
+  note: An award letter, a term sheet or an agreement that is initialled but not signed is a no. Record the share of the
+    projected output that the agreement covers. What it does not cover is sold at market prices (OBS_EREG_002).
+  leads_to:
+  - {indicator: CAS_OFFTAKER_CREDIT_001, is: true, reason: The agreement is worth what the buyer can pay}
+  - {indicator: CAS_CONTRACT_REVIEW_001, is: true, reason: 'The term, the price and the rights to terminate decide what
+      the agreement gives the lender'}
+  - {indicator: CAS_RATE_PRICE_RISK_001, is: false, reason: Without a contract the project is exposed to the market price
+      of power}
+- id: OBS_EGEN_007
+  question: Under the purchase agreement, who bears the loss when the grid cannot take the plant's output (curtailment or
+    a grid outage)?
+  answer: choice
+  options: [buyer_pays, shared, project_bears, not_addressed]
+  assumption: The buyer pays for energy the plant could have delivered but the grid could not take
+  flag_when: is not buyer_pays
+  why: Where the buyer pays for energy that was available, curtailment is the buyer's cost. Where the project bears it or
+    shares it, or the agreement is silent, curtailed hours are lost revenue.
+  due_by: diligence
+  when:
+  - {check: OBS_EGEN_004, is: true}
+  look_in: [06.01.a, 08.01.a]
+  evidence:
+    best: [offtake_agreement, legal_opinion]
+    supporting: [technical_feasibility, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: buyer_pays means the buyer pays for energy deemed delivered. For shared, say what allowance of unpaid hours or what
+    cap applies, and set it against the curtailment found in OBS_EGEN_005.
+- id: OBS_EGEN_003
+  question: Is the plant connected to the grid, or does it hold a signed connection agreement for its full capacity with
+    a connection date no later than its planned start of operation?
+  answer: yes_no
+  assumption: The plant can deliver its full output to the grid from the day it starts
+  disproved_by: 'no'
+  look_in: [06.01.a, 07.01.a]
+  evidence:
+    best: [material_contract, regulatory_document]
+    supporting: [technical_feasibility, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Is the plant connected, or is the connection agreement signed? Who builds and pays for the line and the substation,
+    and by when?
+  if_unknown: A plant that cannot deliver its power earns nothing, whatever it can generate.
+  note: An application, a connection offer not yet accepted or a study by the grid operator is a no. Say who builds the
+    line and the substation, and whether that work is inside the construction budget and schedule.
+- id: OBS_EGEN_005
+  question: Does a grid study, or the grid operator's record for this area, show that more of the plant's output is likely
+    to be curtailed (held back because the grid cannot take it) than the projections allow for?
+  answer: yes_no
+  assumption: The grid can take the plant's output, apart from the curtailment the projections already allow for
+  disproved_by: 'yes'
+  due_by: diligence
+  look_in: [05.01.a, 07.01.a]
+  evidence:
+    best: [technical_feasibility, consultant_report, regulatory_document]
+    supporting: [company_record, financial_model]
+    stated: [correspondence, call, officer_note]
+  ask: Has output from this plant, or from plants nearby, been held back by the grid operator? Is there a grid study that
+    estimates how much will be?
+  note: A no needs a grid study or the operator's record behind it. If the search finds nothing, record what was searched,
+    where and when. Where nobody has studied it, the answer is not known.
+- id: OBS_EGEN_006
+  question: Has the chosen model of the main generating equipment (such as the turbine, the module and inverter, or the
+    engine) run in commercial operation at other plants, under conditions like those at this site?
+  answer: yes_no
+  assumption: The chosen equipment has a record in commercial operation
+  disproved_by: 'no'
+  look_in: [05.01.a, 06.02.a]
+  evidence:
+    best: [technical_feasibility, consultant_report]
+    supporting: [epc_contract, supply_agreement, company_record]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Which make and model of generating equipment will be used? Where does that model already run, and since when?
+  note: A new model or a prototype from an established maker is a no. The maker's record is not the model's record. Two
+    years of operation at several plants is a guide. Whether the technology as such is proven is asked in OBS_FEAS_002.
+- id: OBS_EGEN_008
+  question: Has the energy the plant delivered in each of the last three full years reached the yearly figure the projections
+    count on?
+  answer: yes_no
+  assumption: The plant's own record bears out the output the projections count on
+  disproved_by: 'no'
+  due_by: diligence
+  when:
+  - {check: OBS_LIFECYCLE_001, is: established}
+  - {check: OBS_LIFECYCLE_001, is: expanding}
+  - {check: OBS_LIFECYCLE_001, is: distressed}
+  look_in: [05.01.a, 03.01.a, 10.03.a]
+  evidence:
+    best: [technical_feasibility, audited_annual_report]
+    supporting: [company_record, management_accounts]
+    stated: [correspondence, call, officer_note]
+  ask: Please share the metered energy delivered in each of the last three years, with the buyer's statements or invoices.
+  note: Take metered energy at the delivery point. Where the plant has run for less than three years, use the years there
+    are and say so. Where capacity is being added, compare per megawatt installed. A shortfall with a one-off cause is still
+    a no, with the cause named.

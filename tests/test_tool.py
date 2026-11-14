@@ -76,17 +76,36 @@ class Deal(unittest.TestCase):
     def test_where_checks_stand(self):
         rows = self.rows()
         major = rows["OBS_BUYER_CONC_001", "P-001"]
-        self.assertEqual((major["state"], major["assumption"], major["evidence"]), ("answered", "disproved", "best"))
+        self.assertEqual((major["state"], major["against"], major["evidence"]), ("answered", True, "best"))
+        self.assertEqual(major["flags"], [])  # an answer against the claim is believed whatever it rests on
         self.assertEqual(rows["OBS_INPUT_001", "P-001"]["flags"], ["thin"])  # said on a call, and the stage is past screening
         self.assertEqual(rows["OBS_FX_002", "P-001"]["state"], "not relevant")  # asked only when there is foreign revenue
         self.assertEqual(rows["OBS_REV_002", "P-001"]["state"], "open")
-        self.assertEqual(rows["OBS_REV_001", "P-002"]["state"], "waiting")  # the guarantor is not named yet
-        self.assertEqual(rows["OBS_OFFTAKER_004", "R-003"]["state"], "answered")  # a check on a link
+        self.assertEqual(rows["OBS_DEBT_001", "P-002"]["state"], "waiting")  # the guarantor is not named yet
+        paid = rows["OBS_OFFTAKER_004", "R-003"]  # a check on a link, answered in the customer's favour by the seller
+        self.assertEqual((paid["state"], paid["against"], paid.get("own_word")), ("answered", False, True))
         self.assertEqual(rows["DEAL_MILK_PRICE_001", "P-001"]["state"], "open")  # the check this deal added
         self.assertNotIn(("OBS_FIC_001", "P-001"), rows)  # checks for banks do not apply
+        self.assertIn(("OBS_AGRI_001", "P-001"), rows)  # checks for agribusiness do, because discovery said so
+        self.assertEqual(rows["OBS_HEDGE_001", "P-001"]["action"], "D-002")  # a gap with an agreed action
         memory = self.memory()
-        memory["facts"]["F-007"]["state"] = "outdated"  # without it, only one of the six conditions is answered, with a no
+        memory["facts"]["F-007"]["state"] = "outdated"  # without it no currency test goes against the claim
         self.assertEqual(self.rows(memory)["OBS_HEDGE_001", "P-001"]["state"], "waiting")
+        memory["facts"]["F-003"]["state"] = "outdated"  # without the kind of business, its checks wait for discovery
+        self.assertEqual(self.rows(memory)["OBS_REV_002", "P-001"]["state"], "waiting")
+
+    def test_where_claims_stand(self):
+        memory, std = self.memory(), standard.effective(self.deal)
+        rows = assess.assess(memory, std)
+        found = {(claim["indicator"], claim["for"]): claim for claim in assess.claims(rows, memory, std)}
+        currency = found["CAS_FX_001", "P-001"]
+        self.assertEqual((currency["stands"], currency["against"], currency["actions"]), ("challenged", ["OBS_FX_008"], ["D-002"]))
+        self.assertEqual(currency["mitigants"]["OBS_HEDGE_001"], "not known")
+        self.assertEqual(found["CAS_OFFTAKER_CREDIT_001", "R-003"]["stands"], "not tested")  # it rests on the seller's word
+        self.assertEqual(assess.view(found.values(), std)["liquidity"][0], 1)  # one challenged claim in that pillar
+        wanted = {(call["check"], call["wanted"]) for call in assess.called_for(rows, memory, std)}
+        self.assertEqual(wanted, {("OBS_CAPEX_PLAN_001", "a project"), ("OBS_INPUT_001", "a link of kind supplies_to"),
+                                  ("OBS_DEBT_001", "a link of kind lends_to")})
 
     def test_not_now_lasts_until_the_stage_changes(self):
         memory = self.memory()

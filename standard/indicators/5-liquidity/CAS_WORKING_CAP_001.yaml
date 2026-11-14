@@ -1,0 +1,168 @@
+id: CAS_WORKING_CAP_001
+title: Working capital
+pillar: liquidity
+claim: The party's stock and receivables exist, are worth what its accounts say and turn into cash on time, and its working
+  capital is financed through the peak of the season.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+applies_when:
+- {check: OBS_SECTOR_001, is: corporate}
+- {check: OBS_SECTOR_001, is: project}
+matters_more_when:
+- {check: OBS_VALUE_CHAIN_001, is: trader, reason: 'A trader''s assets are almost all stock and receivables, financed with
+    short-term debt'}
+- {check: OBS_SECTOR_002, is: agribusiness, reason: Stock and advances build up over a season and are repaid from a single
+    harvest}
+- {check: OBS_LIFECYCLE_001, is: expanding, reason: Growth ties up cash in stock and receivables before the sales are collected}
+look_again_when:
+- {new_source: audited_annual_report, reason: 'New accounts show stock, receivables and the provisions against them at a
+    new date'}
+- {new_source: management_accounts, reason: 'Monthly figures show the seasonal peak, which a year-end balance sheet hides'}
+checks:
+- id: OBS_WC_001
+  question: How many days pass, on average, between the party paying for its inputs and collecting the cash from its customers
+    (days of stock plus days of receivables, less days of payables)?
+  answer: number
+  unit: days
+  why: The length of the cycle says how much cash each sale ties up, and for how long. It is read against earlier years
+    and against businesses of the same kind.
+  due_by: concept
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  ask: How long does it take from the day you pay for your inputs to the day your customers pay you? If the figure is not
+    to hand, we can work it out from your stock, receivables and payables.
+  note: Where the monthly figures allow it, work the cycle out at the seasonal peak as well as at the year-end, and say
+    which date each figure is for.
+- id: OBS_WC_002
+  question: Do the party's customers pay, on average, within the credit terms the party gives them (days of receivables
+    no longer than those terms)?
+  answer: yes_no
+  assumption: Customers pay within the agreed terms
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [03.01.a, 03.01.b, 10.03.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [company_record, management_accounts]
+    stated: [call, officer_note]
+  ask: What credit terms do you give your customers, and how long do they take to pay in practice? An ageing list of your
+    receivables would answer this.
+  if_unknown: A party that cannot produce an ageing list of its receivables does not know who owes it what.
+  note: Record the terms and the days of receivables. Where terms differ between kinds of customer, answer for the kind
+    that owes the most and say so.
+- id: OBS_WC_005
+  question: What share of the party's trade receivables, by value, is more than ninety days past its due date?
+  answer: number
+  unit: percent
+  assumption: Only a small part of the receivables is long overdue
+  flag_when: above 10
+  why: Ninety days overdue is where the accounting standards presume a receivable to be in default unless the contrary is
+    shown, and where lenders stop counting it towards a borrowing base. A few such invoices are disputes. Once they pass
+    about a tenth of the total, late payment is a pattern, and the write-down still to come is large enough to change the
+    year's profit. A tenth is a convention, not a rule. An institution can set its own figure.
+  look_in: [03.01.a, 10.03.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [company_record, management_accounts]
+    stated: [call, officer_note]
+  note: Take the figure from the ageing list at the latest month-end and, where possible, at the seasonal peak. Count the
+    days from the due date, not from the invoice date. Record how much of the overdue amount is provided for.
+- id: OBS_WC_006
+  question: Was the stock in the latest annual accounts counted with the auditor or another independent party present, and
+    valued at the lower of its cost and the price it can be sold for?
+  answer: yes_no
+  assumption: The stock exists and is worth what the accounts say, and someone independent has checked both
+  disproved_by: 'no'
+  when:
+  - {check: OBS_VALUE_CHAIN_001, is: primary_producer}
+  - {check: OBS_VALUE_CHAIN_001, is: manufacturer}
+  - {check: OBS_VALUE_CHAIN_001, is: trader}
+  - {check: OBS_VALUE_CHAIN_001, is: distributor}
+  - {check: OBS_VALUE_CHAIN_001, is: retailer}
+  - {check: OBS_VALUE_CHAIN_001, is: developer}
+  look_in: [03.01.a, 03.01.e, 10.03.a]
+  evidence:
+    best: [audited_annual_report, audit_management_letter, consultant_report]
+    supporting: [company_record, management_accounts]
+    stated: [call, officer_note]
+  ask: Who was present at your last year-end stock count besides your own staff? Is any of your stock held by someone else,
+    such as a warehouse keeper or a processor?
+  note: A count by the party's own staff alone is a no. Stock held by others (in a public warehouse, at a processor, in
+    transit) counts only where the holder has confirmed it in writing or an inspector has seen it.
+- id: OBS_WC_007
+  question: Is more than about a tenth of the stock, by value, older than one normal selling season or production cycle,
+    or carried at a value that no sale contract and no current market price supports?
+  answer: yes_no
+  assumption: The stock is current and can be sold for at least its value in the accounts
+  disproved_by: 'yes'
+  when:
+  - {check: OBS_VALUE_CHAIN_001, is: primary_producer}
+  - {check: OBS_VALUE_CHAIN_001, is: manufacturer}
+  - {check: OBS_VALUE_CHAIN_001, is: trader}
+  - {check: OBS_VALUE_CHAIN_001, is: distributor}
+  - {check: OBS_VALUE_CHAIN_001, is: retailer}
+  - {check: OBS_VALUE_CHAIN_001, is: developer}
+  look_in: [03.01.a, 10.03.a, 05.02.a]
+  evidence:
+    best: [audited_annual_report, consultant_report, valuation_report]
+    supporting: [company_record, management_accounts]
+    stated: [call, officer_note]
+  note: A tenth is a guide. Ask for the stock list by age. For a commodity, set the value per tonne in the accounts against
+    the market price on the balance sheet date and today.
+- id: OBS_WC_009
+  question: Does the party's balance sheet carry advances paid to suppliers, farmers or contractors that are still outstanding
+    more than one season, or one normal delivery cycle, after they were paid, with neither the goods delivered nor the money
+    returned?
+  answer: yes_no
+  assumption: Advances to suppliers and farmers come back as goods or as cash within the season
+  disproved_by: 'yes'
+  look_in: [03.01.a, 10.03.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [company_record, management_accounts]
+    stated: [call, officer_note]
+  ask: Do you pay suppliers or farmers in advance? How much is outstanding today, and how much of it was paid more than
+    a season ago?
+  note: Ask for the advances by recipient and by date paid. Record the amount that is overdue and set it against the party's
+    equity. An advance that is rolled into the next season has not come back.
+  leads_to:
+  - {indicator: CAS_SUPPLIER_LINK_001, is: true, reason: A supplier that holds the party's money and has not delivered is
+      a credit risk of its own}
+- id: OBS_WC_004
+  question: Over the last three financial years, has the cash tied up in stock and receivables, less trade payables, grown
+    faster than the party's sales?
+  answer: yes_no
+  assumption: Working capital has grown no faster than sales
+  disproved_by: 'yes'
+  why: When working capital outgrows sales, customers are paying later, stock is not selling, or sales are booked that are
+    not real. Each of them uses cash that the profit and loss account does not show.
+  due_by: concept
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  if_unknown: Without three years of balance sheets the trend cannot be read, and one year's figure says little.
+  note: Compare working capital as days of sales at the start and at the end of the three years. Where a business was bought
+    or sold in that time, compare like with like and say so.
+  leads_to:
+  - {indicator: CAS_CHANGES_001, is: true, reason: Working capital that outgrows sales is a change that needs a cause}
+- id: OBS_WC_008
+  question: Is the party's highest working-capital need of the year financed in full by its own cash and by committed credit
+    lines that run until after the stock and receivables they finance have turned into cash?
+  answer: yes_no
+  assumption: The peak of working capital is financed by money that stays for the whole season
+  disproved_by: 'no'
+  look_in: [04.01.b, 04.03.a, 03.01.b]
+  evidence:
+    best: [facility_agreement]
+    supporting: [debt_schedule, management_accounts, financial_model]
+    stated: [correspondence, call, officer_note]
+  ask: In which month do you need the most money for stock and receivables, and how much? Which credit lines pay for it,
+    and when does each of them fall due?
+  note: Take the peak from the monthly figures of the last two years, not from the year-end balance sheet. A line that falls
+    due, or comes up for the bank's review, in the middle of the season is a no. Liquidity asks whether a line is committed
+    (OBS_LIQ_003).

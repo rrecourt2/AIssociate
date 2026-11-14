@@ -1,0 +1,203 @@
+id: CAS_RELATED_PARTY_001
+title: Related parties
+pillar: links
+claim: Dealings with related parties take no cash or value out of the party that the lender counts on.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+matters_more_when:
+- {check: OBS_BORROWER_003, is: true, reason: A group gives more ways to move cash and value between companies}
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: 'In distress, owners can move value out before the creditors reach
+    it'}
+look_again_when:
+- {new_source: audited_annual_report, reason: New accounts carry a new note on related parties and new balances}
+- {new_source: scheme_of_arrangement, reason: A restructuring moves businesses or assets between related parties}
+checks:
+- id: OBS_RP_001
+  question: Does the party buy from, sell to, lend to, borrow from, guarantee for or share costs with related parties (its
+    shareholders, directors and managers, their families, and companies that any of them own or control)?
+  answer: yes_no
+  why: Opens the topic. A "no" is not the end of it. OBS_RP_005 checks it against the audited accounts.
+  due_by: screening
+  calls_for:
+  - is: true
+    link: [lends_to, sells_to, supplies_to, owns, member_of, other]
+  look_in: [03.01.a, 02.03.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, organizational_chart, company_record]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Does your company buy from, sell to, lend to or borrow from its shareholders, its directors, their families, or other
+    companies that they own? A yes or no is enough to start with.
+- id: OBS_RP_006
+  question: What kinds of dealings does the party have with related parties?
+  answer: choice
+  options: [sales, purchases, loans_given, loans_received, guarantees_given, fees_and_shared_costs, leases, asset_transfers]
+  many: true
+  why: 'Each kind takes value out in its own way: sales below the market price, purchases above it, loans that are not repaid,
+    guarantees that are called, fees for nothing. Loans given open the checks on what is owed to the party.'
+  due_by: concept
+  when:
+  - {check: OBS_RP_001, is: true}
+  calls_for:
+  - is: loans_given
+    link: [lends_to]
+    end: from
+  - is: guarantees_given
+    link: [guarantees]
+    end: from
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record, board_minutes]
+    stated: [correspondence, call, officer_note]
+  leads_to:
+  - {indicator: CAS_DEBT_001, is: guarantees_given, reason: A guarantee for a related party is a debt that the balance sheet
+      may not show}
+- id: OBS_RP_002
+  question: What is the total yearly value of the party's dealings with related parties (sales, purchases, fees, rents and
+    interest), as a percentage of its revenue?
+  answer: number
+  unit: percent
+  why: Says how much of the business runs through related parties, and so how much hangs on the prices between them. Loans
+    and balances are asked separately.
+  due_by: concept
+  when:
+  - {check: OBS_RP_001, is: true}
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  ask: What is the total value of all your dealings with related parties in the last financial year, as a percentage of
+    your revenue? The notes to your audited accounts should give the breakdown.
+  note: Take the last full financial year and name it.
+- id: OBS_RP_003
+  question: Are the prices and terms of the party's dealings with related parties the same as it gets, or would get, from
+    unrelated parties?
+  answer: yes_no
+  assumption: Related parties get no better prices or terms from the party than strangers would
+  disproved_by: 'no'
+  due_by: concept
+  when:
+  - {check: OBS_RP_001, is: true}
+  look_in: [03.01.a, 10.03.a]
+  evidence:
+    best: [consultant_report, audited_annual_report]
+    supporting: [company_record, management_accounts, board_minutes]
+    stated: [call, officer_note, correspondence]
+  ask: How are prices set for what you buy from and sell to related companies? Is there a transfer-pricing study, or can
+    you show us what unrelated customers and suppliers pay for the same thing?
+  if_unknown: Margins and cash flow may be flattered, or drained, by prices that the owners set.
+  note: Compare with the party's own dealings with unrelated parties, with market prices, or with a transfer-pricing study.
+    The party's statement that its terms are at arm's length is its own word.
+- id: OBS_RP_004
+  question: Must each dealing with a related party be approved by directors or shareholders who have no interest in it,
+    under a written policy, the articles or a shareholder agreement?
+  answer: yes_no
+  assumption: Those who gain from a dealing with a related party do not decide on it alone
+  disproved_by: 'no'
+  when:
+  - {check: OBS_RP_001, is: true}
+  look_in: [02.01.b, 02.02.b, 02.05.a]
+  evidence:
+    best: [memorandum_and_articles, shareholder_agreement]
+    supporting: [corporate_governance_policy, board_minutes, board_resolution]
+    stated: [call, officer_note, correspondence]
+  ask: Who approves a transaction with a related party? Is there a written rule that the director or shareholder concerned
+    does not vote on it?
+- id: OBS_RP_EXPOSURE_001
+  question: What do related parties owe the party (loans, advances and trade receivables), as a percentage of its tangible
+    equity?
+  answer: number
+  unit: percent
+  assumption: What related parties owe the party is a small part of the party's own capital
+  flag_when: above 10
+  why: Related parties are seldom pressed to pay, so analysts take what they owe off the party's equity. Above about a tenth
+    of tangible equity, taking it off changes leverage and covenant headroom enough to be seen. A tenth is a reference point
+    from credit practice, not a rule. A lender can set its own.
+  when:
+  - {check: OBS_RP_001, is: true}
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  ask: Please add up all loans, advances and receivables owed to you by related parties (group companies, associates, shareholders,
+    directors). What is the total, and what is your equity?
+  note: Tangible equity is equity less goodwill and other intangible assets. Give the date of the balance.
+- id: OBS_RP_PEAK_001
+  question: What was the highest balance of loans and advances that related parties owed the party during the last financial
+    year, as a multiple of the balance at the year-end?
+  answer: number
+  unit: ratio
+  assumption: The year-end balance shows what related parties owe the party during the year
+  flag_when: above 1.5
+  why: The balance at year-end hides the peak. Loans to related parties are often repaid just before the balance-sheet date
+    and drawn again after it. A peak half as high again as the year-end figure is taken as the sign of this. It is a guide,
+    and a lender can set its own.
+  when:
+  - {check: OBS_RP_006, is: loans_given}
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record, bank_statement]
+    stated: [call, officer_note]
+  ask: What was the highest amount that related parties owed you at any time in the last financial year, and what did they
+    owe you at the year-end? Monthly balances would answer this.
+  note: Some accounts disclose the highest balance in the year. Where they do not, ask for the monthly balances. Where nothing
+    was owed at the year-end but money was owed during the year, the multiple cannot be worked out. Record 99 and give the
+    peak amount in the reason.
+- id: OBS_RP_DEMAND_001
+  question: Can the party call back what it has lent to related parties, and could they pay?
+  answer: choice
+  options: [demandable_and_liquid, demandable_illiquid_borrower, term_loan, no_terms]
+  assumption: The party can get back what it has lent to related parties
+  flag_when: is demandable_illiquid_borrower or no_terms
+  why: A right to demand repayment from a related party that has no cash, or a loan with nothing in writing, is money the
+    party will not see when it needs it. Lenders treat such loans as capital given away.
+  when:
+  - {check: OBS_RP_006, is: loans_given}
+  look_in: [03.01.a, 06.01.a]
+  evidence:
+    best: [audited_annual_report, facility_agreement]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  ask: Can you demand repayment of your loans to group companies, for example at 30 days' notice? If you did, would the
+    company that borrowed have the cash to pay?
+  if_unknown: The loans to related parties cannot be counted as assets that turn into cash.
+  note: 'The options: demandable_and_liquid, repayable on demand and the related party has the cash or the credit lines
+    to pay. demandable_illiquid_borrower, repayable on demand but the related party that borrowed could not pay. term_loan,
+    a written loan with a repayment date. no_terms, nothing in writing. Where the loans differ, answer for the largest.'
+- id: OBS_RP_005
+  question: Does the note on related parties in the audited accounts name every related party, dealing and balance that
+    the party has told the lender about, or that the lender knows of from other sources?
+  answer: yes_no
+  assumption: The audited accounts disclose all the party's dealings and balances with related parties
+  disproved_by: 'no'
+  look_in: [03.01.a, 03.01.e, 02.04.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [audit_management_letter, shareholder_register, organizational_chart]
+    stated: [call, officer_note]
+  note: This check does not hang on OBS_RP_001, so that the topic cannot close on one answer. Compare the note with the
+    shareholder register, the organisation chart, the list of directors and the bank statements. Where the party said it
+    has no dealings with related parties and the accounts show some, correct the answer to OBS_RP_001.
+- id: OBS_RP_PERIMETER_001
+  question: In the last 24 months, has a business, a subsidiary or a plant been moved into or out of the party (through
+    a sale to or a purchase from a related party, a merger, a demerger, a carve-out or a scheme of arrangement)?
+  answer: yes_no
+  assumption: The party is still the business that its past accounts describe, with nothing moved into it or out of it
+  disproved_by: 'yes'
+  why: A transfer between related parties can take a business or an asset out of the lender's reach, at a price that the
+    owners set. It also breaks the trend, because the figures before and after the transfer describe different businesses.
+  look_in: [03.01.a, 02.02.i, 02.01.c]
+  evidence:
+    best: [audited_annual_report, scheme_of_arrangement, registry_extract]
+    supporting: [board_minutes, organizational_chart, management_presentation]
+    stated: [call, officer_note]
+  ask: In the last two years, has any plant, division or subsidiary been moved into or out of the company, for example through
+    a scheme of arrangement, a carve-out, a demerger or a merger? If so, which periods are affected?
+  if_unknown: The past figures may describe a business that is no longer the one the lender counts on.
+  leads_to:
+  - {indicator: CAS_CHANGES_001, is: true, reason: Changes in the figures across the transfer need restated accounts before
+      they are read as a trend}

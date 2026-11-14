@@ -1,0 +1,227 @@
+id: CAS_GROUP_LINK_001
+title: Owner and group
+pillar: links
+claim: 'The tie works as the lender counts on: the owner puts money in when the company is short, cash that the owner''s
+  debt depends on can come up, and none is taken up at the lender''s cost.'
+due_by: diligence
+applies_to: [owns, sponsors]
+matters_more_when:
+- {check: OBS_BORROWER_001, is: holding_company, reason: A holding company repays from what the companies it owns send up}
+- {check: OBS_BORROWER_001, is: spv, reason: A special-purpose borrower has only what its sponsor puts in}
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: In distress an owner decides whether to put money in or to take it
+    out}
+look_again_when:
+- {new_source: shareholder_agreement, reason: A new or changed shareholder agreement can change who must put money in and
+    who can block a dividend}
+- {new_source: audited_annual_report, reason: 'New accounts show dividends, loans to the owner and the owner''s own means
+    at a new date'}
+checks:
+- id: OBS_GROUP_001
+  question: 'Which way does the lender rely on the tie between this owner and the company it owns or sponsors: on money
+    coming down from the owner, on cash coming up from the company, on both, or on neither?'
+  answer: choice
+  options: [support_from_owner, cash_from_owned, both, neither]
+  why: Most ties in a chain of owners carry nothing that the lender counts on. Then the answer is neither, and nothing more
+    is asked about the tie.
+  due_by: screening
+  look_in: [03.02.b, 02.03.a]
+  evidence:
+    best: [financial_model, term_sheet]
+    supporting: [internal_memo, financial_projections, organizational_chart]
+    stated: [call, officer_note]
+  ask_whom: lender
+  note: Answer from the financial model and the credit paper, not from memory. An equity injection, a shareholder loan or
+    a promise to cover cost overruns in the projections means support_from_owner. Debt of the owner that is serviced from
+    dividends, fees or loans from the company means cash_from_owned. "The company" stands for whatever is owned or sponsored.
+- id: OBS_GROUP_002
+  question: 'Has the owner bound itself in writing to support the company: by a guarantee of the loan, or by a signed undertaking
+    to put money in?'
+  answer: yes_no
+  assumption: The owner is bound in writing to support the company
+  disproved_by: 'no'
+  why: Support that rests on the owner's goodwill is given when it suits the owner. Only a signed promise can be claimed.
+  due_by: concept
+  when:
+  - {check: OBS_GROUP_001, is: support_from_owner}
+  - {check: OBS_GROUP_001, is: both}
+  calls_for:
+  - is: true
+    link: [guarantees, supports, completion_support]
+  look_in: [04.02.a, 02.02.g]
+  evidence:
+    best: [guarantee_agreement, jv_agreement]
+    supporting: [term_sheet, shareholder_agreement, board_resolution]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Will the owner sign a guarantee, or an undertaking addressed to us, to put money into the company if it runs short?
+- id: OBS_GROUP_003
+  question: 'Would the company''s failure hurt the owner itself: would the owner lose about a fifth or more of its own assets
+    or revenue, see its own loans fall due through a cross-default, or have its own name or licence damaged?'
+  answer: yes_no
+  assumption: The company's failure would cost the owner more than supporting it
+  disproved_by: 'no'
+  due_by: concept
+  when:
+  - {check: OBS_GROUP_001, is: support_from_owner}
+  - {check: OBS_GROUP_001, is: both}
+  look_in: [03.01.a, 02.03.a, 04.03.a]
+  evidence:
+    best: [audited_annual_report, facility_agreement]
+    supporting: [organizational_chart, management_accounts, debt_schedule]
+    stated: [correspondence, call, officer_note, management_presentation]
+  note: A fifth is a guide. What counts is that walking away would cost the owner something it values. A company that is
+    small, new, in a side business or up for sale gives its owner little reason to pay.
+- id: OBS_GROUP_004
+  question: When the company was last short of money (a loss, a cost overrun, a covenant breach, a payment it could not
+    make), did the owner put money in?
+  answer: choice
+  options: [put_money_in, did_not, never_short]
+  assumption: The owner has put money in when the company was short
+  flag_when: is did_not
+  why: What an owner did the last time is the best guide to what it will do the next time. A company that was never short
+    has shown nothing either way, so that answer is recorded and does not count against the owner.
+  when:
+  - {check: OBS_GROUP_001, is: support_from_owner}
+  - {check: OBS_GROUP_001, is: both}
+  look_in: [03.01.a, 02.02.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [bank_statement, board_minutes, shareholder_resolution, management_accounts]
+    stated: [correspondence, call, officer_note]
+  note: Money in means new equity, or a loan that ranks behind the lenders, paid in cash. A promise is not money in. Where
+    the company is new, look at what the owner did for its other companies and say so.
+- id: OBS_GROUP_005
+  question: Could the owner, from its own cash and unused committed credit lines and after paying its own debt due in the
+    next twelve months, cover one year of the company's debt service?
+  answer: yes_no
+  assumption: The owner has the means to support the company when the company is short
+  disproved_by: 'no'
+  when:
+  - {check: OBS_GROUP_001, is: support_from_owner}
+  - {check: OBS_GROUP_001, is: both}
+  look_in: [03.01.a, 04.03.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, debt_schedule, bank_statement]
+    stated: [correspondence, call, officer_note, management_presentation]
+  note: Use the owner's own accounts, not the consolidated ones. Cash held in other subsidiaries may not be the owner's
+    to move. One year of debt service is a guide to the size of the support. Where the owner has guaranteed the loan, its
+    capacity is tested in full as a guarantor.
+- id: OBS_GROUP_006
+  question: 'Can anything stop or limit the company from paying dividends or lending to the owner: a rule on reserves that
+    may be distributed, a regulator''s approval, exchange control, a minority shareholder''s veto, a tax on the payment,
+    or a covenant or lock-up in the company''s own loans?'
+  answer: yes_no
+  assumption: Nothing stands between the company's spare cash and the owner
+  disproved_by: 'yes'
+  due_by: concept
+  when:
+  - {check: OBS_GROUP_001, is: cash_from_owned}
+  - {check: OBS_GROUP_001, is: both}
+  look_in: [04.01.b, 02.02.b, 08.01.a]
+  evidence:
+    best: [facility_agreement, shareholder_agreement, legal_opinion]
+    supporting: [memorandum_and_articles, audited_annual_report, regulatory_document]
+    stated: [correspondence, call, officer_note]
+  note: Read the company's own loan agreements for dividend tests and lock-ups. A block that applies only after a default
+    still counts. It bites exactly when the owner needs the cash.
+- id: OBS_GROUP_007
+  question: Does the company owe debt of its own (loans, bonds, leases, guarantees it has given) that is paid from its cash
+    and assets before anything reaches the owner?
+  answer: yes_no
+  assumption: No lender of the company stands between the company's cash and the owner
+  disproved_by: 'yes'
+  why: A lender to the owner is paid from what is left after the company's own lenders. If the company fails, they take
+    its assets first.
+  due_by: concept
+  when:
+  - {check: OBS_GROUP_001, is: cash_from_owned}
+  - {check: OBS_GROUP_001, is: both}
+  look_in: [03.01.a, 04.03.a, 02.01.c]
+  evidence:
+    best: [audited_annual_report, facility_agreement, registry_extract]
+    supporting: [debt_schedule, management_accounts]
+    stated: [correspondence, call, officer_note]
+  note: Any such debt ranks first. Give its amount in the reason and set it against the company's yearly cash flow, so that
+    a small working-capital line can be told from debt that takes most of the cash.
+  leads_to:
+  - {indicator: CAS_OTHER_LENDERS_001, is: true, reason: 'The company''s lenders are paid before the owner, and so before
+      a lender to the owner'}
+- id: OBS_GROUP_008
+  question: In the last five years, did the owner take cash out of the company (dividends, loans to itself, fees, or purchases
+    at prices above the market) in a year in which the company made a loss, breached a covenant or paid its creditors late?
+  answer: yes_no
+  assumption: The owner leaves cash in the company when the company is weak
+  disproved_by: 'yes'
+  why: An owner that drew cash from a weak company has shown whose interest comes first. For a lender to the company it
+    is cash gone. For a lender to the owner it is the source of repayment being run down.
+  when:
+  - {check: OBS_GROUP_001, is: support_from_owner}
+  - {check: OBS_GROUP_001, is: cash_from_owned}
+  - {check: OBS_GROUP_001, is: both}
+  look_in: [03.01.a, 02.02.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, board_minutes, shareholder_resolution, bank_statement]
+    stated: [correspondence, call, officer_note]
+  leads_to:
+  - {indicator: CAS_RELATED_PARTY_001, is: true, reason: 'Cash taken out by the owner is a dealing with a related party,
+      and there may be more'}
+- id: OBS_GROUP_009
+  question: Is the company's cash swept into, or mixed with, the cash of the owner or the group (a cash pool, a common treasury,
+    shared bank accounts), so that its balance is a claim on the group and not money in its own account?
+  answer: yes_no
+  assumption: The company's cash is in its own accounts and under its own control
+  disproved_by: 'yes'
+  when:
+  - {check: OBS_GROUP_001, is: support_from_owner}
+  - {check: OBS_GROUP_001, is: cash_from_owned}
+  - {check: OBS_GROUP_001, is: both}
+  look_in: [03.01.a, 06.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report, material_contract]
+    supporting: [bank_statement, management_accounts, corporate_governance_policy]
+    stated: [correspondence, call, officer_note]
+  ask: Does the company keep its cash in its own bank accounts, or is it swept into a group account or lent to the group's
+    treasury?
+  note: The cash pooling agreement shows who owes whom. In the audited accounts a pooled balance appears as an amount due
+    from a group company, not as cash.
+- id: OBS_GROUP_MIT_001
+  question: Do the lender's loan terms bind the company itself to limits on dividends, on loans and guarantees to the owner
+    and the group, and on taking part in a cash pool?
+  answer: yes_no
+  mitigant: true
+  assumption: The loan terms limit what the owner can take out of the company
+  disproved_by: 'no'
+  when:
+  - {check: OBS_GROUP_008, against: true}
+  - {check: OBS_GROUP_009, against: true}
+  look_in: [04.01.a, 04.01.b]
+  evidence:
+    best: [facility_agreement]
+    supporting: [term_sheet]
+    stated: [correspondence, call, officer_note]
+  note: The limits help only if the company has signed them. A covenant given by the owner alone does not stop the company
+    from paying.
+  leads_to:
+  - {indicator: CAS_COVENANT_DESIGN_001, is: false, reason: Limits on dividends and on loans to the group belong in the
+      covenants}
+- id: OBS_GROUP_MIT_002
+  question: 'Does the lender hold a direct claim on the company: a guarantee from it, security over its assets, or the company
+    as a co-borrower?'
+  answer: yes_no
+  mitigant: true
+  assumption: The lender can claim against the company itself, beside the company's own lenders
+  disproved_by: 'no'
+  when:
+  - {check: OBS_GROUP_006, against: true}
+  - {check: OBS_GROUP_007, against: true}
+  calls_for:
+  - is: true
+    link: [guarantees, secures, borrows]
+  look_in: [04.02.a, 04.02.b, 04.01.a]
+  evidence:
+    best: [guarantee_agreement, security_agreement, facility_agreement]
+    supporting: [term_sheet]
+    stated: [correspondence, call, officer_note]
+  note: A pledge of the company's shares is not a direct claim. It gives the lender the owner's place, behind the company's
+    creditors. Whether a company may guarantee its owner's debt is asked about the guarantee itself.

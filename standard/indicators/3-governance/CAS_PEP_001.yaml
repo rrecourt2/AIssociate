@@ -1,0 +1,127 @@
+id: CAS_PEP_001
+title: Political exposure
+pillar: governance
+claim: No politically exposed person owns, controls or benefits from the party in a way the lender has not examined.
+due_by: diligence
+applies_to: [borrower, repayment_source, guarantor, sponsor, shareholder, controller]
+matters_more_when:
+- {check: OBS_SECTOR_002, is: power, reason: The business lives on a licence and a tariff that the state grants}
+- {check: OBS_SECTOR_002, is: infrastructure, reason: The business lives on a concession or a contract that the state grants}
+look_again_when:
+- {new_source: aml_screening, reason: A new screening can show a person who has taken or left office}
+- {check: OBS_PEP_001, is: true, reason: A political tie that is newly found has not been examined}
+checks:
+- id: OBS_PEP_001
+  question: 'Is the party, or any of its directors or senior managers, a politically exposed person: someone who holds or
+    has held a prominent public office, or a close relative or a close associate of such a person?'
+  answer: yes_no
+  why: To be politically exposed is not a fault. It decides how closely the lender has to look. A no is checked by OBS_PEP_006
+    against a screening.
+  due_by: screening
+  look_in: [02.06.b, 02.06.a, 02.04.a]
+  evidence:
+    best: [aml_screening]
+    supporting: [kyc_package, beneficial_ownership_declaration, company_certificate]
+    stated: [correspondence, call, officer_note]
+  ask: Does any owner, director or senior manager hold a prominent public office, or has one held such an office? Is any
+    of them a close relative or a close business associate of someone who does?
+  note: Prominent public office means, for example, a minister, a member of parliament, a senior judge, a general, a senior
+    official of a ruling party or the head of a state-owned company. How long a person counts after leaving office is set
+    by the lender's own rule. Owners and controllers are parties of their own and get this check themselves.
+  leads_to:
+  - {indicator: CAS_SOURCE_OF_FUNDS_001, is: true, reason: Where the person's money comes from is part of the closer look}
+- id: OBS_PEP_002
+  question: 'What is the tie: does the person hold the office, or is the person a close relative or a close associate of
+    the one who does?'
+  answer: choice
+  options: [direct, family, close_associate]
+  many: true
+  why: The closer the tie and the higher the office, the closer the look. Name the person, the office and the years in it.
+  due_by: screening
+  when:
+  - {check: OBS_PEP_001, is: true}
+  look_in: [02.06.b, 02.06.a]
+  evidence:
+    best: [aml_screening]
+    supporting: [kyc_package, company_certificate]
+    stated: [correspondence, call, officer_note]
+- id: OBS_PEP_006
+  question: Did a screening against a database of politically exposed persons, or a search of public sources, find a political
+    tie that the party had not declared?
+  answer: yes_no
+  assumption: The party has declared every political tie of its own, of its directors and of its senior managers
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [02.06.b, 02.06.d]
+  evidence:
+    best: [aml_screening, adverse_media_screen]
+    supporting: [kyc_package, internal_memo]
+    stated: [call, officer_note]
+  if_unknown: Without a screening, the answer to OBS_PEP_001 rests on the party's word alone.
+  note: This check does not hang on OBS_PEP_001, so that the topic cannot close on what the party says. If the search finds
+    nothing, record what was searched, where and when.
+- id: OBS_PEP_005
+  question: Does the business that the lender finances hold a licence, a concession, a public contract, a subsidy or a loan
+    from a state bank that the person's office grants, renews or can influence?
+  answer: yes_no
+  assumption: The business does not depend on anything that the politically exposed person's office can give or take away
+  disproved_by: 'yes'
+  due_by: concept
+  when:
+  - {check: OBS_PEP_001, is: true}
+  look_in: [07.01.a, 06.01.a, 06.05.a]
+  evidence:
+    best: [operational_license, material_contract, lease_agreement, regulatory_document]
+    supporting: [adverse_media_screen, consultant_report, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Look at who signed the licence or the contract, and who decides on its renewal. An office that the person left counts
+    while the people the person appointed still decide.
+  leads_to:
+  - {indicator: CAS_REGULATORY_001, is: true, reason: A licence that came through a political tie can go when the tie goes}
+- id: OBS_PEP_003
+  question: 'Has the lender examined the person more closely and put the result on file: where the person''s wealth comes
+    from, what the person receives from the party, and the approval of the lender''s senior management?'
+  answer: yes_no
+  assumption: The lender has examined the person's wealth and role, and its senior management has approved the relationship
+  disproved_by: 'no'
+  when:
+  - {check: OBS_PEP_001, is: true}
+  look_in: [02.06.d, 02.06.a]
+  evidence:
+    best: [adverse_media_screen, consultant_report, internal_memo]
+    supporting: [kyc_package]
+    stated: [call, officer_note]
+  ask_whom: lender
+  note: This closer look is often called enhanced due diligence. The file has to show all three parts.
+- id: OBS_PEP_004
+  question: While the loan is outstanding, does the lender look again at least once a year at the person's office and at
+    the party's dealings with it?
+  answer: yes_no
+  assumption: The lender looks again at the political tie at least once a year
+  disproved_by: 'no'
+  due_by: monitoring
+  when:
+  - {check: OBS_PEP_001, is: true}
+  look_in: [02.06.b, 02.06.d]
+  evidence:
+    best: [aml_screening, adverse_media_screen]
+    supporting: [internal_memo]
+    stated: [call, officer_note]
+  ask_whom: lender
+  note: Once a year is a guide. An election, a change of government or a new public contract is a reason to look at once.
+- id: OBS_PEP_007
+  question: Was that licence, contract, subsidy or loan won in an open procedure (a public tender, or a published rule that
+    applies to everyone), and has the lender seen the record of the award?
+  answer: yes_no
+  mitigant: true
+  assumption: What the business holds from the state was awarded in an open procedure, and the record shows it
+  disproved_by: 'no'
+  when:
+  - {check: OBS_PEP_005, against: true}
+  look_in: [07.01.a, 08.01.a]
+  evidence:
+    best: [regulatory_document, legal_opinion]
+    supporting: [public_source, consultant_report]
+    stated: [correspondence, call, officer_note]
+  note: The record is the tender notice, the list of bidders and the decision. A direct award, or a tender with one bidder,
+    is not an open procedure.

@@ -1,0 +1,143 @@
+id: CAS_PORTFOLIO_SUPPORT_001
+title: Support between projects
+pillar: links
+claim: When the supported project falls short, cash from the supporting project must reach it, ahead of any payment to the
+  owners.
+due_by: diligence
+applies_to: [portfolio_support]
+matters_more_when:
+- {check: OBS_CASHFLOW_BASIS_001, is: projected, reason: A project whose cash flow is only projected is the more likely
+    to need the support}
+- {check: OBS_INVESTOR_ROLE_002, is: true, reason: 'Other financing is in place, and the supporting project''s own lenders
+    have the first claim on its cash'}
+look_again_when:
+- {new_source: facility_agreement, reason: A signed or amended facility agreement can change the order of payments and the
+    triggers}
+- {new_source: intercreditor_agreement, reason: An agreement between lenders decides whether cash may leave the supporting
+    project}
+checks:
+- id: OBS_PORTSUPPORT_001
+  question: Is the support set out in a signed agreement that binds the supporting project?
+  answer: yes_no
+  assumption: The support is set out in a signed agreement that binds the supporting project
+  disproved_by: 'no'
+  due_by: screening
+  look_in: [04.01.b, 04.02.a, 04.02.c]
+  evidence:
+    best: [facility_agreement, guarantee_agreement, intercreditor_agreement]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Where is the support between the projects written down? Please share the agreement, or the section of the facility
+    agreement that sets out the order of payments.
+  if_unknown: Support that is not written down is the sponsor's intention, not an obligation.
+  note: A term sheet, a group policy or a practice of moving cash between projects is a no.
+- id: OBS_PORTSUPPORT_002
+  question: What form does the support take?
+  answer: choice
+  options: [excess_cash_sweep, reserve_sharing, debt_service_support, cross_collateral, cross_default, other]
+  many: true
+  why: The form decides what moves between the projects. A sweep or a shared reserve moves cash. Cross-collateral gives
+    a claim on assets. A cross-default moves no cash at all, and lets trouble in one project bring down the other.
+  due_by: screening
+  look_in: [04.01.b, 04.02.a, 04.02.c]
+  evidence:
+    best: [facility_agreement, guarantee_agreement, intercreditor_agreement]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Choose every form that applies.
+- id: OBS_PORTSUPPORT_005
+  question: Which events oblige the supporting project to pay?
+  answer: choice
+  options: [debt_service_shortfall, dscr_breach, construction_delay, cost_overrun, distribution_lockup, event_of_default,
+    other, unclear]
+  many: true
+  assumption: The agreement states the events that oblige the supporting project to pay
+  flag_when: is unclear
+  why: Where the trigger is unclear, the supporting project or its owners decide whether the support is owed, and they decide
+    at the moment it is needed.
+  due_by: concept
+  look_in: [04.01.b, 04.02.a, 04.02.c]
+  evidence:
+    best: [facility_agreement, guarantee_agreement, intercreditor_agreement]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: dscr_breach means the supported project's debt service cover ratio has fallen below a stated level. distribution_lockup
+    means the supported project is barred from paying its owners. Choose unclear where the trigger is not defined or depends
+    on someone's judgement. Unclear may be chosen together with other options.
+- id: OBS_PORTSUPPORT_003
+  question: Once a trigger event has occurred, must the supporting project pay without a further decision by its board or
+    its owners?
+  answer: yes_no
+  assumption: The support is owed as soon as it is triggered, with no further decision
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [04.01.b, 04.02.a, 08.01.a]
+  evidence:
+    best: [facility_agreement, guarantee_agreement, legal_opinion]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Wording such as "may", "intends to" or "subject to approval" is a no.
+- id: OBS_PORTSUPPORT_004
+  question: Where does the support come in the supporting project's order of payments (its cash waterfall)?
+  answer: choice
+  options: [before_debt_service, after_opex_before_debt_service, after_debt_service_before_distributions, after_distributions,
+    unclear]
+  assumption: The support is paid before the supporting project pays anything to its owners
+  flag_when: is after_distributions or unclear
+  why: Support that comes after distributions is paid only from what the owners chose to leave behind. Before distributions
+    it has a prior claim on the cash.
+  look_in: [04.01.b, 04.02.c, 03.02.b]
+  evidence:
+    best: [facility_agreement, intercreditor_agreement]
+    supporting: [term_sheet, financial_model, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: The debt service meant in the options is the supporting project's own.
+  leads_to:
+  - {indicator: CAS_DEBT_SERVICE_001, reason: There is cash to pass on only if the supporting project has some left after
+      its own debt service}
+- id: OBS_PORTSUPPORT_007
+  question: Can the supporting project pay the support without the consent of its own lenders (no bar on payments to affiliates,
+    and no lock-up that would stop it)?
+  answer: yes_no
+  assumption: The supporting project's own lenders cannot stop the support from being paid
+  disproved_by: 'no'
+  look_in: [04.01.b, 04.02.c, 08.01.a]
+  evidence:
+    best: [facility_agreement, intercreditor_agreement, legal_opinion]
+    supporting: [term_sheet, debt_schedule]
+    stated: [correspondence, call, officer_note]
+  note: Read the supporting project's own loan documents, not only the agreement that grants the support. Where the supporting
+    project has no debt of its own, the answer is yes. Record that.
+  leads_to:
+  - {indicator: CAS_OTHER_LENDERS_001, is: false, reason: The supporting project's lenders decide whether cash may leave
+      it}
+- id: OBS_PORTSUPPORT_006
+  question: Which events end the support?
+  answer: choice
+  options: [project_completion, financial_completion, commercial_operation_date, facility_repaid, dsra_funded, lender_approval,
+    other, unclear]
+  many: true
+  assumption: The agreement states when the support ends
+  flag_when: is unclear
+  why: Where the end of the support is unclear, the supporting project can claim it has been released once the supported
+    project runs into trouble.
+  look_in: [04.01.b, 04.02.a, 04.02.c]
+  evidence:
+    best: [facility_agreement, guarantee_agreement, intercreditor_agreement]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: dsra_funded means the supported project's debt service reserve account is filled. Any release before the supported
+    loan is repaid leaves the rest of its life without the support. Record the event and any fixed end date.
+- id: OBS_PORTSUPPORT_008
+  question: Do the supporting project and the supported project depend on the same customer, the same resource or the same
+    tariff, so that one event would weaken both at once?
+  answer: yes_no
+  assumption: The two projects would not be weakened by the same event
+  disproved_by: 'yes'
+  look_in: [06.01.a, 05.01.a, 03.02.b]
+  evidence:
+    best: [offtake_agreement, technical_feasibility, regulatory_document]
+    supporting: [financial_model, company_record, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Two plants that sell to the same buyer, draw on the same river or wind region, or are paid under the same tariff
+    scheme fall short together. The support is then weakest when it is needed.

@@ -1,0 +1,162 @@
+id: CAS_OFFTAKER_CREDIT_001
+title: Key customer
+pillar: links
+claim: The customer will keep buying and paying until the loan is repaid, or the seller can sell the same volume to others.
+due_by: diligence
+applies_to: [sells_to]
+matters_more_when:
+- {check: OBS_CASHFLOW_BASIS_001, is: contracted, reason: The first way out rests on what this customer has signed}
+- {check: OBS_SECTOR_001, is: project, reason: A project usually sells to one customer or to a few}
+look_again_when:
+- {new_source: offtake_agreement, reason: 'A new draft or an amendment can change the price, the volume, the term or the
+    right to end the contract'}
+- {new_source: credit_rating_report, reason: A change in the customer's rating changes what its promise to pay is worth}
+checks:
+- id: OBS_OFFTAKER_001
+  question: Does this customer bring in about a tenth or more of the seller's revenue, now or in the projections, or do
+    the projections for repayment rest on its contract?
+  answer: yes_no
+  why: Opens the topic. Below that size the loss of one customer is absorbed in the seller's revenue as a whole, which is
+    tested under revenue and customers.
+  due_by: screening
+  look_in: [06.01.a, 03.01.a, 03.02.b]
+  evidence:
+    best: [offtake_agreement, audited_annual_report]
+    supporting: [company_record, management_accounts, financial_model]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Does this customer buy about a tenth or more of what you sell, or will it once the project runs?
+  note: A tenth is a guide. OBS_OFFTAKER_002 asks for the figure and does not hang on this answer.
+- id: OBS_OFFTAKER_002
+  question: What share of the seller's revenue comes from this customer?
+  answer: number
+  unit: percent
+  why: The share says how much of the debt service is lost with the customer. It also checks the answer to OBS_OFFTAKER_001.
+  due_by: screening
+  look_in: [03.01.a, 03.01.b, 03.02.b]
+  evidence:
+    best: [audited_annual_report, offtake_agreement]
+    supporting: [company_record, management_accounts, financial_model]
+    stated: [correspondence, call, officer_note]
+  ask: About what percentage of your revenue comes from this customer?
+  note: Take the last full financial year. For a business that is not yet selling, take the share of projected revenue in
+    the first full year of operation and say so.
+- id: OBS_OFFTAKER_006
+  question: Does the customer buy under a signed contract that fixes a volume or a price for more than a year ahead?
+  answer: yes_no
+  why: Decides whether the checks on the contract are asked. A customer that buys order by order is held only by its own
+    interest, and then what counts is whether it can be replaced.
+  due_by: concept
+  when:
+  - {check: OBS_OFFTAKER_001, is: true}
+  calls_for:
+  - {is: true, kind: contract}
+  look_in: [06.01.a]
+  evidence:
+    best: [offtake_agreement, material_contract]
+    supporting: [company_record, term_sheet]
+    stated: [correspondence, call, officer_note, management_presentation]
+  leads_to:
+  - {indicator: CAS_CONTRACT_REVIEW_001, is: true, reason: The contract is reviewed as a subject of its own}
+- id: OBS_OFFTAKER_003
+  question: What is the customer's credit standing?
+  answer: choice
+  options: [sovereign_or_government, investment_grade, sub_investment_grade, unrated_strong, unrated_weak, unknown]
+  assumption: The customer's ability to pay is known, and it is not weak
+  flag_when: is unrated_weak or unknown
+  why: A customer whose ability to pay is weak, or cannot be judged, makes contracted revenue no more certain than revenue
+    without a contract. A rated customer below investment grade is not flagged, because its standing is known and can be
+    priced and watched.
+  due_by: concept
+  when:
+  - {check: OBS_OFFTAKER_001, is: true}
+  look_in: [10.03.a, 03.01.a]
+  evidence:
+    best: [credit_rating_report, audited_annual_report]
+    supporting: [internal_memo, company_record, public_source]
+    stated: [correspondence, call, officer_note]
+  ask: Does this customer have a credit rating, or can you share its latest audited accounts or a credit report on it?
+  note: Choose unrated_strong where there is no rating but the customer's audited accounts show profits, cash and debt it
+    can carry. Choose unrated_weak where they show losses, heavy debt or late payment. Choose unknown where neither a rating
+    nor accounts have been seen. sovereign_or_government says who the customer is, not that it pays on time. OBS_OFFTAKER_004
+    asks that. Give the rating and its date in the reason.
+- id: OBS_OFFTAKER_004
+  question: Over the last twelve months, has the customer paid the seller within the agreed payment term or, where it has
+    not yet bought from the seller, paid its other suppliers under comparable contracts on time?
+  answer: yes_no
+  assumption: The customer pays on time
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [03.01.a, 03.01.b, 10.03.a]
+  evidence:
+    best: [audited_annual_report, credit_rating_report]
+    supporting: [company_record, bank_statement, management_accounts]
+    stated: [correspondence, call, officer_note]
+  ask: Does this customer pay your invoices when they fall due? Please share the ageing list of what it owes you.
+  note: This check does not hang on OBS_OFFTAKER_001. Read the seller's ageing list of receivables and its bank statements.
+    An invoice paid more than 30 days after it fell due counts as late. That is a guide. A strong rating does not replace
+    a record of payment.
+- id: OBS_OFFTAKER_007
+  question: If this customer stopped buying, could the seller sell the same volume to other buyers within about six months,
+    at a price no more than about a tenth lower?
+  answer: yes_no
+  assumption: The seller could place this volume with other buyers within a season, without a large cut in price
+  disproved_by: 'no'
+  when:
+  - {check: OBS_OFFTAKER_001, is: true}
+  look_in: [01.03.a, 10.03.a]
+  evidence:
+    best: [market_study, consultant_report]
+    supporting: [company_record, management_accounts]
+    stated: [correspondence, call, officer_note, business_plan]
+  ask: If this customer stopped buying tomorrow, who else would take the volume, how soon, and at what price?
+  note: Six months and a tenth are guides. What counts is whether the seller could go on servicing its debt while it finds
+    other buyers. Where there is one possible buyer by law or by geography (a single power buyer, the only processor within
+    reach), the answer is no.
+- id: OBS_OFFTAKER_008
+  question: 'Can the customer stop buying, or force a lower price, before the loan is repaid: does the contract end before
+    the final repayment date, may the customer end it without a breach by the seller, or may it reopen the price?'
+  answer: yes_no
+  assumption: The customer is bound to buy, at the agreed price, until the loan is repaid
+  disproved_by: 'yes'
+  when:
+  - {check: OBS_OFFTAKER_006, is: true}
+  look_in: [06.01.a]
+  evidence:
+    best: [offtake_agreement, material_contract]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Read the clauses on term, termination, price review and volume. An option to extend that only the customer can use
+    does not lengthen the term.
+- id: OBS_OFFTAKER_005
+  question: If the customer ends the contract early, takes less than the agreed volume or pays late, does the contract oblige
+    it to pay a stated amount (a termination payment, a take-or-pay or minimum payment, interest on late payment)?
+  answer: yes_no
+  assumption: The contract makes the customer pay if it ends the contract early, takes less or pays late
+  disproved_by: 'no'
+  when:
+  - {check: OBS_OFFTAKER_006, is: true}
+  look_in: [06.01.a, 08.01.a]
+  evidence:
+    best: [offtake_agreement, material_contract, legal_opinion]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Set the termination payment against the debt that would then be outstanding, and say in the reason whether it covers
+    it. Whether the lender can take over the seller's rights is asked about the contract itself (OBS_CONT_MIT_001).
+- id: OBS_OFFTAKER_MIT_001
+  question: 'Are the customer''s payments backed by something other than its own promise: a letter of credit or a bank guarantee,
+    credit insurance, an escrow or collection account that the lender controls, or an assignment of the receivables to the
+    lender?'
+  answer: yes_no
+  mitigant: true
+  assumption: The customer's payments are backed by more than its own promise to pay
+  disproved_by: 'no'
+  when:
+  - {check: OBS_OFFTAKER_003, against: true}
+  - {check: OBS_OFFTAKER_004, against: true}
+  look_in: [04.02.b, 06.01.a, 08.03.a]
+  evidence:
+    best: [security_agreement, guarantee_agreement, insurance_policy]
+    supporting: [offtake_agreement, term_sheet, company_record]
+    stated: [correspondence, call, officer_note]
+  note: Say which of these is in place. An assignment or a collection account sends the money to the lender. It does not
+    make a customer pay that cannot.

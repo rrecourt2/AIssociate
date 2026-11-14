@@ -1,0 +1,149 @@
+id: CAS_TERM_SHEET_001
+title: Terms
+pillar: facility
+claim: The loan's size, tenor, repayment schedule and currency fit the cash flow that repays it.
+due_by: diligence
+applies_to: [facility]
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'No cash comes in until the project is built and running, so the grace
+    period and the first instalments carry the whole schedule'}
+- {check: OBS_CASHFLOW_BASIS_001, is: projected, reason: Terms fitted to a forecast fit only as well as the forecast holds}
+look_again_when:
+- {new_source: term_sheet, reason: 'A new draft can change the amount, the tenor or the schedule'}
+- {new_source: facility_agreement, reason: The signed agreement can differ from the term sheet that was approved}
+- {new_source: financial_model, reason: A new model moves the cash flow the terms were fitted to}
+checks:
+- id: OBS_TS_001
+  question: Have the lender and the borrower agreed a term sheet or heads of terms for the facility?
+  answer: yes_no
+  why: Opens the topic. Until the terms are on paper, the tests below are answered from what is proposed, and the answer
+    should say so.
+  due_by: screening
+  look_in: [04.01.a]
+  evidence:
+    best: [term_sheet]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Is there a term sheet or heads of terms that you and the lender have both accepted? Please share the latest version
+    and say whether it is signed.
+- id: OBS_TS_002
+  question: Does the term sheet state the amount, the currency, the tenor, the grace period, the repayment schedule, the
+    interest rate and the fees, with none of them left open?
+  answer: yes_no
+  assumption: The main terms are written down and none is still to be agreed
+  disproved_by: 'no'
+  when:
+  - {check: OBS_TS_001, is: true}
+  look_in: [04.01.a, 04.01.b]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: A term marked "to be agreed", or a range in place of a figure, counts as left open.
+- id: OBS_TS_006
+  question: Is the loan due to be repaid in full before the financed asset reaches the end of its useful life, and before
+    any contract, concession, lease or licence that the repaying cash flow depends on runs out?
+  answer: yes_no
+  assumption: The loan is repaid before the asset, the contract or the licence behind its cash flow ends
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [04.01.a, 06.01.a, 06.05.a]
+  evidence:
+    best: [term_sheet, facility_agreement, offtake_agreement, lease_agreement, operational_license, technical_feasibility]
+    supporting: [financial_model, material_contract, internal_memo]
+    stated: [business_plan, correspondence, call, officer_note]
+  if_unknown: A loan that outlives what pays for it is repaid, in its last years, from a cash flow nobody has promised.
+  note: Count a contract as ending on the first date the other side may end it without cause, or on which it has to be renewed.
+    Record how much time lies between the final maturity and that date (the tail). Where the loan finances no single asset
+    or contract, answer for the contracts and licences the business cannot run without.
+- id: OBS_TS_007
+  question: Set against a month-by-month cash flow, does any repayment fall due before the cash to pay it has come in (during
+    construction or ramp-up, or ahead of the season's sales)?
+  answer: yes_no
+  assumption: Each repayment falls due after the cash that pays it has come in
+  disproved_by: 'yes'
+  look_in: [04.01.a, 03.02.b, 03.01.b]
+  evidence:
+    best: [term_sheet, facility_agreement, technical_feasibility]
+    supporting: [financial_model, financial_projections, management_accounts]
+    stated: [business_plan, correspondence, call, officer_note]
+  ask: In which months does your cash come in, and when would the first repayment fall? If the loan pays for an investment,
+    when will that investment start to earn?
+  note: A yearly cash flow hides this. Use a monthly or quarterly one for the grace period, the ramp-up and one full season.
+    Take the date of completion from the builder's programme or the engineer's report, not from the plan.
+- id: OBS_TS_008
+  question: 'Does repayment in full depend on a refinancing or a sale at maturity: a bullet, or a final instalment larger
+    than the cash flow of its year can pay?'
+  answer: yes_no
+  assumption: The loan is repaid in full from cash flow by its final maturity, without a refinancing or a sale
+  disproved_by: 'yes'
+  look_in: [04.01.a, 03.02.b]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [financial_model, financial_projections, internal_memo]
+    stated: [business_plan, correspondence, call, officer_note]
+  note: A working-capital line that is repaid in full from each trading cycle does not depend on a refinancing. One that
+    is only ever rolled over does.
+  leads_to:
+  - {indicator: CAS_PROJECTIONS_001, is: true, reason: The cash flow and the value at maturity have to be strong enough
+      for another lender to take the loan over}
+- id: OBS_TS_005
+  question: With the facility drawn in full, does the lender's own downside case show cash flow available for debt service
+    covering the scheduled debt service on this loan and on the existing debt in every year?
+  answer: yes_no
+  assumption: The amount of the loan is within what the cash flow can service, also when things go worse than planned
+  disproved_by: 'no'
+  look_in: [03.02.b, 03.01.a]
+  evidence:
+    best: [internal_memo, audited_annual_report]
+    supporting: [financial_model, financial_projections, management_accounts]
+    stated: [business_plan, correspondence, call, officer_note]
+  ask_whom: lender
+  if_unknown: The amount has then been set by what the plan costs, not by what the cash flow can repay.
+  note: The downside case is the lender's, not the party's. If none has been run, the answer is not known. Leave a bullet
+    or a large final instalment out of this answer. OBS_TS_008 asks about it.
+  leads_to:
+  - {indicator: CAS_DEBT_SERVICE_001, is: false, reason: The cash flow does not carry the loan at this size}
+- id: OBS_TS_009
+  question: Is the facility in the same currency as the cash flow that repays it?
+  answer: yes_no
+  assumption: The loan is in the currency of the cash flow that repays it
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [04.01.a, 03.01.a, 06.01.a]
+  evidence:
+    best: [term_sheet, facility_agreement, audited_annual_report, offtake_agreement]
+    supporting: [management_accounts, financial_model, material_contract]
+    stated: [business_plan, correspondence, call, officer_note]
+  ask: In which currency are your customers' payments made, and in which currency would the loan be?
+  note: Go by the currency the cash is paid in. A price that is set in or linked to another currency but paid in local currency
+    is a protection, not a match. It is looked at under currency risk.
+  leads_to:
+  - {indicator: CAS_FX_001, is: false, reason: A fall in the earning currency raises the debt service in the party's own
+      money}
+- id: OBS_TS_004
+  question: Are the proposed tenor, grace period and repayment profile within what lenders have agreed for comparable loans
+    in this sector and country?
+  answer: yes_no
+  why: Terms more generous than any precedent need a reason that belongs to this deal. Comparable means the same sector,
+    the same country or region and the same kind of borrower.
+  look_in: [04.01.a, 04.03.b]
+  evidence:
+    best: [dfi_facility_document, facility_agreement]
+    supporting: [internal_memo, market_study]
+    stated: [call, officer_note]
+  ask_whom: lender
+  if_unknown: Where no comparable loan is known, the terms have no outside reference. The credit paper should say so.
+- id: OBS_TS_010
+  question: Does the price of the loan (margin and fees together) meet the return the lender requires for a credit of this
+    risk, tenor and rank?
+  answer: yes_no
+  why: A price below the lender's own requirement means the risk is carried for less than it costs. This is the lender's
+    judgement of its own loan, not a test of the borrower.
+  due_by: approval
+  look_in: [04.01.a]
+  evidence:
+    best: [internal_memo]
+    supporting: [term_sheet]
+    stated: [call, officer_note]
+  ask_whom: lender

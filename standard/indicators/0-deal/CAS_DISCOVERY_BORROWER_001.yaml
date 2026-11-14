@@ -1,0 +1,194 @@
+id: CAS_DISCOVERY_BORROWER_001
+title: Who is in the deal
+pillar: deal
+claim: Every party, asset and contract that repayment depends on is in the structure, and the borrower is the kind of party
+  it is said to be.
+due_by: screening
+applies_to: [deal]
+matters_more_when:
+- {check: OBS_BORROWER_003, is: true, reason: 'In a group, the cash, the assets and the obligations can sit in a company
+    other than the borrower'}
+- {check: OBS_SECTOR_001, is: project, reason: A project stands on its contracts and on the parties behind them}
+look_again_when:
+- {new_source: organizational_chart, reason: A new structure chart can show parties that were not in the deal before}
+- {new_source: term_sheet, reason: 'A new term sheet can change who borrows, who supports and what is given as security'}
+- {check: OBS_STRUCTURE_001, is: true, reason: 'The parties can still change, so the structure has to be read again when
+    they are fixed'}
+checks:
+- id: OBS_BORROWER_001
+  question: 'What kind of party is the borrower: a company that runs a business itself, a holding company that owns other
+    companies, a vehicle set up for one project or asset, or a fund?'
+  answer: choice
+  options: [operating_entity, holding_company, spv, fund_vehicle]
+  why: The kind of party says where the cash is earned and what stands between that cash and the lender.
+  calls_for:
+  - is: holding_company
+    link: [owns]
+  - is: spv
+    link: [sponsors, owns]
+  look_in: [02.01.c, 03.01.a, 02.03.a]
+  evidence:
+    best: [audited_annual_report, registry_extract, memorandum_and_articles]
+    supporting: [organizational_chart, internal_memo]
+    stated: [executive_summary, correspondence, call, officer_note]
+  ask: Is the borrower a company that runs the business itself, a holding company, a company set up only for this project
+    or asset, or a fund?
+  if_unknown: Until the kind of borrower is known, nobody can say where the cash that repays the loan is earned.
+  note: Where there are several borrowers and they are of different kinds, record the answer for each of them.
+  leads_to:
+  - {indicator: CAS_GROUP_LINK_001, is: holding_company, reason: A holding company depends on what the companies below it
+      are able and allowed to pay up}
+- id: OBS_BORROWER_003
+  question: Is the borrower part of a larger group, with a parent, subsidiaries or sister companies under the same owners?
+  answer: yes_no
+  why: In a group, money and obligations move between companies. The companies that matter for repayment have to be in the
+    structure.
+  calls_for:
+  - is: true
+    link: [member_of, owns]
+  look_in: [03.01.a, 02.01.c, 02.03.a]
+  evidence:
+    best: [audited_annual_report, registry_extract, shareholder_register]
+    supporting: [organizational_chart, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Does the borrower have a parent company, subsidiaries or sister companies? A group chart would answer this.
+  if_unknown: Without the group, the lender does not know which other companies can take cash out of the borrower or bring
+    obligations to it.
+  leads_to:
+  - {indicator: CAS_GROUP_LINK_001, is: true, reason: 'Whether the group would support the borrower, and whether it can
+      take cash out, is examined there'}
+  - {indicator: CAS_RELATED_PARTY_001, is: true, reason: 'Companies of one group deal with each other, and not always at
+      market terms'}
+- id: OBS_TRANSACTION_TOPOLOGY_001
+  question: Which parties, projects, assets, facilities and contracts are part of the proposed deal?
+  answer: text
+  why: The answer is entered as the structure, with each party, asset and contract as a subject and each relation between
+    them as a link. The checks follow from the structure.
+  calls_for:
+  - answered: true
+    link: [borrows]
+  look_in: [04.01.a, 02.03.a, 01.01.a]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [organizational_chart, internal_memo]
+    stated: [executive_summary, correspondence, call, officer_note]
+  ask: Could you describe the deal in outline? Who borrows, which projects or assets are financed, which facilities are
+    planned and which contracts matter. A structure chart or a term sheet is enough at this stage.
+  if_unknown: Without the structure, the checks cannot be put to the right parties.
+- id: OBS_SUPPORT_TOPOLOGY_001
+  question: Does any party support another party or the loan, through a guarantee, a support undertaking, completion support
+    or cash shared between projects (a cash sweep, shared reserves)?
+  answer: yes_no
+  why: Each support is a link with its own checks. It has to be in the structure before it can be relied on.
+  calls_for:
+  - is: true
+    link: [guarantees, supports, completion_support, portfolio_support]
+  look_in: [04.02.a, 04.01.a, 02.02.g]
+  evidence:
+    best: [guarantee_agreement, facility_agreement, jv_agreement]
+    supporting: [term_sheet, organizational_chart, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Does any party stand behind another in this deal, for example with a guarantee, an undertaking to complete the project,
+    a cash sweep or shared reserves? If so, who supports whom?
+  if_unknown: A support that is not in the structure is not examined, and may be counted on without reason.
+  leads_to:
+  - {indicator: CAS_COMPLETION_SUPPORT_001, is: true, reason: 'Support for completion ends at a defined event, and that
+      event has to be examined'}
+  - {indicator: CAS_PORTFOLIO_SUPPORT_001, is: true, reason: Cash shared between projects ties the fate of one to the others}
+- id: OBS_SUPPORT_EVENTS_001
+  question: For each support arrangement, which event obliges the supporter to pay or to act, and which event ends its obligation?
+  answer: text
+  why: A support that ends at completion, or on a ratio being met, is no longer there in the years after.
+  due_by: concept
+  when:
+  - {check: OBS_SUPPORT_TOPOLOGY_001, is: true}
+  look_in: [04.02.a, 04.01.a, 02.02.g]
+  evidence:
+    best: [guarantee_agreement, facility_agreement, jv_agreement]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: For each guarantee or undertaking, what makes it payable and what brings it to an end? For example a shortfall in
+    debt service, completion of the project, the funding of a reserve account or repayment of the facility.
+- id: OBS_KEY_CONTRACTS_002
+  question: Does repayment depend on one contract or a few contracts (for example a sales or offtake contract, a concession,
+    a lease or a supply contract), so that the loss of one of them would put debt service in doubt?
+  answer: yes_no
+  why: Such a contract, and the party on the other side of it, belong in the structure and are examined on their own.
+  calls_for:
+  - {is: true, kind: contract}
+  look_in: [06.01.a, 06.05.a, 06.04.a]
+  evidence:
+    best: [offtake_agreement, lease_agreement, supply_agreement, material_contract]
+    supporting: [financial_model, company_record]
+    stated: [business_plan, call, officer_note]
+  ask: Is there a contract that the business could not service its debt without? For example with a main customer, a public
+    authority, a landlord or a main supplier.
+  leads_to:
+  - {indicator: CAS_CONTRACT_REVIEW_001, is: true, reason: The terms of each such contract decide whether the cash flow
+      can be counted on}
+  - {indicator: CAS_OFFTAKER_CREDIT_001, is: true, reason: A sales contract is worth what the customer is able to pay}
+- id: OBS_KEY_CONTRACTS_001
+  question: Which contracts does repayment depend on, who is the other party to each, and when does each end?
+  answer: text
+  due_by: concept
+  when:
+  - {check: OBS_KEY_CONTRACTS_002, is: true}
+  look_in: [06.01.a, 06.05.a, 06.04.a]
+  evidence:
+    best: [offtake_agreement, lease_agreement, supply_agreement, material_contract]
+    supporting: [company_record, internal_memo]
+    stated: [business_plan, call, officer_note]
+  ask: Which contracts matter most for repaying the loan? For each one, who is the other party and until when does it run?
+  note: A contract that ends before the loan is repaid has to be renewed or replaced. Say so in the answer.
+- id: OBS_STRUCTURE_001
+  question: Could the borrower, or another party that repayment relies on, still change before signing (a company that is
+    yet to be set up, a guarantor or a buyer that is not yet chosen, a group that is being reorganised)?
+  answer: yes_no
+  why: A party that is not yet decided is entered in the structure without a name. The checks follow the role, so they wait
+    for whoever takes it, and nothing is lost when the party changes.
+  look_in: [04.01.a, 02.03.a]
+  evidence:
+    supporting: [term_sheet, organizational_chart, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: Is it settled which company will borrow and who else will stand behind the loan, or could that still change before
+    signing?
+- id: OBS_BORROWER_004
+  question: Do the borrower's own accounts show that it carries on the business itself, with its own employees and with
+    operating assets that it owns or leases?
+  answer: yes_no
+  assumption: The borrower carries on the business itself, with its own staff and assets
+  disproved_by: 'no'
+  due_by: concept
+  when:
+  - {check: OBS_BORROWER_001, is: operating_entity}
+  calls_for:
+  - is: false
+    link: [relies_on]
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record, organizational_chart]
+    stated: [management_presentation, call, officer_note]
+  ask: Does the borrower itself employ the people and hold the plant, premises and equipment of the business, or are they
+    in another company of the group?
+  note: Read the borrower's own accounts, not the consolidated accounts of its group. Staff costs and fixed assets are in
+    the notes. Where the staff or the assets sit in another company, that company is what the business runs on.
+- id: OBS_STRUCTURE_002
+  question: Is there a party that the cash passes through on its way to the borrower or to the lender, or that could stop
+    it, and that the client has not mentioned (for example a holding company, a collection agent, a marketing or trading
+    company, or the owner of the site or of a licence)?
+  answer: yes_no
+  assumption: Every party that the cash passes through, or that could stop it, has been named and is in the structure
+  disproved_by: 'yes'
+  due_by: diligence
+  calls_for:
+  - is: true
+    link: [relies_on, sells_to, supplies_to, controls, other]
+  look_in: [03.01.a, 06.01.a, 02.01.c]
+  evidence:
+    best: [audited_annual_report, registry_extract, material_contract, offtake_agreement]
+    supporting: [bank_statement, management_accounts, organizational_chart]
+    stated: [call, officer_note]
+  note: Follow the money. Who invoices the customer, into whose account does the customer pay, and who owns the site, the
+    licences and the brand? This check does not hang on what the client has said. If the search finds nothing, record what
+    was searched, where and when.

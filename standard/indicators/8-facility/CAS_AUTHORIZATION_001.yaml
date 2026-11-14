@@ -1,0 +1,150 @@
+id: CAS_AUTHORIZATION_001
+title: Authorisation
+pillar: facility
+claim: Every approval the party needs for its part in this deal (from its board, its shareholders and any authority) has
+  been given as its own rules and the law require, and those who sign have the power to bind it.
+due_by: legal
+applies_to: [borrower, guarantor]
+matters_more_when:
+- {check: OBS_BORROWER_003, is: true, reason: 'In a group, a guarantee or security for another member''s debt often needs
+    approvals beyond the board''s'}
+- {check: OBS_SECTOR_003, is: true, reason: A supervised financial institution may need its supervisor's consent to borrow
+    or to guarantee}
+look_again_when:
+- {new_source: board_resolution, reason: 'A new resolution can approve the transaction, or approve something other than
+    what is being signed'}
+- {new_source: shareholder_resolution, reason: A shareholders' resolution can give an approval that was missing}
+- {new_source: memorandum_and_articles, reason: Amended articles can change who has to approve and who may sign}
+- {new_source: legal_opinion, reason: 'Counsel''s opinion can confirm the approvals, or qualify them'}
+checks:
+- id: OBS_AUTH_001
+  question: Has the party's board passed a resolution that approves its part in this transaction, the documents it will
+    sign and the persons who sign them?
+  answer: yes_no
+  assumption: The board has approved the transaction and named who signs
+  disproved_by: 'no'
+  look_in: [02.02.a]
+  evidence:
+    best: [board_resolution]
+    supporting: [board_minutes, company_certificate]
+    stated: [correspondence, call, officer_note]
+  ask: Has the board passed a resolution for this financing? Please share a certified copy, or say when the board will meet
+    to pass it.
+  note: The resolution has to fit this transaction (the lender, the amount, the documents). A general approval "to raise
+    finance", or one for another amount, is not this resolution. For a party without a board (a natural person, a public
+    body), ask for whatever approval takes its place and say what it is.
+- id: OBS_AUTH_005
+  question: What still has to happen before the party's approval of the transaction is in place?
+  answer: choice
+  options: [board_meeting_required, shareholder_approval_required, amendment_to_articles_required, regulatory_approval_required,
+    already_scheduled, unknown]
+  many: true
+  why: The answer says how long the approval will take and what belongs among the conditions precedent.
+  due_by: diligence
+  when:
+  - {check: OBS_AUTH_001, is: false}
+  - {check: OBS_AUTH_004, against: true}
+  - {check: OBS_AUTH_008, against: true}
+  - {check: OBS_AUTH_007, against: true}
+  look_in: [02.01.b, 08.01.a]
+  evidence:
+    best: [legal_opinion, memorandum_and_articles]
+    supporting: [board_minutes, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Which approvals are still to come (the board, the shareholders, a change to the articles, an authority), and is a
+    date set for each?
+- id: OBS_AUTH_004
+  question: Do the party's articles, as they stand today, allow its directors to commit it to this transaction at this amount,
+    without exceeding any cap on borrowing, guarantees or security?
+  answer: yes_no
+  assumption: The articles do not put this transaction beyond what the directors may commit the party to
+  disproved_by: 'no'
+  due_by: diligence
+  look_in: [02.01.b, 08.01.a, 02.02.b]
+  evidence:
+    best: [memorandum_and_articles, legal_opinion]
+    supporting: [shareholder_agreement, company_certificate]
+    stated: [correspondence, call, officer_note]
+  ask: Do the articles or a shareholders' agreement cap what the directors may borrow, guarantee or pledge without going
+    to the shareholders? If so, what is the cap and how much of it is used?
+  note: Where a cap is a multiple of capital and reserves, work it out on the latest accounts and count all the party's
+    other borrowings. Where the shareholders have lifted a cap by resolution, answer yes and record the resolution under
+    OBS_AUTH_008. Whether the party itself has the power to borrow or guarantee is asked under OBS_LEGAL_003.
+- id: OBS_AUTH_008
+  question: Do the articles, a shareholders' agreement or company law require the shareholders to approve this transaction,
+    and if so, have they approved it?
+  answer: choice
+  options: [not_required, given, required_and_not_given]
+  assumption: No approval by the shareholders is missing
+  flag_when: is required_and_not_given
+  why: A transaction that needed the shareholders' approval and went ahead without it can be challenged by a shareholder,
+    or by a liquidator, at the moment the lender relies on it.
+  look_in: [02.02.c, 02.02.b, 08.01.a]
+  evidence:
+    best: [shareholder_resolution, legal_opinion]
+    supporting: [memorandum_and_articles, shareholder_agreement, board_minutes]
+    stated: [correspondence, call, officer_note]
+  note: An answer of not_required should rest on counsel's reading of the articles, any shareholders' agreement and the
+    law, not on the party's say-so. Typical cases that need approval are reserved matters, a transaction large against the
+    party's assets, and a guarantee or security given for a shareholder or a related party.
+- id: OBS_AUTH_007
+  question: Does this transaction need an approval from, or a registration with, an authority (for example the central bank
+    or an exchange-control or investment authority for a loan from abroad), and if so, is it in place?
+  answer: choice
+  options: [not_required, obtained, required_and_not_obtained]
+  assumption: No approval or registration by an authority is missing
+  flag_when: is required_and_not_obtained
+  why: Where such an approval or registration is required and missing, the borrower may be unable to buy and send the currency
+    to repay, and the lender may be unable to enforce the loan.
+  due_by: disbursement
+  look_in: [07.01.a, 08.01.a]
+  evidence:
+    best: [regulatory_document, legal_opinion]
+    supporting: [internal_memo, company_record]
+    stated: [correspondence, call, officer_note]
+  if_unknown: Ask counsel in the party's country early. An approval of this kind can take months and may have to be in place
+    before the first drawing.
+  note: An answer of not_required should rest on the advice of counsel in the party's country. This check is about approvals
+    for the financing itself. Licences to run the business are looked at under licences and regulation.
+- id: OBS_AUTH_003
+  question: Do the party's own rules limit who may sign for it and up to what amount (signing limits, joint signatures,
+    a list of authorised signatories)?
+  answer: yes_no
+  why: Says which rules the signatures have to be checked against. OBS_AUTH_006 is the test.
+  due_by: diligence
+  look_in: [02.01.b, 02.05.a, 02.02.a]
+  evidence:
+    best: [memorandum_and_articles, board_resolution, registry_extract]
+    supporting: [corporate_governance_policy, company_certificate]
+    stated: [correspondence, call, officer_note]
+  ask: Who may sign for the company, alone or together, and up to what amount? Is this written in the articles, a board
+    resolution or a delegation of authority?
+- id: OBS_AUTH_006
+  question: Are the persons who sign the documents authorised to bind the party for this amount, by the board resolution
+    or a power of attorney, and within any signing limit?
+  answer: yes_no
+  assumption: Those who sign have the power to bind the party for this amount
+  disproved_by: 'no'
+  look_in: [02.02.a, 08.01.a, 02.01.c]
+  evidence:
+    best: [board_resolution, legal_opinion, registry_extract]
+    supporting: [memorandum_and_articles, corporate_governance_policy, company_certificate]
+    stated: [correspondence, call, officer_note]
+  note: Match the names and the signatures on the documents to the resolution or the power of attorney, and to the specimen
+    signatures. Check that a power of attorney is still in force and covers this transaction. This check does not hang on
+    OBS_AUTH_003.
+- id: OBS_AUTH_002
+  question: Has counsel given a legal opinion, on which the lender may rely, that the party has taken every corporate action
+    needed to authorise the documents and that they are validly signed?
+  answer: yes_no
+  assumption: Independent counsel has confirmed that the documents are duly authorised and validly signed
+  disproved_by: 'no'
+  when:
+  - {check: OBS_AUTH_001, is: true}
+  look_in: [08.01.a]
+  evidence:
+    best: [legal_opinion]
+    supporting: [conditions_precedent_checklist, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Read the assumptions and the qualifications. An opinion that assumes the resolutions are valid has not confirmed
+    them.

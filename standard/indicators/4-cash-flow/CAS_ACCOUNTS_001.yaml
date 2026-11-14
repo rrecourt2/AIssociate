@@ -1,0 +1,197 @@
+id: CAS_ACCOUNTS_001
+title: The accounts
+pillar: cash_flow
+claim: 'The party''s accounts can be relied on: an independent auditor has signed them without reservation, they cover the
+  companies the lender relies on, and the profit they show was earned in cash.'
+due_by: diligence
+applies_to: [borrower, repayment_source, guarantor]
+matters_more_when:
+- {check: OBS_CASHFLOW_BASIS_001, is: historical, reason: 'The first way out rests on past results, and the accounts are
+    the only record of them'}
+- {check: OBS_BORROWER_003, is: true, reason: 'In a group, which companies the accounts cover decides what every figure
+    means'}
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: In distress the auditor's view on going concern and the age of the
+    figures matter most}
+look_again_when:
+- {new_source: audited_annual_report, reason: A new year's accounts bring a new audit opinion and can restate the earlier
+    figures}
+- {new_source: management_accounts, reason: Newer management accounts can part from the last audited figures}
+checks:
+- id: OBS_ACC_001
+  question: Has an external auditor audited the party's annual accounts for each of the last three financial years, or for
+    every year since it was formed if that is shorter?
+  answer: yes_no
+  assumption: An external auditor has audited the party's accounts for each of the last three years
+  disproved_by: 'no'
+  due_by: screening
+  look_in: [03.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [board_minutes, shareholder_resolution]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Are your annual accounts audited by an outside firm? For which of the last three years can you send us the signed
+    audit report?
+  if_unknown: Without an audit, every figure in the analysis is the party's own word.
+  note: The audit report must be signed and dated. A review, a compilation or accounts marked as draft are not an audit.
+    A year that ended less than six months ago, and whose audit is still under way, does not count. Go one year further
+    back. A guarantor who is a natural person has no audited accounts. Answer no for that person, and rely on what The guarantor's
+    capacity finds.
+- id: OBS_ACC_002
+  question: Which firm audits the party's accounts, and since which financial year?
+  answer: text
+  why: The weight of an audit depends on who signs it. A firm that is registered, known and has no tie to the owners counts
+    for more than one that nobody can find.
+  due_by: concept
+  when:
+  - {check: OBS_ACC_001, is: true}
+  look_in: [03.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [board_minutes, shareholder_resolution]
+    stated: [correspondence, call, officer_note]
+  note: Record whether the firm is registered with the audit regulator or the professional body where it works, and any
+    tie between the firm and the party's owners or managers.
+- id: OBS_ACC_003
+  question: Does the auditor's report on the latest accounts carry a qualified or adverse opinion, a disclaimer, an emphasis
+    of matter, or a paragraph on doubt that the party can continue as a going concern?
+  answer: yes_no
+  assumption: The auditor's report on the latest accounts is clean, with no modified opinion, no emphasis of matter and
+    no doubt about going concern
+  disproved_by: 'yes'
+  due_by: concept
+  when:
+  - {check: OBS_ACC_001, is: true}
+  look_in: [03.01.a, 03.01.e]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [audit_management_letter, board_minutes]
+    stated: [correspondence, call, officer_note]
+  note: Read the audit report itself. A summary of the figures, or a set of accounts without the auditor's pages, does not
+    show the opinion. Look at the two years before as well, and say so if a reservation was made then and has since gone.
+  leads_to:
+  - {indicator: CAS_LIQUIDITY_001, is: true, reason: 'Where the reservation is about going concern, the auditor doubts that
+      the party can pay what falls due'}
+- id: OBS_ACC_004
+  question: Which companies do the accounts used for the analysis cover, set against the party the lender relies on?
+  answer: choice
+  options: [party_alone, party_and_subsidiaries, wider_group, part_only, combined_unaudited]
+  assumption: The accounts cover the party the lender relies on, no more and no less
+  flag_when: is wider_group or part_only or combined_unaudited
+  why: Accounts of a wider group count the profit and cash of companies that owe the lender nothing. Accounts of a part
+    leave out debts and losses elsewhere in the party. Combined figures that no auditor signed are the party's own word.
+  due_by: concept
+  calls_for:
+  - is: wider_group
+    link: [member_of, owns]
+  look_in: [03.01.a, 02.03.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [organizational_chart, management_accounts]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Are the accounts you sent us for this company alone, for this company with its subsidiaries, or for a larger group?
+    Which companies are in them, and which are left out?
+  note: 'The note on the basis of consolidation lists what is in and what is out. Part only: a division, a branch, or one
+    of several companies that together make up the party. Combined unaudited: figures that management added together for
+    companies that do not report as one. Where consolidated accounts are used, ask for the party''s own stand-alone accounts
+    as well.'
+  leads_to:
+  - {indicator: CAS_GROUP_LINK_001, is: party_and_subsidiaries, reason: Cash earned in subsidiaries has to come up to the
+      party before it can pay the lender}
+  - {indicator: CAS_GROUP_LINK_001, is: wider_group, reason: 'The lender has to know what the party can claim from the rest
+      of the group, and what the group can take from it'}
+- id: OBS_ACC_005
+  question: How many months have passed since the year-end of the latest audited accounts?
+  answer: number
+  unit: months
+  assumption: The latest audited accounts are no more than one audit cycle old
+  flag_when: above 18
+  why: An audit is normally signed within about six months of the year-end. More than eighteen months therefore means that
+    a whole year's audit is late or missing, and the lender is reading figures for a business that may have changed. An
+    institution can set its own figure.
+  due_by: concept
+  applies_to: [borrower, repayment_source]
+  when:
+  - {check: OBS_ACC_001, is: true}
+  look_in: [03.01.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts]
+    stated: [correspondence, call, officer_note]
+  note: Count to the day of the answer and give the year-end date. The answer grows older with every month, so look at it
+    again before approval.
+- id: OBS_ACC_006
+  question: In the last three years, has the party's auditor resigned, declined to stand again, or been replaced for a reason
+    other than a rotation that the law or the party's own rules require?
+  answer: yes_no
+  assumption: No auditor has left the party early in the last three years
+  disproved_by: 'yes'
+  why: An auditor who leaves early has often disagreed with management about the figures. The reason is in the resignation
+    letter and the board minutes, not in the new auditor's report.
+  applies_to: [borrower, repayment_source]
+  when:
+  - {check: OBS_ACC_001, is: true}
+  look_in: [03.01.a, 02.02.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [board_minutes, shareholder_resolution]
+    stated: [correspondence, call, officer_note]
+  ask: Has the same firm audited your accounts in each of the last three years? If not, why did the earlier firm leave?
+  note: Compare the firm that signed each of the last three audit reports. A party that says yes is believed. A party that
+    says no is believed once the three reports bear it out.
+- id: OBS_ACC_007
+  question: In the last three years, has the party restated earlier figures to correct an error, or changed an accounting
+    policy by its own choice, in a way that changed reported profit or equity?
+  answer: yes_no
+  assumption: The figures of the last three years were drawn up on one basis and have not been corrected afterwards
+  disproved_by: 'yes'
+  why: A restatement means that earlier accounts were wrong. A change of policy that the party chose (a longer life for
+    its assets, revenue counted earlier, costs moved to the balance sheet) can lift profit without any change in the business.
+  applies_to: [borrower, repayment_source]
+  look_in: [03.01.a, 03.01.e]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [audit_management_letter, board_minutes]
+    stated: [correspondence, call, officer_note]
+  note: A change that a new accounting standard required of every company is a no. Say what changed, and compare the years
+    on one basis.
+  leads_to:
+  - {indicator: CAS_INTERNAL_CONTROLS_001, is: true, reason: An error large enough to restate points at the controls over
+      the books}
+- id: OBS_ACC_008
+  question: 'In any of the last three years, did items that brought in no cash make up more than about a quarter of profit
+    before tax: revaluations of property or investments, fair-value gains on crops, livestock or other biological assets,
+    unrealised currency gains, or costs and interest capitalised instead of charged to profit?'
+  answer: yes_no
+  assumption: The profit the party reports was earned in cash, not written up
+  disproved_by: 'yes'
+  why: Debt is serviced from cash. A revaluation gain, or a cost moved to the balance sheet, raises profit and equity and
+    pays nobody.
+  applies_to: [borrower, repayment_source]
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record]
+    stated: [correspondence, call, officer_note]
+  note: A quarter is a guide. Take the items from the income statement and its notes, and set them against profit before
+    tax of the same year.
+  leads_to:
+  - {indicator: CAS_DEBT_SERVICE_001, is: true, reason: 'The cover has to be worked out from cash, with these items taken
+      out'}
+- id: OBS_ACC_009
+  question: Do the party's management accounts for the latest audited year agree with the audited accounts for that year,
+    with every difference of more than a few percent in revenue, profit or debt explained?
+  answer: yes_no
+  assumption: The party's management accounts agree with its audited accounts for the same period
+  disproved_by: 'no'
+  why: After the audited year-end the lender works from management accounts. If they did not match the audit for the year
+    that both cover, the figures since then cannot be taken at face value.
+  applies_to: [borrower, repayment_source]
+  when:
+  - {check: OBS_ACC_001, is: true}
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report, consultant_report]
+    supporting: [management_accounts, interim_financial_statements]
+    stated: [call, officer_note]
+  note: A few percent is a guide. A party that keeps no monthly or quarterly accounts cannot show this. Answer no for it
+    and say so.

@@ -1,0 +1,154 @@
+id: CAS_ENERGY_RESOURCE_001
+title: 'Power: resource'
+pillar: business
+claim: The wind, sun, water or fuel will be there, year after year, in the quantity the projections count on.
+due_by: diligence
+applies_to: [project]
+applies_when:
+- {check: OBS_SECTOR_002, is: power}
+matters_more_when:
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'There is no operating record, so the yield estimate is the only measure
+    of the resource'}
+- {check: OBS_CASHFLOW_BASIS_001, is: contracted, reason: A fixed price leaves the quantity generated as the main thing
+    that can move revenue}
+look_again_when:
+- {new_source: technical_feasibility, reason: A new yield study or a longer measurement record can move the estimate and
+    its uncertainty}
+- {new_source: supply_agreement, reason: A new or amended fuel contract changes the quantity and the term that are secured}
+checks:
+- id: OBS_ERES_006
+  question: Does the plant draw its energy from a natural resource at its site (sun, wind, water or heat from the ground)?
+  answer: yes_no
+  why: Opens the topic. A yes leads to the checks on measurement and yield. A no means the plant burns fuel that has to
+    be bought, and leads to the check on fuel supply (OBS_ERES_009).
+  due_by: screening
+  look_in: [05.01.a, 07.01.a]
+  evidence:
+    best: [technical_feasibility, operational_license]
+    supporting: [investment_plan, company_record]
+    stated: [business_plan, correspondence, call, officer_note]
+  ask: What does the plant run on? Sun, wind, water, heat from the ground, or a fuel that is bought in?
+  note: For a plant with two sources, answer for the one that most of the projected energy comes from, and say so.
+- id: OBS_ERES_001
+  question: Is the yield estimate based on resource data for the site itself (measurements on site, or long-term records
+    calibrated to the site) that cover at least one full year?
+  answer: yes_no
+  assumption: The yield estimate rests on data for this site, not on regional averages
+  disproved_by: 'no'
+  due_by: concept
+  when:
+  - {check: OBS_ERES_006, is: true}
+  look_in: [05.01.a]
+  evidence:
+    best: [technical_feasibility]
+    supporting: [company_record, consultant_report]
+    stated: [correspondence, call, officer_note]
+  ask: What resource data do you have for the site, measured how, and over what period? Please share the measurement report
+    or the dataset.
+  if_unknown: Without data for the site, the yield cannot be estimated and the revenue projections have no base.
+  note: For wind, this means measurement at or near hub height. For water, river flow records over many years. For sun,
+    satellite records checked against measurement on the ground. One year is the least. Record how long the data runs.
+- id: OBS_ERES_002
+  question: Has a specialist who is independent of the sponsor and the equipment supplier made or reviewed the energy yield
+    assessment?
+  answer: yes_no
+  assumption: The yield estimate was made or checked by an independent specialist
+  disproved_by: 'no'
+  when:
+  - {check: OBS_ERES_006, is: true}
+  look_in: [05.01.a, 10.03.a]
+  evidence:
+    best: [technical_feasibility, consultant_report]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Who prepared the energy yield report? Please share it.
+  note: The report must be in hand, with the name of the firm and its date. A yield figure from the developer or from the
+    equipment supplier's own software is not independent.
+- id: OBS_ERES_007
+  question: What is the P90 annual energy yield (the yield the plant should exceed in nine years out of ten) as a share
+    of the P50 yield (the yield it is as likely to exceed as to miss)?
+  answer: number
+  unit: percent
+  why: The gap between the two shows how uncertain the estimate is. The further the P90 lies below the P50, the weaker the
+    central estimate is as a base for debt.
+  when:
+  - {check: OBS_ERES_006, is: true}
+  look_in: [05.01.a]
+  evidence:
+    best: [technical_feasibility]
+    supporting: [financial_model, consultant_report]
+    stated: [correspondence, call, officer_note]
+  if_unknown: Without a P90 the debt cannot be set against a poor year.
+  note: Say whether the P90 is for a single year or for an average over ten years. The single-year figure is the lower of
+    the two and the one that matters for a year's debt service. Record both yields in gigawatt hours as well.
+- id: OBS_ERES_004
+  question: By how much does the resource at the site vary from one year to the next (the standard deviation of the yearly
+    values, as a share of their average)?
+  answer: number
+  unit: percent
+  why: The more the resource varies between years, the larger the reserve the project needs to pay its debt through a poor
+    year.
+  when:
+  - {check: OBS_ERES_006, is: true}
+  look_in: [05.01.a]
+  evidence:
+    best: [technical_feasibility]
+    supporting: [consultant_report, company_record]
+    stated: [correspondence, call, officer_note]
+  note: Record the number of years the figure rests on. For water, also record the driest year on record as a share of the
+    average.
+- id: OBS_ERES_008
+  question: Does the project still pay its debt service in full in every year of the loan if the yield is the single-year
+    P90 instead of the P50?
+  answer: yes_no
+  assumption: The debt can be serviced in a year as poor as one in ten
+  disproved_by: 'no'
+  when:
+  - {check: OBS_ERES_006, is: true}
+  look_in: [03.02.b, 05.01.a]
+  evidence:
+    best: [technical_feasibility, consultant_report]
+    supporting: [financial_model, financial_projections, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Paying in full means cash flow available for debt service of at least one times the debt service of that year, before
+    any reserve is drawn. The model is the party's own. The case counts as tested once the lender or an independent adviser
+    has run it.
+  leads_to:
+  - {indicator: CAS_PROJECTIONS_001, is: false, reason: The downside case has to show what a poor resource year does to
+      debt service}
+- id: OBS_ERES_005
+  question: Do the projections lower the plant's output each year for the wear of the equipment, at a rate that the maker's
+    warranty or an independent study supports?
+  answer: yes_no
+  assumption: The projections allow for the loss of output as the equipment ages
+  disproved_by: 'no'
+  look_in: [05.01.a, 03.02.b]
+  evidence:
+    best: [technical_feasibility, consultant_report]
+    supporting: [financial_model, supply_agreement]
+    stated: [correspondence, call, officer_note]
+  ask: What yearly loss of output do your projections assume, and what is that rate based on?
+  note: Record the rate. A flat output over the whole life of the loan is a no. For a plant that burns fuel, the loss shows
+    as lower output and as more fuel used for each unit of energy.
+- id: OBS_ERES_009
+  question: Is the fuel the plant needs secured under a signed supply contract, for the quantity the projections count on
+    and until the final maturity of the loan?
+  answer: yes_no
+  assumption: A supplier is bound to deliver the fuel the projections count on, for the life of the loan
+  disproved_by: 'no'
+  due_by: concept
+  when:
+  - {check: OBS_ERES_006, is: false}
+  calls_for:
+  - {is: true, kind: contract}
+  look_in: [06.04.a, 05.01.a]
+  evidence:
+    best: [supply_agreement]
+    supporting: [technical_feasibility, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Who supplies the fuel, under what contract, for what quantity and until when? Please share the contract.
+  note: A contract that is shorter than the loan, or that covers less than the quantity the projections count on, is a no.
+    Say what is missing. This covers fuel that is grown or collected, such as biomass, as well as gas, coal and oil.
+  leads_to:
+  - {indicator: CAS_SUPPLIER_LINK_001, is: true, reason: The contract is worth what the supplier can deliver}
+  - {indicator: CAS_INPUT_CONC_001, is: false, reason: Fuel bought without a contract is exposed to price and to availability}

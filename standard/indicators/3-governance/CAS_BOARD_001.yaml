@@ -1,0 +1,117 @@
+id: CAS_BOARD_001
+title: Board
+pillar: governance
+claim: A body that management and the main shareholder do not control can say no to them, and has done so.
+due_by: diligence
+applies_to: [borrower, repayment_source]
+matters_more_when:
+- {check: OBS_BORROWER_001, is: operating_entity, reason: In an operating business the board is the main check on the people
+    who run it}
+- {check: OBS_INVESTOR_ROLE_001, is: common_equity, reason: 'A shareholder has no covenants: the board is where it is heard'}
+matters_less_when:
+- {check: OBS_BORROWER_001, is: spv, reason: 'A special-purpose company often has no working board: the sponsor and the
+    project agreements do the overseeing'}
+look_again_when:
+- {new_source: board_minutes, reason: New minutes show what the board was asked and what it decided}
+- {new_source: board_composition, reason: A change of directors can remove the one who was independent}
+checks:
+- id: OBS_BOARD_001
+  question: Does the party have a board of directors, or a supervisory board, that meets as a body of its own and is not
+    simply its management?
+  answer: yes_no
+  why: Opens the topic. Without a board, OBS_BOARD_006 asks who oversees management in its place.
+  due_by: screening
+  look_in: [02.01.b, 02.05.c, 02.01.c]
+  evidence:
+    best: [memorandum_and_articles, registry_extract, board_composition]
+    supporting: [board_minutes, organizational_chart, audited_annual_report]
+    stated: [correspondence, call, officer_note]
+  ask: Does your company have a board of directors that meets separately from the management team?
+- id: OBS_BOARD_002
+  question: How many members does the board have?
+  answer: number
+  unit: count
+  why: 'Sets the scale for what follows: one independent member counts for more on a board of three than on a board of twelve.'
+  due_by: concept
+  when:
+  - {check: OBS_BOARD_001, is: true}
+  look_in: [02.05.c, 02.01.c]
+  evidence:
+    best: [registry_extract, board_composition, audited_annual_report]
+    supporting: [board_minutes]
+    stated: [correspondence, call, officer_note]
+  note: Say how many of them are executives of the party.
+- id: OBS_BOARD_003
+  question: Does the board have at least one member who is not an employee of the party, is not a shareholder nor a shareholder's
+    relative or nominee, and does no other business with the party?
+  answer: yes_no
+  assumption: At least one member of the board is independent of management and of the shareholders
+  disproved_by: 'no'
+  due_by: concept
+  when:
+  - {check: OBS_BOARD_001, is: true}
+  look_in: [02.05.c, 02.05.b, 02.01.c]
+  evidence:
+    best: [board_composition, registry_extract]
+    supporting: [management_cv, corporate_governance_policy, kyc_package]
+    stated: [correspondence, call, officer_note]
+  ask: 'Is any member of your board independent: not an employee, not a shareholder or related to one, and with no other
+    business with the company?'
+  note: A director named by another lender or by a financial investor counts, if there is no other tie.
+- id: OBS_BOARD_004
+  question: Did the board meet at least four times in each of the last two financial years?
+  answer: yes_no
+  assumption: The board meets at least once a quarter, so that it knows the business between year-ends
+  disproved_by: 'no'
+  when:
+  - {check: OBS_BOARD_001, is: true}
+  look_in: [02.02.a, 03.01.a]
+  evidence:
+    best: [board_minutes]
+    supporting: [audited_annual_report, company_record]
+    stated: [correspondence, call, officer_note]
+  note: Four a year is a guide. A meeting counts if a quorum was present and minutes were kept.
+- id: OBS_BOARD_005
+  question: Are minutes kept of every board meeting, signed by the chair, and do they record what was decided and who voted
+    against?
+  answer: yes_no
+  assumption: What the board decides, and who disagreed, is on record
+  disproved_by: 'no'
+  when:
+  - {check: OBS_BOARD_001, is: true}
+  look_in: [02.02.a]
+  evidence:
+    best: [board_minutes]
+    supporting: [board_resolution, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Could we see the minutes of the board meetings of the last two years? Sensitive passages can be blacked out.
+- id: OBS_BOARD_007
+  question: In the last three years, has the board, or the body that oversees management in its place, turned down, sent
+    back or changed a proposal from management or from the main shareholder?
+  answer: yes_no
+  assumption: The board has said no to management or to the main shareholder at least once in the last three years
+  disproved_by: 'no'
+  look_in: [02.02.a, 02.02.c]
+  evidence:
+    best: [board_minutes]
+    supporting: [board_resolution, shareholder_resolution, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Can you give an example from the last three years where the board did not approve what management or the main shareholder
+    proposed, or approved it only after changes?
+  note: Read the minutes themselves. A board that approved every proposal as tabled for three years has not been tested,
+    or does not test. This check does not hang on OBS_BOARD_001.
+- id: OBS_BOARD_006
+  question: 'Does another body oversee management in the board''s place: a supervisory or advisory committee, a partners''
+    meeting, or the board of the parent?'
+  answer: yes_no
+  assumption: Where the party has no board, another body oversees its management
+  disproved_by: 'no'
+  when:
+  - {check: OBS_BOARD_001, is: false}
+  look_in: [02.01.b, 02.02.b, 02.02.g]
+  evidence:
+    best: [memorandum_and_articles, shareholder_agreement, jv_agreement]
+    supporting: [corporate_governance_policy, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: As there is no board, who reviews what management does, and how often?
+  note: A body counts if it can refuse a proposal and has someone on it who does not report to the manager it oversees.

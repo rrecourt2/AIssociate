@@ -10,7 +10,8 @@ Built on 14 November 2026. It has run on a made-up deal only.
 
 - **Not yet tried in Microsoft Copilot Cowork.** How Cowork saves files and runs a script from a skill has to be tested in the tenant first.
 - **Not yet used on a real deal.**
-- **The standard needs a review by someone who does credit work**, above all the field that says which answer disproves an assumption. See [standard/CHANGES.md](standard/CHANGES.md).
+- **The standard was rebuilt on a new framework** (version 4.0.0): it starts from how the loan is repaid, keeps the deal, each party, the links and the facility apart, and puts every check under a claim that can turn out false. See [standard/FRAMEWORK.md](standard/FRAMEWORK.md).
+- **The standard needs a review by someone who does credit work.** Blind judges agreed with the direction of its tests. Its reference points and its strictness are open questions, listed in [standard/CHANGES.md](standard/CHANGES.md).
 
 ## Try it
 
@@ -42,11 +43,13 @@ python3 -m bankability2 pages "Cedar Foods"
 
 The deal is invented. The steps under `examples/cedar-foods/changes` are what an assistant would hand to the tool after reading a teaser, an annual report and the notes of a call.
 
+`status` then shows where the claims stand in each pillar. Three are challenged: one customer buys a third of revenue, the margin fell, and the loan is in euros while all sales are in shillings. It lists what the answers call for and the structure lacks (the project, the suppliers, the lenders, a guarantor with a name), one gap with an agreed action, and the checks to answer next.
+
 ## The parts
 
 ```text
 bankability2/    the tool: six small modules, Python standard library only
-standard/        the standard: lists, a data-room structure and 267 checks, as data
+standard/        the standard: a framework, lists, a data-room structure and 570 checks under 70 claims, as data
 skill/           the instructions that tell an assistant how to work with the tool
 examples/        a made-up deal, and an invented example of an institution's layer
 tests/           three test files; one enforces the audit rules
@@ -64,7 +67,7 @@ docs/            the design and the audit note
 
 ## Kept simple
 
-The tool is about 1,300 lines in seven files. These rules hold, and `tests/test_audit.py` fails if the code breaks one:
+The tool is about 1,500 lines in seven files. These rules hold, and `tests/test_audit.py` fails if the code breaks one:
 
 - Python standard library only.
 - No network access, no starting of other programs, no `eval`, no reading of environment variables, no deleting.

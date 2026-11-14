@@ -1,0 +1,194 @@
+id: CAS_REPAYMENT_THESIS_001
+title: How the loan is repaid
+pillar: deal
+claim: The loan has a first way out in cash flow that can be named and checked, a second way out if that fails, and the
+  two would not fail for the same reason.
+due_by: screening
+applies_to: [deal]
+matters_more_when:
+- {check: OBS_BORROWER_001, is: holding_company, reason: 'A holding company is repaid from what its subsidiaries pay up
+    to it, not from a business of its own'}
+- {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'There is no cash flow yet, so the first way out is a plan'}
+- {check: OBS_INVESTOR_ROLE_001, is: subordinated, reason: A lender that ranks behind others reaches the second way out
+    only after they have been paid}
+look_again_when:
+- {new_source: term_sheet, reason: 'A new term sheet can change the security, the guarantee or who borrows'}
+- {new_source: financial_model, reason: A new model can change what repayment rests on and which assumptions carry it}
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: 'In a business in distress, the cash flow that was relied on is already
+    failing'}
+checks:
+- id: OBS_WAYOUT_001
+  question: 'What is the first way out: whose cash flow repays the loan, and what does that cash flow come from?'
+  answer: text
+  why: The party named here is the one the analysis has to follow, whether or not it is the borrower.
+  calls_for:
+  - answered: true
+    link: [borrows, relies_on]
+  look_in: [03.01.a, 04.01.a, 03.02.b]
+  evidence:
+    best: [audited_annual_report, term_sheet]
+    supporting: [financial_model, internal_memo]
+    stated: [executive_summary, business_plan, call, officer_note]
+  ask: Where will the money to repay the loan come from? Which company earns it, and from which activity or contract?
+  if_unknown: If nobody can say whose cash flow repays the loan, there is no deal to analyse yet.
+- id: OBS_WAYOUT_002
+  question: How do businesses of this kind, in this country, usually fail to repay their loans?
+  answer: text
+  why: The answer says where to look first. It comes from the lender's own experience and from what is known about the sector,
+    not from the client.
+  look_in: [01.03.a]
+  evidence:
+    best: [credit_rating_report, market_study]
+    supporting: [internal_memo]
+    stated: [officer_note, public_source]
+  ask_whom: lender
+  note: Name the two or three usual causes, for example a fall in the price of the product, a late start of operations,
+    a customer that pays late or a currency that loses value. Each cause points at an indicator to look at first.
+- id: OBS_WAYOUT_003
+  question: Is the cash that repays the loan earned by the borrower itself, and not by a subsidiary, a parent, a sister
+    company or another party that would first have to pass it on?
+  answer: yes_no
+  assumption: The cash that repays the loan is earned by the borrower itself
+  disproved_by: 'no'
+  due_by: concept
+  calls_for:
+  - is: false
+    link: [relies_on]
+  look_in: [03.01.a, 02.03.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, organizational_chart, financial_model]
+    stated: [correspondence, call, officer_note]
+  ask: Which company receives the revenue that will repay the loan? Is it the borrower itself, or another company in the
+    group?
+  note: Read the borrower's own accounts, not the consolidated accounts of its group. A holding company's cash is whatever
+    its subsidiaries pay up to it.
+  leads_to:
+  - {indicator: CAS_GROUP_LINK_001, is: false, reason: Cash earned elsewhere in a group has to be passed up or across before
+      it can repay the loan}
+- id: OBS_CASHFLOW_BASIS_001
+  question: 'What does the first way out rest on: cash flow the business has already earned, cash flow due under signed
+    contracts, both together, or cash flow that is only projected?'
+  answer: choice
+  options: [contracted, projected, historical, mixed]
+  assumption: Repayment rests on cash flow that already exists, either earned in past years or due under signed contracts
+  flag_when: is projected
+  why: Cash flow that has been earned, or is owed under a signed contract, can be checked against accounts and documents.
+    Projected cash flow exists only in a plan, so the loan then depends on the plan being carried out.
+  look_in: [03.01.a, 06.01.a, 03.02.b]
+  evidence:
+    best: [audited_annual_report, offtake_agreement, lease_agreement, material_contract]
+    supporting: [management_accounts, financial_model, financial_projections]
+    stated: [business_plan, call, officer_note]
+  ask: Will the loan be repaid from what the business already earns, from payments under contracts that are already signed,
+    or from revenue that is still to be built up?
+  note: Choose by what covers debt service, not by what the business plan calls it. Choose historical where the cash flow
+    of the last years, as the accounts show it, covers debt service on its own. Choose contracted where payments due under
+    signed contracts cover it on their own. Choose mixed where the two cover it together and neither does alone. Choose
+    projected where debt service cannot be covered without cash flow that neither the accounts nor signed contracts show
+    yet.
+  leads_to:
+  - {indicator: CAS_PROJECTIONS_001, is: projected, reason: The projections then carry the whole first way out}
+  - {indicator: CAS_OFFTAKER_CREDIT_001, is: contracted, reason: A contract is worth what the party that must pay under
+      it is worth}
+- id: OBS_WAYOUT_004
+  question: Which few assumptions must hold for the first way out to work (for example a price, a volume, the renewal of
+    a contract, a completion date, an exchange rate)?
+  answer: text
+  why: These are the assumptions the rest of the analysis sets out to disprove. If one of them fails, the first way out
+    fails.
+  due_by: concept
+  look_in: [03.02.b, 03.02.a]
+  evidence:
+    supporting: [financial_model, financial_projections, internal_memo]
+    stated: [business_plan, call, officer_note]
+  ask_whom: lender
+  note: Keep the list short. A list of ten has not yet been thought through.
+- id: OBS_WAYOUT_005
+  question: 'What is the second way out: where would the money come from if the first way out failed (the sale of assets
+    held as security, a guarantor, the owners, a refinancing, the sale of the business)?'
+  answer: text
+  why: A lender that cannot name its second way out has only one. A refinancing or a sale of the business counts only if
+    someone would still lend to the business, or buy it, after the first way out has failed.
+  look_in: [04.01.a, 04.02.a, 04.02.b]
+  evidence:
+    best: [security_agreement, guarantee_agreement, facility_agreement]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+- id: OBS_COLLATERAL_001
+  question: 'What is the loan secured on: one asset, several assets, the whole business, or nothing?'
+  answer: choice
+  options: [single_asset, multi_asset, enterprise, unsecured]
+  assumption: The loan is secured on assets, so that the lender is paid from them ahead of other creditors
+  flag_when: is unsecured
+  why: Security gives the lender assets to be paid from, ahead of others, if the cash flow fails. Without it the lender
+    stands with every unsecured creditor, and the second way out has to come from a guarantee or from the owners.
+  calls_for:
+  - is: single_asset
+    link: [secures]
+  - is: multi_asset
+    link: [secures]
+  - is: enterprise
+    link: [secures]
+  look_in: [04.02.b, 04.01.a]
+  evidence:
+    best: [security_agreement, facility_agreement, registry_extract]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: What security is offered for the loan? One asset, several assets, everything the business owns, or none?
+  note: Choose enterprise where the security covers all, or nearly all, of the assets of the business and its shares. Record
+    what is offered now. Whether the security holds, and what it is worth, is asked about the facility and about each asset.
+- id: OBS_WAYOUT_006
+  question: If the first way out failed for its most likely reason, would the second way out still bring in enough to repay
+    what is owed?
+  answer: yes_no
+  assumption: The second way out would still repay the loan if the first failed for its most likely reason
+  disproved_by: 'no'
+  due_by: concept
+  after: [OBS_WAYOUT_001, OBS_WAYOUT_005]
+  look_in: [05.02.a, 03.01.a]
+  evidence:
+    best: [valuation_report, audited_annual_report, consultant_report]
+    supporting: [financial_model, internal_memo]
+    stated: [call, officer_note]
+  ask_whom: lender
+  note: First name the most likely reason. Then ask what the security would fetch, or what the guarantor could pay, in that
+    case. A plant built for one customer is worth little once that customer is gone. A guarantor that lives on the borrower's
+    dividends has nothing when the borrower stops paying them. Where there is no second way out, the answer is no.
+- id: OBS_WAYOUT_MIT_001
+  question: Has a party whose own income does not depend on the borrower's business promised in writing to pay the lender
+    if the borrower cannot (a guarantee, a completion undertaking or a standby letter of credit from a bank)?
+  answer: yes_no
+  mitigant: true
+  assumption: A party whose income does not depend on the borrower's business has promised to pay if the borrower cannot
+  disproved_by: 'no'
+  due_by: diligence
+  when:
+  - {check: OBS_CASHFLOW_BASIS_001, against: true}
+  - {check: OBS_COLLATERAL_001, against: true}
+  - {check: OBS_WAYOUT_006, against: true}
+  calls_for:
+  - is: true
+    link: [guarantees, supports, completion_support]
+  look_in: [04.02.a, 04.02.b]
+  evidence:
+    best: [guarantee_agreement, security_agreement]
+    supporting: [term_sheet, jv_agreement]
+    stated: [correspondence, call, officer_note]
+  note: A letter of comfort or a statement of intent is not a promise to pay. The promise itself is examined on its own
+    link.
+- id: OBS_WAYOUT_MIT_002
+  question: Is every party that earns the cash bound to the loan as co-borrower or guarantor, or is its cash paid into an
+    account that the lender controls?
+  answer: yes_no
+  mitigant: true
+  assumption: The parties that earn the cash are bound to the loan, or their cash reaches an account the lender controls
+  disproved_by: 'no'
+  due_by: diligence
+  when:
+  - {check: OBS_WAYOUT_003, against: true}
+  look_in: [04.01.a, 04.02.a, 04.02.b]
+  evidence:
+    best: [facility_agreement, guarantee_agreement, security_agreement]
+    supporting: [term_sheet]
+    stated: [correspondence, call, officer_note]

@@ -1,0 +1,193 @@
+id: CAS_SECURITY_PACKAGE_001
+title: Security package
+pillar: facility
+claim: If the first way out fails, a forced sale of the security would repay what the lender is then owed under the facility.
+due_by: diligence
+applies_to: [facility]
+matters_more_when:
+- {check: OBS_INVESTOR_ROLE_001, is: senior_secured, reason: The lender's place as a secured lender is worth only what the
+    security would fetch}
+- {check: OBS_CASHFLOW_BASIS_001, is: projected, reason: 'The first way out is a forecast, so more weight falls on the second'}
+- {check: OBS_LIFECYCLE_001, is: distressed, reason: 'The security may have to be used, and soon'}
+look_again_when:
+- {new_source: valuation_report, reason: A new valuation changes what a forced sale would repay}
+- {new_source: security_agreement, reason: 'A new draft can add or take out an asset, or change the rank'}
+- {new_source: term_sheet, reason: A change in the amount or the security changes the cover}
+checks:
+- id: OBS_SECPKG_001
+  question: What is offered as security for the facility?
+  answer: choice
+  options: [real_estate, equipment, receivables, inventory, shares, cash_deposits, contract_rights, none]
+  many: true
+  why: Opens the topic. Each kind that is offered must appear in the structure as an asset that secures the facility, and
+    each such asset is then examined on its own.
+  due_by: screening
+  calls_for:
+  - is: real_estate
+    link: [secures]
+  - is: equipment
+    link: [secures]
+  - is: receivables
+    link: [secures]
+  - is: inventory
+    link: [secures]
+  - is: shares
+    link: [secures]
+  - is: cash_deposits
+    link: [secures]
+  - is: contract_rights
+    link: [secures]
+  look_in: [04.01.a, 04.02.b, 05.01.a]
+  evidence:
+    best: [security_agreement]
+    supporting: [term_sheet, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: What could you offer as security for this loan? For example land and buildings, equipment, receivables, stock, shares,
+    cash on deposit, or your rights under contracts. A list with rough values is enough to start with.
+  note: Choose every kind that is offered. 'contract_rights' covers an assignment of contracts, of a concession or of insurance
+    proceeds. Choose 'none' only on its own.
+- id: OBS_SECPKG_002
+  question: Is a guarantee offered for the facility by a parent company, a sponsor or another party?
+  answer: yes_no
+  why: A guarantee is the other half of the second way out. It is examined on its own link, not here.
+  due_by: screening
+  calls_for:
+  - is: true
+    link: [guarantees]
+  look_in: [04.01.a, 04.02.a]
+  evidence:
+    best: [guarantee_agreement]
+    supporting: [term_sheet, board_resolution]
+    stated: [correspondence, call, officer_note]
+  ask: Would a parent company, a sponsor or anyone else guarantee this loan? If so, who, and for how much?
+  leads_to:
+  - {indicator: CAS_GUARANTEE_001, is: true, reason: What the guarantee covers and whether it can be called is tested there}
+- id: OBS_FACILITY_EXPOSURE_001
+  question: 'What is the most the lender can be owed under the facility: the full amount committed, plus interest that is
+    capitalised or can run unpaid, at its highest point?'
+  answer: number
+  unit: currency
+  why: The security and any guarantee are measured against this figure, not against the amount drawn today.
+  due_by: screening
+  look_in: [04.01.a, 04.01.b, 03.02.b]
+  evidence:
+    best: [facility_agreement]
+    supporting: [term_sheet, financial_model, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Say in which currency, and whether a grace period or capitalised interest lifts the figure above the amount committed.
+- id: OBS_SECPKG_003
+  question: Is the real estate offered as security free of any mortgage, charge or other claim that would rank ahead of
+    the lender?
+  answer: yes_no
+  assumption: The lender would hold the first claim on the real estate offered
+  disproved_by: 'no'
+  due_by: concept
+  when:
+  - {check: OBS_SECPKG_001, is: real_estate}
+  look_in: [04.02.b, 02.01.c, 05.02.a]
+  evidence:
+    best: [registry_extract, security_agreement, legal_opinion]
+    supporting: [valuation_report, audited_annual_report]
+    stated: [correspondence, call, officer_note]
+  ask: Is the land or the building you are offering already mortgaged or charged to anyone, or claimed by anyone else? The
+    title deeds and a recent extract from the land register would show it.
+  note: This is the first look, for the real estate as a whole. Each property is then searched and valued on its own under
+    CAS_SECURITY_ASSET_001.
+  leads_to:
+  - {indicator: CAS_SECURITY_ASSET_001, is: false, reason: The earlier claim is examined on the property that carries it}
+- id: OBS_SECPKG_004
+  question: Can the payments due under the main contracts, or from the main customers, be assigned to the lender and paid
+    into an account the lender controls?
+  answer: yes_no
+  assumption: The revenue that repays the loan can be assigned to the lender and collected in an account it controls
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [06.01.a, 08.01.a, 04.01.a]
+  evidence:
+    best: [material_contract, offtake_agreement, legal_opinion]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  ask: Could the payments from your main customers be made into an account that we control? Does any of your contracts forbid
+    assigning its payments, or need the customer's consent?
+  note: Look for a clause that forbids assignment or needs the customer's consent, and ask whether the customers would follow
+    a payment instruction.
+- id: OBS_SECPKG_007
+  question: Is any of the security shared with other creditors, or does the lender rank behind another creditor on any of
+    it?
+  answer: yes_no
+  assumption: The lender holds the security at first rank and for itself alone
+  disproved_by: 'yes'
+  when:
+  - {check: OBS_SECPKG_001, is: real_estate}
+  - {check: OBS_SECPKG_001, is: equipment}
+  - {check: OBS_SECPKG_001, is: receivables}
+  - {check: OBS_SECPKG_001, is: inventory}
+  - {check: OBS_SECPKG_001, is: shares}
+  - {check: OBS_SECPKG_001, is: cash_deposits}
+  - {check: OBS_SECPKG_001, is: contract_rights}
+  look_in: [04.02.b, 04.02.c, 02.01.c]
+  evidence:
+    best: [security_agreement, intercreditor_agreement, registry_extract]
+    supporting: [term_sheet, debt_schedule]
+    stated: [correspondence, call, officer_note]
+  note: Security held by an agent for several lenders is shared. Say with whom, and in what proportion.
+  leads_to:
+  - {indicator: CAS_OTHER_LENDERS_001, is: true, reason: 'Whoever shares the security or ranks ahead on it decides, with
+      the lender or before it, when and how it is sold'}
+- id: OBS_SECPKG_008
+  question: Does the security cover the assets the business cannot run without (the plant, the site, the main contracts,
+    the accounts the revenue is paid into)?
+  answer: yes_no
+  assumption: The security covers the assets that produce the cash, not only assets the business can do without
+  disproved_by: 'no'
+  why: A lender that holds only spare assets has no hold on the business. Whoever holds the assets it runs on decides what
+    happens to it.
+  when:
+  - {check: OBS_SECPKG_001, is: real_estate}
+  - {check: OBS_SECPKG_001, is: equipment}
+  - {check: OBS_SECPKG_001, is: receivables}
+  - {check: OBS_SECPKG_001, is: inventory}
+  - {check: OBS_SECPKG_001, is: shares}
+  - {check: OBS_SECPKG_001, is: cash_deposits}
+  - {check: OBS_SECPKG_001, is: contract_rights}
+  look_in: [04.02.b, 04.01.a, 05.01.a]
+  evidence:
+    best: [security_agreement, legal_opinion]
+    supporting: [term_sheet, company_record]
+    stated: [correspondence, call, officer_note]
+- id: OBS_SECPKG_006
+  question: What would the security fetch in a forced sale, as a percentage of the most the lender can be owed under the
+    facility?
+  answer: number
+  unit: percent
+  assumption: A forced sale of the security would repay what the lender is owed
+  flag_when: below 100
+  why: Below 100 percent a forced sale leaves part of the loan unpaid, and that part rests on a guarantee or on nothing.
+    Many lenders ask for more than 100 percent, to allow for the cost and the time of a sale and for falling prices. An
+    institution can set its own level.
+  look_in: [05.02.a, 05.01.a]
+  evidence:
+    best: [valuation_report]
+    supporting: [internal_memo, financial_model, company_record]
+    stated: [correspondence, call, officer_note]
+  note: Add up the forced-sale value of each asset (OBS_SECASSET_004), after the costs of sale and after claims that rank
+    ahead. Where security is shared, count only the lender's share. Do not count guarantees. Divide by the figure in OBS_FACILITY_EXPOSURE_001.
+    Where no security is offered, the answer is zero.
+- id: OBS_SECPKG_MIT_001
+  question: Does a guarantee, or another promise to pay by someone other than the borrower (a standby letter of credit,
+    credit insurance), cover within its own limit the part of the loan that a forced sale of the security would not repay?
+  answer: yes_no
+  mitigant: true
+  assumption: A guarantee or another promise to pay covers what the security would not repay
+  disproved_by: 'no'
+  when:
+  - {check: OBS_SECPKG_006, against: true}
+  look_in: [04.02.a, 04.01.a]
+  evidence:
+    best: [guarantee_agreement]
+    supporting: [term_sheet, internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Compare the cap of the guarantee with the shortfall in money, not in words.
+  leads_to:
+  - {indicator: CAS_GUARANTEE_001, is: true, reason: 'That part of the loan then rests on the guarantee, which is tested
+      on its own link'}

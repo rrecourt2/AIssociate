@@ -1,0 +1,119 @@
+id: CAS_IMPACT_001
+title: Impact and additionality
+pillar: es_impact
+claim: The loan makes possible something that would not happen without the lender, the impact claimed for it can be measured,
+  and nothing it finances runs against the lender's climate commitment.
+due_by: concept
+applies_to: [deal]
+matters_more_when:
+- {check: OBS_INVESTOR_ROLE_002, is: true, reason: 'Where other financing is in place, the question is what this lender
+    adds to it'}
+- {check: OBS_LIFECYCLE_001, is: established, reason: An established business is the most likely to have offers from commercial
+    lenders}
+- {check: OBS_SECTOR_001, is: financial_institution, reason: 'Money lent to a financial institution mixes with its other
+    funds, so the impact has to be traced to the loans it then makes'}
+look_again_when:
+- {new_source: term_sheet, reason: An offer from another financier bears directly on whether the lender is needed}
+- {check: OBS_INVESTOR_ROLE_002, is: true, reason: Other financing that comes to light changes what the lender adds}
+checks:
+- id: OBS_IMPACT_006
+  question: Who is better off because of what the loan finances, in what way, and about how many are they?
+  answer: text
+  why: This is the impact claim. Each group and each benefit named here needs an indicator in OBS_IMPACT_009.
+  look_in: [01.01.a, 01.01.b]
+  evidence:
+    best: [consultant_report, market_study]
+    supporting: [internal_memo, business_plan, executive_summary]
+    stated: [call, officer_note, management_presentation]
+  ask: Who will benefit from this investment besides your company (workers, suppliers, customers, the people nearby), and
+    how? Roughly how many are they?
+  note: Name the people and the change, not the activity. "Builds a plant" is an activity. "Buys from about two thousand
+    more small farmers" is an impact.
+- id: OBS_IMPACT_007
+  question: 'What does the lender add besides money: for example higher environmental, social or governance standards, advice,
+    or the confidence that brings in other financiers?'
+  answer: text
+  why: A lender that brings only money is needed only where money is short. That is tested in OBS_IMPACT_008.
+  evidence:
+    best: [facility_agreement, dfi_facility_document]
+    supporting: [internal_memo, term_sheet]
+    stated: [call, officer_note]
+  ask_whom: lender
+  note: Name what the lender will do and where it is written down. A general statement of the lender's role is not an answer.
+- id: OBS_IMPACT_008
+  question: Has a commercial bank or investor offered the borrower financing for the same purpose with a tenor, a currency
+    and an amount close to what the lender is asked for, or do commercial lenders make such loans to comparable borrowers
+    in the same market?
+  answer: yes_no
+  assumption: Commercial lenders would not finance this on terms the borrower could work with
+  disproved_by: 'yes'
+  look_in: [04.01.a, 10.02.a, 01.03.a]
+  evidence:
+    best: [term_sheet, correspondence, market_study]
+    supporting: [debt_schedule, internal_memo]
+    stated: [call, officer_note, management_presentation]
+  ask: Which banks or investors have you approached for this financing, and what did each of them offer or say? What tenor
+    and which currency can you get from your current banks?
+  note: A lower price is not the test. A borrower that can borrow from commercial lenders and prefers the lender's price
+    does not need the lender. "Close to" is a guide. What counts is whether the investment could go ahead on the commercial
+    terms. A written offer or refusal from a bank is best evidence. The borrower's word that no bank would lend is its own
+    word.
+- id: OBS_IMPACT_009
+  question: Does every impact claimed have an indicator with a baseline figure, a target, a date and a named source of data
+    from which the borrower will report it?
+  answer: yes_no
+  assumption: Every impact claimed has an indicator, a baseline, a target and a source of data
+  disproved_by: 'no'
+  due_by: diligence
+  look_in: [04.01.b, 10.03.a, 03.02.a]
+  evidence:
+    best: [facility_agreement, consultant_report]
+    supporting: [internal_memo, company_record, financial_projections]
+    stated: [correspondence, call, officer_note]
+  ask: For each benefit you expect, what is the figure today, what figure do you aim for and by when? From which of your
+    records would you report it each year?
+  note: The baseline is a figure measured before the loan, not an estimate made afterwards. The indicators count as agreed
+    once the reporting is written into the facility agreement.
+- id: OBS_IMPACT_010
+  question: Does the loan finance any activity that the lender treats as not aligned with the Paris Agreement?
+  answer: yes_no
+  assumption: Nothing the loan finances is, by the lender's own method, out of line with the Paris Agreement
+  disproved_by: 'yes'
+  due_by: screening
+  look_in: [01.02.a, 07.02.a]
+  evidence:
+    best: [internal_memo, consultant_report]
+    supporting: [investment_plan, technical_feasibility, esia_report]
+    stated: [call, officer_note]
+  ask_whom: lender
+  note: Go by the lender's own method and list. Many development banks treat the mining of thermal coal and power from coal
+    or peat as never aligned, and judge other activities case by case against the country's climate plans. For a loan for
+    general purposes, look at the whole business and not only at the stated use.
+- id: OBS_IMPACT_011
+  question: What share of the loan amount counts as climate finance, for mitigation or adaptation, under the method the
+    lender uses?
+  answer: number
+  unit: percent
+  why: A lender with a climate target reports this share. It rests on what the money pays for, item by item.
+  due_by: diligence
+  look_in: [01.02.a]
+  evidence:
+    best: [internal_memo, consultant_report]
+    supporting: [investment_plan, technical_feasibility]
+    stated: [call, officer_note]
+  ask_whom: lender
+  note: Say which method was used. Where none of the loan counts, record 0.
+- id: OBS_IMPACT_012
+  question: Are figures available for the share of women among the owners, the board and senior management, the employees
+    and the customers of the business?
+  answer: yes_no
+  why: A lender with a gender target needs these figures before it can say whether the deal counts towards it. The 2X Challenge
+    criteria are a common reference.
+  due_by: diligence
+  look_in: [02.04.a, 02.05.c, 10.03.a]
+  evidence:
+    best: [shareholder_register, board_composition]
+    supporting: [company_record]
+    stated: [correspondence, call, officer_note]
+  ask: What share of your owners, of your board and senior managers, of your employees and of your customers are women?
+    Approximate figures will do to start with.

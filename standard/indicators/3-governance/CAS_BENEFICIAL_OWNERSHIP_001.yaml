@@ -1,0 +1,154 @@
+id: CAS_BENEFICIAL_OWNERSHIP_001
+title: Owners and control
+pillar: governance
+claim: The people who ultimately own and control the party are known, up to natural persons, and no one stands behind them
+  unseen.
+due_by: diligence
+applies_to: [borrower, repayment_source, guarantor, sponsor, shareholder, controller]
+matters_more_when:
+- {check: OBS_BORROWER_001, is: spv, reason: 'A special-purpose company has no record of its own: it is only as well known
+    as those behind it'}
+- {check: OBS_BORROWER_003, is: true, reason: 'In a group the chain has more steps, and each step is a place where an owner
+    can stay out of sight'}
+look_again_when:
+- {new_source: shareholder_register, reason: A new register can show a transfer of shares}
+- {new_source: registry_extract, reason: A new extract can show a holder or a director who was not there before}
+- {check: OBS_BO_007, is: true, reason: A person who controls without owning changes who is behind the party}
+checks:
+- id: OBS_BO_006
+  question: Who holds the party's shares directly?
+  answer: choice
+  options: [natural_persons, company, trust_or_foundation, nominee, state, listed_widely_held, party_is_a_person]
+  many: true
+  why: Opens the chain. Each holder that is entered as a party is asked the same question in turn, until the chain ends
+    at natural persons, at a state or at a listed company with no large holder.
+  due_by: screening
+  calls_for:
+  - is: natural_persons
+    link: [owns]
+    end: to
+  - is: company
+    link: [owns]
+    end: to
+  - is: trust_or_foundation
+    link: [owns, controls]
+    end: to
+  - is: nominee
+    link: [owns, controls]
+    end: to
+  look_in: [02.04.a, 02.01.c, 02.03.a]
+  evidence:
+    best: [shareholder_register, registry_extract]
+    supporting: [beneficial_ownership_declaration, organizational_chart, kyc_package]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: 'Who holds your shares directly: people in their own name, companies, a trust, or someone who holds them for another
+    person? A copy of the shareholder register would answer this.'
+  note: 'Give every kind that applies. Enter each holder above the lender''s threshold as a party with an ''owns'' link,
+    so that it gets these checks itself. For a party that is a natural person, answer party_is_a_person: the chain ends
+    there.'
+- id: OBS_BO_001
+  question: Has the party given the lender its whole chain of ownership in writing, step by step and with the share held
+    at each step, up to natural persons?
+  answer: yes_no
+  assumption: The party has disclosed its whole chain of ownership, up to natural persons
+  disproved_by: 'no'
+  due_by: screening
+  applies_to: [borrower, repayment_source]
+  look_in: [02.04.a, 02.03.a]
+  evidence:
+    best: [beneficial_ownership_declaration, kyc_package]
+    supporting: [organizational_chart, shareholder_register, registry_extract]
+    stated: [correspondence, call, officer_note]
+  ask: 'Please give us your ownership chain in writing: who owns you, who owns them, and so on up to the people at the top,
+    with the percentage held at each step.'
+  if_unknown: Until the chain is disclosed, the checks on the owners cannot start.
+  note: A chain may end at a state, or at a company listed on a regulated exchange with no large holder. Say where it ends.
+    Whether the disclosure is true is tested by OBS_BO_002.
+- id: OBS_BO_002
+  question: Has every natural person who ultimately owns or controls the party above the lender's threshold been identified,
+    with the identity checked against an identity document and each step of the chain against a register or a registry extract?
+  answer: yes_no
+  assumption: Every natural person who ultimately owns or controls the party above the lender's threshold is identified
+    and verified
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [02.06.a, 02.04.a, 02.01.c]
+  evidence:
+    best: [kyc_package, registry_extract, shareholder_register, legal_opinion]
+    supporting: [beneficial_ownership_declaration, organizational_chart]
+    stated: [correspondence, call, officer_note]
+  note: 'Common practice sets the threshold at a quarter of the shares or votes. Many lenders set it lower, and lower still
+    where the risk is higher: use the lender''s own. Where no one is above it, identify the person who in fact controls
+    the party, or failing that its most senior manager. For a party that is a natural person, the question is whether that
+    person''s own identity has been checked.'
+- id: OBS_BO_005
+  question: Is any step in the chain between the party and its ultimate owners held through a nominee, a trustee, a foundation
+    or bearer shares?
+  answer: yes_no
+  assumption: Every holder in the chain holds its shares for itself and in its own name
+  disproved_by: 'yes'
+  due_by: concept
+  applies_to: [borrower, repayment_source]
+  look_in: [02.04.a, 02.01.c, 08.01.a]
+  evidence:
+    best: [shareholder_register, registry_extract, legal_opinion]
+    supporting: [beneficial_ownership_declaration, organizational_chart]
+    stated: [correspondence, call, officer_note]
+  ask: Does anyone in your ownership chain hold shares for someone else, as a nominee or as a trustee? If so, for whom?
+  if_unknown: A nominee or a trust that is not disclosed hides the owner the other checks are meant to reach.
+- id: OBS_BO_004
+  question: Can the party give a business, legal or tax reason for every company and every country in the chain between
+    it and its ultimate owners?
+  answer: yes_no
+  assumption: Every step in the chain is there for a reason the party can state
+  disproved_by: 'no'
+  applies_to: [borrower, repayment_source]
+  look_in: [02.03.a, 08.01.a, 10.03.a]
+  evidence:
+    best: [legal_opinion, consultant_report]
+    supporting: [organizational_chart, beneficial_ownership_declaration, internal_memo]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: Why is each holding company in your chain there, and why in that country?
+  note: A company in a country with no tie to the business, to the owners or to the financing needs a reason of its own.
+    "For tax" is a reason only if the party can say which tax and how.
+  leads_to:
+  - {indicator: CAS_TAX_STRUCTURE_001, is: false, reason: 'A step with no stated reason is often there for tax: see what
+      it saves and whether that holds'}
+- id: OBS_BO_007
+  question: 'Does anyone who is not on the shareholder register direct the party''s decisions in practice: a relative of
+    the owners, a former owner, a financier, or another person whose instructions the directors follow?'
+  answer: yes_no
+  assumption: The party is run by its registered owners and the people they have appointed, and by no one behind them
+  disproved_by: 'yes'
+  applies_to: [borrower, repayment_source]
+  calls_for:
+  - is: true
+    link: [controls]
+    end: to
+  look_in: [02.06.d, 02.02.b, 02.02.a]
+  evidence:
+    best: [adverse_media_screen, consultant_report, legal_opinion]
+    supporting: [shareholder_agreement, board_minutes, kyc_package]
+    stated: [correspondence, call, officer_note]
+  ask: Is there anyone outside the shareholder register whose agreement is needed for the big decisions, or who gives instructions
+    to the directors?
+  note: Signs are a director who cannot answer for the business, a power of attorney over the shares or the bank accounts,
+    a lender whose consent is needed for everything, or a name that people in the market give as the owner. If the search
+    finds nothing, record what was searched, where and when.
+- id: OBS_BO_008
+  question: Is the person behind each nominee, trust or foundation named, and is the arrangement shown by its own document
+    (a nominee agreement, a trust deed, the foundation's statutes)?
+  answer: yes_no
+  mitigant: true
+  assumption: The lender can see through each nominee, trust or foundation to the people behind it
+  disproved_by: 'no'
+  applies_to: [borrower, repayment_source]
+  when:
+  - {check: OBS_BO_005, against: true}
+  look_in: [02.06.a, 08.01.a, 02.04.a]
+  evidence:
+    best: [kyc_package, legal_opinion]
+    supporting: [beneficial_ownership_declaration, company_certificate]
+    stated: [correspondence, call, officer_note]
+  note: For a trust, name the settlor, the trustees, the protector if there is one, and the beneficiaries. Each person so
+    named is entered as a party.

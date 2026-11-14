@@ -1,0 +1,125 @@
+id: CAS_GUARANTEE_001
+title: The guarantee
+pillar: links
+claim: If the borrower does not pay, the lender can claim the guaranteed amount from the guarantor, at once and in full.
+due_by: diligence
+applies_to: [guarantees]
+matters_more_when:
+- {check: OBS_COLLATERAL_001, is: unsecured, reason: Without security the guarantee is the only second way out}
+look_again_when:
+- {new_source: guarantee_agreement, reason: A new draft or the signed guarantee can change what it covers}
+checks:
+- id: OBS_GUARANTEE_KIND_001
+  question: What does the guarantor promise to do?
+  answer: choice
+  options: [pay_on_demand, pay_after_enforcement, share_of_loss, performance_only]
+  assumption: The guarantor promises to pay on first demand
+  flag_when: is not pay_on_demand
+  why: Only a promise to pay on first demand gives the lender money when it needs it. The other kinds pay late, in part
+    or not at all.
+  due_by: screening
+  look_in: [04.02.a, 04.01.a]
+  evidence:
+    best: [guarantee_agreement]
+    supporting: [term_sheet, facility_agreement]
+    stated: [correspondence, call, officer_note]
+  ask: What exactly would the guarantor sign up to? To pay when we ask, to pay only after we have enforced against the borrower,
+    to share a loss, or to make sure something is done?
+- id: OBS_GUARANTEE_CAP_001
+  question: What is the most the guarantor can be made to pay?
+  answer: number
+  unit: currency
+  why: The cap is set against what is owed under the facility and against the guarantor's own means.
+  due_by: screening
+  look_in: [04.02.a, 04.01.a]
+  evidence:
+    best: [guarantee_agreement]
+    supporting: [term_sheet, facility_agreement]
+    stated: [correspondence, call, officer_note]
+- id: OBS_GUARANTEE_SCOPE_001
+  question: Does the guarantee cover everything owed under the facility (principal, interest, default interest, fees and
+    enforcement costs) for the whole life of the loan?
+  answer: yes_no
+  assumption: The guarantee covers all that is owed, for as long as it is owed
+  disproved_by: 'no'
+  due_by: concept
+  look_in: [04.02.a]
+  evidence:
+    best: [guarantee_agreement]
+    supporting: [term_sheet]
+    stated: [correspondence, call, officer_note]
+- id: OBS_GUARANTEE_DEFENCES_001
+  question: Could the guarantor refuse or delay payment by raising the borrower's defences, a set-off or a dispute about
+    the loan?
+  answer: yes_no
+  assumption: The guarantor has given up the defences that would let it delay payment
+  disproved_by: 'yes'
+  look_in: [04.02.a, 08.01.a]
+  evidence:
+    best: [guarantee_agreement, legal_opinion]
+    supporting: [term_sheet]
+    stated: [correspondence, call, officer_note]
+  note: Read the waiver clause itself. A summary that says "unconditional" is not enough.
+- id: OBS_GUARANTEE_RELEASE_001
+  question: Can the guarantee end or shrink before the loan is repaid (an expiry date, a release on a ratio or an event,
+    a change to the loan made without the guarantor's consent)?
+  answer: yes_no
+  assumption: The guarantee stays in force until the loan is repaid
+  disproved_by: 'yes'
+  look_in: [04.02.a]
+  evidence:
+    best: [guarantee_agreement]
+    supporting: [term_sheet]
+    stated: [correspondence, call, officer_note]
+- id: OBS_GUARANTEE_POWER_001
+  question: Does the guarantor have the power to give this guarantee, and has it been approved as its own rules and the
+    law require (corporate benefit, board or shareholder approval, exchange-control or regulatory consent)?
+  answer: yes_no
+  assumption: The guarantee is validly given
+  disproved_by: 'no'
+  due_by: legal
+  look_in: [08.01.a, 02.02.a, 02.01.b]
+  evidence:
+    best: [legal_opinion]
+    supporting: [board_resolution, shareholder_resolution, memorandum_and_articles]
+    stated: [correspondence, call, officer_note]
+  if_unknown: A guarantee given without power or approval can be set aside when it is called.
+- id: OBS_GUARANTEE_ENFORCE_001
+  question: Could the lender enforce a claim under the guarantee where the guarantor's assets are, and collect within about
+    two years?
+  answer: yes_no
+  assumption: A judgment or award against the guarantor can be enforced against its assets
+  disproved_by: 'no'
+  look_in: [08.01.a]
+  evidence:
+    best: [legal_opinion]
+    supporting: [consultant_report, internal_memo]
+    stated: [call, officer_note]
+  note: Two years is a guide. What counts is that the money arrives while it still matters.
+- id: OBS_GUARANTEE_SIGNED_001
+  question: Is the guarantee signed by the guarantor and in force?
+  answer: yes_no
+  assumption: The guarantee exists as a signed document
+  disproved_by: 'no'
+  due_by: disbursement
+  look_in: [04.02.a, 08.01.b]
+  evidence:
+    best: [guarantee_agreement]
+    supporting: [conditions_precedent_checklist]
+    stated: [correspondence, call, officer_note]
+- id: OBS_GUARANTEE_MIT_001
+  question: Is the guarantee backed by something the lender can reach without going to court (cash collateral, a standby
+    letter of credit, a pledge over the guarantor's assets)?
+  answer: yes_no
+  mitigant: true
+  assumption: Something the lender can reach directly stands behind the guarantee
+  disproved_by: 'no'
+  when:
+  - {check: OBS_GUARANTEE_KIND_001, against: true}
+  - {check: OBS_GUARANTEE_DEFENCES_001, against: true}
+  - {check: OBS_GUARANTEE_ENFORCE_001, against: true}
+  look_in: [04.02.b, 04.02.a]
+  evidence:
+    best: [security_agreement, guarantee_agreement]
+    supporting: [term_sheet]
+    stated: [correspondence, call, officer_note]
