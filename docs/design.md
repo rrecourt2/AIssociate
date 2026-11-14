@@ -302,12 +302,10 @@ One thing comes before first use: a ten-minute test in the tenant of how Cowork 
 - **A website with the standard and an MCP for collecting data.** Possible later. The manifest and the rules in section 6.3 keep the way open.
 - **A server.** Not wanted.
 
-## 14. Still needed from the officer
+## 14. Open points
 
-1. A repository of its own. The work sits in a folder of the `bankability` repository until there is one.
-2. The licence for the tool and the skill. The standard is under Apache 2.0.
-3. The ten-minute test in the tenant.
-4. A review of the standard by someone who does credit work.
-5. Access to Copilot Code.
-6. Whether client calls may be transcribed.
-7. The fields of the bank's systems, when they can be shared inside the tenant.
+1. A ten-minute test in the tenant of how Cowork saves files and runs a script.
+2. A review of the standard by someone who does credit work.
+3. Use on a first real deal.
+4. Whether an institution lets client calls be transcribed. It decides how much of the memory can come from calls.
+5. The fields of an institution's systems. They are written inside its own tenant and stay there.

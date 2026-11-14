@@ -11,9 +11,9 @@ You record by handing `add` one JSON object: a set of changes. The tool applies 
               "where": "Client folder/03 Financial Information/03.01 Historical Financials/AR 2025.pdf",
               "about": ["P-001"], "read": "part",
               "map": [{"at": "note 5", "topic": "revenue and customers", "gist": "Two customers above 10%."}]}],
- "subjects": [{"ref": "tuskway", "kind": "party", "name": "Tuskway Supermarkets"}],
+ "subjects": [{"ref": "tuskway", "kind": "party", "name": "Bluegate Supermarkets"}],
  "links": [{"from": "P-001", "type": "sells_to", "to": "@tuskway", "state": "confirmed", "source": "@ar",
-            "why": "Tuskway buys 31% of revenue, so whether it pays matters for repayment."}],
+            "why": "Bluegate buys 31% of revenue, so whether it pays matters for repayment."}],
  "facts": [{"about": "P-001", "statement": "Revenue was KES 4,060m in 2025.", "label": "Revenue",
             "value": 4060, "unit": "KES m", "as_of": "2025-12-31", "source": "@ar", "place": "note 5",
             "said_by": "document", "answers": [{"check": "OBS_REV_001", "value": true}], "replaces": "F-005"}]

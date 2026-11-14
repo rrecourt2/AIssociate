@@ -10,17 +10,17 @@
            {"at": "note 18", "topic": "borrowings", "gist": "KES 1,300m, all in shillings."}]}
  ],
  "subjects": [
-  {"ref": "tuskway", "kind": "party", "name": "Tuskway Supermarkets"}
+  {"ref": "tuskway", "kind": "party", "name": "Bluegate Supermarkets"}
  ],
  "links": [
   {"from": "P-001", "type": "sells_to", "to": "@tuskway", "state": "confirmed", "source": "@ar",
-   "why": "Tuskway buys 31% of Cedar's revenue, so whether it pays matters for repayment."}
+   "why": "Bluegate buys 31% of Cedar's revenue, so whether it pays matters for repayment."}
  ],
  "facts": [
   {"about": "P-001", "statement": "Revenue was KES 4,060m in 2025 (2024: KES 3,720m).", "label": "Revenue", "value": 4060, "unit": "KES m",
    "as_of": "2025-12-31", "source": "@ar", "place": "note 5", "said_by": "document", "fills": ["CRM.revenue_last_year"],
    "answers": [{"check": "OBS_REV_001", "value": true}], "replaces": "F-005"},
-  {"about": "P-001", "statement": "Two customers each account for more than 10% of revenue: Tuskway Supermarkets with 31% and Lakeside Distributors with 14%.",
+  {"about": "P-001", "statement": "Two customers each account for more than 10% of revenue: Bluegate Supermarkets with 31% and Lakeside Distributors with 14%.",
    "as_of": "2025-12-31", "source": "@ar", "place": "note 5", "said_by": "document",
    "answers": [{"check": "OBS_BUYER_CONC_001", "value": true}]},
   {"about": "P-001", "statement": "All revenue is in Kenyan shillings.", "as_of": "2025-12-31", "source": "@ar", "place": "note 5",

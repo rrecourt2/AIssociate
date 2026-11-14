@@ -85,4 +85,4 @@ An institution or a deal does not edit these files. It adjusts the standard in i
 
 ## Licence
 
-Apache 2.0. See [LICENSE](LICENSE).
+MIT. See [LICENSE](../LICENSE).

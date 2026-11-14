@@ -17,7 +17,7 @@ Cedar Foods Ltd is a dairy processor in Nakuru, Kenya, and the borrower of the p
 
 ## What we know
 
-**Revenue and customers.** Revenue was KES 4,060m in 2025 and KES 3,720m in 2024 [F-008]. Tuskway Supermarkets bought 31% of it and Lakeside Distributors 14% [F-009]. All revenue is in Kenyan shillings [F-010].
+**Revenue and customers.** Revenue was KES 4,060m in 2025 and KES 3,720m in 2024 [F-008]. Bluegate Supermarkets bought 31% of it and Lakeside Distributors 14% [F-009]. All revenue is in Kenyan shillings [F-010].
 
 **Costs.** Cedar buys raw milk from three cooperatives. The contracts fix volumes and leave the price open [F-013]. The CFO said the gross margin fell in 2025 because raw milk prices rose 18% during the drought [F-012]. This is the CFO's account, given on one call. No document that shows the margin has been read.
 

@@ -2,7 +2,7 @@
  "name": "Bankability Standard",
  "version": "3.0.0",
  "description": "A standard for evidence-based investment due diligence. It says what a deal folder holds and what must be known.",
- "licence": "Apache-2.0",
+ "licence": "MIT",
  "stages": [
   {
    "id": "lead",

@@ -30,6 +30,10 @@ Version 3.0.0 was copied from version 2.0.0 in the `bankability` repository (`ba
 - **Everything the old engine used to rank and weight:** weights and weight shifts, trust levels, minimum evidence quality, reliability damping, effort, and the report sections an indicator feeds. The reasons that came with the weights are kept as `matters_more_when` and `matters_less_when`.
 - **Parts of the old standard that Bankability 2 does not use yet:** data-room profiles, sector lexicons, the ISIC list, financing types, entity types, ratios, document templates and the schemas for financial spreading.
 
+## Licence
+
+The first Bankability's standard was under Apache 2.0. Its licence holder released this version under MIT.
+
 ## Known gaps
 
 - No check is due after due diligence.

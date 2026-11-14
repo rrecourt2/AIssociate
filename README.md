@@ -91,4 +91,4 @@ The first runs the tests. The second rebuilds `bankability2/standard.json` after
 
 ## Licence
 
-The standard is under Apache 2.0, as it was in the first Bankability. No licence has been chosen for the tool and the skill yet.
+MIT, for the standard, the tool and the skill. See [LICENSE](LICENSE).

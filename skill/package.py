@@ -17,6 +17,7 @@ def main():
         packed += [(os.path.join(folder, name), os.path.relpath(os.path.join(folder, name), SKILL)) for name in names]
     packed += [(os.path.join(TOOL, name), f"scripts/bankability2/{name}")
                for name in os.listdir(TOOL) if name.endswith((".py", ".json"))]
+    packed.append((os.path.join(ROOT, "LICENSE"), "LICENSE"))
     if len(packed) > 20:  # Copilot Cowork allows a skill 20 files
         raise SystemExit(f"{len(packed)} files: a skill may hold 20")
     os.makedirs(os.path.dirname(OUT), exist_ok=True)

@@ -12,7 +12,7 @@
    "as_of": "2026-11-12", "source": "@call", "said_by": "client", "answers": [{"check": "OBS_COST_004", "value": true}]},
   {"about": "P-001", "statement": "Cedar buys milk from three cooperatives under contracts that fix volumes, not prices.",
    "as_of": "2026-11-12", "source": "@call", "said_by": "client", "answers": [{"check": "OBS_INPUT_001", "value": true}]},
-  {"about": "R-003", "statement": "The CFO said Tuskway pays within 45 days.",
+  {"about": "R-003", "statement": "The CFO said Bluegate pays within 45 days.",
    "as_of": "2026-11-12", "source": "@call", "said_by": "client", "answers": [{"check": "OBS_OFFTAKER_004", "value": true}]},
   {"ref": "lakeside", "about": "P-001", "statement": "Lakeside Distributors buys under a one-year contract, and three other distributors serve the same region.",
    "as_of": "2026-11-12", "source": "@call", "said_by": "client"}

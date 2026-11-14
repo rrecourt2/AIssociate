@@ -60,7 +60,7 @@ python3 -m unittest discover -s tests
 
 This runs the audit rules above, runs the tool on a made-up deal, and checks that `bankability2/standard.json` is exactly what the standard's source builds to.
 
-The packed skill, `dist/bankability-2.zip`, holds the same seven files, the standard, a short launcher (`scripts/bk2.py`) and the instructions for the assistant. Compare the seven files with `bankability2/`.
+The packed skill, `dist/bankability-2.zip`, holds the same seven files, the standard, a short launcher (`scripts/bk2.py`), the instructions for the assistant and the licence. Compare the seven files with `bankability2/`.
 
 ## Outside the tool
 
