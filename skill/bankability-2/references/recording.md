@@ -151,7 +151,7 @@ Existing debt is never a facility. Record the lender as a party and link it to t
 
 ### A person
 
-A natural person is a subject of the kind `person`. A person is asked only what fits a person: sanctions, political exposure, integrity, source of funds, disputes, and the capacity to pay where the person guarantees the loan under review. Record a person who owns, controls or guarantees. Directors and managers who do none of these stay as facts about their company.
+A natural person is a subject of the kind `person`. A person is asked only what fits a person: sanctions, political exposure, integrity, source of funds, disputes, and the capacity to pay where the person guarantees the loan under review. Record a person who owns, controls or guarantees. Directors and managers who do none of these stay as facts about their company. A person who was recorded as a party is changed in place: send the subject's `id` with `"kind": "person"`. The ID keeps its letter.
 
 ### What the loan pays for
 
