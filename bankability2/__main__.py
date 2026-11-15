@@ -133,7 +133,8 @@ def add(args):
     missing = []
     sources = change.get("sources", [])
     for source in sources if isinstance(sources, list) else []:
-        if isinstance(source, dict) and source.get("where") and "id" not in source:
+        known = memory["sources"].get(str(source.get("id")), {}) if isinstance(source, dict) else {}
+        if isinstance(source, dict) and source.get("where") and source["where"] != known.get("where"):  # new, or moved
             mark = files.fingerprint(args.deal, source["where"])
             if mark:
                 source.setdefault("fingerprint", mark)

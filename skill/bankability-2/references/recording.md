@@ -84,6 +84,7 @@ The original document is the source. A text extract that you or someone else mad
 1. **File the original.** `where` is always the original, and the fingerprint is the original's.
 2. **Attach the extract.** Name it under `"extract"` in the filing: the tool moves it to `Internal/sources/extracts/`. Give that path as `extract` on the source.
 3. **Cite the place in the original.** `place` on a fact is the page, the note or the table of the original, not a line of the extract. Keep the page numbers of the original in the extract when you make one.
+4. **When the original comes later.** A source that was recorded from an extract alone is pointed at the original once that is filed: send the source's `id` with the new `where` and `extract`. The tool then takes the fingerprint of the original.
 
 Where the extract and the original differ, the original is right.
 

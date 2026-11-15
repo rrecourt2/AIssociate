@@ -96,6 +96,8 @@ class Deal(unittest.TestCase):
         self.assertIn("[Scan.pdf](Scan.pdf): Business plan. Slot 01.01.b", files.read(deal, "Client folder/index.md"))
         self.assertEqual(run("add", deal, self.handed({"sources": [  # a source keeps the place of its extract
             {"title": "Scan", "kind": "business_plan", "where": filed["path"], "extract": filed["extract"]}]}))[0], 0)
+        run("add", deal, self.handed({"sources": [{"id": "S-001", "where": filed["path"]}]}))  # the original came later
+        self.assertEqual(files.read_json(deal, files.MEMORY)["sources"]["S-001"]["fingerprint"], files.fingerprint(deal, filed["path"]))
 
     def test_an_older_folder_is_moved_by_upgrade(self):
         deal = self.copy()
