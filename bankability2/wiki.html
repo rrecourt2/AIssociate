@@ -193,15 +193,18 @@ function card(id) {  // what the record holds under an ID: a fact with its value
   el("card").hidden = false;
 }
 
+const plain = text => text.replace(/<!--.*?-->/g, " ").replace(/\]\([^)]*\)/g, "]").replace(/[*_#|`>\[\]]+/g, " ")
+  .replace(/\s+/g, " ");  // the words of a page without its Markdown, for the search
+
 function menu() {  // the pages by shelf, or the pages that hold the words searched for
   const words = el("search").value.trim().toLowerCase();
   const entry = (path, name) => {
-    const text = pages[path].text.replace(/\s+/g, " "), hit = words ? text.toLowerCase().indexOf(words) : -1;
+    const text = plain(pages[path].text), hit = words ? text.toLowerCase().indexOf(words) : -1;
     const near = hit < 0 ? "" : "<span>" + esc(text.slice(Math.max(0, hit - 30), hit)) + "<mark>" +
       esc(text.substr(hit, words.length)) + "</mark>" + esc(text.substr(hit + words.length, 50)) + "</span>";
     return `<a href="#${encoded(path)}"${path === here ? ' class="here"' : ""}>${esc(name || pages[path].title)}${near}</a>`;
   };
-  const shown = Object.keys(pages).filter(path => (pages[path].title + "\n" + pages[path].text).toLowerCase().includes(words));
+  const shown = Object.keys(pages).filter(path => (pages[path].title + "\n" + plain(pages[path].text)).toLowerCase().includes(words));
   const shelf = name => {
     const paths = shown.filter(path => pages[path].shelf === name);
     return paths.length ? `<h2>${esc(name)}</h2>` + paths.map(path => entry(path)).join("") : "";

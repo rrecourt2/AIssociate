@@ -17,6 +17,7 @@ BEGIN, END = "<!-- tool:begin {} -->", "<!-- tool:end -->"
 PART = BEGIN + "((?!<!-- tool:begin).)*?" + END  # a begin marker, its lines and its own end marker
 ID = re.compile(r"\b[A-Z]-\d{3,}\b")
 NUMBER = re.compile(r"\d[\d,.]*\d|\d")
+ROUND = str.maketrans("[]", "()")  # square brackets in a title would end the link that carries it
 STALE = ("outdated", "disputed", "replaced")  # the states of a record that something newer took the place of
 # One of those words and a colon, at the start of a paragraph or of a sentence. What follows it may cite such a record.
 MARKED = re.compile(r"(?:^|[.!?|]\s+)[*_]*(?:" + "|".join(STALE) + r")[*_]*:", re.I)
@@ -300,7 +301,7 @@ def documents(name, listed, std):
     for folder in std["dataroom"]["folders"]:
         held = []
         for sub in folder["sub_folders"]:
-            docs = [f"- [{doc['title']}]({encoded(doc['path'][len(files.CLIENT) + 1:])}): "
+            docs = [f"- [{doc['title'].translate(ROUND)}]({encoded(doc['path'][len(files.CLIENT) + 1:])}): "
                     + ", ".join(filter(None, [kinds.get(doc["kind"], doc["kind"]), doc.get("party"), doc.get("period")]))
                     + f". Slot {slot['id']} {slot['title']}."
                     for slot in sub["slots"] for doc in listed if doc["slot"] == slot["id"]]
