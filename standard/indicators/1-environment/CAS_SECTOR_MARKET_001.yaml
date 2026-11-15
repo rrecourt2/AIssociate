@@ -26,7 +26,7 @@ checks:
   look_in: [01.03.a, 10.03.a]
   evidence:
     best: [market_study, consultant_report]
-    supporting: [public_source, internal_memo]
+    supporting: [public_source, press_article, internal_memo]
     stated: [business_plan, management_presentation, call, officer_note]
   ask: Over the last five years, has your market as a whole sold more, about the same or less, in volume? What figures do
     you rely on?
@@ -44,7 +44,7 @@ checks:
   look_in: [01.03.a, 10.03.a]
   evidence:
     best: [market_study, consultant_report]
-    supporting: [public_source, company_record, internal_memo]
+    supporting: [public_source, press_article, company_record, internal_memo]
     stated: [management_presentation, call, officer_note]
   note: Where the price is fixed and the market adjusts through volume (a regulated price, a service), give the fall in
     volume and say so. Give the years of the peak and of the low.
@@ -77,12 +77,14 @@ checks:
   look_in: [03.01.a, 01.03.a, 03.02.b]
   evidence:
     best: [audited_annual_report, market_study, consultant_report]
-    supporting: [financial_model, management_accounts]
+    supporting: [financial_model, management_accounts, annual_report, prospectus]
     stated: [business_plan, management_presentation, call, officer_note]
   note: Use the party's accounts for that year where it was already trading. Otherwise set today's cash cost per unit against
     that price (for a processor or a trader, today's cash costs other than the main input against that gap). Where the price
     is fixed and the market adjusts through volume, use the lowest volume. A producer whose costs are among the highest
-    in its market is the first to lose money when the price falls.
+    in its market is the first to lose money when the price falls. The test does not wait for the terms of the loan. If
+    the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before
+    the new loan. Answer again when the terms are known.
 - id: OBS_MARKET_005
   question: In the last five years, has a direct competitor of the party, of similar size or larger, become insolvent, defaulted
     on its debt or had its debt restructured?
@@ -94,7 +96,7 @@ checks:
   look_in: [01.03.a, 10.03.a]
   evidence:
     best: [market_study, consultant_report, credit_rating_report]
-    supporting: [public_source, internal_memo]
+    supporting: [public_source, press_article, internal_memo]
     stated: [management_presentation, call, officer_note]
   ask: Has any of your competitors failed or had to restructure its debt in the last five years? What went wrong?
   note: Record who failed and why. If the search finds nothing, record what was searched, where and when.
@@ -107,7 +109,7 @@ checks:
   look_in: [07.01.a, 03.01.a, 01.03.a]
   evidence:
     best: [regulatory_document, tax_clearance, audited_annual_report]
-    supporting: [market_study, consultant_report, financial_model]
+    supporting: [market_study, consultant_report, financial_model, annual_report, prospectus]
     stated: [business_plan, management_presentation, call, officer_note]
   ask: Would you still make money if the import duty, the quota, the export ban or levy, the subsidy or the regulated price
     that applies to your business were changed or taken away?
@@ -126,7 +128,7 @@ checks:
   look_in: [01.03.a, 10.03.a]
   evidence:
     best: [market_study, consultant_report]
-    supporting: [public_source, internal_memo, company_record]
+    supporting: [public_source, press_article, internal_memo, company_record]
     stated: [business_plan, management_presentation, call, officer_note]
   ask: Who could take your customers in the next few years? Is anyone building new capacity, or importing at a lower price
     than yours?
@@ -141,7 +143,7 @@ checks:
   look_in: [01.03.a, 03.01.a]
   evidence:
     best: [market_study, consultant_report, audited_annual_report]
-    supporting: [management_accounts, company_record, public_source]
+    supporting: [management_accounts, company_record, public_source, press_article, annual_report, prospectus]
     stated: [business_plan, management_presentation, call, officer_note]
   ask: How have your sales moved over the last three years compared with your market as a whole? Who has gained share, and
     who has lost it?

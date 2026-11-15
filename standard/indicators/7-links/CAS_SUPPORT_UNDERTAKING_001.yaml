@@ -68,7 +68,7 @@ checks:
   look_in: [02.06.d, 03.01.a]
   evidence:
     best: [adverse_media_screen, audited_annual_report, credit_rating_report]
-    supporting: [board_minutes, bank_statement, public_source]
+    supporting: [board_minutes, bank_statement, public_source, press_article, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: Ask other lenders to the giver's group, and search court records and the press. If the search finds nothing, record
     what was searched, where and when.

@@ -27,7 +27,7 @@ checks:
   look_in: [03.01.a, 05.01.a]
   evidence:
     best: [audited_annual_report, technical_feasibility]
-    supporting: [company_record, management_accounts]
+    supporting: [company_record, management_accounts, annual_report, prospectus]
     stated: [call, officer_note, management_presentation, business_plan]
   ask: How much of the crop you process or trade comes from your own farms, and how much do you buy from farmers or outgrowers?
   note: Give the figure for the last full season, and say whether it changes much from year to year.
@@ -79,7 +79,7 @@ checks:
   look_in: [05.01.a, 03.01.a]
   evidence:
     best: [technical_feasibility, audited_annual_report]
-    supporting: [company_record, public_source]
+    supporting: [company_record, public_source, press_article, annual_report, prospectus]
     stated: [call, officer_note, management_presentation]
   ask: What was your harvest or intake in each of the last ten years? Which was the worst year, and what caused it?
   note: Use volume, not value. With fewer than ten years of record, use the record of the district or of the crop and say
@@ -94,7 +94,7 @@ checks:
   look_in: [05.01.a, 03.01.a]
   evidence:
     best: [technical_feasibility, audited_annual_report]
-    supporting: [company_record, management_accounts, public_source]
+    supporting: [company_record, management_accounts, public_source, press_article, annual_report, prospectus]
     stated: [call, officer_note, correspondence]
   ask: In the last five years, was there a season in which drought, flood, frost, a pest or a disease cut your harvest or
     intake? By how much?
@@ -113,7 +113,7 @@ checks:
   look_in: [07.01.a, 10.03.a]
   evidence:
     best: [regulatory_document, consultant_report]
-    supporting: [company_record, board_minutes, public_source]
+    supporting: [company_record, board_minutes, public_source, press_article]
     stated: [call, officer_note, correspondence]
   ask: In the last five years, was any shipment of yours stopped at a border? Was any of your certificates suspended or
     withdrawn?

@@ -5,12 +5,15 @@ import os
 
 CLIENT = "Client folder"
 MANIFEST = CLIENT + "/manifest.json"
-MEMORY = "Internal/memory/memory.json"
+MEMORY = "Internal/record/record.json"  # the record of the deal
+OLD_MEMORY = "Internal/memory/memory.json"  # where it was kept before; `upgrade` moves it
 WIKI = "Internal/wiki"
+OUTPUTS = "Internal/outputs"
+EXTRACTS = "Internal/sources/extracts"
 BASE = "Internal/standard/base.json"
 INSTITUTION = "Internal/standard/institution.json"
 DEAL_LAYER = "Internal/standard/deal.json"
-INTERNAL_FOLDERS = ("sources", "memory", "wiki", "standard", "systems", "outputs")
+INTERNAL_FOLDERS = ("sources", "record", "wiki", "standard", "outputs")
 
 WRITTEN = []  # what this run wrote, for a host that has to save files itself
 
@@ -103,7 +106,12 @@ def listing(deal, relative):
     return sorted(found)
 
 
+def packaged(name):
+    """The text of a file that ships with the tool."""
+    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), name), encoding="utf-8") as f:
+        return f.read()
+
+
 def packaged_standard():
     """The standard that ships with the tool."""
-    with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "standard.json"), encoding="utf-8") as f:
-        return json.load(f)
+    return json.loads(packaged("standard.json"))

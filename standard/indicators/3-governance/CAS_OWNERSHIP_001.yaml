@@ -38,7 +38,7 @@ checks:
   look_in: [02.04.a, 02.01.c, 03.01.a]
   evidence:
     best: [shareholder_register, registry_extract, audited_annual_report]
-    supporting: [organizational_chart, beneficial_ownership_declaration]
+    supporting: [organizational_chart, beneficial_ownership_declaration, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   if_unknown: If the holdings cannot be drawn on one page with every line ending in a name, treat the answer as not known.
   leads_to:
@@ -86,7 +86,7 @@ checks:
   look_in: [08.01.a, 02.02.a, 02.06.d]
   evidence:
     best: [legal_opinion, audited_annual_report, adverse_media_screen]
-    supporting: [board_minutes, shareholder_resolution]
+    supporting: [board_minutes, shareholder_resolution, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Have the shareholders had a serious disagreement in the last five years, among themselves or with the company? What
     was it about, and how did it end?
@@ -136,7 +136,7 @@ checks:
   look_in: [03.01.a, 02.02.c]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, shareholder_resolution, board_minutes]
+    supporting: [management_accounts, shareholder_resolution, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: 'Take profit in cash terms: leave out gains on revaluation. Count fees and other payments to shareholders that are
     not the price of a service at market rates.'

@@ -30,7 +30,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [call, officer_note]
   ask: How long does it take from the day you pay for your inputs to the day your customers pay you? If the figure is not
     to hand, we can work it out from your stock, receivables and payables.
@@ -47,7 +47,7 @@ checks:
   look_in: [03.01.a, 03.01.b, 10.03.a]
   evidence:
     best: [audited_annual_report]
-    supporting: [company_record, management_accounts]
+    supporting: [company_record, management_accounts, annual_report, prospectus]
     stated: [call, officer_note]
   ask: What credit terms do you give your customers, and how long do they take to pay in practice? An ageing list of your
     receivables would answer this.
@@ -67,7 +67,7 @@ checks:
   look_in: [03.01.a, 10.03.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [company_record, management_accounts]
+    supporting: [company_record, management_accounts, annual_report, prospectus]
     stated: [call, officer_note]
   note: Take the figure from the ageing list at the latest month-end and, where possible, at the seasonal peak. Count the
     days from the due date, not from the invoice date. Record how much of the overdue amount is provided for.
@@ -87,7 +87,7 @@ checks:
   look_in: [03.01.a, 03.01.e, 10.03.a]
   evidence:
     best: [audited_annual_report, audit_management_letter, consultant_report]
-    supporting: [company_record, management_accounts]
+    supporting: [company_record, management_accounts, annual_report, prospectus]
     stated: [call, officer_note]
   ask: Who was present at your last year-end stock count besides your own staff? Is any of your stock held by someone else,
     such as a warehouse keeper or a processor?
@@ -109,7 +109,7 @@ checks:
   look_in: [03.01.a, 10.03.a, 05.02.a]
   evidence:
     best: [audited_annual_report, consultant_report, valuation_report]
-    supporting: [company_record, management_accounts]
+    supporting: [company_record, management_accounts, annual_report, prospectus]
     stated: [call, officer_note]
   note: A tenth is a guide. Ask for the stock list by age. For a commodity, set the value per tonne in the accounts against
     the market price on the balance sheet date and today.
@@ -123,7 +123,7 @@ checks:
   look_in: [03.01.a, 10.03.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [company_record, management_accounts]
+    supporting: [company_record, management_accounts, annual_report, prospectus]
     stated: [call, officer_note]
   ask: Do you pay suppliers or farmers in advance? How much is outstanding today, and how much of it was paid more than
     a season ago?

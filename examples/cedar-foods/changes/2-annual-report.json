@@ -4,16 +4,16 @@
  "op": "annual-report-2025",
  "sources": [
   {"ref": "ar", "title": "Annual report 2025", "kind": "audited_annual_report", "date": "2026-03-28",
-   "where": "Client folder/03 Financial Information/03.01 Historical Financials/Cedar Foods annual report 2025 extract.md",
+   "where": "Client folder/Cedar Foods annual report 2025 extract.md",
    "about": ["P-001"], "read": "part", "sent_by": "Cedar Foods",
    "map": [{"at": "note 5", "topic": "revenue and customers", "gist": "Revenue KES 4,060m. Two customers above 10% of revenue."},
            {"at": "note 18", "topic": "borrowings", "gist": "KES 1,300m, all in shillings."}]}
  ],
  "subjects": [
-  {"ref": "tuskway", "kind": "party", "name": "Bluegate Supermarkets"}
+  {"ref": "bluegate", "kind": "party", "name": "Bluegate Supermarkets"}
  ],
  "links": [
-  {"ref": "sale", "from": "P-001", "type": "sells_to", "to": "@tuskway", "state": "confirmed", "source": "@ar",
+  {"ref": "sale", "from": "P-001", "type": "sells_to", "to": "@bluegate", "state": "confirmed", "source": "@ar",
    "why": "Bluegate buys 31% of Cedar's revenue, so whether it pays matters for repayment."}
  ],
  "facts": [

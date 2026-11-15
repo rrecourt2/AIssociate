@@ -31,7 +31,7 @@ checks:
   look_in: [03.01.b, 03.01.a]
   evidence:
     best: [bank_statement, audited_annual_report]
-    supporting: [management_accounts, interim_financial_statements]
+    supporting: [management_accounts, interim_financial_statements, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: How much cash do you have in the bank today that you could use to pay a bill tomorrow? Please leave out anything
     that is pledged to a lender or held for someone else.
@@ -69,7 +69,7 @@ checks:
   look_in: [03.01.a, 04.01.b, 04.02.b]
   evidence:
     best: [audited_annual_report, facility_agreement, security_agreement]
-    supporting: [management_accounts, bank_statement, debt_schedule]
+    supporting: [management_accounts, bank_statement, debt_schedule, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: A fifth is a guide. What counts is whether the party could still pay what falls due without that cash. Look in the
     notes to the accounts for restricted cash, in the loan agreements for reserve accounts and pledged accounts, and at
@@ -101,7 +101,7 @@ checks:
   look_in: [03.01.a, 02.06.c, 03.01.b]
   evidence:
     best: [audited_annual_report, tax_clearance]
-    supporting: [management_accounts, bank_statement, company_record, board_minutes]
+    supporting: [management_accounts, bank_statement, company_record, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: In the last two years, was there a month when wages, a tax payment or a supplier had to wait because the cash was
     not there, or when a shareholder or the bank had to step in at short notice?

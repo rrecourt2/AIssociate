@@ -4,7 +4,7 @@ pillar: es_impact
 claim: The land the party uses is held securely and was acquired fairly, and neither that land nor the party's supply chain
   involves the clearing of natural forest or forced or child labour.
 due_by: diligence
-applies_to: [borrower, repayment_source, project]
+applies_to: [borrower, repayment_source, financed_project]
 applies_when:
 - {check: OBS_SECTOR_001, is: corporate}
 - {check: OBS_SECTOR_001, is: project}
@@ -86,7 +86,7 @@ checks:
   look_in: [07.02.a, 07.02.d, 10.03.a]
   evidence:
     best: [esia_report, consultant_report]
-    supporting: [stakeholder_engagement_plan, public_source, company_record]
+    supporting: [stakeholder_engagement_plan, public_source, press_article, company_record]
     stated: [correspondence, call, officer_note]
   ask: Who used this land before you, and who crosses it, grazes on it or takes water or wood from it today? Do any of them
     belong to an indigenous people?
@@ -144,7 +144,7 @@ checks:
   look_in: [10.03.a, 07.02.a, 02.06.d]
   evidence:
     best: [consultant_report, esia_report, adverse_media_screen]
-    supporting: [public_source, company_record]
+    supporting: [public_source, press_article, company_record]
     stated: [correspondence, call, officer_note]
   ask: Has any forest or other natural land been cleared on your own land, and since when is each plot in use? What do you
     know about clearing on the land of your suppliers?
@@ -160,7 +160,7 @@ checks:
   look_in: [10.03.a, 02.06.d, 06.04.a]
   evidence:
     best: [consultant_report, adverse_media_screen, regulatory_document]
-    supporting: [company_record, public_source, supply_agreement]
+    supporting: [company_record, public_source, press_article, supply_agreement]
     stated: [correspondence, call, officer_note]
   ask: Has child labour or forced labour ever been found at one of your suppliers, by you, by an auditor, by a customer
     or by anyone else? How do you check for it, and how far down the chain?
@@ -182,7 +182,7 @@ checks:
   look_in: [10.03.a, 06.04.a]
   evidence:
     best: [consultant_report, public_source]
-    supporting: [company_record, supply_agreement]
+    supporting: [company_record, supply_agreement, press_article]
     stated: [correspondence, call, officer_note]
   note: Check the certificate in the scheme's own public register, and record the share of the volume that it covers. A
     certificate for part of the volume protects only that part. Read the audit report for open findings.

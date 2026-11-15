@@ -31,7 +31,7 @@ checks:
   look_in: [03.01.a, 07.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report, regulatory_document]
-    supporting: [management_accounts, company_record, credit_rating_report]
+    supporting: [management_accounts, company_record, credit_rating_report, annual_report, prospectus]
     stated: [management_presentation, call, officer_note]
   ask: What liquid assets do you hold today, and what are they as a share of your deposits and other short-term funding?
     Your latest prudential return would answer this.
@@ -63,7 +63,7 @@ checks:
   look_in: [07.01.a, 03.01.a, 10.03.a]
   evidence:
     best: [regulatory_document, audited_annual_report]
-    supporting: [company_record, management_accounts, credit_rating_report]
+    supporting: [company_record, management_accounts, credit_rating_report, annual_report, prospectus]
     stated: [call, officer_note]
   ask: What share of your deposits do your twenty largest depositors hold? How much of it could be withdrawn within a month?
   note: Twenty depositors and a quarter are a guide. Count connected depositors as one, and count the deposits of the state
@@ -80,7 +80,7 @@ checks:
   look_in: [03.01.a, 07.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report, regulatory_document]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [call, officer_note]
   note: Take the figures from the maturity table in the notes to the accounts, by the time left to run and not by the original
     term. Where the institution reports a net stable funding ratio, a ratio below 100 percent is a yes. Where OBS_FIL_002
@@ -97,7 +97,7 @@ checks:
   look_in: [03.01.a, 04.03.a, 04.01.b]
   evidence:
     best: [audited_annual_report, facility_agreement, regulatory_document]
-    supporting: [debt_schedule, management_accounts, company_record]
+    supporting: [debt_schedule, management_accounts, company_record, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Please send a list of your borrowings from banks, funds and other lenders, with the amount, the currency and the
     date on which each falls due.
@@ -114,7 +114,7 @@ checks:
   look_in: [03.01.a, 07.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report, regulatory_document]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [call, officer_note]
   ask: How much do you owe to other banks today, and for how long is it lent to you? Has that amount grown or shrunk over
     the last three years?
@@ -133,7 +133,7 @@ checks:
   look_in: [07.01.a, 03.01.a, 10.03.a]
   evidence:
     best: [regulatory_document, audited_annual_report]
-    supporting: [company_record, management_accounts, hedge_document]
+    supporting: [company_record, management_accounts, hedge_document, annual_report, prospectus]
     stated: [call, officer_note]
   ask: What is your net open position in foreign currency as a share of your capital, and what limit applies to it? What
     share of your foreign-currency loans went to borrowers who earn local currency?
@@ -150,7 +150,7 @@ checks:
   look_in: [03.01.a, 04.03.a, 10.03.a]
   evidence:
     best: [audited_annual_report, facility_agreement, credit_rating_report]
-    supporting: [debt_schedule, management_accounts, board_minutes]
+    supporting: [debt_schedule, management_accounts, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: In the last three years, was there any moment when a payment to one of your lenders was late, a financial covenant
     was not met, or you asked a lender for a waiver or for more time?

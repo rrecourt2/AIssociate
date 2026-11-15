@@ -4,7 +4,7 @@ pillar: business
 claim: The project will be complete and performing as designed before the first repayment falls due, for no more money than
   is committed.
 due_by: diligence
-applies_to: [project]
+applies_to: [financed_project]
 applies_when:
 - {check: OBS_LIFECYCLE_001, is: greenfield}
 - {check: OBS_CAPEX_PLAN_001, is: true}

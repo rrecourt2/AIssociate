@@ -30,7 +30,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [call, officer_note, management_presentation]
   ask: What was your gross margin last year, that is gross profit as a percentage of revenue? If you do not have the figure,
     revenue and cost of sales are enough.
@@ -45,7 +45,7 @@ checks:
   look_in: [03.01.a]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [call, officer_note]
   note: Say which year it was and what caused it. Use the same definition of margin as in OBS_COST_001. For a party with
     fewer than five years of accounts, say how many years the answer covers.
@@ -58,7 +58,7 @@ checks:
   look_in: [03.01.a, 03.02.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, financial_model]
+    supporting: [management_accounts, financial_model, annual_report, prospectus]
     stated: [call, officer_note]
   ask: Which of your costs would stay the same for a year if your sales fell by a quarter (rent, salaried staff, depreciation,
     interest), and which would fall with them (raw materials, commissions, freight)?
@@ -76,7 +76,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [call, officer_note]
   ask: What was your gross margin in each of the last three years? If it fell, what was behind the fall?
   if_unknown: Without the two earlier years there is no trend, and one year's margin proves little.
@@ -98,7 +98,7 @@ checks:
   look_in: [03.01.a]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts]
+    supporting: [management_accounts, annual_report, prospectus]
     stated: [call, officer_note, management_presentation]
   note: For a party with fewer than five years of accounts, answer for the years there are and say how many.
 - id: OBS_COST_008
@@ -111,6 +111,6 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [call, officer_note]
   note: A quarter is a guide. Gains that brought in no cash, such as revaluations, are asked about in The accounts (OBS_ACC_008).

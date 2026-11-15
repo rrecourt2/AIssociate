@@ -27,7 +27,7 @@ checks:
   look_in: [03.01.a, 04.01.a, 03.02.b]
   evidence:
     best: [audited_annual_report, term_sheet]
-    supporting: [financial_model, internal_memo]
+    supporting: [financial_model, internal_memo, annual_report, prospectus]
     stated: [executive_summary, business_plan, call, officer_note]
   ask: Where will the money to repay the loan come from? Which company earns it, and from which activity or contract?
   if_unknown: If nobody can say whose cash flow repays the loan, there is no deal to analyse yet.
@@ -40,7 +40,7 @@ checks:
   evidence:
     best: [credit_rating_report, market_study]
     supporting: [internal_memo]
-    stated: [officer_note, public_source]
+    stated: [officer_note, public_source, press_article]
   ask_whom: lender
   note: Name the two or three usual causes, for example a fall in the price of the product, a late start of operations,
     a customer that pays late or a currency that loses value. Each cause points at an indicator to look at first.
@@ -57,7 +57,7 @@ checks:
   look_in: [03.01.a, 02.03.a]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, organizational_chart, financial_model]
+    supporting: [management_accounts, organizational_chart, financial_model, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Which company receives the revenue that will repay the loan? Is it the borrower itself, or another company in the
     group?
@@ -78,7 +78,7 @@ checks:
   look_in: [03.01.a, 06.01.a, 03.02.b]
   evidence:
     best: [audited_annual_report, offtake_agreement, lease_agreement, material_contract]
-    supporting: [management_accounts, financial_model, financial_projections]
+    supporting: [management_accounts, financial_model, financial_projections, annual_report, prospectus]
     stated: [business_plan, call, officer_note]
   ask: Will the loan be repaid from what the business already earns, from payments under contracts that are already signed,
     or from revenue that is still to be built up?
@@ -149,7 +149,7 @@ checks:
   look_in: [05.02.a, 03.01.a]
   evidence:
     best: [valuation_report, audited_annual_report, consultant_report]
-    supporting: [financial_model, internal_memo]
+    supporting: [financial_model, internal_memo, annual_report, prospectus]
     stated: [call, officer_note]
   ask_whom: lender
   note: First name the most likely reason. Then ask what the security would fetch, or what the guarantor could pay, in that

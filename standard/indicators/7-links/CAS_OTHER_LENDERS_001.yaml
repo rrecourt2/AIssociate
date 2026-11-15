@@ -47,7 +47,7 @@ checks:
   look_in: [02.01.c, 04.02.b, 03.01.a]
   evidence:
     best: [registry_extract, security_agreement, audited_annual_report]
-    supporting: [debt_schedule, facility_agreement]
+    supporting: [debt_schedule, facility_agreement, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: What have you pledged or charged to this lender? Does it include the assets or the bank accounts that we would rely
     on?
@@ -79,7 +79,7 @@ checks:
   look_in: [04.01.b, 04.03.a, 03.01.a]
   evidence:
     best: [facility_agreement, audited_annual_report]
-    supporting: [debt_schedule, management_accounts]
+    supporting: [debt_schedule, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: A line that runs for a year and is then renewed falls due at its next renewal date. A loan that is repaid in instalments
     from cash flow is a no.
@@ -95,7 +95,7 @@ checks:
   look_in: [04.01.b, 03.01.a, 04.03.a]
   evidence:
     best: [facility_agreement, audited_annual_report]
-    supporting: [debt_schedule, management_accounts]
+    supporting: [debt_schedule, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Is this line committed for a fixed period, or can the lender reduce it or ask for its money back whenever it chooses?
   leads_to:

@@ -24,17 +24,20 @@ checks:
   look_in: [03.01.a, 02.03.a]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, organizational_chart, company_record]
+    supporting: [management_accounts, organizational_chart, company_record, annual_report, prospectus]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Does your company buy from, sell to, lend to or borrow from its shareholders, its directors, their families, or other
     companies that they own? A yes or no is enough to start with.
 - id: OBS_RP_006
   question: What kinds of dealings does the party have with related parties?
   answer: choice
-  options: [sales, purchases, loans_given, loans_received, guarantees_given, fees_and_shared_costs, leases, asset_transfers]
+  options: [sales, purchases, loans_given, loans_received, guarantees_given, fees_and_shared_costs, leases, asset_transfers,
+    guarantees_and_security_received, pay_and_advances_to_insiders]
   many: true
   why: 'Each kind takes value out in its own way: sales below the market price, purchases above it, loans that are not repaid,
-    guarantees that are called, fees for nothing. Loans given open the checks on what is owed to the party.'
+    guarantees that are called, fees for nothing, pay and advances beyond what the work is worth. Guarantees and security
+    received take nothing out, but they show how far the party''s borrowing rests on its owners'' own means. Loans given
+    open the checks on what is owed to the party.'
   due_by: concept
   when:
   - {check: OBS_RP_001, is: true}
@@ -42,14 +45,16 @@ checks:
   - is: loans_given
     link: [lends_to]
     end: from
-  - is: guarantees_given
-    link: [guarantees]
-    end: from
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record, board_minutes]
+    supporting: [management_accounts, company_record, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
+  note: 'Choose every kind that applies. Choose guarantees_and_security_received where a shareholder, a director or a related
+    company guarantees the party''s debt or pledges its own assets for it, and record who gave what as a fact about the
+    link that holds that debt. Choose pay_and_advances_to_insiders for salaries, bonuses and advances to shareholders, directors,
+    managers and their families. A loan to a related company is loans_given. A guarantee that the party has given for a
+    related party''s debt needs no link: record for whom and how much in a fact. Its size is asked under OBS_DEBT_009.'
   leads_to:
   - {indicator: CAS_DEBT_001, is: guarantees_given, reason: A guarantee for a related party is a debt that the balance sheet
       may not show}
@@ -67,7 +72,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [call, officer_note]
   ask: What is the total value of all your dealings with related parties in the last financial year, as a percentage of
     your revenue? The notes to your audited accounts should give the breakdown.
@@ -84,7 +89,7 @@ checks:
   look_in: [03.01.a, 10.03.a]
   evidence:
     best: [consultant_report, audited_annual_report]
-    supporting: [company_record, management_accounts, board_minutes]
+    supporting: [company_record, management_accounts, board_minutes, annual_report, prospectus]
     stated: [call, officer_note, correspondence]
   ask: How are prices set for what you buy from and sell to related companies? Is there a transfer-pricing study, or can
     you show us what unrelated customers and suppliers pay for the same thing?
@@ -121,7 +126,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [call, officer_note]
   ask: Please add up all loans, advances and receivables owed to you by related parties (group companies, associates, shareholders,
     directors). What is the total, and what is your equity?
@@ -141,7 +146,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record, bank_statement]
+    supporting: [management_accounts, company_record, bank_statement, annual_report, prospectus]
     stated: [call, officer_note]
   ask: What was the highest amount that related parties owed you at any time in the last financial year, and what did they
     owe you at the year-end? Monthly balances would answer this.
@@ -161,7 +166,7 @@ checks:
   look_in: [03.01.a, 06.01.a]
   evidence:
     best: [audited_annual_report, facility_agreement]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [call, officer_note]
   ask: Can you demand repayment of your loans to group companies, for example at 30 days' notice? If you did, would the
     company that borrowed have the cash to pay?
@@ -178,7 +183,7 @@ checks:
   look_in: [03.01.a, 03.01.e, 02.04.a]
   evidence:
     best: [audited_annual_report]
-    supporting: [audit_management_letter, shareholder_register, organizational_chart]
+    supporting: [audit_management_letter, shareholder_register, organizational_chart, annual_report, prospectus]
     stated: [call, officer_note]
   note: This check does not hang on OBS_RP_001, so that the topic cannot close on one answer. Compare the note with the
     shareholder register, the organisation chart, the list of directors and the bank statements. Where the party said it
@@ -194,7 +199,7 @@ checks:
   look_in: [03.01.a, 02.02.i, 02.01.c]
   evidence:
     best: [audited_annual_report, scheme_of_arrangement, registry_extract]
-    supporting: [board_minutes, organizational_chart, management_presentation]
+    supporting: [board_minutes, organizational_chart, management_presentation, annual_report, prospectus]
     stated: [call, officer_note]
   ask: In the last two years, has any plant, division or subsidiary been moved into or out of the company, for example through
     a scheme of arrangement, a carve-out, a demerger or a merger? If so, which periods are affected?

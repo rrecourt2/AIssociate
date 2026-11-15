@@ -159,7 +159,7 @@ checks:
   look_in: [10.01.a, 03.01.a, 03.01.i]
   evidence:
     best: [company_certificate, audited_annual_report]
-    supporting: [interim_financial_statements, management_accounts]
+    supporting: [interim_financial_statements, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   if_unknown: A certificate that has not arrived is itself a breach of the information covenant. OBS_COND_007 records it.
   note: Work the ratios out again from the accounts that came with the certificate, using the definitions in the facility

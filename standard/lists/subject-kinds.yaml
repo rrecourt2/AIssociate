@@ -2,11 +2,19 @@ subject_kinds:
 - id: party
   prefix: P
   title: Party
-  description: A company, a person or a public body.
+  description: A company or a public body.
+- id: person
+  prefix: N
+  title: Person
+  description: A natural person. A person is asked only what fits a person.
+  asked_only: [CAS_SANCTIONS_001, CAS_PEP_001, CAS_KYC_AML_001, CAS_SOURCE_OF_FUNDS_001, CAS_LITIGATION_001,
+    CAS_GUARANTOR_CAPACITY_001]
 - id: facility
   prefix: L
   title: Facility
-  description: A loan, a guarantee facility or another financing, proposed or existing.
+  description: A loan under review, a guarantee facility or another financing that the lender considers. Debt that already
+    exists is not a facility. It is a `lends_to` link.
+  shown_as: the loan under review
 - id: contract
   prefix: C
   title: Contract
@@ -22,4 +30,5 @@ subject_kinds:
 - id: group
   prefix: G
   title: Group
-  description: Parties that report or are treated together, such as a consolidated group.
+  description: Parties that report or are treated together, such as a consolidated group. A group is the perimeter
+    whose business and money are examined. It is not asked what is asked of a legal entity.

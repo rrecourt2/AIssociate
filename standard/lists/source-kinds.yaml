@@ -1,8 +1,15 @@
 source_kinds:
 - id: audited_annual_report
-  title: Audited annual report
-  description: Audited annual financial statements with independent audit opinion
+  title: Audited financial statements
+  description: Audited annual financial statements with the independent auditor's opinion, on their own or bound
+    into an annual report
   slot: 03.01.a
+- id: annual_report
+  title: Annual report
+  description: 'The company''s annual report: its own account of its business, its year and its governance. It is
+    not itself audited, even where it sums up audited figures. A report that holds the full audited statements with
+    the auditor''s opinion is filed as audited financial statements.'
+  slot: 01.01.b
 - id: management_accounts
   title: Management accounts
   description: Unaudited monthly or quarterly management accounts
@@ -86,6 +93,10 @@ source_kinds:
 - id: business_plan
   title: Business plan
   description: Detailed business plan or strategic plan
+  slot: 01.01.b
+- id: prospectus
+  title: Prospectus
+  description: A prospectus or another offering document for shares, bonds or other securities.
   slot: 01.01.b
 - id: investment_plan
   title: Investment plan
@@ -256,7 +267,7 @@ source_kinds:
   slot: 10.02.a
 - id: other
   title: Other
-  description: Document that does not fit any defined type — requires human review
+  description: A document that fits no other kind. A person has to look at it.
   slot: 10.03.a
 - id: call
   title: Call or meeting
@@ -269,7 +280,10 @@ source_kinds:
   description: 'An internal paper of the lender: a credit memo, a committee paper or an analysis.'
 - id: public_source
   title: Public source
-  description: 'Public information: a company website, a news article, a registry website or market data.'
+  description: 'Public information other than a press article: a company website, a registry website or market data.'
+- id: press_article
+  title: Press article
+  description: An article in a newspaper, a magazine or a news service.
 - id: registry_extract
   title: Registry extract
   description: Extract from the company registry, or a certificate of good standing.

@@ -27,7 +27,7 @@ checks:
   look_in: [07.01.a, 03.01.a]
   evidence:
     best: [regulatory_document, audited_annual_report]
-    supporting: [management_accounts, interim_financial_statements, credit_rating_report]
+    supporting: [management_accounts, interim_financial_statements, credit_rating_report, annual_report, prospectus]
     stated: [management_presentation, call, officer_note]
   ask: What was your capital adequacy ratio at your latest reporting date? Your latest prudential return would answer this.
   note: Say which date the figure is for, and whether it is for the institution alone or for its group. Record the tier
@@ -49,7 +49,7 @@ checks:
   look_in: [07.01.a, 03.01.a]
   evidence:
     best: [regulatory_document, audited_annual_report]
-    supporting: [management_accounts, credit_rating_report]
+    supporting: [management_accounts, credit_rating_report, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: What minimum capital ratio does your regulator require of you, with all buffers? What was your ratio at each quarter-end
     of the last year?
@@ -65,7 +65,7 @@ checks:
   look_in: [03.01.a, 07.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report, regulatory_document]
-    supporting: [management_accounts, company_record, credit_rating_report, internal_memo]
+    supporting: [management_accounts, company_record, credit_rating_report, internal_memo, annual_report, prospectus]
     stated: [call, officer_note]
   note: Take the non-performing loans less the provisions held against them, and take that amount off both capital and risk-weighted
     assets. Collateral is left out on purpose, because it is realised late and for less than its book value. Where restructured
@@ -86,7 +86,7 @@ checks:
   look_in: [03.01.a, 02.02.c]
   evidence:
     best: [audited_annual_report]
-    supporting: [board_minutes, shareholder_resolution, corporate_governance_policy]
+    supporting: [board_minutes, shareholder_resolution, corporate_governance_policy, annual_report, prospectus]
     stated: [call, officer_note]
   ask: What dividends have you paid in each of the last three years? Do you have a rule that ties dividends to your capital
     ratio?
@@ -120,7 +120,7 @@ checks:
   look_in: [03.01.a, 04.03.a, 07.01.a]
   evidence:
     best: [audited_annual_report, facility_agreement, regulatory_document]
-    supporting: [debt_schedule, management_accounts]
+    supporting: [debt_schedule, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Does any subordinated debt count towards your regulatory capital? If so, from whom, how much, and when does each
     loan fall due?

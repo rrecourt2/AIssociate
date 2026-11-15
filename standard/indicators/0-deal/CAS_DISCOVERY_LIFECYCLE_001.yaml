@@ -25,7 +25,7 @@ checks:
   look_in: [03.01.a, 01.01.b, 03.01.b]
   evidence:
     best: [audited_annual_report, technical_feasibility]
-    supporting: [management_accounts, financial_projections]
+    supporting: [management_accounts, financial_projections, annual_report, prospectus]
     stated: [business_plan, executive_summary, call, officer_note]
   ask: Is the business already operating? If it is, is it running steadily, in the middle of a large expansion or change,
     or in difficulty?
@@ -47,7 +47,7 @@ checks:
   look_in: [01.02.a, 03.02.b, 05.01.a]
   evidence:
     best: [technical_feasibility, epc_contract, audited_annual_report]
-    supporting: [investment_plan, financial_model, board_minutes]
+    supporting: [investment_plan, financial_model, board_minutes, annual_report, prospectus]
     stated: [business_plan, correspondence, call, officer_note]
   ask: Do you plan to build, expand or replace on a scale that needs outside money, or that the growth in your plan depends
     on?
@@ -71,7 +71,7 @@ checks:
   look_in: [03.02.b, 03.02.a, 03.01.a]
   evidence:
     best: [audited_annual_report]
-    supporting: [financial_model, financial_projections]
+    supporting: [financial_model, financial_projections, annual_report, prospectus]
     stated: [business_plan, management_presentation, call, officer_note]
   ask: Could the business repay the loan from what it earns today, or only once the new capacity is in use?
   note: Compare the first projected year with the last audited year. Revenue, capacity or margin that the model shows and
@@ -95,7 +95,7 @@ checks:
   look_in: [03.01.a, 03.01.b, 10.03.a]
   evidence:
     best: [audited_annual_report, credit_rating_report, tax_clearance]
-    supporting: [management_accounts, company_record, bank_statement]
+    supporting: [management_accounts, company_record, bank_statement, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Is the business making a profit this year? Are all suppliers, lenders, salaries and taxes being paid on time at the
     moment?

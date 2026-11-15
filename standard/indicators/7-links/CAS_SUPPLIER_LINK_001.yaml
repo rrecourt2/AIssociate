@@ -20,7 +20,7 @@ checks:
   look_in: [06.04.a, 03.01.b]
   evidence:
     best: [supply_agreement, audited_annual_report]
-    supporting: [company_record, management_accounts]
+    supporting: [company_record, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: How much of this input do you buy from this supplier, as a share of all you need?
   note: Take the last full financial year, by volume, or by value where volume is not recorded. Name the input in the reason.
@@ -50,7 +50,7 @@ checks:
   look_in: [10.03.a, 02.06.d]
   evidence:
     best: [credit_rating_report, audited_annual_report, adverse_media_screen]
-    supporting: [company_record, public_source]
+    supporting: [company_record, public_source, press_article, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: Check the buyer's delivery records, the supplier's accounts or a credit report on it, the insolvency register and
     the press. If the search finds nothing, record what was searched, where and when.
@@ -81,7 +81,7 @@ checks:
   look_in: [03.01.a, 03.01.b, 06.04.a]
   evidence:
     best: [audited_annual_report, supply_agreement]
-    supporting: [management_accounts, company_record, bank_statement]
+    supporting: [management_accounts, company_record, bank_statement, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Do you pay this supplier before it delivers? How much is outstanding with it at the highest point in the year, and
     is any of it covered by a bank guarantee?

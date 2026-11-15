@@ -28,7 +28,7 @@ checks:
   look_in: [04.03.a, 03.01.a]
   evidence:
     best: [audited_annual_report, debt_schedule]
-    supporting: [management_accounts, facility_agreement]
+    supporting: [management_accounts, facility_agreement, annual_report, prospectus]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Do you owe money to any bank, lender, leasing company or shareholder at the moment? A yes or no is enough to start
     with.
@@ -47,7 +47,7 @@ checks:
   look_in: [04.03.a, 03.01.a]
   evidence:
     best: [audited_annual_report, debt_schedule]
-    supporting: [management_accounts, facility_agreement]
+    supporting: [management_accounts, facility_agreement, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: How much do you owe in total today, to all lenders together? Please include leases and loans from shareholders.
   note: Take the figure at its highest point in the year where borrowing is seasonal, and say which date it is for. Say
@@ -64,7 +64,7 @@ checks:
   look_in: [03.01.a, 04.03.a, 10.02.a]
   evidence:
     best: [audited_annual_report, facility_agreement]
-    supporting: [debt_schedule, management_accounts, board_minutes]
+    supporting: [debt_schedule, management_accounts, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: In the last three years, was there any moment when a payment to a lender was late, a covenant was not met, or you
     asked a lender for more time?
@@ -78,23 +78,28 @@ checks:
   look_in: [03.01.a, 02.01.c]
   evidence:
     best: [audited_annual_report, registry_extract]
-    supporting: [management_accounts, bank_statement, credit_rating_report]
+    supporting: [management_accounts, bank_statement, credit_rating_report, annual_report, prospectus]
     stated: [call, officer_note]
   note: This check does not hang on OBS_DEBT_001, so that the topic cannot close on one answer. If the search finds nothing,
     record what was searched, where and when.
 - id: OBS_DEBT_009
-  question: Has the party guaranteed the debt of someone else, or given security for it?
+  question: Has the party guaranteed the debt of someone else, or given security for it, for amounts that together come
+    to more than about a tenth of the party's own debt?
   answer: yes_no
-  assumption: The party answers only for its own debt
+  assumption: The party answers for little debt other than its own and that of the group that repayment relies on
   disproved_by: 'yes'
   applies_to: [borrower, repayment_source]
   look_in: [03.01.a, 04.02.a]
   evidence:
     best: [audited_annual_report, guarantee_agreement]
-    supporting: [management_accounts, board_minutes, registry_extract]
+    supporting: [management_accounts, board_minutes, registry_extract, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Have you signed a guarantee for anyone else's borrowing, or pledged any of your assets for it? For example for a
-    sister company, a shareholder or a supplier.
+    sister company, a shareholder or a supplier. For whom, and for how much?
+  note: 'A guarantee or security for the debt of a member of the group that repayment relies on does not count: that debt
+    is already counted as the group''s own. A tenth is a guide to what matters. What counts is whether the party could pay
+    if the guarantee were called and still service its own debt. Below the guide the answer is no: record for whom, how
+    much and what share of the party''s own debt in the reason. Count the full amounts guaranteed, not what is drawn today.'
 - id: OBS_DEBT_010
   question: Is the party's debt that falls due within twelve months larger than its stock and trade receivables together,
     so that part of it finances fixed assets, losses or loans to others?
@@ -108,7 +113,7 @@ checks:
   look_in: [03.01.a, 04.03.a]
   evidence:
     best: [audited_annual_report, debt_schedule]
-    supporting: [management_accounts, facility_agreement]
+    supporting: [management_accounts, facility_agreement, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: How much of your debt falls due within the next twelve months, and what does it finance?
   note: Count overdrafts, lines that come up for renewal within the year and the part of long-term loans that falls due

@@ -1,19 +1,25 @@
-"""The wiki: pages the assistant writes, with the parts the tool fills in.
+"""The wiki: pages the assistant writes, with the parts the tool fills in, and the same pages as one file for a browser.
 
 A page names what it is about at the top. The tool owns the text between its two pairs of
 markers, "At a glance" and "Sources", and never touches the rest.
 """
+import json
 import re
 
 from . import files
 from .assess import VERDICTS, claims, view
-from .store import DEAL, TABLES
+from .store import DEAL, TABLES, table_of
 
 SHELVES = ("deal", "parties", "people", "topics", "terms", "work")
+BRIEF = SHELVES[2:]  # a page on one of these shelves gets one line that names what it is about
+PAGE_FOR = {"borrower", "repayment_source", "guarantor", "sponsor", "financed_project"}  # the roles that get a page
 BEGIN, END = "<!-- tool:begin {} -->", "<!-- tool:end -->"
 PART = BEGIN + "((?!<!-- tool:begin).)*?" + END  # a begin marker, its lines and its own end marker
 ID = re.compile(r"\b[A-Z]-\d{3,}\b")
 NUMBER = re.compile(r"\d[\d,.]*\d|\d")
+STALE = ("outdated", "disputed", "replaced")  # the states of a record that something newer took the place of
+# One of those words and a colon, at the start of a paragraph or of a sentence. What follows it may cite such a record.
+MARKED = re.compile(r"(?:^|[.!?|]\s+)[*_]*(?:" + "|".join(STALE) + r")[*_]*:", re.I)
 SKELETON = """---
 title: {title}
 about: {about}
@@ -68,12 +74,34 @@ def fill(text, name, lines):
     return text.rstrip() + "\n\n" + body + "\n"
 
 
+def blocks(text):
+    """The paragraphs, list items and table rows of a text, each as one line without its list marker. The head row of a
+    table is left out: it names the columns."""
+    found = [""]
+    for line in text.splitlines():
+        start = re.match(r"\s*(?:[-*+>]\s+|\d+[.)]\s+|\|)", line)
+        if re.match(r"\s*\|?\s*:?-+:?\s*\|", line):  # the line of dashes under a head row
+            found[-1] = ""
+        elif start or not line.strip():
+            found.append(line[start.end():].strip() if start else "")
+        else:
+            found[-1] = (found[-1] + " " + line.strip()).strip()
+    return [block for block in found if block]
+
+
 def lead(text):
-    """The first sentence under "What it is", or a note that the page is not written yet."""
-    found = re.search(r"^## What it is[ \t]*\n(.*?)(?=^## |\Z)", text, flags=re.S | re.M)
-    words = " ".join(found.group(1).split()) if found else ""
+    """The first sentence the assistant wrote on a page, or a note that the page is not written yet."""
+    words = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", next(iter(blocks(own_text(text))), ""))  # a link becomes its words
     words = re.sub(r"\s*\[[^\]]*\]", "", words)  # leave the citations out
-    return re.split(r"(?<=[.!?])\s", words)[0] if words else "*not written yet*"
+    for stop in re.finditer(r"[.!?](?=\s)", words):
+        if not re.search(r"\b[A-Z][a-z]{0,3}$|\.[a-z]$", words[:stop.start()]):  # not an abbreviation: Co., No., e.g.
+            return words[:stop.end()]
+    return words or "*not written yet*"
+
+
+def encoded(path):
+    """A path as the target of a Markdown link."""
+    return re.sub(r"[ ()#?%]", lambda found: f"%{ord(found.group()):02X}", path)
 
 
 def name_of(rid, memory):
@@ -140,70 +168,114 @@ def claim_lines(found, memory, std):
     return lines
 
 
-def glance(rid, memory, std, rows, held):
-    """What the memory holds on one subject, one indicator or the deal."""
+def linked(rid, memory, where, here):
+    """The name of the deal, a subject or a link. Each name is a relative link to its page, where it has another page."""
+    if rid in memory["links"]:
+        link = memory["links"][rid]
+        return (f"{linked(link['from'], memory, where, here)} {link['type'].replace('_', ' ')} "
+                f"{linked(link['to'], memory, where, here)}")
+    name = name_of(rid, memory)
+    return f"[{name}]({'../' * here.count('/')}{encoded(where[rid])})" if where.get(rid, here) != here else name
+
+
+def described(sid, memory, std, held):
+    """The kind of a subject and the roles it holds."""
+    kind = next(kind for kind in std["subject_kinds"] if kind["id"] == memory["subjects"][sid]["kind"])
+    return ", ".join([kind["id"], *filter(None, [kind.get("shown_as")]), *sorted(held.get(sid, ()))]).replace("_", " ")
+
+
+def challenges(found, std, name):
+    """One line per claim that is challenged or contested: the tests against it, its mitigants and any agreed action."""
     lines = []
-    if rid == DEAL:
-        deal = memory["deal"]
-        lines.append(f"- **Stage:** {std['stage_titles'][deal['stage']]}. **Standard:** {deal['standard']}. "
-                     f"**Revision:** {memory['log'][-1]['n']}.")
-        lines += [f"- {sid} {subject.get('name') or 'not yet named'}: {subject['kind']}"
-                  + "".join(f", {role}" for role in sorted(held.get(sid, ()))) for sid, subject in memory["subjects"].items()]
-    elif rid in std["by_id"]:
-        own = [row for row in rows if row["indicator"] == rid and row["state"] != "not relevant"]
-        mine = [claim for claim in claims(rows, memory, std) if claim["indicator"] == rid]
-        return [f"**{std['by_id'][rid]['title']}.** The claim: {std['by_id'][rid]['claim']}", "",
-                *claim_lines(mine, memory, std), "", *check_lines(own, memory, std)]
-    elif rid in memory["subjects"]:
-        subject = memory["subjects"][rid]
-        lines.append(f"- **{rid}:** {subject['kind']}" + "".join(f", {role}" for role in sorted(held.get(rid, ()))))
-    else:
-        return [f"- {rid}: not a subject, an indicator or the deal"]
-    for lid, link in memory["links"].items():
-        if rid == DEAL or rid in (link["from"], link["to"]):
-            why = f". {link['why']}" if link.get("why") else ""
-            lines.append(f"- {lid}: {name_of(lid, memory)} ({link['state']}){why}")
-    about = [(fid, fact) for fid, fact in memory["facts"].items() if fact["about"] == rid and fact["state"] == "current"]
-    latest = {}
-    for fid, fact in about:
-        if fact.get("label") and str(fact.get("as_of", "")) >= str(latest.get(fact["label"], (None, {}))[1].get("as_of", "")):
-            latest[fact["label"]] = (fid, fact)
-    if latest:
-        lines += ["", "| Key value | Value | As of | Fact |", "|---|---|---|---|"]
-        lines += [f"| {label} | {fact.get('value', '')} {fact.get('unit', '')}".rstrip() + f" | {fact.get('as_of', '')} | {fid} |"
-                  for label, (fid, fact) in latest.items()]
-    mine = [row for row in rows if row["for"] == rid]
-    counts = {}
-    for row in mine:
-        for name in [row["state"], *row["flags"]]:
-            counts[name] = counts.get(name, 0) + 1
-    if counts:
-        lines += ["", "- **Checks:** " + ", ".join(f"{count} {name}" for name, count in counts.items())]
-    found = claims(rows, memory, std)
-    if rid == DEAL:
-        lines += ["", "| Pillar | " + " | ".join(name.capitalize() for name in VERDICTS) + " |", "|---|" + "---|" * len(VERDICTS)]
-        lines += [f"| {pillar['title']} | " + " | ".join(map(str, view(found, std)[pillar["id"]])) + " |"
-                  for pillar in std["pillars"]]
-        lines.append("")
-    near = {rid} | {lid for lid, link in memory["links"].items() if rid in (link["from"], link["to"])}
-    lines += claim_lines([claim for claim in found if rid == DEAL or claim["for"] in near], memory, std)
-    lines += [f"- **Looked for and not found:** {fact['statement']} ({fid})" for fid, fact in about if fact.get("nothing_found")]
-    lines += [f"- **Open question** {qid} to {q['asked_of']}: {q['text']}" for qid, q in memory["questions"].items()
-              if q["state"] == "open" and q.get("about") == rid]
-    lines += [f"- **Decision** {did}: {d['decision']} Reason: {d['reason']}" for did, d in memory["decisions"].items()
-              if d.get("about") == rid]
+    for claim in found:
+        about = f"{std['by_id'][claim['indicator']]['title']} ({name(claim['for'])})"
+        if claim["stands"] == "challenged":
+            states = sorted(claim["mitigants"].values())
+            tested = "; ".join(f"{std['checks'][cid]['assumption']} ({cid})" for cid in claim["against"])
+            parts = [f"The answers go against: {tested}"]
+            if states:
+                parts.append("Mitigants: " + ", ".join(f"{states.count(state)} {state}" for state in dict.fromkeys(states)))
+            if claim["actions"]:
+                parts.append(f"Agreed action: {', '.join(claim['actions'])}")
+            lines.append(f"- **Challenged:** {about}. {'. '.join(parts)}.")
+        elif claim["stands"] == "contested":
+            lines.append(f"- **Contested:** {about}. Facts disagree on {', '.join(claim['contested'])}.")
     return lines
 
 
-def cited_sources(text, memory):
-    """The sources a page cites, directly or through the facts it cites."""
+def about_line(ids, found, memory, std, name):
+    """One line that names what a page is about. An indicator comes with where its claim stands, for each subject."""
+    named = []
+    for rid in ids:
+        if rid in std["by_id"]:
+            stands = ", ".join(f"{claim['stands']} for {name(claim['for'])}" for claim in found if claim["indicator"] == rid)
+            named.append(f"{std['by_id'][rid]['title']} ({rid}): {stands or 'not asked yet'}")
+        else:
+            known = rid == DEAL or table_of(memory, rid) in ("subjects", "links")
+            named.append(name(rid) if known else f"{rid}, which the record does not hold")
+    return [f"- **About:** {'; '.join(named)}."] if named else []
+
+
+def glance(ids, memory, std, rows, held, where, here):
+    """What the record holds on what a page is about, kept short. Names link to their pages. The page of the deal gets
+    the structure and the claims, the page of a subject its links, key values, questions and decisions, any other one line."""
+    def name(rid):
+        return linked(rid, memory, where, here)
+
+    found, lines = claims(rows, memory, std), []
+    if here.split("/")[0] in BRIEF or not all(rid == DEAL or rid in memory["subjects"] for rid in ids):
+        return about_line(ids, found, memory, std, name)
+    for rid in ids:
+        near = [(lid, link) for lid, link in memory["links"].items() if rid in (DEAL, link["from"], link["to"])]
+        mine = [claim for claim in found if rid == DEAL or claim["for"] in (rid, *(lid for lid, _ in near))]
+        if rid == DEAL:
+            deal = memory["deal"]
+            lines.append(f"- **Stage:** {std['stage_titles'][deal['stage']]}. **Standard:** {deal['standard']}. "
+                         f"**Revision:** {memory['log'][-1]['n']}.")
+            for sid, subject in memory["subjects"].items():  # the structure: each subject once, with the links that start at it
+                does = "; ".join(f"{link['type'].replace('_', ' ')} {name_of(link['to'], memory)} ({lid}"
+                                 + ("" if link["state"] == "confirmed" else f", {link['state']}") + ")"
+                                 for lid, link in near if link["from"] == sid)
+                lines.append(f"- {sid} {name(sid) if subject.get('name') else 'not yet named'}: "
+                             f"{described(sid, memory, std, held)}" + (f". {does[0].upper()}{does[1:]}." if does else ""))
+        else:
+            lines.append(f"- **{rid}:** {described(rid, memory, std, held)}")
+            lines += [f"- {lid}: {name(lid)} ({link['state']})" for lid, link in near]
+        latest = {}
+        for fid, fact in memory["facts"].items():
+            if (rid != DEAL and fact["about"] == rid and fact["state"] == "current" and fact.get("label")
+                    and str(fact.get("as_of", "")) >= str(latest.get(fact["label"], (None, {}))[1].get("as_of", ""))):
+                latest[fact["label"]] = (fid, fact)
+        if latest:
+            lines += ["", "| Key value | Value | As of | Fact |", "|---|---|---|---|"]
+            lines += [f"| {label} | {fact.get('value', '')} {fact.get('unit', '')}".rstrip()
+                      + f" | {fact.get('as_of', '')} | {fid} |" for label, (fid, fact) in latest.items()]
+        if rid == DEAL:
+            lines += ["", "| Pillar | " + " | ".join(verdict.capitalize() for verdict in VERDICTS) + " |",
+                      "|---|" + "---|" * len(VERDICTS)]
+            lines += [f"| {pillar['title']} | " + " | ".join(map(str, view(found, std)[pillar["id"]])) + " |"
+                      for pillar in std["pillars"]]
+        lines += ["", *challenges(mine, std, name)]
+        if rid != DEAL:
+            lines += [f"- **Open question** {qid} to {q['asked_of']}: {q['text']}" for qid, q in memory["questions"].items()
+                      if q["state"] == "open" and q.get("about") == rid]
+            lines += [f"- **Decision** {did}: {d['decision']}" for did, d in memory["decisions"].items() if d.get("about") == rid]
+        lines.append("")
+    while lines and not lines[-1]:
+        lines.pop()
+    return lines
+
+
+def cited_sources(text, memory, here):
+    """The sources a page cites, directly or through the facts it cites, each with a link from the page to its document."""
     lines, seen = [], set()
     for rid in ID.findall(own_text(text)):
         sid = memory["facts"][rid]["source"] if rid in memory["facts"] else rid
         if sid in memory["sources"] and sid not in seen:
             seen.add(sid)
             source = memory["sources"][sid]
-            where = f", `{source['where']}`" if source.get("where") else ""
+            up = "../" * (here.count("/") + files.WIKI.count("/") + 1)  # from the page to the deal folder
+            where = f", [{source['where']}]({up}{encoded(source['where'])})" if source.get("where") else ""
             lines.append(f"- {sid} {source['title']}: {source['kind']}, {source.get('date', 'no date')}{where}")
     return lines
 
@@ -213,40 +285,85 @@ def all_pages(deal):
     return {path: files.read(deal, path) for path in paths}
 
 
+def about(text):
+    """The IDs a page says it is about."""
+    return [rid.strip() for rid in front(text).get("about", "").split(",") if rid.strip()]
+
+
+def documents(name, listed, std):
+    """The index of the client folder: each document under its folder and sub-folder of the data room, with a link from
+    the client folder, then the slots that are always expected and still empty."""
+    kinds = {kind["id"]: kind["title"] for kind in std["source_kinds"]}
+    lines = [f"# {name}: documents", "", "Every document the client shared is in this folder. They are listed here by the "
+             "folders of the data room.", ""]
+    missing = []
+    for folder in std["dataroom"]["folders"]:
+        held = []
+        for sub in folder["sub_folders"]:
+            docs = [f"- [{doc['title']}]({encoded(doc['path'][len(files.CLIENT) + 1:])}): "
+                    + ", ".join(filter(None, [kinds.get(doc["kind"], doc["kind"]), doc.get("party"), doc.get("period")]))
+                    + f". Slot {slot['id']} {slot['title']}."
+                    for slot in sub["slots"] for doc in listed if doc["slot"] == slot["id"]]
+            if docs:
+                held += [f"### {sub['id']} {sub['title']}", "", *docs, ""]
+            missing += [f"- {slot['id']} {slot['title']}" for slot in sub["slots"]
+                        if slot["expected"] == "always" and not any(doc["slot"] == slot["id"] for doc in listed)]
+        if held:
+            lines += [f"## {folder['id']} {folder['title']}", "", *held]
+    return "\n".join([*lines, "## Always expected and not here yet", "", *(missing or ["*nothing*"]), ""])
+
+
 def refresh(deal, memory, std, rows, held):
-    """Create the pages the graph calls for, fill in the tool's parts of every page, and write the contents page."""
-    pages = all_pages(deal)
-    owned = {front(text).get("about", "").split(",")[0].strip() for text in pages.values()}
-    created = []
-    for rid in [DEAL, *memory["subjects"]]:
-        if rid not in owned:
+    """Create the pages the structure calls for, fill in the tool's parts of every page, and write the contents page and
+    the browser view. Returns the pages it created, the other pages it changed and the number it left as they were."""
+    pages, cut = all_pages(deal), len(files.WIKI) + 1
+    where = {}  # the page of the deal and of each subject that has one, as a path from the wiki folder
+    for path, text in sorted(pages.items()):
+        for rid in about(text)[:1]:
+            where.setdefault(rid, path[cut:])
+    created, changed = [], []
+    wanted = [sid for sid, subject in memory["subjects"].items() if subject.get("name") and held.get(sid, set()) & PAGE_FOR]
+    for rid in [DEAL, *wanted]:
+        if rid not in where:
             kind = "deal" if rid == DEAL else memory["subjects"][rid]["kind"]
-            shelf = "parties" if kind in ("party", "group") else "deal"
-            name = memory["deal"]["name"] if rid == DEAL else memory["subjects"][rid].get("name") or rid
+            shelf = "parties" if kind in ("party", "group", "person") else "deal"
+            name = memory["deal"]["name"] if rid == DEAL else memory["subjects"][rid]["name"]
             slug = "deal" if rid == DEAL else re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-") or rid.lower()
             path = f"{files.WIKI}/{shelf}/{slug}.md"
             if path in pages:  # another subject has the same name
                 path = f"{files.WIKI}/{shelf}/{slug}-{rid.lower()}.md"
-            pages[path] = SKELETON.format(title=name, about=rid)
+            pages[path], where[rid] = SKELETON.format(title=name, about=rid), path[cut:]
             created.append(path)
     contents = {shelf: [] for shelf in SHELVES}
     for path, text in sorted(pages.items()):
-        ids = [rid.strip() for rid in front(text).get("about", "").split(",") if rid.strip()]
-        lines = []
-        for rid in ids:
-            lines += glance(rid, memory, std, rows, held) + [""]
-        new = fill(fill(text, "glance", lines[:-1]), "sources", cited_sources(text, memory))
+        new = fill(text, "glance", glance(about(text), memory, std, rows, held, where, path[cut:]))
+        new = fill(new, "sources", cited_sources(text, memory, path[cut:]))
         if new != text or path in created:
             files.write(deal, path, new)
-        shelf = path[len(files.WIKI) + 1:].split("/")[0]
-        title = front(text).get("title") or path
-        words = len(own_text(text).split())
-        contents.setdefault(shelf, []).append(f"- [{title}]({path[len(files.WIKI) + 1:]}): {lead(text)} ({words} words)")
+            if path not in created:
+                changed.append(path)
+        pages[path], title = new, front(text).get("title") or path[cut:]
+        contents.setdefault(path[cut:].split("/")[0], []).append(
+            f"- [{title}]({encoded(path[cut:])}): {lead(text)} ({len(own_text(text).split())} words)")
     index = [f"# {memory['deal']['name']}: contents", ""]
     for shelf, lines in contents.items():
-        index += [f"## {shelf.capitalize()}", "", *(lines or ["*no pages*"]), ""]
+        if lines:
+            index += [f"## {shelf.capitalize()}", "", *lines, ""]
+    others = [f"- {sid} {subject.get('name') or 'not yet named'}: {described(sid, memory, std, held)}"
+              + (f". {subject['note']}" if subject.get("note") else "")
+              for sid, subject in memory["subjects"].items() if sid not in where]
+    if others:
+        index += ["## Subjects without a page", "", *others, ""]
     files.write(deal, f"{files.WIKI}/index.md", "\n".join(index))
-    return created
+    listed = files.read_json(deal, files.MANIFEST, {"documents": []})["documents"]
+    client = f"../../{files.CLIENT}/index.md"  # the index of the client folder, as a path from the wiki folder
+    texts = {"index.md": "\n".join(index), **{path[cut:]: text for path, text in sorted(pages.items())},
+             client: documents(memory["deal"]["name"], listed, std)}
+    data = {"name": memory["deal"]["name"], "revision": memory["log"][-1]["n"], "shelves": SHELVES, "pages": texts,
+            "documents": client, **{table: memory[table] for table in TABLES}}
+    filled = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")  # so that no text can end the script it sits in
+    files.write(deal, f"{files.WIKI}/wiki.html", files.packaged("wiki.html").replace("{{DATA}}", filled))
+    return created, changed, len(pages) - len(created) - len(changed)
 
 
 def numbers(text):
@@ -260,28 +377,32 @@ def numbers(text):
 
 
 def problems(deal, memory):
-    """What looks wrong on the pages: citations that lead nowhere, replaced facts, and numbers no cited record holds."""
+    """What looks wrong on the pages and in the drafts: citations that lead nowhere, citations of a record that was
+    replaced and is not marked so, and numbers that no record cited in the same paragraph holds."""
     found = []
-    for path, text in sorted(all_pages(deal).items()):
+    drafts = {path: files.read(deal, path) for path in files.listing(deal, files.OUTPUTS) if path.endswith(".md")}
+    for path, text in sorted({**all_pages(deal), **drafts}.items()):
         body = own_text(text)
         cited = list(dict.fromkeys(ID.findall(body)))
-        known = [rid for rid in cited if any(rid in memory[table] for table in TABLES)]
-        found += [f"{path}: cites {rid}, which does not exist" for rid in cited if rid not in known]
-        for rid in known:
-            entry = memory["facts"].get(rid) or memory["sources"].get(rid) or {}
-            if entry.get("state") in ("outdated", "disputed", "replaced"):
-                found.append(f"{path}: cites {rid}, which is {entry['state']}"
-                             + (f" (replaced by {entry['replaced_by']})" if entry.get("replaced_by") else ""))
-        written = " ".join(ID.sub("", body).split())
-        if len(written.split()) > 40 and not known:
+        found += [f"{path}: cites {rid}, which does not exist" for rid in cited if not table_of(memory, rid)]
+        if len(ID.sub("", body).split()) > 40 and not any(table_of(memory, rid) for rid in cited):
             found.append(f"{path}: has text and cites nothing")
-        held = ""
-        for rid in known:
-            entry = memory["facts"].get(rid) or memory["sources"].get(rid) or {}
-            for record in (entry, memory["sources"].get(entry.get("source"), {})):  # a fact, and the source it comes from
-                held += " " + " ".join(str(value) for key, value in record.items() if key not in ("fingerprint", "rev"))
-        loose = sorted(n for n in numbers(written) - numbers(held) if n >= 10 or n != int(n))
-        if loose:
-            shown = ", ".join(f"{n:g}" for n in loose[:8])
-            found.append(f"{path}: {len(loose)} numbers are in no cited fact or source: {shown}")
+        stale = {}
+        for block in blocks(body):
+            marked, held = MARKED.search(block), ""
+            for cite in ID.finditer(block):
+                entry = memory.get(table_of(memory, cite.group()), {}).get(cite.group(), {})
+                if entry.get("state") in STALE and not (marked and cite.start() > marked.start()):
+                    stale[cite.group()] = entry
+                source = memory["sources"].get(entry.get("source"), {})  # of a fact's source the title and the date count,
+                held += " ".join(f" {value}" for key, value in [*entry.items(), *source.items()]  # not its map of the document
+                                 if key not in ("fingerprint", "rev") and (key != "map" or "map" in entry))
+            written = re.sub(r"\]\([^)]*\)|\b[A-Z]+_\w+", " ", ID.sub("", block))  # no IDs of records or checks, no link targets
+            loose = sorted(n for n in numbers(written) - numbers(held) if n >= 10 or n != int(n))
+            if loose:
+                found.append(f"{path}: \"{' '.join(block.split()[:6])} ...\" has {', '.join(f'{n:g}' for n in loose[:8])}, "
+                             f"which no record cited in that paragraph holds")
+        found += [f"{path}: cites {rid}, which is {entry['state']}" + (f" (replaced by {entry['replaced_by']})" if entry.get(
+            "replaced_by") else "") + f". Cite what took its place, or start the sentence with \"{entry['state'].capitalize()}:\""
+            for rid, entry in stale.items()]
     return found

@@ -22,7 +22,7 @@ checks:
   look_in: [06.01.a, 03.01.a, 03.02.b]
   evidence:
     best: [offtake_agreement, audited_annual_report]
-    supporting: [company_record, management_accounts, financial_model]
+    supporting: [company_record, management_accounts, financial_model, annual_report, prospectus]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Does this customer buy about a tenth or more of what you sell, or will it once the project runs?
   note: A tenth is a guide. OBS_OFFTAKER_002 asks for the figure and does not hang on this answer.
@@ -35,7 +35,7 @@ checks:
   look_in: [03.01.a, 03.01.b, 03.02.b]
   evidence:
     best: [audited_annual_report, offtake_agreement]
-    supporting: [company_record, management_accounts, financial_model]
+    supporting: [company_record, management_accounts, financial_model, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: About what percentage of your revenue comes from this customer?
   note: Take the last full financial year. For a business that is not yet selling, take the share of projected revenue in
@@ -71,7 +71,7 @@ checks:
   look_in: [10.03.a, 03.01.a]
   evidence:
     best: [credit_rating_report, audited_annual_report]
-    supporting: [internal_memo, company_record, public_source]
+    supporting: [internal_memo, company_record, public_source, press_article, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Does this customer have a credit rating, or can you share its latest audited accounts or a credit report on it?
   note: investment_grade means a rating of BBB- (or Baa3) or higher. rated_BB means the double-B range just below it. rated_B_or_below
@@ -90,7 +90,7 @@ checks:
   look_in: [03.01.a, 03.01.b, 10.03.a]
   evidence:
     best: [audited_annual_report, credit_rating_report]
-    supporting: [company_record, bank_statement, management_accounts]
+    supporting: [company_record, bank_statement, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Does this customer pay your invoices when they fall due? Please share the ageing list of what it owes you.
   note: This check does not hang on OBS_OFFTAKER_001. Read the seller's ageing list of receivables and its bank statements.

@@ -38,7 +38,7 @@ checks:
   look_in: [08.01.a, 10.03.a]
   evidence:
     best: [legal_opinion, consultant_report]
-    supporting: [internal_memo, public_source]
+    supporting: [internal_memo, public_source, press_article]
     stated: [call, officer_note]
   ask_whom: lender
   note: A law that allows enforcement is not proof that it happens. Record the cases, how long each took and what share

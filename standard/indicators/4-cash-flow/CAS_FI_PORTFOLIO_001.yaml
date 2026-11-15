@@ -27,7 +27,7 @@ checks:
   look_in: [03.01.a, 07.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report, regulatory_document]
-    supporting: [management_accounts, company_record, credit_rating_report]
+    supporting: [management_accounts, company_record, credit_rating_report, annual_report, prospectus]
     stated: [management_presentation, call, officer_note]
   ask: What share of your loan book is non-performing today, and how do you define non-performing? Your latest prudential
     return would answer this.
@@ -45,7 +45,7 @@ checks:
   look_in: [03.01.a, 07.01.a, 02.05.a]
   evidence:
     best: [audited_annual_report, regulatory_document]
-    supporting: [corporate_governance_policy, company_record, audit_management_letter]
+    supporting: [corporate_governance_policy, company_record, audit_management_letter, annual_report, prospectus]
     stated: [call, officer_note]
   ask: After how many days in arrears do you classify a loan as non-performing? Do you then classify the whole loan, or
     only the instalments that are overdue?
@@ -67,7 +67,7 @@ checks:
   look_in: [03.01.a, 07.01.a, 10.03.a]
   evidence:
     best: [audited_annual_report, regulatory_document]
-    supporting: [company_record, management_accounts, audit_management_letter]
+    supporting: [company_record, management_accounts, audit_management_letter, annual_report, prospectus]
     stated: [call, officer_note]
   ask: What share of your loan book has been rescheduled or refinanced because the borrower could not pay as first agreed?
     How do you classify such loans afterwards?
@@ -83,7 +83,7 @@ checks:
   look_in: [03.01.a, 07.01.a, 05.02.a]
   evidence:
     best: [audited_annual_report, regulatory_document]
-    supporting: [management_accounts, company_record, valuation_report, credit_rating_report]
+    supporting: [management_accounts, company_record, valuation_report, credit_rating_report, annual_report, prospectus]
     stated: [call, officer_note]
   ask: What provisions do you hold against your non-performing loans, and what collateral? When was the collateral last
     valued, and by whom?
@@ -102,7 +102,7 @@ checks:
   look_in: [02.05.a, 03.01.a, 03.01.e]
   evidence:
     best: [audited_annual_report, audit_management_letter, regulatory_document]
-    supporting: [corporate_governance_policy, board_minutes, company_record]
+    supporting: [corporate_governance_policy, board_minutes, company_record, annual_report, prospectus]
     stated: [call, officer_note]
   ask: When do you write a loan off, and who decides? Please send the policy and the list of write-offs of the last two
     years.
@@ -121,7 +121,7 @@ checks:
   look_in: [03.01.a, 07.01.a]
   evidence:
     best: [audited_annual_report, regulatory_document]
-    supporting: [public_source, credit_rating_report, management_accounts]
+    supporting: [public_source, press_article, credit_rating_report, management_accounts, annual_report, prospectus]
     stated: [management_presentation, call, officer_note]
   note: Twice is a guide. Take the growth of the market from the central bank's published figures, and say which figures
     were used. Growth by buying another institution or a portfolio is growth all the same.
@@ -133,7 +133,7 @@ checks:
   look_in: [03.01.a, 07.01.a, 10.03.a]
   evidence:
     best: [audited_annual_report, regulatory_document]
-    supporting: [company_record, management_accounts, credit_rating_report]
+    supporting: [company_record, management_accounts, credit_rating_report, annual_report, prospectus]
     stated: [management_presentation, call, officer_note]
   ask: How is your loan book spread over sectors and regions? Which is the largest of each, and what share of the book does
     it hold?
@@ -149,7 +149,7 @@ checks:
   look_in: [07.01.a, 03.01.a, 10.03.a]
   evidence:
     best: [regulatory_document, audited_annual_report]
-    supporting: [company_record, credit_rating_report]
+    supporting: [company_record, credit_rating_report, annual_report, prospectus]
     stated: [call, officer_note]
   ask: Please send the list of your twenty largest exposures, with borrowers that belong together shown as one group, and
     each as a percentage of your capital.
@@ -168,7 +168,7 @@ checks:
   look_in: [03.01.a, 07.01.a, 10.03.a]
   evidence:
     best: [audited_annual_report, regulatory_document]
-    supporting: [company_record, management_accounts, credit_rating_report]
+    supporting: [company_record, management_accounts, credit_rating_report, annual_report, prospectus]
     stated: [call, officer_note]
   ask: What share of your loan book is in foreign currency? How much of that is lent to borrowers who earn that currency,
     such as exporters, and how do you establish it?

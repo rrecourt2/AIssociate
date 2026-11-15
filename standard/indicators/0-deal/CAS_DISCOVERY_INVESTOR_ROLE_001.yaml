@@ -27,6 +27,28 @@ checks:
     supporting: [investment_plan, internal_memo]
     stated: [executive_summary, correspondence, call, officer_note]
   ask: What are you asking us for? How much, in which currency, for how long, and what will the money pay for?
+- id: OBS_REQUEST_003
+  question: 'Does the money pay for a project or an asset that can be named: something that is built, bought or expanded,
+    such as a plant, a production line or a site?'
+  answer: yes_no
+  why: The checks on a project are asked of the project that the loan pays for, and of no other. A yes puts that project
+    or asset into the structure, linked to the facility. A no means that the money goes into the business as a whole.
+  calls_for:
+  - is: true
+    link: [finances]
+  look_in: [01.02.a, 04.01.a, 01.01.a]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [investment_plan, internal_memo]
+    stated: [executive_summary, business_plan, correspondence, call, officer_note]
+  ask: Will the money pay for one thing that you can name, such as a new plant or line, or the purchase of an asset? Or
+    will it go into the business as a whole?
+  note: Record the project or the asset as a subject, and link the facility to it with a link of the kind finances. Where
+    the money pays for several, link each of them. Working capital, a refinancing and general purposes are a no. Other projects
+    of the business are described in facts and on pages. They get no such link and are not checked.
+  leads_to:
+  - {indicator: CAS_FEASIBILITY_001, is: true, reason: 'What the loan pays for is described there, and examined for whether
+      it can be built or bought and run as planned'}
 - id: OBS_INVESTOR_ROLE_001
   question: Where would the lender rank against the others who have put money into the business?
   answer: choice
@@ -55,7 +77,7 @@ checks:
   look_in: [03.01.a, 04.03.a]
   evidence:
     best: [audited_annual_report, facility_agreement]
-    supporting: [debt_schedule, management_accounts, term_sheet]
+    supporting: [debt_schedule, management_accounts, term_sheet, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Does the business already have loans, bonds, leases or shareholder loans? A yes or no is enough to start with.
   leads_to:
@@ -73,7 +95,7 @@ checks:
   look_in: [04.03.a, 03.01.a, 04.02.c]
   evidence:
     best: [audited_annual_report, facility_agreement, intercreditor_agreement]
-    supporting: [debt_schedule, management_accounts, shareholder_register]
+    supporting: [debt_schedule, management_accounts, shareholder_register, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Please list all the financing of the business. For each loan or lease we need the lender, the amount, the security
     and the final repayment date, and we need the equity that has been paid in. A table is ideal.
@@ -117,7 +139,7 @@ checks:
   look_in: [01.02.a, 04.01.a, 03.01.a]
   evidence:
     best: [facility_agreement, audited_annual_report]
-    supporting: [investment_plan, term_sheet, debt_schedule]
+    supporting: [investment_plan, term_sheet, debt_schedule, annual_report, prospectus]
     stated: [executive_summary, correspondence, call, officer_note]
   ask: Will any of the money be used to repay an existing loan or a shareholder loan, to settle an amount owed to a related
     company, to pay a dividend or to buy shares?
@@ -164,7 +186,7 @@ checks:
   look_in: [03.01.a, 04.01.a, 01.02.a]
   evidence:
     best: [audited_annual_report, facility_agreement, jv_agreement]
-    supporting: [investment_plan, financial_model, bank_statement, shareholder_resolution]
+    supporting: [investment_plan, financial_model, bank_statement, shareholder_resolution, annual_report, prospectus]
     stated: [business_plan, correspondence, call, officer_note]
   ask: How much of the cost of the plan do the owners pay themselves, in cash? When is that money paid in, before our loan
     is drawn or alongside it, and where does it come from?
@@ -186,6 +208,6 @@ checks:
   look_in: [03.01.a, 04.03.a, 10.02.a]
   evidence:
     best: [audited_annual_report, correspondence]
-    supporting: [debt_schedule, bank_statement, management_accounts]
+    supporting: [debt_schedule, bank_statement, management_accounts, annual_report, prospectus]
     stated: [call, officer_note]
   note: A letter counts as best evidence only if it comes from the lender that is repaid. Twelve months is a guide.

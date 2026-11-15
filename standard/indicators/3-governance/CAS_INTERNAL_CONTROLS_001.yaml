@@ -64,7 +64,7 @@ checks:
   look_in: [03.01.e, 02.02.a, 02.03.a]
   evidence:
     best: [audit_management_letter, audited_annual_report]
-    supporting: [board_minutes, organizational_chart, corporate_governance_policy]
+    supporting: [board_minutes, organizational_chart, corporate_governance_policy, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Do you have an internal audit, in-house or by an outside firm? To whom does it report, and could we see its last
     report?
@@ -77,7 +77,7 @@ checks:
   look_in: [03.01.e, 03.01.a, 02.02.a]
   evidence:
     best: [audit_management_letter, audited_annual_report]
-    supporting: [board_minutes, company_record]
+    supporting: [board_minutes, company_record, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: In the last three years, has there been a fraud, a payment nobody had approved, or a loss of cash or stock you could
     not explain? Please include cases that are settled.

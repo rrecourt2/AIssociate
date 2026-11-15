@@ -2,13 +2,57 @@
 
 ## Version 4: a new framework
 
-Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room, the kinds of source and the stages are unchanged. Version 4.0.1 is version 4.0.0 after two reviews. This section describes 4.0.1.
+Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room and the stages are unchanged from version 3. Version 4.0.1 is version 4.0.0 after two reviews. Version 4.1.0 is version 4.0.1 after its first trial on a real company. That trial comes first here. The sections after it describe version 4 as it stood at 4.0.1.
 
-### What changed
+### Version 4.1.0: after the first trial on a real company
+
+**The trial.** Version 4.0.1 was tried on a real, listed company, from its public documents only. Assistants that had nothing but the skill and the tool built the record and the wiki from eight documents, took in two later ones and drafted a financial proposal. A reviewer then checked a sample of the recorded facts against the documents and read every page. The company is not named here, and its deal folder is not part of this repository.
+
+**What held.** 85 of the 88 sampled facts matched their documents. Each assistant picked the deal up from the record where the last one had stopped. The claims pointed at the real issues: the reviewer judged ten of the fourteen challenged claims justified, among them how the loan would be repaid.
+
+**What did not.**
+
+- **Roles arose from any link.** An owner who had guaranteed existing bank loans in person became a guarantor of the deal. An existing bond, recorded as a facility, was asked the 26 checks of a new loan.
+- **The business was examined twice.** Of 630 open checks, 129 were asked of the borrower and again of the group it belongs to.
+- **A person was asked what is asked of a company**, such as whether it is incorporated and whether its accounts are audited.
+- **A project the loan would not pay for** brought 30 checks of its own.
+- **Tests without a sense of size challenged trifles.** Currency risk went against its claim on one very small foreign loan, tax on a small incentive, and existing debt on a guarantee for a company inside the borrower's own group. Three of the fourteen challenges were overstated for this reason.
+- **A test that was already decided stayed open.** Debt was far above the reference point before any new loan, and the test on leverage waited because it asks about debt "after this loan".
+- **`OBS_RP_006` had no answer** for the main related-party fact of the deal: security and guarantees that the owners give for the company's debt.
+- **Two notes disagreed** on a business that trades more than it makes. The sector went by revenue and the place in the value chain by profit.
+- **Kinds of source were missing** for an annual report, a prospectus and a press article. An annual report that was not itself audited was filed as audited, and its facts counted as the best evidence.
+- **Rigour without depth.** The pages were long and followed the checks. Nothing in the standard asked what the business is and what is particular about it.
+
+**What changed.**
+
+- **The loan under review.** A link type may carry `counts_for`. `borrows`, `guarantees`, `supports` and `secures` give their role, and are asked their checks, only when they point at a facility, and `completion_support` when it points at a facility or a project. A facility is a loan under review. Debt that already exists is a `lends_to` link with its terms, its security and its guarantors as facts about the link.
+- **The perimeter.** Each pillar of the party layer carries `asked_of`. Environment, business, cash flow and debt, liquidity and financial risks, and environmental, social and impact are asked of the perimeter: a member of a group that is asked the same check is not asked. People and governance is asked of each legal entity, and never of a group. In the pillar Links, related parties and a guarantor's capacity follow the perimeter too: dealings between the companies inside it are examined with the tie between them.
+- **A person** is a new kind of subject, with IDs that start with `N`. It is asked six indicators only: sanctions, political exposure, integrity record, source of funds, litigation and the guarantor's capacity. A party is now a company or a public body.
+- **Checks follow the financing.** `finances` is a new kind of link, from the facility to the project or asset it pays for. The five indicators on a project (`CAS_FEASIBILITY_001` and the four on power) and the project part of the three on environment, social matters and land are asked of the financed project. `OBS_REQUEST_003` is new: does the money pay for a project or an asset that can be named.
+- **Size.** `OBS_FX_008`, `OBS_TAX_008` and `OBS_DEBT_009` now ask about an amount that matters, with "about a tenth" as a guide in the question and a note that says so. `OBS_DEBT_009` no longer counts a guarantee for a member of the group that repayment relies on. The three keep their IDs.
+- **Decided before the loan.** Eight tests that speak of this loan now say in their note that an answer which already goes against the assumption on today's debt is recorded at once: `OBS_DS_003`, `OBS_DS_004`, `OBS_DS_005`, `OBS_FX_008`, `OBS_FX_009`, `OBS_RATE_002`, `OBS_MARKET_004` and `OBS_REV_008`.
+- **`OBS_RP_006`** has two new options: guarantees and security received, and pay and advances to insiders. Its note says to choose every kind that applies. A guarantee given for a related party no longer calls for a link.
+- **One rule for a business that trades more than it makes.** `OBS_SECTOR_002` and `OBS_VALUE_CHAIN_001` both go by where the profit comes from.
+- **Questions that ask for description.** How the business earns its money (`OBS_BUSINESS_MODEL_001`), what is particular about it (`OBS_BUSINESS_MODEL_002`), what the project is (`OBS_FEAS_008`), and, where the lender relies on cash from an owned company, what the owner owes on its own account and what cash it received (`OBS_GROUP_011`, `OBS_GROUP_012`). They test nothing. Their answers feed the wiki.
+- **Kinds of source.** `annual_report`, `prospectus` and `press_article` are new. `audited_annual_report` is now titled "Audited financial statements". Wherever a check counts audited statements as its best evidence, an annual report and a prospectus count as supporting: 208 checks. Wherever a check lists a public source, a press article counts the same: 48 checks. The one exception is `OBS_SUPPLYCHAIN_004`, where the public source is the register of a certification scheme and counts as best evidence. A press article is supporting there.
+
+No check was dropped and no ID changed. Six checks are new.
+
+**A deal that runs on 4.0.1.** The tool's `upgrade` command puts 4.1.0 into the deal folder. Then look at these:
+
+- An answer of yes to `OBS_FX_008`, `OBS_TAX_008` or `OBS_DEBT_009` that rests on a small amount is now a no.
+- `OBS_SECTOR_002` goes by profit. An answer that went by revenue may change.
+- A `guarantees`, `supports` or `secures` link that does not point at a facility gives no role any more. Record what it stood for as a fact about the `lends_to` link of that debt.
+- Existing debt that was recorded as a facility or a contract is recorded again as a `lends_to` link.
+- A natural person that was recorded as a party is recorded again as a person.
+- A project is checked only once the facility `finances` it.
+- Answers on the business and its money that were recorded for a member of the perimeter's group no longer count there. The tool lists them.
+
+### What changed from version 3
 
 - **Claims.** Every indicator is now one claim: what the lender relies on, in a sentence that can turn out false. There are 70 of them.
 - **Three jobs.** A check is a question, a test or a mitigant. A test states its own assumption, and the assumption is always what the lender relies on, so an answer against it is bad news. The old standard tested assumptions nobody holds, such as "Entity is debt-free". Those are now plain questions, and the tests ask what matters: "The party has paid its lenders as agreed".
-- **Nine pillars in four layers** replace the eight workstreams: the deal; then each party on its own (environment, business, people and governance, cash flow and debt, liquidity and financial risks, environmental, social and impact); then the links; then the facility. No pillar holds more than 18 percent of the checks. In version 3 more than half were financial and commercial, and twelve were environmental and social.
+- **Nine pillars in four layers** replace the eight workstreams: the deal; then each party on its own (environment, business, people and governance, cash flow and debt, liquidity and financial risks, environmental, social and impact); then the links; then the facility. No pillar holds more than a fifth of the checks. In version 3 more than half were financial and commercial, and twelve were environmental and social.
 - **Checks follow reliance.** A facility `relies_on` the party or group whose cash flow repays it, whoever signs the loan. That party gets the full view. A guarantor is asked whether it can pay and must pay, and no longer how it runs a factory.
 - **Links have their own checks.** A guarantee, a support undertaking, an owner or a group, a key customer, a key supplier, a builder or an operator, another lender and an asset given as security are each examined where they exist.
 - **Discovery opens what applies.** The kind of credit (`OBS_SECTOR_001`: corporate, project, financial institution or fund) decides which view of a party applies. The sector (`OBS_SECTOR_002`) switches on the checks for power and for agribusiness. Until discovery has answered, those checks wait.
@@ -18,15 +62,17 @@ Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). 
 
 ### The numbers
 
-| | Version 3.0.1 | Version 4.0.1 |
-|---|---|---|
-| Indicators | 50 | 70 |
-| Checks | 267 | 544 |
-| of which questions, tests, mitigants | | 112, 365, 67 |
-| Checks due at screening, concept, due diligence, later | 76, 33, 158, 0 | 85, 148, 285, 26 |
-| Reference points | 16 (11 on a number, 5 on a choice) | 51 (16 on a number, 35 on a choice), each with its reason |
+| | Version 3.0.1 | Version 4.0.1 | Version 4.1.0 |
+|---|---|---|---|
+| Indicators | 50 | 70 | 70 |
+| Checks | 267 | 544 | 550 |
+| of which questions, tests, mitigants | | 112, 365, 67 | 118, 365, 67 |
+| Checks due at screening, concept, due diligence, later | 76, 33, 158, 0 | 85, 148, 285, 26 | 88, 151, 285, 26 |
+| Reference points | 16 (11 on a number, 5 on a choice) | 51 (16 on a number, 35 on a choice), each with its reason | 51 |
+| Kinds of source | 79 | 79 | 82 |
+| Kinds of subject, kinds of link | 6, 19 | 6, 20 | 7, 21 |
 
-216 of the 267 checks keep their ID. Most were reworded. 328 checks are new. 49 of the 50 indicators keep their ID: `CAS_DISCOVERY_ESG_MANDATE_001` is gone and its checks are in `CAS_ES_SCREENING_001`. Titles changed.
+The rest of this section compares 4.0.1 with 3.0.1. 216 of the 267 checks keep their ID. Most were reworded. 328 checks are new. 49 of the 50 indicators keep their ID: `CAS_DISCOVERY_ESG_MANDATE_001` is gone and its checks are in `CAS_ES_SCREENING_001`. Titles changed.
 
 ### Checks that were dropped
 
@@ -102,7 +148,7 @@ Nobody who does credit work for a living has reviewed it yet.
 ### For a credit reviewer
 
 - **Reference points on a number.** `OBS_DS_003` and `OBS_DS_008` debt service cover below 1.2. `OBS_DS_005` total debt above 4 times EBITDA. `OBS_ACC_005` accounts older than 18 months. `OBS_FX_INPUT_001` imported inputs above 25 percent. `OBS_HEDGE_003` hedged share at most 50 percent. `OBS_INPUT_MIT_003` and `OBS_REC_SECURITY_001` below 50 percent. `OBS_REC_GOV_001` above 20 percent. `OBS_REV_004` revenue falling. `OBS_WC_005` overdue receivables above 10 percent. `OBS_RP_EXPOSURE_001` above 10 percent of equity. `OBS_RP_PEAK_001` above 1.5. `OBS_FIC_002` capital headroom below 2 points. `OBS_FIP_004` restructured loans above 5 percent. `OBS_SECPKG_006` cover below 100 percent. Each has its reason in `why`. An institution changes them in its own layer.
-- **Tests that still go against the claim in many sound deals**, by design, so that the mitigant is asked: an unsecured loan (`OBS_COLLATERAL_001`), a refinancing (`OBS_USE_002`), debt in a currency the party does not earn (`OBS_FX_008`), a price-taker (`OBS_MARKET_003`), a single plant (`OBS_OPS_003`), a subsidised tariff (`OBS_EREG_004`).
+- **Tests that still go against the claim in many sound deals**, by design, so that the mitigant is asked: an unsecured loan (`OBS_COLLATERAL_001`), a refinancing (`OBS_USE_002`), more than about a tenth of the debt in a currency the party does not earn (`OBS_FX_008`), a price-taker (`OBS_MARKET_003`), a single plant (`OBS_OPS_003`), a subsidised tariff (`OBS_EREG_004`).
 - **Sizes named in questions** ("about a tenth", "about a third", "three years") are guides and say so in their notes.
 - **Words that carry a definition** in their note: `mixed` in `OBS_CASHFLOW_BASIS_001`, `blended` in `OBS_LIFECYCLE_CONFIRM_002`, the border between agribusiness and trade in `OBS_SECTOR_002`.
 - **The four new checks with the most wording of their own**: `OBS_KYC_009`, `OBS_OFFTAKER_010`, `OBS_GROUP_010`, `OBS_ACC_010`.
@@ -116,7 +162,8 @@ Nobody who does credit work for a living has reviewed it yet.
 - **Currency.** A rise of the local currency against foreign-currency revenue is not tested.
 - **`lends_to` covers a loan received and a loan given.** The checks on another lender make no sense for a loan the party gave to an affiliate. The first check says so.
 - **Kinds of source are missing** for a land title, a court search, an independent engineer's report, a certificate from a certification scheme and an impact report. The checks use the nearest kind.
-- **A party that is a person or a public body** does not fit every check on legal standing and authorisation.
+- **A public body** does not fit every check on legal standing and authorisation. A person has had a kind of its own since 4.1.0.
+- **A guarantee of existing debt has no record of its own.** It is a fact about that debt's `lends_to` link, so nothing examines the giver for it.
 
 ## Versions 3.0.0 and 3.0.1: the copy from the first Bankability
 

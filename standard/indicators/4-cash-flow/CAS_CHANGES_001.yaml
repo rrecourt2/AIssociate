@@ -31,7 +31,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report, consultant_report]
-    supporting: [management_accounts, company_record, board_minutes]
+    supporting: [management_accounts, company_record, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Revenue moved a good deal between these years. What was behind it, and which document shows that?
   note: A fifth is a guide. If there was no such change, answer no and say so. A cause is supported when a contract, a sales
@@ -50,7 +50,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report, consultant_report]
-    supporting: [management_accounts, company_record, board_minutes]
+    supporting: [management_accounts, company_record, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: Three points is a guide. For a trader on thin margins, take a move of about a fifth of the margin itself. If there
     was no such change, answer no and say so. Management's explanation alone is not support.
@@ -68,7 +68,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report, consultant_report]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: A fifth is a guide. Compare working capital as days of sales at the start and at the end of the three years. If
     there was no such change, answer no and say so. Support for a cause is an ageing list, a stock count or a contract with
@@ -87,7 +87,7 @@ checks:
   look_in: [03.01.a, 04.03.a]
   evidence:
     best: [audited_annual_report, consultant_report]
-    supporting: [debt_schedule, management_accounts, bank_statement]
+    supporting: [debt_schedule, management_accounts, bank_statement, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: Read the cash flow statement for each year. Set new borrowing against capital spending, acquisitions and the change
     in working capital. If debt did not rise in this way, answer no and say so.
@@ -105,7 +105,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report, consultant_report]
-    supporting: [management_accounts, bank_statement]
+    supporting: [management_accounts, bank_statement, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: Compare cash from operations in the cash flow statement with profit before tax, year by year. If the two did not
     part in this way, answer no and say so.
@@ -125,7 +125,7 @@ checks:
   look_in: [03.01.a, 02.02.c]
   evidence:
     best: [audited_annual_report, consultant_report]
-    supporting: [shareholder_resolution, board_minutes, valuation_report]
+    supporting: [shareholder_resolution, board_minutes, valuation_report, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: Read the statement of changes in equity for each year. Support for a cause is a shareholder resolution, a valuation
     report or a note to the audited accounts. If equity moved only by profit or loss, answer no and say so.

@@ -3,6 +3,7 @@ link_types:
   title: Borrows under
   description: The party borrows under the facility.
   role_from: borrower
+  counts_for: [facility]
 - id: relies_on
   title: Relies on
   description: Repayment of the facility relies on the cash flow of this party or group, whether or not it is the
@@ -10,8 +11,10 @@ link_types:
   role_to: repayment_source
 - id: guarantees
   title: Guarantees
-  description: The party guarantees the facility or another party's obligations.
+  description: The party guarantees the facility. A guarantee of debt that already exists is a fact about that debt's
+    `lends_to` link.
   role_from: guarantor
+  counts_for: [facility]
 - id: sponsors
   title: Sponsors
   description: The party stands behind another party or a project as its main shareholder or promoter.
@@ -37,7 +40,8 @@ link_types:
   role_to: customer
 - id: lends_to
   title: Lends to
-  description: The party lends to another party, including loans within a group.
+  description: The party lends to another party, including loans within a group. Debt that already exists is recorded
+    this way, with its terms, its security and its guarantors as facts about the link.
   role_from: lender
 - id: operates
   title: Operates
@@ -53,6 +57,7 @@ link_types:
 - id: secures
   title: Is security for
   description: The asset is security for the facility.
+  counts_for: [facility]
 - id: ranks_behind
   title: Ranks behind
   description: The facility ranks behind another facility.
@@ -64,11 +69,17 @@ link_types:
   description: The party has given a support undertaking that is not a guarantee. Like a guarantor, it is examined for whether
     it can and must stand behind the loan.
   role_from: guarantor
+  counts_for: [facility]
 - id: completion_support
   title: Supports completion of
   description: The party supports the completion of a project or the facility that finances it. Like a guarantor, it is
     examined for whether it can and must stand behind that promise.
   role_from: guarantor
+  counts_for: [facility, project]
+- id: finances
+  title: Pays for
+  description: The facility pays for a project or an asset. The link runs from the facility to what it pays for.
+  role_to: financed_project
 - id: portfolio_support
   title: Supports within a portfolio
   description: One project or party supports another, for example through a cash sweep or shared reserves.

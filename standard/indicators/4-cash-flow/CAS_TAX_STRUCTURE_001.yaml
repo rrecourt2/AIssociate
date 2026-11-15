@@ -45,7 +45,7 @@ checks:
   look_in: [02.06.c, 03.01.a, 03.01.d]
   evidence:
     best: [tax_clearance, audited_annual_report]
-    supporting: [tax_returns, management_accounts, bank_statement]
+    supporting: [tax_returns, management_accounts, bank_statement, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Is any tax overdue at the moment, or are you paying off older tax in instalments agreed with the tax authority?
   note: Look for tax payable in the balance sheet that grows from year to year, and for penalties and interest on tax in
@@ -63,7 +63,7 @@ checks:
   look_in: [07.01.a, 03.01.a]
   evidence:
     best: [regulatory_document, audited_annual_report, legal_opinion]
-    supporting: [board_minutes, company_record]
+    supporting: [board_minutes, company_record, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Has the tax authority audited you in the last three years, asked for more tax than you declared, or is any audit
     or dispute still open? What amounts are involved?
@@ -75,10 +75,11 @@ checks:
   leads_to:
   - {indicator: CAS_LITIGATION_001, is: true, reason: An open tax dispute is a claim against the party like any other}
 - id: OBS_TAX_008
-  question: Does the party's cash flow count on a tax holiday, an exemption or a reduced rate that ends before this loan
-    is repaid, or that depends on conditions the party is not meeting now (a level of investment, jobs or exports)?
+  question: Does the party save more than about a tenth of a year's profit through a tax holiday, an exemption or a reduced
+    rate that ends before this loan is repaid, or that depends on conditions the party is not meeting now (a level of investment,
+    jobs or exports)?
   answer: yes_no
-  assumption: The tax position that the party's cash flow counts on lasts as long as the loan
+  assumption: The tax savings that matter to the party's cash flow last as long as the loan
   disproved_by: 'yes'
   why: When a tax holiday ends, tax takes a share of the cash flow that the loan was sized on. A regime that is granted
     on conditions is lost when the conditions are not kept.
@@ -87,9 +88,11 @@ checks:
     best: [tax_clearance, regulatory_document, legal_opinion]
     supporting: [financial_model, tax_returns]
     stated: [correspondence, call, officer_note]
-  note: Compare the tax the party pays with the standard rate on its profit. A wide gap means that a special regime is at
-    work, whether or not the party has mentioned one. Check that the projections charge the full rate from the day the regime
-    ends.
+  note: 'A tenth of a year''s profit before tax is a guide to what matters. A regime that saves less is a no: record what
+    it is, what it saves in a year and when it ends. Compare the tax the party pays with the standard rate on its profit.
+    A wide gap means that a special regime is at work, whether or not the party has mentioned one. Check that the projections
+    charge the full rate from the day the regime ends. Where the party does not meet the conditions now, the answer is yes
+    whatever the tenor of the loan turns out to be: record it now.'
   leads_to:
   - {indicator: CAS_PROJECTIONS_001, is: true, reason: The projections have to charge tax in full from the day the regime
       ends}
@@ -102,7 +105,7 @@ checks:
   look_in: [03.01.a, 03.01.d, 08.01.a]
   evidence:
     best: [audited_annual_report, legal_opinion, consultant_report]
-    supporting: [tax_returns, organizational_chart]
+    supporting: [tax_returns, organizational_chart, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Do you pay or receive interest, dividends, fees or the price of goods across a border, in particular to or from companies
     in your own group? Is tax withheld on any of these payments?
@@ -125,6 +128,6 @@ checks:
   look_in: [03.01.a, 07.01.a]
   evidence:
     best: [audited_annual_report, regulatory_document]
-    supporting: [bank_statement, management_accounts, board_minutes]
+    supporting: [bank_statement, management_accounts, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: A provision is the party's own estimate. Set it against the amount in the tax authority's notice.

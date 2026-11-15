@@ -4,7 +4,7 @@
  "op": "teaser",
  "sources": [
   {"ref": "teaser", "title": "Teaser", "kind": "executive_summary", "date": "2026-10-20",
-   "where": "Client folder/01 Business & Project Overview/01.01 Transaction Overview/Cedar Foods teaser.md",
+   "where": "Client folder/Cedar Foods teaser.md",
    "about": ["@cedar"], "read": "full", "sent_by": "Cedar Foods",
    "map": [{"at": "paragraph 3", "topic": "the request", "gist": "EUR 12m over 7 years for a second UHT line. A parent guarantee is asked, the guarantor is not decided."}]}
  ],

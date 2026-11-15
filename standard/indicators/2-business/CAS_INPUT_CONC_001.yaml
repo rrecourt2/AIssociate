@@ -33,7 +33,7 @@ checks:
   look_in: [03.01.a, 06.04.a]
   evidence:
     best: [audited_annual_report, supply_agreement]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Is there one input that your production cannot run without, such as a feedstock, a fuel or a utility? Or one supplier
     from which you buy a large part of what you need? If so, please name the input and the supplier.
@@ -54,7 +54,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record, financial_model]
+    supporting: [management_accounts, company_record, financial_model, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Which single input costs you the most, and roughly what share of your cost of sales is it?
   note: 'Take the figure from the breakdown of the cost of sales, not from what the party says. Where one input takes about
@@ -71,7 +71,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record, public_source]
+    supporting: [management_accounts, company_record, public_source, press_article, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: In which of the last five years did the price of your main input rise the most? What was your gross margin in that
     year and in the year before?
@@ -111,7 +111,7 @@ checks:
   look_in: [06.04.a, 07.01.a, 03.01.a]
   evidence:
     best: [supply_agreement, regulatory_document, audited_annual_report]
-    supporting: [company_record, management_accounts, public_source]
+    supporting: [company_record, management_accounts, public_source, press_article, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Is the price of this input, or the amount you are allotted, set by a government body? For example a regulated tariff,
     a quota or a levy.
@@ -131,7 +131,7 @@ checks:
   look_in: [03.01.a, 05.01.a]
   evidence:
     best: [audited_annual_report, technical_feasibility, regulatory_document]
-    supporting: [company_record, management_accounts, board_minutes, public_source]
+    supporting: [company_record, management_accounts, board_minutes, public_source, press_article, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Has this input been cut, reduced or suspended at any time in the last two years, even briefly? Please include partial
     cuts.
@@ -148,7 +148,7 @@ checks:
   look_in: [03.01.a, 08.01.a, 07.01.a]
   evidence:
     best: [audited_annual_report, legal_opinion, regulatory_document]
-    supporting: [board_minutes, company_record, public_source]
+    supporting: [board_minutes, company_record, public_source, press_article, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Is there any court case, disputed levy or regulatory proceeding that affects what you pay for this input, or whether
     you receive it?
@@ -218,6 +218,6 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, financial_model]
+    supporting: [management_accounts, financial_model, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Of your operating earnings, roughly what share comes from plants or business lines that do not rely on this input?

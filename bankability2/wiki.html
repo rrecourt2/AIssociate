@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wiki</title>
+<!-- The wiki of one deal, in one file. It loads nothing: the pages and the record are in the script at the foot.
+     The tool writes this file each time it runs `pages`. Change the pages, not this file. -->
+<style>
+:root { --paper: #fbfaf6; --ink: #22262b; --soft: #6a6f76; --line: #e4e0d6; --tint: #f2efe6; --mark: #1d5c57;
+  --text: Charter, "Bitstream Charter", "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  --plain: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+@media (prefers-color-scheme: dark) {
+  :root { --paper: #1a1b1d; --ink: #dddbd3; --soft: #9b9a93; --line: #34363a; --tint: #232528; --mark: #86c8c0; } }
+* { box-sizing: border-box; }
+body { margin: 0; display: grid; grid-template-columns: 17rem minmax(0, 1fr) auto; min-height: 100vh;
+  background: var(--paper); color: var(--ink); font: 1.0625rem/1.65 var(--text); }
+a { color: var(--mark); text-decoration-thickness: 1px; text-underline-offset: 0.15em; }
+nav, #card { position: sticky; top: 0; height: 100vh; overflow-y: auto; font: 0.875rem/1.45 var(--plain); }
+nav { padding: 1.75rem 1.25rem; border-right: 1px solid var(--line); }
+nav strong { display: block; font: 600 1.15rem/1.3 var(--text); }
+nav small, nav h2, nav p { color: var(--soft); }
+nav input { width: 100%; margin: 1rem 0 0.5rem; padding: 0.45rem 0.6rem; font: inherit; color: inherit;
+  background: transparent; border: 1px solid var(--line); border-radius: 6px; }
+nav input:focus { outline: 2px solid var(--mark); outline-offset: -1px; }
+nav h2 { margin: 1.25rem 0 0.25rem; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+nav a { display: block; margin: 0 -0.5rem; padding: 0.25rem 0.5rem; border-radius: 5px; color: inherit; text-decoration: none; }
+nav a:hover, nav a.here { background: var(--tint); } nav a.here { color: var(--mark); font-weight: 600; }
+nav a span { display: block; color: var(--soft); font-size: 0.8rem; font-weight: 400; }
+mark { background: none; color: var(--mark); font-weight: 600; }
+main { max-width: 46rem; margin-left: clamp(0rem, 5vw, 5rem); padding: 2.5rem 2.25rem 6rem; overflow-wrap: break-word; }
+h1, h2, h3, h4 { font-weight: 600; line-height: 1.25; margin: 2.2rem 0 0.6rem; }
+h1 { font-size: 2rem; margin-top: 0; letter-spacing: -0.01em; }
+h2 { font-size: 1.3rem; } h3, h4 { font-size: 1.08rem; }
+p, ul, ol, blockquote, .wide, .tool { margin: 0 0 1rem; }
+ul, ol { padding-left: 1.3rem; } li { margin: 0.3rem 0; } li ul, li ol { margin-bottom: 0; }
+code { font: 0.86em ui-monospace, "SF Mono", Menlo, Consolas, monospace; background: var(--tint); padding: 0.1em 0.3em;
+  border-radius: 4px; }
+blockquote { padding-left: 1rem; border-left: 3px solid var(--line); color: var(--soft); }
+hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0; } .wide { overflow-x: auto; }
+table { border-collapse: collapse; font: 0.85rem/1.45 var(--plain); font-variant-numeric: tabular-nums; }
+th, td { padding: 0.4rem 0.9rem 0.4rem 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+th { color: var(--soft); font-weight: 600; }
+.tool { padding: 0.9rem 1.1rem 0.2rem; background: var(--tint); border-radius: 8px; font-size: 0.94rem; }
+.tool:empty { display: none; }
+.tool::before { content: "From the record"; display: block; margin-bottom: 0.5rem; color: var(--soft);
+  font: 600 0.7rem var(--plain); letter-spacing: 0.08em; text-transform: uppercase; }
+.cites { color: var(--soft); font: 0.78em var(--plain); white-space: nowrap; }
+a.cite { color: inherit; cursor: pointer; white-space: nowrap; text-decoration: underline dotted; }
+a.cite:hover { color: var(--mark); }
+#card { width: 21rem; padding: 1.75rem 1.25rem; border-left: 1px solid var(--line); }
+#card h2 { margin: 0 0 0.75rem; font: 600 1rem var(--plain); } #card h2 small { color: var(--soft); font-weight: 400; }
+#card p { font: 1rem/1.5 var(--text); } #card dd { margin: 0; overflow-wrap: anywhere; }
+#card dt { margin-top: 0.7rem; color: var(--soft); font-size: 0.75rem; }
+#card button { float: right; border: 0; background: none; color: var(--soft); font-size: 1.3rem; line-height: 1; cursor: pointer; }
+@media (max-width: 60rem) {
+  body { display: block; } main { margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
+  nav { position: static; height: auto; border: 0; border-bottom: 1px solid var(--line); }
+  #card { position: fixed; top: auto; bottom: 0; width: 100%; height: auto; max-height: 55vh; background: var(--paper);
+    border: 0; border-top: 1px solid var(--line); } }
+@media print { nav, #card { display: none; } body { display: block; } }
+</style>
+</head>
+<body>
+<nav><strong id="deal"></strong><small id="as-of"></small>
+  <input id="search" type="search" placeholder="Search the pages" aria-label="Search the pages"><div id="menu"></div></nav>
+<main id="page"></main>
+<aside id="card" hidden></aside>
+<script id="data" type="application/json">{{DATA}}</script>
+<script>
+"use strict";
+const data = JSON.parse(document.getElementById("data").textContent);
+const TABLES = {sources: "source", facts: "fact", subjects: "subject", links: "link", decisions: "decision", questions: "question"};
+const ID = /\b[A-Z]-\d{3,}\b/g, ITEM = /^(\s*)([-*+]|\d+[.)])\s+(.*)$/;
+const el = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const decode = s => { try { return decodeURIComponent(s); } catch (e) { return s; } };
+const encoded = path => path.split("/").map(encodeURIComponent).join("/");
+const table = id => Object.keys(TABLES).find(name => data[name][id]);
+const cite = (id, more = "") => table(id) ? `<a class="cite" tabindex="0" data-id="${id}">${id}${more}</a>` : id;
+
+// The pages: for each path from the wiki folder, its title, its text without the top lines, and its shelf.
+const pages = {}, pageOf = {};
+for (const [path, raw] of Object.entries(data.pages)) {
+  const top = /^---\n([\s\S]*?)\n---\n?/.exec(raw), text = top ? raw.slice(top[0].length) : raw;
+  const title = (top && /^title:[ \t]*(\S.*)$/m.exec(top[1]) || /^#\s+(.+)$/m.exec(text) || [0, path])[1];
+  const about = top && /^about:[ \t]*([^,\s]+)/m.exec(top[1]);
+  const shelf = path === "index.md" || path === data.documents ? "" : path.includes("/") ? path.split("/")[0] : "other";
+  pages[path] = {title, text, shelf};
+  if (about && !pageOf[about[1]]) pageOf[about[1]] = path;
+}
+let here = "index.md";  // the page that is open
+
+function resolve(from, href) {  // where a relative link on a page leads, as a path from the wiki folder
+  const parts = from.split("/").slice(0, -1);
+  for (const part of decode(href.split("#")[0]).split("/")) {
+    if (part === ".." && parts.length && parts[parts.length - 1] !== "..") parts.pop();
+    else if (part && part !== ".") parts.push(part);
+  }
+  return parts.join("/");
+}
+
+function link(words, href) {  // another page opens in this view, a document or a website in a new tab
+  if (/^(https?|mailto):/i.test(href)) return `<a href="${esc(href)}" target="_blank" rel="noopener">${words}</a>`;
+  const path = resolve(here, href);
+  return pages[path] ? `<a href="#${encoded(path)}">${words}</a>` : `<a href="./${encoded(path)}" target="_blank">${words}</a>`;
+}
+
+function inline(text) {  // code, links, bold, italic and citations within one line
+  const kept = [], keep = html => `\u0001${kept.push(html) - 1}\u0001`;  // set aside, so that nothing below touches it
+  text = text.replace(/`([^`]+)`/g, (_, code) => keep(`<code>${esc(code)}</code>`))
+    .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (_, words, href) => keep(link(esc(words), href)));
+  return esc(text).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\*(.+?)\*/g, "<em>$1</em>")
+    .replace(/\[[A-Z]-\d{3,}(, ?[A-Z]-\d{3,})*\]/g, '<span class="cites">$&</span>').replace(ID, id => cite(id))
+    .replace(/\u0001(\d+)\u0001/g, (_, n) => kept[n]);
+}
+
+function rows(lines) {  // a table: the first line is its head, the second only separates
+  const row = (line, tag) => "<tr>" + line.trim().replace(/^\||\|$/g, "").split("|")
+    .map(cell => `<${tag}>${inline(cell.trim())}</${tag}>`).join("") + "</tr>";
+  return `<div class="wide"><table><thead>${row(lines[0], "th")}</thead><tbody>` +
+    lines.slice(2).map(line => row(line, "td")).join("") + "</tbody></table></div>";
+}
+
+function items(lines) {  // a list, with lists inside it by how far their items are indented
+  const open = [];
+  let html = "";
+  for (const line of lines) {
+    const item = ITEM.exec(line);
+    if (!item) { html += " " + inline(line.trim()); continue; }  // the item above goes on
+    const indent = item[1].length, tag = /\d/.test(item[2]) ? "ol" : "ul";
+    while (open.length && open[open.length - 1][0] > indent) html += `</li></${open.pop()[1]}>`;
+    if (open.length && open[open.length - 1][0] === indent) html += "</li>";
+    else { open.push([indent, tag]); html += `<${tag}>`; }
+    html += "<li>" + inline(item[3]);
+  }
+  while (open.length) html += `</li></${open.pop()[1]}>`;
+  return html;
+}
+
+function render(text) {  // the Markdown the pages use, block by block
+  const lines = text.split("\n"), out = [];
+  const take = more => {  // the line at hand, and the lines after it that go with it
+    const got = [lines[at++]];
+    while (at < lines.length && more(lines[at])) got.push(lines[at++]);
+    return got;
+  };
+  let at = 0;
+  while (at < lines.length) {
+    const line = lines[at], head = /^(#{1,6})\s+(.*)$/.exec(line);
+    if (!line.trim()) at++;
+    else if (/^<!--.*-->\s*$/.test(line)) {  // the tool's markers frame its part of the page. Other comments stay hidden
+      out.push(/tool:begin/.test(line) ? '<div class="tool">' : /tool:end/.test(line) ? "</div>" : "");
+      at++;
+    } else if (head) {
+      out.push(`<h${head[1].length}>${inline(head[2])}</h${head[1].length}>`);
+      at++;
+    } else if (/^\s*([-*_])(\s*\1){2,}\s*$/.test(line)) {
+      out.push("<hr>");
+      at++;
+    } else if (line.startsWith(">")) {
+      out.push(`<blockquote>${render(take(l => l.startsWith(">")).map(l => l.replace(/^> ?/, "")).join("\n"))}</blockquote>`);
+    } else if (line.startsWith("|") && /^\|[\s:|-]*-[\s:|-]*$/.test(lines[at + 1] || "")) {
+      out.push(rows(take(l => l.startsWith("|"))));
+    } else if (ITEM.test(line)) {
+      out.push(items(take(l => ITEM.test(l) || /^\s+\S/.test(l))));
+    } else {
+      out.push(`<p>${inline(take(l => l.trim() && !/^(#{1,6}\s|>|\||<!--)/.test(l) && !ITEM.test(l)).join(" "))}</p>`);
+    }
+  }
+  return out.join("");
+}
+
+function card(id) {  // what the record holds under an ID: a fact with its value, its date, its source and the place in it
+  const record = data[table(id)][id], lines = [];
+  const plain = v => v === true ? "yes" : v === false ? "no" : Array.isArray(v) ? v.map(plain).join("; ")
+    : v && typeof v === "object" ? Object.values(v).map(plain).join(": ") : String(v);
+  const named = v => esc(plain(v)).replace(ID, i => cite(i, table(i) === "subjects" ? " " + esc(data.subjects[i].name || "") : ""));
+  const file = path => `<a href="../../${encoded(path)}" target="_blank">${esc(path)}</a>`;  // from the wiki folder to the deal folder
+  const main = ["statement", "title", "name", "decision", "text"].find(key => record[key]);
+  for (const [key, value] of Object.entries(record)) {
+    if (["rev", "fingerprint", "label", "unit", main].includes(key) || value == null || value === "" || value === "current") continue;
+    let html = key === "where" || key === "extract" ? file(value) : named(value);
+    if (key === "value") html = esc(record.label ? record.label + ": " : "") + html + " " + esc(record.unit || "");
+    const source = key === "source" && data.sources[value];
+    if (source) html += [" " + esc(source.title) + (source.date ? ", " + esc(source.date) : ""),
+      ...[source.where, source.extract].filter(Boolean).map(file)].join("<br>");
+    lines.push(`<dt>${esc(key[0].toUpperCase() + key.slice(1).replace(/_/g, " "))}</dt><dd>${html}</dd>`);
+  }
+  el("card").innerHTML = `<button aria-label="Close">&times;</button><h2>${id} <small>${TABLES[table(id)]}</small></h2>` +
+    (main ? `<p>${named(record[main])}</p>` : "") + (pageOf[id] ? `<a href="#${encoded(pageOf[id])}">Open its page</a>` : "") +
+    `<dl>${lines.join("")}</dl>`;
+  el("card").hidden = false;
+}
+
+function menu() {  // the pages by shelf, or the pages that hold the words searched for
+  const words = el("search").value.trim().toLowerCase();
+  const entry = (path, name) => {
+    const text = pages[path].text.replace(/\s+/g, " "), hit = words ? text.toLowerCase().indexOf(words) : -1;
+    const near = hit < 0 ? "" : "<span>" + esc(text.slice(Math.max(0, hit - 30), hit)) + "<mark>" +
+      esc(text.substr(hit, words.length)) + "</mark>" + esc(text.substr(hit + words.length, 50)) + "</span>";
+    return `<a href="#${encoded(path)}"${path === here ? ' class="here"' : ""}>${esc(name || pages[path].title)}${near}</a>`;
+  };
+  const shown = Object.keys(pages).filter(path => (pages[path].title + "\n" + pages[path].text).toLowerCase().includes(words));
+  const shelf = name => {
+    const paths = shown.filter(path => pages[path].shelf === name);
+    return paths.length ? `<h2>${esc(name)}</h2>` + paths.map(path => entry(path)).join("") : "";
+  };
+  const shelves = [...new Set([...data.shelves, ...shown.map(path => pages[path].shelf)])].filter(Boolean);
+  el("menu").innerHTML = words ? shown.map(path => entry(path)).join("") || "<p>No page holds these words.</p>"
+    : entry("index.md", "Contents") + entry(data.documents, "Documents") + shelves.map(shelf).join("");
+}
+
+function show() {  // open the page that the address names, or the contents page
+  const asked = decode(location.hash.slice(1));
+  here = pages[asked] ? asked : "index.md";
+  el("page").innerHTML = render(pages[here].text);
+  document.title = `${pages[here].title} | ${data.name}`;
+  menu();
+  window.scrollTo(0, 0);
+}
+
+el("deal").textContent = data.name;
+el("as-of").textContent = `The record at revision ${data.revision}`;
+el("search").addEventListener("input", menu);
+document.addEventListener("click", event => {
+  const cited = event.target.closest("a.cite");
+  if (cited) card(cited.dataset.id);
+  else if (event.target.closest("#card button")) el("card").hidden = true;
+});
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") el("card").hidden = true;
+  if (event.key === "Enter" && event.target.matches("a.cite")) card(event.target.dataset.id);
+});
+window.addEventListener("hashchange", show);
+show();
+</script>
+</body>
+</html>

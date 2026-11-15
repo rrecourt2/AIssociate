@@ -27,7 +27,7 @@ checks:
   look_in: [03.01.a, 03.01.i]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, interim_financial_statements, credit_rating_report]
+    supporting: [management_accounts, interim_financial_statements, credit_rating_report, annual_report, prospectus]
     stated: [management_presentation, call, officer_note]
   note: Say which year the figure is for. Where inflation is high, record it beside the figure, because a return below inflation
     shrinks the capital in real terms.
@@ -43,7 +43,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, financial_model, credit_rating_report, internal_memo]
+    supporting: [management_accounts, financial_model, credit_rating_report, internal_memo, annual_report, prospectus]
     stated: [call, officer_note]
   note: Take the loan-loss charge of each year as a percentage of average gross loans, and apply the highest to today's
     loan book. With fewer than five years of accounts, use the years there are and say how many. Where the provisions have
@@ -60,7 +60,7 @@ checks:
   look_in: [03.01.a, 03.01.i]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, interim_financial_statements, credit_rating_report]
+    supporting: [management_accounts, interim_financial_statements, credit_rating_report, annual_report, prospectus]
     stated: [management_presentation, call, officer_note]
   note: Stable means a change of less than about a quarter of a percentage point over the three years. Record the margin
     of each year.
@@ -78,7 +78,7 @@ checks:
   look_in: [03.01.a, 03.01.i]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, interim_financial_statements, credit_rating_report]
+    supporting: [management_accounts, interim_financial_statements, credit_rating_report, annual_report, prospectus]
     stated: [management_presentation, call, officer_note]
 - id: OBS_FIE_005
   question: 'Did more than about a third of the institution''s profit before tax in the last financial year come from gains
@@ -89,7 +89,7 @@ checks:
   look_in: [03.01.a, 03.01.i]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, interim_financial_statements, credit_rating_report]
+    supporting: [management_accounts, interim_financial_statements, credit_rating_report, annual_report, prospectus]
     stated: [call, officer_note]
   note: A third is a guide. Where the institution would have made a loss without such gains, the answer is yes. Look at
     each of the last three years. A one-off that comes back every year under another name is still not income from lending.
@@ -104,7 +104,7 @@ checks:
   look_in: [03.01.a, 10.03.a, 03.01.e]
   evidence:
     best: [audited_annual_report]
-    supporting: [company_record, management_accounts, audit_management_letter]
+    supporting: [company_record, management_accounts, audit_management_letter, annual_report, prospectus]
     stated: [call, officer_note]
   note: A tenth is a guide. Set the interest income in the profit and loss account against the interest received in the
     cash flow statement, and the growth of accrued interest receivable against the growth of the loan book. Loans with long

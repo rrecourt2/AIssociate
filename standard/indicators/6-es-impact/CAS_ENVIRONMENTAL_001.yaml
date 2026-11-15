@@ -4,7 +4,7 @@ pillar: es_impact
 claim: No environmental harm done by the party's operations, now or in the past, could close a site, cost more than the
   party has set aside, or come back on the lender.
 due_by: diligence
-applies_to: [borrower, repayment_source, project]
+applies_to: [borrower, repayment_source, financed_project]
 matters_more_when:
 - {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'A new site needs its assessment and its permits before work starts,
     and has no record to be judged by'}
@@ -83,7 +83,7 @@ checks:
   look_in: [10.03.a, 07.02.a, 03.01.a]
   evidence:
     best: [consultant_report, esia_report, audited_annual_report]
-    supporting: [company_record, board_minutes, management_accounts]
+    supporting: [company_record, board_minutes, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Do you know of any contamination of soil or water at your sites, or at sites you used before? Do you have to clean
     up, dismantle or restore any site, now or when operations end? Is there a provision for it in your accounts?
@@ -135,7 +135,7 @@ checks:
   look_in: [10.03.a, 03.01.a]
   evidence:
     best: [consultant_report, audited_annual_report]
-    supporting: [company_record, regulatory_document]
+    supporting: [company_record, regulatory_document, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Do you measure your greenhouse gas emissions? If so, please share the latest figures and say who calculated them.
 - id: OBS_ENV_008
@@ -173,7 +173,7 @@ checks:
   look_in: [10.03.a, 03.01.a, 08.03.a]
   evidence:
     best: [consultant_report, audited_annual_report, insurance_policy]
-    supporting: [management_accounts, company_record, material_contract]
+    supporting: [management_accounts, company_record, material_contract, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: An indemnity is worth what the one who gave it can pay. A provision is not cash. Say when the money will be needed
     and where it will come from.

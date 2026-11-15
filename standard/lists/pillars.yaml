@@ -6,30 +6,37 @@ pillars:
 - id: environment
   title: Environment
   layer: party
+  asked_of: perimeter
   description: Country, sector and market, licences and regulation.
 - id: business
   title: Business
   layer: party
+  asked_of: perimeter
   description: Customers, inputs, operations and assets.
 - id: governance
   title: People and governance
   layer: party
+  asked_of: entity
   description: Owners and control, integrity, board and controls, management.
 - id: cash_flow
   title: Cash flow and debt
   layer: party
+  asked_of: perimeter
   description: The accounts, profitability, cash flow against debt service, existing debt.
 - id: liquidity
   title: Liquidity and financial risks
   layer: party
+  asked_of: perimeter
   description: Liquidity and working capital, currency, interest rate and price risk.
 - id: es_impact
   title: Environmental, social and impact
   layer: party
+  asked_of: perimeter
   description: E&S risk and its management, land and supply chain, impact and additionality.
 - id: links
   title: Links
   layer: link
+  asked_of: perimeter
   description: Guarantee, group, key customer, key supplier, builder and operator, other lenders.
 - id: facility
   title: The facility

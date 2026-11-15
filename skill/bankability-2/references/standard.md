@@ -1,10 +1,21 @@
 # The standard
 
-The standard says what a deal folder holds and what must be known. `show <ID>` prints an indicator or a check in full. `standard/FRAMEWORK.md` in the repository explains how it is organised.
+The standard says what a deal folder holds and what must be known. It gives the work its rigour. `show <ID>` prints an indicator or a check in full. `standard/FRAMEWORK.md` in the repository explains how it is organised.
 
-## Claims
+## Work from the claims
 
-The standard is built on claims. An indicator is one claim: what the lender relies on, in a sentence that can turn out false. Its checks try to disprove it. The indicators sit in nine pillars: the deal, then each party from its surroundings to its money, then the links, then the facility.
+The standard is built on 70 claims. An indicator is one claim: what the lender relies on, in a sentence that can turn out false. The checks behind it try to disprove it. The claims sit in nine pillars: the deal, then each party from its surroundings to its money, then the links, then the facility.
+
+Start from the claims, not from the checks.
+
+- **`show claims`** lists every claim by pillar, one line each:
+
+  ```text
+  - Currency risk (Cedar Foods Ltd): challenged; tests answered 1 of 4; against OBS_FX_008; mitigants 5 not known; agreed action D-002 [CAS_FX_001]
+  ```
+
+- **`status --for <ID>`** shows only what concerns one subject or link: its claims, its open checks, its questions. For a subject it includes the links that touch it. `status --for DEAL` keeps to the checks about the deal.
+- **`show <indicator>`** prints one claim with all its checks and what each rests on.
 
 A check has one of three jobs:
 
@@ -25,16 +36,44 @@ For each claim, and each party or link it is made about, the tool says where it 
 
 Who says something matters. An answer that goes against a claim is believed whatever it rests on. A favourable answer that rests only on what a party said is marked as **someone's own word**, and a claim does not stand on that alone. Set `said_by` on every fact.
 
+## Judgement
+
+The standard is a backbone. It does not replace the analysis.
+
+- **Size.** A test asks about what matters for repayment. Where the thing exists but is too small to matter, give the favourable answer and say in the fact how small it is: "One supplier credit in euros, KES 4m, 0.3% of all debt." The sizes named in questions, such as "about a tenth", are guides.
+- **Answer a test as soon as it is decided.** Some tests speak of "this loan included" or "after this loan". If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known.
+- **One case can decide a test against the claim. A favourable answer needs the whole.** If a test asks about five years and the documents cover three, a bad year among the three decides it. Three good years do not: record the figures, leave the test open and ask for the rest.
+- **Some questions ask for description**, not for a verdict: how the business earns its money (`OBS_BUSINESS_MODEL_001`), what is particular about it (`OBS_BUSINESS_MODEL_002`), what the project is (`OBS_FEAS_008`). Their answers are text and they feed the pages. Answer them early.
+
+## Who is asked what
+
+A check is asked about the deal, about whoever holds a role, about a subject of a kind, or about a link.
+
+- **The loan under review.** A facility is a loan the lender is considering. The roles of borrower and guarantor, and the checks on a guarantee or on security, arise only from links that point at a facility. Debt that already exists is a `lends_to` link and brings the checks on another lender.
+- **The perimeter.** The business and its money are examined once, on the party or group whose cash repays the loan. Five pillars are asked of the perimeter: environment, business, cash flow and debt, liquidity and financial risks, and environmental, social and impact. Related parties and a guarantor's capacity are asked the same way. A company that is a member of a group that is asked the same check is not asked it again.
+- **The legal entity.** People and governance is asked of each company: its owners, its integrity, its board, its standing. A group is not asked these.
+- **The tie between them.** Where the borrower is not the whole perimeter, the links between the companies are examined for whether the cash can reach the lender.
+- **A person** is asked only what fits a person.
+- **A project** is checked only when the loan finances it.
+
+See [recording](recording.md) for how to record each of these.
+
 ## Discovery
 
 The checks of the first pillar are about the deal: what is asked for, how the loan is repaid, who is in it and what kind of business it is. Answer them first. Many other checks wait for them: `status` says how many.
 
-- The kind of credit (`OBS_SECTOR_001`) and the sector (`OBS_SECTOR_002`) decide which checks apply. If one party is of another kind than the rest of the deal, record the answer for that party with `"for"`.
+- The kind of credit (`OBS_SECTOR_001`) and the sector (`OBS_SECTOR_002`) decide which checks apply. Both go by where the profit comes from: a business that trades more than it makes, and earns most of its profit from what it makes, is a manufacturer. If one party is of another kind than the rest of the deal, record the answer for that party with `"for"`.
 - Some answers call for structure: a party, a link, an asset, a project or a contract. `status` lists these under "Structure still open". Add what is missing, and the link brings its own checks. If nothing needs to be added, record a decision that `covers` the check, with the reason.
 
 ## Checks
 
-A check is asked about the deal, about whoever holds a role, or about a link. A check answers by facts: put it in the fact's `answers`.
+A check answers by facts: put it in the fact's `answers`. In `status`, each open check ends with its ID and the answer it takes:
+
+```text
+[OBS_ACC_001: yes/no]   [OBS_OFFTAKER_002: number, percent]   [OBS_LIFECYCLE_001: one of greenfield | expanding | established | distressed]   [OBS_REQUEST_001: text]
+```
+
+"any of" in place of "one of" means that several options may be given, as a list.
 
 | State | Meaning |
 |---|---|
@@ -47,7 +86,21 @@ A check is asked about the deal, about whoever holds a role, or about a link. A 
 
 For a test the tool also says whether the answer goes against the assumption. A reference point such as "above 20" is the standard's own, with its reason in `why`. It can be changed with `adjust`.
 
+## Evidence and kinds of source
+
 Evidence has three strengths: `best`, `supporting`, and `stated` for what someone said. Each check lists which kinds of source count as which. Each stage names the strength that is ideal by then. Nothing is demanded. The tool shows what an answer rests on.
+
+The kind you give a source therefore decides two things: the folder it is filed in, and how strong the evidence of its facts counts. `show kinds` lists every kind with its folder. Choose the kind for what the document is.
+
+| The document | Its kind | Filed in | Counts as |
+|---|---|---|---|
+| Audited financial statements with the auditor's opinion | `audited_annual_report` | `Client folder` | Best evidence for most financial checks |
+| The company's annual report, which is not itself audited | `annual_report` | `Client folder` | Supporting |
+| A prospectus or another offering document | `prospectus` | `Client folder` | Supporting |
+| A newspaper or news-service article | `press_article` | `Internal/sources` | Supporting, where a check lists it |
+| A website, a registry website, market data | `public_source` | `Internal/sources` | Supporting, where a check lists it |
+
+`show <check>` prints the kinds that the check lists under `evidence`. A kind it does not list shows as `unlisted` and counts as the weakest.
 
 ## A gap with an agreed action
 
@@ -85,6 +138,14 @@ The officer adjusts the standard by saying so. You write the adjustment and hand
 The tool refuses an adjustment that names something unknown, lacks a reason, or touches what the institution has locked. A lock on an indicator covers its checks, and a lock on a check covers its indicator.
 
 An adjustment that should hold for every deal belongs in the institution's layer. Tell the officer. Moving it there is their step.
+
+## A newer standard, or an older folder
+
+`upgrade` puts the standard that comes with the tool into the deal folder and records the change of version in the log. It prints the recorded answers that name a check which no longer exists: they stay in the facts and no longer count. Look at each and answer the check that took its place.
+
+A folder made by an earlier version of the tool keeps its record in `Internal/memory/memory.json`. Every command then says so and names the remedy. `upgrade` moves the record to `Internal/record/record.json`. The documents of such a folder stay in the folders they were filed in, and the record still finds them. Only documents filed from then on go flat into `Client folder`.
+
+`doctor` says which version of the standard the tool carries and which the deal uses.
 
 ## The institution's layer
 

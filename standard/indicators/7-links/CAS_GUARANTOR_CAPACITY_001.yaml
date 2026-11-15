@@ -38,7 +38,7 @@ checks:
   look_in: [03.01.a, 05.02.a]
   evidence:
     best: [audited_annual_report, valuation_report]
-    supporting: [management_accounts, company_certificate, tax_returns]
+    supporting: [management_accounts, company_certificate, tax_returns, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: What do you own and what do you owe, in total, as of the latest date you have figures for? Please leave out your
     shares in the borrower and anything the borrower owes you.
@@ -54,7 +54,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report, valuation_report, credit_rating_report]
-    supporting: [management_accounts, bank_statement, company_certificate]
+    supporting: [management_accounts, bank_statement, company_certificate, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   if_unknown: A guarantor whose wealth is in land, unlisted shares or the borrower itself can be worth the amount and still
     be unable to pay it.
@@ -70,7 +70,7 @@ checks:
   look_in: [03.01.a, 04.03.a, 10.03.a]
   evidence:
     best: [audited_annual_report, credit_rating_report]
-    supporting: [debt_schedule, company_certificate, board_minutes]
+    supporting: [debt_schedule, company_certificate, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Please list every guarantee you have given for someone else's debt, with the amount, the lender and the borrower.
   note: Count guarantees for group companies, for other borrowers and for the guarantor's owners, and capital it has promised
@@ -88,7 +88,7 @@ checks:
   look_in: [03.01.a, 02.03.a]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, organizational_chart, company_certificate]
+    supporting: [management_accounts, organizational_chart, company_certificate, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: A guarantor in the same business and the same market as the borrower can fail with it even where the two have no
     dealings with each other. Where that is so, say it in the reason. Where the guarantor is the borrower's parent, the
@@ -110,7 +110,7 @@ checks:
   look_in: [02.01.c, 05.02.a, 03.01.a]
   evidence:
     best: [registry_extract, valuation_report, audited_annual_report]
-    supporting: [company_certificate, bank_statement, management_accounts]
+    supporting: [company_certificate, bank_statement, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: Whether a judgment can be enforced in the country where the assets are is asked about the guarantee (OBS_GUARANTEE_ENFORCE_001).
     This check asks whether there is anything there to enforce against. Where the guarantor is a holding company, its assets
@@ -127,7 +127,7 @@ checks:
   look_in: [02.06.d, 03.01.a, 10.03.a]
   evidence:
     best: [adverse_media_screen, credit_rating_report, audited_annual_report]
-    supporting: [board_minutes, bank_statement, public_source]
+    supporting: [board_minutes, bank_statement, public_source, press_article, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Have you ever been asked to pay under a guarantee, or to put money into a company you owned or backed when it was
     short? What happened?
@@ -160,6 +160,6 @@ checks:
   look_in: [10.03.a]
   evidence:
     best: [credit_rating_report]
-    supporting: [audited_annual_report, public_source]
+    supporting: [audited_annual_report, public_source, press_article]
     stated: [correspondence, call, officer_note]
   note: Record the agency, the rating, whether it is on the international or a national scale, and its date.

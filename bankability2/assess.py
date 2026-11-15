@@ -1,6 +1,6 @@
-"""What the memory means: who holds which role, where each check stands, and what to do next.
+"""What the record means: who holds which role, where each check stands, and what to do next.
 
-Everything here is worked out from the memory and the standard on every run. None of it is stored.
+Everything here is worked out from the record and the standard on every run. None of it is stored.
 """
 import datetime
 
@@ -10,41 +10,60 @@ from .store import DEAL, as_list
 VERDICTS = ("challenged", "contested", "not tested", "stands")  # worst first
 
 
+def counts(link, memory, std):
+    """Whether a link gives its role and is asked its checks: it has not ended, and it points at a kind it counts for."""
+    allowed = next(kind for kind in std["link_types"] if kind["id"] == link["type"]).get("counts_for")
+    return link["state"] != "ended" and (allowed is None or memory["subjects"][link["to"]]["kind"] in allowed)
+
+
 def roles(memory, std):
-    """The roles each subject holds. A role is the end of a link that has not ended."""
+    """The roles each subject holds. A role is the end of a link that counts."""
     kinds = {kind["id"]: kind for kind in std["link_types"]}
     held = {}
     for link in memory["links"].values():
-        if link["state"] != "ended":
+        if counts(link, memory, std):
             for end, role in (("from", "role_from"), ("to", "role_to")):
                 if role in kinds[link["type"]]:
                     held.setdefault(link[end], set()).add(kinds[link["type"]][role])
     return held
 
 
-def targets(names, memory, held):
-    """Whom or what a check is asked about: the deal, holders of a role, subjects of a kind, or links of a kind."""
-    found = []
-    for name in names:
-        found += [DEAL] if name == "deal" else []
-        found += [sid for sid, subject in memory["subjects"].items() if subject["kind"] == name or name in held.get(sid, ())]
-        found += [lid for lid, link in memory["links"].items() if link["type"] == name and link["state"] != "ended"]
-    return list(dict.fromkeys(found))
+def targets(ind, check, memory, std, held):
+    """Whom or what a check is asked about: the deal, holders of a role, subjects of a kind, or links of a kind.
+
+    The business and its money are examined once, on the perimeter: a member of a group that is asked the same check
+    is not asked. A group is not asked what is asked of a legal entity. A kind of subject may be asked only some indicators.
+    """
+    names = check.get("applies_to", ind["applies_to"])
+    kind_of = {sid: subject["kind"] for sid, subject in memory["subjects"].items()}
+    only = {kind["id"]: kind["asked_only"] for kind in std["subject_kinds"] if "asked_only" in kind}
+    asked_of = next((pillar.get("asked_of") for pillar in std["pillars"] if pillar["id"] == ind["pillar"]), None)
+    holders = {sid for sid, kind in kind_of.items()
+               if held.get(sid, set()) & set(names) and not (asked_of == "entity" and kind == "group")}
+    if asked_of == "perimeter":
+        holders -= {link["from"] for link in memory["links"].values()
+                    if link["type"] == "member_of" and link["state"] != "ended" and link["to"] in holders}
+    found = [DEAL] if "deal" in names else []
+    found += [sid for sid, kind in kind_of.items()
+              if (kind in names or sid in holders) and ind["id"] in only.get(kind, [ind["id"]])]
+    return found + [lid for lid, link in memory["links"].items() if link["type"] in names and counts(link, memory, std)]
+
+
+def whom(answer, fact, std):
+    """Whom or what an answer is for: the subject its fact is about, unless it says otherwise or the check is asked
+    about the deal only."""
+    check = std["checks"].get(answer["check"], {})
+    asked_about = check.get("applies_to") or std["by_id"].get(check.get("indicator"), {}).get("applies_to")
+    return answer.get("for") or (DEAL if asked_about == ["deal"] else fact["about"])
 
 
 def answers(memory, std):
-    """The facts that answer each check, by check and by whom or what the answer is for.
-
-    An answer is for the subject its fact is about, unless it says otherwise or the check is asked about the deal only.
-    """
+    """The facts that answer each check, by check and by whom or what the answer is for."""
     found = {}
     for fid, fact in memory["facts"].items():
         if fact["state"] != "outdated":
             for answer in fact.get("answers", []):
-                check = std["checks"].get(answer["check"], {})
-                asked_about = check.get("applies_to") or std["by_id"].get(check.get("indicator"), {}).get("applies_to")
-                whom = answer.get("for") or (DEAL if asked_about == ["deal"] else fact["about"])
-                found.setdefault((answer["check"], whom), []).append((fid, answer["value"]))
+                found.setdefault((answer["check"], whom(answer, fact, std)), []).append((fid, answer["value"]))
     return found
 
 
@@ -163,12 +182,15 @@ def assess(memory, std, today=None):
             row["action"] = action  # a decision that covers this check: a gap with an agreed action
         follows_dead_end = any(state(dep, target) == "not relevant" for dep in after
                                if std["checks"][dep]["indicator"] == ind["id"])
+        dead = (conds and all(cond is False for cond in conds)) or follows_dead_end  # none of its conditions can hold
         if off and parked(off, check, target):
             row.update(state="off" if off["strength"] == "not_for_this_deal" else "parked", reason=off["reason"])
         elif given:
             answered_row(row, check, given, memory, std, today)
-        elif (conds and all(cond is False for cond in conds)) or follows_dead_end:
-            row["state"] = "not relevant"  # none of its conditions can hold any more
+            if dead:
+                row["not_relevant"] = True  # an answer to a check that is not relevant here: `add` says so
+        elif dead:
+            row["state"] = "not relevant"
         elif (any(not (found.get((dep, target)) or found.get((dep, DEAL))) for dep in after) or unnamed
               or (conds and True not in conds) or (applies and True not in applies)):
             row["state"] = "waiting"  # for an earlier answer, for a condition, or for the seat to be filled
@@ -176,7 +198,7 @@ def assess(memory, std, today=None):
 
     for ind in std["indicators"]:
         for check in ind["checks"]:
-            for target in targets(check.get("applies_to", ind["applies_to"]), memory, held):
+            for target in targets(ind, check, memory, std, held):
                 applies = [holds(cond, target, found, std) for cond in ind.get("applies_when", [])]
                 if applies and all(cond is False for cond in applies):
                     continue  # discovery has shown that the indicator does not apply here
@@ -193,12 +215,13 @@ def claims(rows, memory, std):
         if "assumption" not in check or row["state"] in ("off", "not relevant"):
             continue
         claim = found.setdefault((row["indicator"], row["for"]), {
-            "indicator": row["indicator"], "for": row["for"], "tests": 0, "own_word": 0, "thin": 0, "against": [],
+            "indicator": row["indicator"], "for": row["for"], "asked": 0, "tests": 0, "own_word": 0, "thin": 0, "against": [],
             "contested": [], "mitigants": {}, "actions": [], "look_again": [], "seen": 0})
         answered = row["state"] == "answered"
         claim["seen"] = max([claim["seen"], *(memory["facts"][fid]["rev"] for fid in row.get("facts", []))])
         if row.get("action") and row["action"] not in claim["actions"]:
             claim["actions"].append(row["action"])
+        claim["asked"] += not check.get("mitigant")  # every test of the claim, also those that wait for an earlier answer
         if check.get("mitigant"):
             if answered or row["state"] == "open":
                 claim["mitigants"][row["check"]] = ("fails" if row["against"] else "holds") if answered else "not known"
@@ -227,6 +250,23 @@ def claims(rows, memory, std):
     return list(found.values())
 
 
+def stray(memory, std, rows, facts=None):
+    """Answers, in all facts or in the ones named, to a check that is not asked about that subject or link, or is
+    not relevant there. An answer for one party to a check about the deal is discovery for that party, and is left alone."""
+    by_key = {(row["check"], row["for"]): row for row in rows}
+    found = []
+    for fid in memory["facts"] if facts is None else facts:
+        fact = memory["facts"].get(fid, {})
+        for answer in fact.get("answers", []) if fact.get("state") != "outdated" else []:
+            about = whom(answer, fact, std)
+            row = by_key.get((answer["check"], about), {} if (answer["check"], DEAL) in by_key else None)
+            if row is None or row.get("not_relevant"):
+                found.append(f"{fid} answers {answer['check']} for {about}, " + (
+                    "where that check is not relevant" if row else "which is not asked that check"
+                    if answer["check"] in std["checks"] else "and the standard has no such check any more"))
+    return found
+
+
 def view(found, std):
     """For each pillar: how many claims stand where. A claim made about several subjects counts once, at its worst."""
     worst = {}
@@ -252,7 +292,7 @@ def called_for(rows, memory, std):
             sides = [call["end"]] if "end" in call and not link else ["from", "to"]  # the end the subject must be
             kinds = {sid: subject["kind"] for sid, subject in memory["subjects"].items()}
             there = (call["kind"] in kinds.values() if "kind" in call
-                     else any(other["type"] in call["link"] and other["state"] != "ended"
+                     else any(other["type"] in call["link"] and counts(other, memory, std)
                               and (row["for"] == DEAL or ends & {other[side] for side in sides}
                                    or ("end" not in call and kinds.get(other["to"]) == "facility"))  # support for the loan
                               for other in memory["links"].values()))
@@ -262,11 +302,16 @@ def called_for(rows, memory, std):
     return found
 
 
-def next_list(memory, std, rows, in_folder=()):
+def next_list(memory, std, rows, in_folder=(), scope=None):
     """Every candidate for what to do or collect next. The assistant chooses what to show.
 
-    `in_folder` names the data-room slots that hold a document according to the manifest.
+    `in_folder` names the data-room slots that hold a document according to the manifest. `scope` holds the IDs
+    to keep to, when only one subject or link is looked at. The rows are then already those of the scope.
     """
+    def kept(table):
+        return [(rid, entry) for rid, entry in memory[table].items() if scope is None or rid in scope
+                or (table not in ("subjects", "links") and entry.get("about", DEAL) in scope)]
+
     order = {stage: place for place, stage in enumerate(std["stage_ids"])}
     unlocks = {}
     for check in std["checks"].values():
@@ -293,21 +338,22 @@ def next_list(memory, std, rows, in_folder=()):
 
     filled = {field for fact in memory["facts"].values() if fact["state"] == "current" for field in fact.get("fills", [])}
     return {
+        "stray": stray(memory, std, rows) if scope is None else [],
         "structure": [f"{sid}: {subject['kind']} not yet named. {subject.get('note', '')}".strip()
-                      for sid, subject in memory["subjects"].items() if not subject.get("name")]
+                      for sid, subject in kept("subjects") if not subject.get("name")]
                      + [f"{lid}: {link['from']} {link['type']} {link['to']} is proposed, not confirmed"
-                        for lid, link in memory["links"].items() if link["state"] == "proposed"]
+                        for lid, link in kept("links") if link["state"] == "proposed"]
                      + [f"{memory['subjects'].get(call['for'], {}).get('name') or call['for'].replace(DEAL, 'The deal')}: "
                         f"the answer to {call['check']} calls for {call['wanted']}, and there is none"
                         for call in called_for(rows, memory, std)],
         "actions": [f"{did}: {decision['decision']} (owner: {decision.get('owner', 'not named')}; due: "
                     f"{decision.get('due', 'no date')}; covers {', '.join(decision['covers'])})"
-                    for did, decision in memory["decisions"].items() if decision.get("covers")],
+                    for did, decision in kept("decisions") if decision.get("covers")],
         "documents": documents,
         "checks": work,
-        "questions": [dict(question, id=qid) for qid, question in memory["questions"].items() if question["state"] == "open"],
+        "questions": [dict(question, id=qid) for qid, question in kept("questions") if question["state"] == "open"],
         "replaced": [f"{fid} rests on {fact['source']}, which was replaced by {memory['sources'][fact['source']].get('replaced_by')}"
-                     for fid, fact in memory["facts"].items()
+                     for fid, fact in kept("facts")
                      if fact["state"] == "current" and memory["sources"][fact["source"]]["state"] == "replaced"],
         "fields": [f"{system['id']}: {field['id']} {field.get('label', '')} ({field.get('gate', 'no gate')})"
                    for system in std["systems"] for field in system.get("fields", []) if field["id"] not in filled],

@@ -27,7 +27,7 @@ checks:
   look_in: [03.01.a]
   evidence:
     best: [audited_annual_report]
-    supporting: [board_minutes, shareholder_resolution]
+    supporting: [board_minutes, shareholder_resolution, annual_report, prospectus]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Are your annual accounts audited by an outside firm? For which of the last three years can you send us the signed
     audit report?
@@ -47,7 +47,7 @@ checks:
   look_in: [03.01.a]
   evidence:
     best: [audited_annual_report]
-    supporting: [board_minutes, shareholder_resolution]
+    supporting: [board_minutes, shareholder_resolution, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: Record whether the firm is registered with the audit regulator or the professional body where it works, and any
     tie between the firm and the party's owners or managers.
@@ -66,7 +66,7 @@ checks:
   look_in: [03.01.a, 07.01.a]
   evidence:
     best: [regulatory_document, audited_annual_report]
-    supporting: [public_source, company_record]
+    supporting: [public_source, press_article, company_record, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Is your audit firm registered with the body that oversees auditors? Which other companies of your size does it audit?
     Does it, or anyone in it, do other work for you or have a tie to your owners?
@@ -86,7 +86,7 @@ checks:
   look_in: [03.01.a, 03.01.e]
   evidence:
     best: [audited_annual_report]
-    supporting: [audit_management_letter, board_minutes]
+    supporting: [audit_management_letter, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: Read the audit report itself. A summary of the figures, or a set of accounts without the auditor's pages, does not
     show the opinion. Look at the two years before as well, and say so if a reservation was made then and has since gone.
@@ -108,7 +108,7 @@ checks:
   look_in: [03.01.a, 02.03.a]
   evidence:
     best: [audited_annual_report]
-    supporting: [organizational_chart, management_accounts]
+    supporting: [organizational_chart, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Are the accounts you sent us for this company alone, for this company with its subsidiaries, or for a larger group?
     Which companies are in them, and which are left out?
@@ -137,7 +137,7 @@ checks:
   look_in: [03.01.a]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts]
+    supporting: [management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: Count to the day of the answer and give the year-end date. The answer grows older with every month, so look at it
     again before approval.
@@ -155,7 +155,7 @@ checks:
   look_in: [03.01.a, 02.02.a]
   evidence:
     best: [audited_annual_report]
-    supporting: [board_minutes, shareholder_resolution]
+    supporting: [board_minutes, shareholder_resolution, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Has the same firm audited your accounts in each of the last three years? If not, why did the earlier firm leave?
   note: Compare the firm that signed each of the last three audit reports. A party that says yes is believed. A party that
@@ -172,7 +172,7 @@ checks:
   look_in: [03.01.a, 03.01.e]
   evidence:
     best: [audited_annual_report]
-    supporting: [audit_management_letter, board_minutes]
+    supporting: [audit_management_letter, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: A change that a new accounting standard required of every company is a no. Say what changed, and compare the years
     on one basis.
@@ -192,7 +192,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: A quarter is a guide. Take the items from the income statement and its notes, and set them against profit before
     tax of the same year.
@@ -213,7 +213,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report, consultant_report]
-    supporting: [management_accounts, interim_financial_statements]
+    supporting: [management_accounts, interim_financial_statements, annual_report, prospectus]
     stated: [call, officer_note]
   note: A few percent is a guide. A party that keeps no monthly or quarterly accounts cannot show this. Answer no for it
     and say so.

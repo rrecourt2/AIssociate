@@ -29,7 +29,7 @@ checks:
   look_in: [02.01.c, 03.01.a, 02.03.a]
   evidence:
     best: [audited_annual_report, registry_extract, memorandum_and_articles]
-    supporting: [organizational_chart, internal_memo]
+    supporting: [organizational_chart, internal_memo, annual_report, prospectus]
     stated: [executive_summary, correspondence, call, officer_note]
   ask: Is the borrower a company that runs the business itself, a holding company, a company set up only for this project
     or asset, or a fund?
@@ -49,7 +49,7 @@ checks:
   look_in: [03.01.a, 02.01.c, 02.03.a]
   evidence:
     best: [audited_annual_report, registry_extract, shareholder_register]
-    supporting: [organizational_chart, internal_memo]
+    supporting: [organizational_chart, internal_memo, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Does the borrower have a parent company, subsidiaries or sister companies? A group chart would answer this.
   if_unknown: Without the group, the lender does not know which other companies can take cash out of the borrower or bring
@@ -140,7 +140,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record, organizational_chart]
+    supporting: [management_accounts, company_record, organizational_chart, annual_report, prospectus]
     stated: [management_presentation, call, officer_note]
   ask: Does the borrower itself employ the people and hold the plant, premises and equipment of the business, or are they
     in another company of the group?
@@ -160,7 +160,7 @@ checks:
   look_in: [03.01.a, 06.01.a, 02.01.c]
   evidence:
     best: [audited_annual_report, registry_extract, material_contract, offtake_agreement]
-    supporting: [bank_statement, management_accounts, organizational_chart]
+    supporting: [bank_statement, management_accounts, organizational_chart, annual_report, prospectus]
     stated: [call, officer_note]
   note: Follow the money. Who invoices the customer, into whose account does the customer pay, and who owns the site, the
     licences and the brand? This check does not hang on what the client has said. If the search finds nothing, record what

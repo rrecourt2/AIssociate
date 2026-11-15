@@ -44,7 +44,7 @@ checks:
   look_in: [02.06.d, 02.06.a, 07.01.a]
   evidence:
     best: [adverse_media_screen, regulatory_document]
-    supporting: [kyc_package, company_certificate, public_source]
+    supporting: [kyc_package, company_certificate, public_source, press_article]
     stated: [correspondence, call, officer_note]
   ask: Has any director or senior manager ever been convicted of fraud, bribery, money laundering or a similar offence?
     Is any of them charged or under investigation now?
@@ -77,7 +77,7 @@ checks:
   look_in: [02.06.d]
   evidence:
     best: [adverse_media_screen]
-    supporting: [public_source, internal_memo, consultant_report]
+    supporting: [public_source, press_article, internal_memo, consultant_report]
     stated: [call, officer_note]
   note: Record who made the allegation, when, and what became of it. One report in a source with a known grudge weighs less
     than several that do not depend on each other, but it is still recorded. A penalty or a conviction goes under OBS_KYC_003

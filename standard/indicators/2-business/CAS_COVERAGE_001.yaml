@@ -124,7 +124,7 @@ checks:
   look_in: [08.03.b, 03.01.a]
   evidence:
     best: [insurance_broker_report, audited_annual_report]
-    supporting: [company_record, board_minutes]
+    supporting: [company_record, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: In the last five years, has an insurer refused or reduced a claim of yours, or cancelled or declined to renew a policy?
     May we see the claims record from your broker or insurer?

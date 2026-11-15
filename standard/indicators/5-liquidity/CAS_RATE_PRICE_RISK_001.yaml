@@ -32,7 +32,7 @@ checks:
   look_in: [04.03.a, 04.01.b, 03.01.a]
   evidence:
     best: [facility_agreement, audited_annual_report]
-    supporting: [debt_schedule, management_accounts]
+    supporting: [debt_schedule, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: How much of your borrowing is at a floating rate, and how much falls due within the next twelve months?
 - id: OBS_RATE_002
@@ -45,11 +45,12 @@ checks:
   look_in: [03.01.a, 04.03.a, 03.02.b]
   evidence:
     best: [audited_annual_report, facility_agreement]
-    supporting: [debt_schedule, financial_model, management_accounts]
+    supporting: [debt_schedule, financial_model, management_accounts, annual_report, prospectus]
     stated: [management_presentation, call, officer_note]
   note: Three points is a guide. Where the reference rate has stood more than three points above today's level within the
     last ten years, test against that level. For a business without a full year of trading, use the first full year of the
-    base case.
+    base case. The test does not wait for the terms of the loan. If the answer already goes against the assumption on the
+    debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known.
   leads_to:
   - {indicator: CAS_DEBT_SERVICE_001, is: false, reason: The cover for debt service is too thin to take a rise in rates}
 - id: OBS_PRICE_001
@@ -60,7 +61,7 @@ checks:
   look_in: [03.01.a, 06.01.a, 06.04.a]
   evidence:
     best: [audited_annual_report, offtake_agreement, supply_agreement]
-    supporting: [management_accounts, market_study]
+    supporting: [management_accounts, market_study, annual_report, prospectus]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Is the price of what you sell, or of your main input, set on a commodity market? Which one?
 - id: OBS_PRICE_002
@@ -75,7 +76,7 @@ checks:
   look_in: [04.03.a, 03.01.a, 10.03.a]
   evidence:
     best: [hedge_document, audited_annual_report]
-    supporting: [company_record, management_accounts]
+    supporting: [company_record, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: At the busiest point of your season, how much stock do you hold that is not yet sold or hedged? And how much have
     you sold forward at a fixed price without having bought the goods?
@@ -94,7 +95,7 @@ checks:
   look_in: [03.01.a, 04.03.a, 10.03.a]
   evidence:
     best: [audited_annual_report, hedge_document]
-    supporting: [company_record, management_accounts, board_minutes]
+    supporting: [company_record, management_accounts, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: This check does not hang on OBS_PRICE_001, so that the topic cannot close on one answer. Large gains or losses on
     derivatives in the accounts of a party that says it does not deal in commodities are a sign. If the search finds nothing,
@@ -111,7 +112,7 @@ checks:
   look_in: [03.01.a, 10.03.a, 02.02.a]
   evidence:
     best: [audited_annual_report, legal_opinion]
-    supporting: [company_record, board_minutes, management_accounts]
+    supporting: [company_record, board_minutes, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: When prices last moved sharply, did any buyer refuse to take delivery, or any supplier fail to deliver at the agreed
     price? What did it cost you?

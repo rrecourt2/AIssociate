@@ -3,7 +3,7 @@ title: 'Power: resource'
 pillar: business
 claim: The wind, sun, water or fuel will be there, year after year, in the quantity the projections count on.
 due_by: diligence
-applies_to: [project]
+applies_to: [financed_project]
 applies_when:
 - {check: OBS_SECTOR_002, is: power}
 matters_more_when:

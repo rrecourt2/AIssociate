@@ -28,7 +28,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Do you earn revenue in a foreign currency, or sell at prices that follow one? A revenue breakdown by currency or
     a rough share is enough to start with.
@@ -45,7 +45,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   note: Where the answer is other, name the currency.
 - id: OBS_FX_002
@@ -59,7 +59,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: What share of your revenue is in foreign currency, or at prices that follow one? A rough percentage is fine at this
     stage.
@@ -72,7 +72,7 @@ checks:
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report, supply_agreement]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Do you pay for anything in a foreign currency, or at a price that goes up when the local currency falls? Think of
     imported raw materials, fuel, spare parts, freight and licence fees.
@@ -94,27 +94,33 @@ checks:
   look_in: [03.01.a, 03.01.b, 06.04.a]
   evidence:
     best: [audited_annual_report, supply_agreement]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Roughly what share of your input costs is imported, or priced off international markets even when billed in local
     currency (imported gas, fuel or raw materials, for example)?
   note: Inputs billed in local currency at a price that follows the import price count as imported.
 - id: OBS_FX_008
-  question: Is any of the party's debt, the proposed loan included, owed in a currency other than the one in which the party
-    earns the cash flow that services it?
+  question: Is more than about a tenth of the party's debt, the proposed loan included, owed in a currency other than the
+    one in which the party earns the cash flow that services it?
   answer: yes_no
-  assumption: The party's debt is owed in the currency of the cash flow that services it
+  assumption: No more than a small part of the party's debt is owed in a currency other than that of the cash flow that
+    services it
   disproved_by: 'yes'
   due_by: concept
   look_in: [04.03.a, 04.01.b, 03.01.a]
   evidence:
     best: [facility_agreement, audited_annual_report]
-    supporting: [debt_schedule, term_sheet, management_accounts]
+    supporting: [debt_schedule, term_sheet, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Is any of your borrowing in a different currency from the income you repay it with? For example a loan in dollars
-    or euros repaid from sales in local currency.
-  note: Go by the currency the cash is paid in. A price set in or linked to another currency but paid in local currency
-    is a protection, not a match. OBS_FX_PASSTHROUGH_001 asks about it.
+    or euros repaid from sales in local currency. How much is it, out of all your borrowing?
+  note: 'A tenth is a guide to what matters. What counts is whether a fall of the earning currency would raise the party''s
+    debt service by an amount that matters against its cash flow. Where there is such debt but it stays below the guide,
+    the answer is no: record the amount and its share of all debt in the reason. Go by the currency the cash is paid in.
+    A price set in or linked to another currency but paid in local currency is a protection, not a match. OBS_FX_PASSTHROUGH_001
+    asks about it. The test does not wait for the terms of the loan. If the answer already goes against the assumption on
+    the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are
+    known.'
   leads_to:
   - {indicator: CAS_COUNTRY_RISK_001, is: true, reason: Debt owed in a foreign currency also has to be converted and transferred
       abroad}
@@ -133,12 +139,14 @@ checks:
   look_in: [03.02.b, 03.01.a]
   evidence:
     best: [internal_memo, consultant_report]
-    supporting: [financial_model, audited_annual_report, public_source]
+    supporting: [financial_model, audited_annual_report, public_source, press_article]
     stated: [call, officer_note]
   ask_whom: lender
   if_unknown: Nobody knows how far the currency can fall before a payment is missed.
   note: Take the fall from published exchange rates and name the twelve months. Take the party's prices and volumes in those
-    months from its own accounts where it was already trading. If no such case has been run, the check stays open.
+    months from its own accounts where it was already trading. If no such case has been run, the check stays open. The test
+    does not wait for the terms of the loan. If the answer already goes against the assumption on the debt the party owes
+    today, record it now and say that it is before the new loan. Answer again when the terms are known.
   leads_to:
   - {indicator: CAS_DEBT_SERVICE_001, is: false, reason: The cash flow does not carry the debt once the currency has fallen}
 - id: OBS_FX_CAPEX_001
@@ -172,7 +180,7 @@ checks:
   look_in: [03.01.a, 06.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report, offtake_agreement, material_contract]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, annual_report, prospectus]
     stated: [management_presentation, correspondence, call, officer_note]
   ask: When a weaker currency raises your input costs and the cost of your foreign-currency debt, can you raise your selling
     prices to match within a quarter, fully or in part? Are your prices set in or linked to a foreign currency, or are they
@@ -193,7 +201,7 @@ checks:
   look_in: [03.01.a, 03.01.b, 03.02.b]
   evidence:
     best: [audited_annual_report]
-    supporting: [management_accounts, financial_model, company_record]
+    supporting: [management_accounts, financial_model, company_record, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Do you have costs or debt in the same foreign currencies as your revenue? For each currency, how much do you receive
     and how much do you pay in a year?
@@ -216,7 +224,7 @@ checks:
   look_in: [04.03.a, 03.01.a, 02.05.a]
   evidence:
     best: [hedge_document, audited_annual_report]
-    supporting: [management_accounts, company_record, corporate_governance_policy]
+    supporting: [management_accounts, company_record, corporate_governance_policy, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: What part of your foreign-currency exposure for the next twelve months is hedged today, and with which contracts?
     Please share the confirmations or the bank's hedge report.

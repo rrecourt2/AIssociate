@@ -23,7 +23,7 @@ checks:
   look_in: [02.05.b, 03.01.a, 10.03.a]
   evidence:
     best: [audited_annual_report, consultant_report]
-    supporting: [management_cv, board_minutes]
+    supporting: [management_cv, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: When was the last bad year for this business, who was in charge then, and what did they do?
   note: Where the loan pays for a step up in size or for a new line of business, measure against the business as it will
@@ -40,7 +40,7 @@ checks:
   look_in: [02.01.c, 02.02.a, 03.01.a]
   evidence:
     best: [registry_extract, audited_annual_report]
-    supporting: [board_minutes, organizational_chart]
+    supporting: [board_minutes, organizational_chart, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Has your chief executive or head of finance changed in the last two years? Why did the previous one leave, and where
     is that person now?
@@ -68,7 +68,7 @@ checks:
   look_in: [02.03.a, 02.05.b, 10.03.a]
   evidence:
     best: [consultant_report, audited_annual_report]
-    supporting: [organizational_chart, management_cv, board_minutes]
+    supporting: [organizational_chart, management_cv, board_minutes, annual_report, prospectus]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: If you, or your most important colleague, could not work for six months, who would deal with the main customers,
     the bank and the technical side?

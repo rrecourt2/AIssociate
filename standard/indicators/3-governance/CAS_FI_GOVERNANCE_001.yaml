@@ -30,7 +30,7 @@ checks:
   look_in: [07.01.a, 02.02.a]
   evidence:
     best: [regulatory_document]
-    supporting: [board_minutes, credit_rating_report, public_source]
+    supporting: [board_minutes, credit_rating_report, public_source, press_article]
     stated: [correspondence, call, officer_note]
   ask: Where do you stand with your supervisor today? Are you under ordinary supervision, or has the supervisor asked for
     closer reporting, agreed a corrective plan with you, or taken any other special measure?
@@ -55,7 +55,7 @@ checks:
   look_in: [07.01.a, 02.02.a, 03.01.e]
   evidence:
     best: [regulatory_document]
-    supporting: [audited_annual_report, board_minutes, audit_management_letter, public_source]
+    supporting: [audited_annual_report, board_minutes, audit_management_letter, public_source, press_article]
     stated: [correspondence, call, officer_note]
   ask: In the last three years, has your supervisor fined you, limited what you may do, or written to you with an order
     to correct something? If so, what was it about, and is it closed?
@@ -71,7 +71,7 @@ checks:
   look_in: [03.01.a, 07.01.a, 03.01.e]
   evidence:
     best: [audited_annual_report, regulatory_document]
-    supporting: [company_record, board_minutes, audit_management_letter]
+    supporting: [company_record, board_minutes, audit_management_letter, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: How much have you lent to your shareholders, directors and managers, and to companies connected with them? What limit
     does your regulator set, and how do you decide who is connected?

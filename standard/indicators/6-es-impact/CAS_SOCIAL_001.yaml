@@ -4,7 +4,7 @@ pillar: es_impact
 claim: The party employs its workers lawfully and safely and has no unresolved conflict with the people around its sites,
   so that no strike, protest or sanction over either could stop its operations or discredit its lenders.
 due_by: diligence
-applies_to: [borrower, repayment_source, project]
+applies_to: [borrower, repayment_source, financed_project]
 matters_more_when:
 - {check: OBS_SECTOR_002, is: agribusiness, reason: 'Field and packing work relies on seasonal and migrant workers, whose
     terms are the weakest'}

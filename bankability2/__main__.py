@@ -2,7 +2,6 @@
 import argparse
 import datetime
 import json
-import re
 import sys
 
 from . import __version__, assess, files, pages, standard, store
@@ -11,6 +10,8 @@ from .files import Refused
 
 def load(deal):
     memory = files.read_json(deal, files.MEMORY)
+    if memory is None and files.read(deal, files.OLD_MEMORY) is not None:
+        raise Refused(f"{deal} keeps its record where an earlier version of the tool put it. Move it with: upgrade <folder>")
     if memory is None:
         raise Refused(f"{deal} holds no deal. Start one with: start <folder> --name <name>")
     return memory, standard.effective(deal)
@@ -21,20 +22,13 @@ def given(path):
     return json.load(sys.stdin) if path == "-" else files.read_input(path)
 
 
-def safe(name):
-    """A folder name that Windows and OneDrive accept."""
-    return re.sub(r'[\\/:*?"<>|]', "-", name).strip()
-
-
 def start(args):
-    if files.read(args.deal, files.MEMORY) is not None:
+    if any(files.read(args.deal, path) is not None for path in (files.MEMORY, files.OLD_MEMORY)):
         raise Refused(f"{args.deal} already holds a deal")
     std = files.packaged_standard()
     if args.stage not in [stage["id"] for stage in std["stages"]]:
         raise Refused(f"unknown stage {args.stage!r}")
-    for folder in std["dataroom"]["folders"]:
-        files.make_folder(args.deal, f"{files.CLIENT}/{folder['id']} {safe(folder['title'])}")
-    for name in files.INTERNAL_FOLDERS:
+    for name in files.INTERNAL_FOLDERS:  # the client folder comes with its manifest. The data room is an index, not folders
         files.make_folder(args.deal, f"Internal/{name}")
     files.write_json(args.deal, files.BASE, std)
     if args.institution:
@@ -52,57 +46,82 @@ def group(title, lines, limit):
         print(f"- and {len(lines) - limit} more: use --all")
 
 
-def status(args):
-    memory, std = load(args.deal)
-    rows = assess.assess(memory, std)
-    listed = files.read_json(args.deal, files.MANIFEST, {"documents": []})["documents"]
-    todo = assess.next_list(memory, std, rows, in_folder={doc["slot"] for doc in listed})
-    if args.json:
-        print(json.dumps({"deal": memory["deal"], "revision": store.revision(memory), "checks": rows,
-                          "claims": assess.claims(rows, memory, std), "next": todo}, indent=1, ensure_ascii=False))
-        return
-    held, deal = assess.roles(memory, std), memory["deal"]
-    titles = std["stage_titles"]
-    print(f"# {deal['name']}: stage {titles[deal['stage']]}, revision {store.revision(memory)}, standard {deal['standard']}")
+def structure(memory, std, scope=None):
+    """The subjects with their roles, and the links. With a scope: only the subject or link looked at, and what touches it."""
+    held = assess.roles(memory, std)
+    shown_as = {kind["id"]: f", {kind['shown_as']}" for kind in std["subject_kinds"] if "shown_as" in kind}
     print("\n## Structure")
     for sid, subject in memory["subjects"].items():
-        print(f"- {sid} {subject.get('name') or 'not yet named'}: {subject['kind']}"
-              + "".join(f", {role}" for role in sorted(held.get(sid, ()))))
+        if scope is None or sid in scope:
+            print(f"- {sid} {subject.get('name') or 'not yet named'}: {subject['kind']}{shown_as.get(subject['kind'], '')}"
+                  + "".join(f", {role}" for role in sorted(held.get(sid, ()))))
     for lid, link in memory["links"].items():
-        print(f"- {lid} {pages.name_of(lid, memory)} ({link['state']})")
-    print("\n## What changed")
+        if scope is None or lid in scope:
+            idle = link["state"] != "ended" and not assess.counts(link, memory, std)
+            towards = " or ".join(standard.find(std, "link:" + link["type"]).get("counts_for", []))
+            print(f"- {lid} {pages.name_of(lid, memory)} ({link['state']}"
+                  + (f"; it gives no role and no checks, because it does not point at a {towards}" if idle else "") + ")")
+
+
+def status(args):
+    memory, std = load(args.deal)
+    rows, scope = assess.assess(memory, std), None
+    if args.about:  # only what concerns one subject or link, and for a subject the links that touch it
+        if args.about != store.DEAL and store.table_of(memory, args.about) not in ("subjects", "links"):
+            raise Refused(f"--for takes the ID of a subject or a link, or {store.DEAL}, and {args.about!r} is none of them")
+        scope = {args.about} | {lid for lid, link in memory["links"].items() if args.about in (link["from"], link["to"])}
+        rows = [row for row in rows if row["for"] in scope]
+    listed = files.read_json(args.deal, files.MANIFEST, {"documents": []})["documents"]
+    todo = assess.next_list(memory, std, rows, in_folder={doc["slot"] for doc in listed}, scope=scope)
+    found = assess.claims(rows, memory, std)
+    if args.json:
+        print(json.dumps({"deal": memory["deal"], "revision": store.revision(memory), "checks": rows,
+                          "claims": found, "next": todo}, indent=1, ensure_ascii=False))
+        return
+    deal, titles = memory["deal"], std["stage_titles"]
+    print(f"# {deal['name']}: stage {titles[deal['stage']]}, revision {store.revision(memory)}, standard {deal['standard']}")
+    if scope:
+        print(f"\nOnly what concerns {pages.name_of(args.about, memory)} ({args.about}).")
+    structure(memory, std, None if args.about == store.DEAL else scope)
     entries = memory["log"][-5:] if args.since is None else [entry for entry in memory["log"] if entry["n"] > args.since]
-    for entry in entries:
-        touched = len(entry["added"]) + len(entry["changed"])
-        print(f"- {entry['n']}. {entry['at'][:10]} {entry['by']}: {entry['note']} ({touched} records)")
+    if scope is None or args.since is not None:
+        print("\n## What changed")
+        for entry in entries:
+            touched = len(entry["added"]) + len(entry["changed"])
+            print(f"- {entry['n']}. {entry['at'][:10]} {entry['by']}: {entry['note']} ({touched} records)")
     counts = {}
     for row in rows:
         counts[row["state"]] = counts.get(row["state"], 0) + 1
     print("\n## Next\n\nChecks: " + (", ".join(f"{count} {state}" for state, count in counts.items()) or "none apply yet") + ".")
-    found = assess.claims(rows, memory, std)
     print("\n## Where the claims stand\n")
     for pillar in std["pillars"]:
         counts = assess.view(found, std)[pillar["id"]]
-        print(f"- {pillar['title']}: " + (", ".join(f"{count} {name}" for name, count in zip(assess.VERDICTS, counts) if count)
-                                          or "no claim applies yet"))
-    limit = None if args.all else 15
+        if scope is None or any(counts):
+            print(f"- {pillar['title']}: " + (", ".join(f"{count} {name}" for name, count in zip(assess.VERDICTS, counts)
+                                                        if count) or "no claim applies yet"))
     urgent = [line[2:] for line in pages.claim_lines(found, memory, std) if not line.startswith("- **Claims:**")]
-    group("Claims that are challenged, contested or to look at again", urgent, limit)
-    group("Structure still open", todo["structure"], limit)
     lines = []
     for row in todo["checks"]:
         waits = f"; {row['unlocks']} checks wait on it" if row["unlocks"] else ""
         state = ", ".join([row["state"], *row["flags"]])
-        lines.append(f"{std['checks'][row['check']]['question']} ({pages.name_of(row['for'], memory)}; "
-                     f"ideally by {titles[row['due_by']]}; {state}{waits}) [{row['check']}]")
+        check = std["checks"][row["check"]]
+        lines.append(f"{check['question']} ({pages.name_of(row['for'], memory)}; ideally by {titles[row['due_by']]}; "
+                     f"{state}{waits}) [{row['check']}: {standard.takes(check)}]")
+    limit = None if args.all else 15
+    group("Claims that are challenged, contested or to look at again", urgent, limit)
+    group("Structure still open", todo["structure"], limit)
     group("Checks to answer or strengthen", lines, limit)
     group("Gaps with an agreed action", todo["actions"], limit)
-    group("Documents not in the folder", [f"{doc['slot']} {doc['title']}: {doc['why']}" for doc in todo["documents"]], limit)
+    if scope is None:
+        group("Documents not in the folder", [f"{doc['slot']} {doc['title']}: {doc['why']}" for doc in todo["documents"]], limit)
     group("Questions without an answer", [f"{q['id']} to {q['asked_of']}, asked {q.get('asked', 'no date')}: {q['text']}"
                                          for q in todo["questions"]], limit)
     group("Facts that rest on a replaced source", todo["replaced"], limit)
-    group("System fields without a value", todo["fields"], limit)
-    if std["notes"]:
+    if scope is None:
+        group("System fields without a value", todo["fields"], limit)
+    if todo["stray"]:
+        group("Answers to a check that is not asked or not relevant there", todo["stray"], limit)
+    if std["notes"] and scope is None:
         group("Notes on the standard", std["notes"], limit)
 
 
@@ -121,7 +140,7 @@ def add(args):
             else:
                 missing.append(source["where"])
     try:
-        entry = store.apply(memory, change, std)
+        entry, names = store.apply(memory, change, std)
     except (TypeError, KeyError, AttributeError) as error:  # nothing is written before apply returns
         raise Refused(f"Nothing was recorded. A value in this set of changes has the wrong shape: {error!r}")
     if entry is None:
@@ -130,8 +149,12 @@ def add(args):
     files.write_json(args.deal, files.MEMORY, memory)
     print(f"Recorded as revision {entry['n']}. Added: {', '.join(entry['added']) or 'nothing'}. "
           f"Changed: {', '.join(entry['changed']) or 'nothing'}.")
+    for name, rid in names.items():
+        print(f"{name} -> {rid}")
     for path in missing:
         print(f"Note: {path} was not found in this copy of the folder, so it has no fingerprint.")
+    for line in assess.stray(memory, std, assess.assess(memory, std), [*entry["added"], *entry["changed"]]):
+        print(f"Note: {line}. The answer is recorded all the same.")
 
 
 def summary(record):
@@ -139,6 +162,63 @@ def summary(record):
         if record.get(key):
             return str(record[key])
     return ""
+
+
+def folders(std):
+    """Where a document of each data-room slot is filed: the client folder, and the slot its index lists it under."""
+    return {slot["id"]: f"{files.CLIENT}, listed under {slot['id']} {slot['title']}" for slot in standard.slots_of(std)}
+
+
+def show_kinds(std):
+    """The kinds of source with the folder each is filed in, the kinds of subject, and the kinds of link with their roles."""
+    place = folders(std)
+    print("## Kinds of source, and the folder each is filed in\n")
+    for kind in std["source_kinds"]:
+        print(f"- {kind['id']}: {kind['title']}. Folder: {place.get(kind.get('slot'), 'Internal/sources')}")
+    print("\n## Kinds of subject, and the letter its IDs start with\n")
+    for kind in std["subject_kinds"]:
+        print(f"- {kind['id']} ({kind['prefix']}): {kind['description']}")
+    print("\n## Kinds of link, and the role each gives\n")
+    for link in std["link_types"]:
+        gives = " and ".join(f"{link['role_' + end]} to its '{end}' end" for end in ("from", "to") if "role_" + end in link)
+        only = f" It counts only when it points at a {' or '.join(link['counts_for'])}." if "counts_for" in link else ""
+        print(f"- {link['id']}: {link['description']} " + (f"Gives the role {gives}." if gives else "Gives no role.") + only)
+
+
+def show_claims(memory, std, rows):
+    """Every claim, by pillar, one line each: where it stands and what that rests on."""
+    found = assess.claims(rows, memory, std)
+    for pillar in std["pillars"]:
+        mine = [claim for claim in found if std["by_id"][claim["indicator"]]["pillar"] == pillar["id"]]
+        if mine:
+            print(f"## {pillar['title']}\n")
+        for claim in mine:
+            states = sorted(claim["mitigants"].values())
+            answered = claim["tests"] + len(claim["against"]) + len(claim["contested"])
+            parts = [claim["stands"], f"tests answered {answered} of {claim['asked']}",
+                     claim["against"] and f"against {', '.join(claim['against'])}",
+                     claim["contested"] and f"facts disagree on {', '.join(claim['contested'])}",
+                     claim["own_word"] and f"answers on someone's own word {claim['own_word']}",
+                     states and "mitigants " + ", ".join(f"{states.count(state)} {state}" for state in dict.fromkeys(states)),
+                     claim["actions"] and f"agreed action {', '.join(claim['actions'])}"]
+            print(f"- {std['by_id'][claim['indicator']]['title']} ({pages.name_of(claim['for'], memory)}): "
+                  f"{'; '.join(filter(None, parts))} [{claim['indicator']}]")
+        if mine:
+            print()
+
+
+def fact_lines(memory, about):
+    """One line per current fact: all of them, or only those about one subject, one link or the deal."""
+    lines = []
+    for fid, fact in memory["facts"].items():
+        if fact["state"] == "current" and about in (None, fact["about"]):
+            value = f" {fact.get('label', 'Value')}: {fact.get('value')} {fact.get('unit', '')}".rstrip() + "."
+            answers = ", ".join(f"{answer['check']}: {pages.shown(answer['value'])}" for answer in fact.get("answers", []))
+            where = [fact["source"], fact.get("place"), fact.get("as_of") and f"as of {fact['as_of']}", fact.get("said_by"),
+                     answers and f"answers {answers}"]
+            lines.append(f"- {fid} about {fact['about']}: {fact['statement']}{value if 'value' in fact else ''} "
+                         f"({'; '.join(filter(None, where))})")
+    return lines
 
 
 def show(args):
@@ -150,6 +230,12 @@ def show(args):
                   f"added {entry['added']} changed {list(entry['changed'])}")
     elif what == "sheet":
         print("\n".join(assess.sheet(memory, std)) or "The institution's layer lists no systems.")
+    elif what == "kinds":
+        show_kinds(std)
+    elif what == "claims":
+        show_claims(memory, std, rows)
+    elif args.what[0] == "facts" and len(args.what) <= 2:
+        print("\n".join(fact_lines(memory, args.what[1] if len(args.what) == 2 else None)) or "Nothing found.")
     elif what in std["checks"] or what in std["by_id"]:
         entry = std["checks"].get(what) or std["by_id"][what]
         print(json.dumps({key: value for key, value in entry.items() if key != "checks"}, indent=1, ensure_ascii=False))
@@ -174,16 +260,23 @@ def show(args):
 
 
 def refresh(args):
+    def counted(number):
+        return f"{number} page" + ("" if number == 1 else "s")
+
     memory, std = load(args.deal)
     rows = assess.assess(memory, std)
-    created = pages.refresh(args.deal, memory, std, rows, assess.roles(memory, std))
-    print(f"The pages are up to date. New pages to write: {', '.join(created) or 'none'}.")
+    created, changed, same = pages.refresh(args.deal, memory, std, rows, assess.roles(memory, std))
+    if created:
+        print(f"Created {counted(len(created))} for you to write: {', '.join(created)}.")
+    if changed or same:
+        print(f"Updated the tool's parts of {counted(len(changed))}. {counted(same)} needed no change.")
+    print(f"Wrote the contents page, and the view for a browser: {files.WIKI}/wiki.html.")
 
 
 def file_problems(deal, memory):
     """Documents that are missing, changed or not listed. Skipped where the documents are not present."""
     listed = {doc["path"]: doc for doc in files.read_json(deal, files.MANIFEST, {"documents": []})["documents"]}
-    present = [path for path in files.listing(deal, files.CLIENT) if path != files.MANIFEST]
+    present = [path for path in files.listing(deal, files.CLIENT) if path not in (files.MANIFEST, files.CLIENT + "/index.md")]
     wheres = [source["where"] for source in memory["sources"].values() if source.get("where")]
     if (listed or wheres) and not present and not any(files.fingerprint(deal, where) for where in wheres):
         return ["The documents are not in this copy of the folder, so files were not checked."]
@@ -198,6 +291,8 @@ def file_problems(deal, memory):
             found.append(f"{sid}: {source['where']} was not found in this copy of the folder")
         elif mark and source.get("fingerprint") not in (None, mark):
             found.append(f"{sid}: {source['where']} changed since it was recorded")
+        if source.get("extract") and files.fingerprint(deal, source["extract"]) is None:
+            found.append(f"{sid}: the extract {source['extract']} was not found in this copy of the folder")
     return found
 
 
@@ -231,29 +326,73 @@ def adjust(args):
 
 
 def file_documents(args):
-    _, std = load(args.deal)
+    """Move each document to its place: the client folder if its kind has a slot in the data room, the internal sources
+    if not. A text extract made from it goes to the extracts. Then write the index of the client folder."""
+    memory, std = load(args.deal)
     kinds = {kind["id"]: kind for kind in std["source_kinds"]}
-    place = {slot["id"]: f"{files.CLIENT}/{folder['id']} {safe(folder['title'])}/{sub['id']} {safe(sub['title'])}"
-             for folder in std["dataroom"]["folders"] for sub in folder["sub_folders"] for slot in sub["slots"]}
-    items = given(args.filing)
+    items, refused = given(args.filing), []
     items = items if isinstance(items, list) else [items]
     for item in items:
-        if not isinstance(item, dict) or item.get("kind") not in kinds or not isinstance(item.get("file"), str):
+        if (not isinstance(item, dict) or item.get("kind") not in kinds or not isinstance(item.get("file"), str)
+                or not isinstance(item.get("extract", ""), str)):
             raise Refused(f"a filing is a list, and each document in it needs a 'file' and a known 'kind': {item!r}\n"
                           f"Known kinds: {', '.join(kinds)}")
     manifest = files.read_json(args.deal, files.MANIFEST, {"documents": []})
     for item in items:
-        name = item["file"].replace("\\", "/").split("/")[-1]
+        name, extract = (item.get(key, "").replace("\\", "/").split("/")[-1] for key in ("file", "extract"))
         slot = kinds[item["kind"]].get("slot")
-        target = f"{place[slot]}/{name}" if slot else f"Internal/sources/{name}"
-        files.move(args.deal, item["file"], target)
+        target, moved = f"{files.CLIENT if slot else 'Internal/sources'}/{name}", False
+        try:
+            if name in ("index.md", "manifest.json") and slot:
+                raise Refused(f"{target} is a name the tool keeps for itself")
+            files.move(args.deal, item["file"], target)  # refuses to overwrite another document of that name
+            moved = True
+            if extract:
+                files.move(args.deal, item["extract"], f"{files.EXTRACTS}/{extract}")
+        except Refused as refusal:
+            refused.append(f"{item['extract' if moved else 'file']}: {refusal}")
+            if not moved:
+                continue
+            extract = ""  # the document is filed, without its extract
         manifest["documents"] = [doc for doc in manifest["documents"] if doc["path"] not in (target, item["file"])]
         if slot:
             manifest["documents"].append({"path": target, "slot": slot, "kind": item["kind"], "title": item.get("title", name),
                                           "party": item.get("party"), "period": item.get("period"),
-                                          "fingerprint": files.fingerprint(args.deal, target)})
+                                          "fingerprint": files.fingerprint(args.deal, target),
+                                          **({"extract": f"{files.EXTRACTS}/{extract}"} if extract else {})})
         files.write_json(args.deal, files.MANIFEST, manifest)  # after each move, so the list never lags the folder
-        print(f"{item['file']} -> {target}")
+        print(f"{item['file']} -> {target}" + (f", with its extract {files.EXTRACTS}/{extract}" if extract else ""))
+    files.write(args.deal, f"{files.CLIENT}/index.md", pages.documents(memory["deal"]["name"], manifest["documents"], std))
+    if refused:
+        raise Refused("Not filed. The tool never overwrites a file: where a name is taken, give the document a name of its "
+                      "own and file it again.\n" + "\n".join(refused))
+
+
+def upgrade(args):
+    """Put the standard that comes with the tool into the deal folder, and say which answers it leaves without a check.
+    A record that an earlier version of the tool kept elsewhere is first moved to its place."""
+    if files.read(args.deal, files.MEMORY) is None and files.read(args.deal, files.OLD_MEMORY) is not None:
+        files.move(args.deal, files.OLD_MEMORY, files.MEMORY)
+        print(f"Moved the record to {files.MEMORY}. It was in {files.OLD_MEMORY}.")
+    memory, _ = load(args.deal)
+    new, old = files.packaged_standard(), memory["deal"]["standard"]
+    if files.read_json(args.deal, files.BASE) == new:
+        print(f"The deal already uses the standard that comes with the tool: {old}.")
+        return
+    files.write_json(args.deal, files.BASE, new)
+    std = standard.effective(args.deal)  # with the layers of the institution and the deal on top
+    store.note_outside_change(memory)
+    memory["deal"]["standard"] = new["version"]
+    note = f"Standard changed from {old} to {new['version']}"
+    store.record(memory, "tool", note, changed={store.DEAL: {"standard": old}})
+    files.write_json(args.deal, files.MEMORY, memory)
+    print(f"The deal now uses standard {new['version']}. It used {old}.")
+    gone = [f"{fid}: {answer['check']}" for fid, fact in memory["facts"].items() if fact["state"] != "outdated"
+            for answer in fact.get("answers", []) if answer["check"] not in std["checks"]]
+    print("Answers that name a check that no longer exists. They stay in the facts and no longer count:\n- "
+          + "\n- ".join(gone) if gone else "Every recorded answer still names a check of the standard.")
+    for note in std["notes"]:
+        print(f"Note: {note}")
 
 
 def doctor(args):
@@ -263,17 +402,19 @@ def doctor(args):
     if args.deal:
         memory = files.read_json(args.deal, files.MEMORY)
         if memory is None:
-            print(f"{args.deal} holds no deal yet.")
+            old = files.read(args.deal, files.OLD_MEMORY) is not None
+            print(f"{args.deal} keeps its record where an earlier version of the tool put it. Move it with: upgrade <folder>"
+                  if old else f"{args.deal} holds no deal yet.")
             return
         print(f"Deal {memory['deal']['name']}: revision {store.revision(memory)}, standard {memory['deal']['standard']}.")
         if memory["deal"]["standard"] != packaged:
-            print("Note: the deal uses another version of the standard than this tool carries.")
-        files.write(args.deal, "Internal/memory/doctor.txt", f"Checked on {datetime.date.today().isoformat()}\n")
+            print("Note: the deal uses another version of the standard than this tool carries. `upgrade` brings it in line.")
+        files.write(args.deal, "Internal/record/doctor.txt", f"Checked on {datetime.date.today().isoformat()}\n")
         print("Writing to the deal folder works.")
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog="bankability2", description="A memory for an investment deal.")
+    parser = argparse.ArgumentParser(prog="bankability2", description="Keeps the record of an investment deal.")
     commands = parser.add_subparsers(dest="command", required=True)
 
     def command(name, run, text, deal="deal"):
@@ -288,26 +429,38 @@ def main(argv=None):
     sub.add_argument("--institution", help="the institution's layer of the standard, a JSON file")
     sub = command("status", status, "the structure, what changed and what to do next")
     sub.add_argument("--all", action="store_true", help="list every candidate")
+    sub.add_argument("--for", dest="about", metavar="ID", help="only what concerns this subject or link")
     sub.add_argument("--since", type=int, help="show changes after this revision")
     sub.add_argument("--json", action="store_true")
     command("add", add, "record a set of changes").add_argument("changes", help="a JSON file, or - for standard input")
-    command("show", show, "look something up").add_argument("what", nargs="+", help="an ID, 'log', 'sheet', or words to search for")
-    command("pages", refresh, "fill in the tool's parts of the wiki pages")
+    command("show", show, "look something up").add_argument(
+        "what", nargs="+", help="an ID, 'log', 'sheet', 'kinds', 'claims', 'facts', 'facts <ID>', or words to search for")
+    command("pages", refresh, "fill in the tool's parts of the wiki pages, and write the view for a browser")
     command("check", check, "report what looks wrong")
     command("adjust", adjust, "adjust the standard for this deal").add_argument("adjustment", help="a JSON file, or -")
-    command("file", file_documents, "sort documents into the client folder").add_argument("filing", help="a JSON file, or -")
+    command("file", file_documents, "file documents and index the client folder").add_argument("filing", help="a JSON file, or -")
+    command("upgrade", upgrade, "put the standard that comes with the tool into the deal folder")
     command("doctor", doctor, "report where the tool runs", deal="optional")
     args = parser.parse_args(argv)
     for stream in filter(None, (sys.__stdin__, sys.__stdout__)):
         stream.reconfigure(encoding="utf-8")  # Windows would use its own code page when the tool is piped
     code = 0
     try:
-        args.run(args)
-    except (Refused, json.JSONDecodeError, UnicodeDecodeError, OSError) as refusal:
-        print(f"Refused: {refusal}")
-        code = 1
-    if files.WRITTEN:  # also after a refusal: `file` may have moved documents before it was refused
-        print("Wrote: " + ", ".join(dict.fromkeys(files.WRITTEN)))
+        try:
+            args.run(args)
+        except BrokenPipeError:
+            raise
+        except (Refused, json.JSONDecodeError, UnicodeDecodeError, OSError) as refusal:
+            print(f"Refused: {refusal}")
+            code = 1
+        if files.WRITTEN:  # also after a refusal: `file` may have moved documents before it was refused
+            print("Wrote: " + ", ".join(dict.fromkeys(files.WRITTEN)))
+        print(end="", flush=True)
+    except BrokenPipeError:  # the reader stopped reading, as in `show ... | head`. That is not a refusal.
+        try:
+            sys.stdout.close()
+        except BrokenPipeError:
+            pass
     return code
 
 

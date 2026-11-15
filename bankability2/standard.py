@@ -13,6 +13,15 @@ FLAG = re.compile(r"^(above|below|at most|at least) (-?\d+(?:\.\d+)?)$|^is (not 
 EXPECTS = {"yes_no": "true or false", "number": "a number", "choice": "one of the check's options", "text": "text"}
 
 
+def takes(check):
+    """The answer a check takes, as a person reads it: yes/no, a number with its unit, the options, or text."""
+    if check["answer"] == "choice":
+        return ("any of " if check.get("many") else "one of ") + " | ".join(check.get("options", []))
+    if check["answer"] == "number":
+        return "number" + (f", {check['unit']}" if check.get("unit") else "")
+    return "yes/no" if check["answer"] == "yes_no" else "text"
+
+
 def fits(check, value):
     """Whether a value is the kind of answer the check asks for."""
     if check["answer"] == "yes_no":
@@ -159,6 +168,12 @@ def problems(std):
 
     for kind in std["source_kinds"]:
         need(kind["id"], kind.get("slot") is None or kind["slot"] in slots, f"unknown slot {kind.get('slot')!r}")
+    for link in std["link_types"]:
+        need(link["id"], set(link.get("counts_for", [])) <= subject_kinds, "counts_for names an unknown kind of subject")
+    for kind in std["subject_kinds"]:
+        need(kind["id"], set(kind.get("asked_only", [])) <= set(indicators), "asked_only names an unknown indicator")
+    for pillar in std["pillars"]:
+        need(pillar["id"], pillar.get("asked_of") in (None, "perimeter", "entity"), "asked_of is perimeter or entity")
     for ind in std["indicators"]:
         iid, own = ind["id"], {check["id"] for check in ind["checks"]}
         need(iid, ind.get("title") and ind.get("claim"), "needs a title and a claim")

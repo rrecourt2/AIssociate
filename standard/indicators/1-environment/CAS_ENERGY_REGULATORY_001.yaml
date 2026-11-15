@@ -4,7 +4,7 @@ pillar: environment
 claim: The project keeps the tariff it was granted until the loan is repaid, or is made whole if the tariff or the rules
   change.
 due_by: concept
-applies_to: [project]
+applies_to: [financed_project]
 applies_when:
 - {check: OBS_SECTOR_002, is: power}
 matters_more_when:
@@ -60,7 +60,7 @@ checks:
   look_in: [07.01.a, 08.01.a, 10.03.a]
   evidence:
     best: [regulatory_document, legal_opinion, consultant_report]
-    supporting: [public_source, internal_memo]
+    supporting: [public_source, press_article, internal_memo]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Do you know of any change to tariffs, grid rules, taxes or incentives for power producers that is being prepared?
     What would it mean for the project?
@@ -74,7 +74,7 @@ checks:
   look_in: [10.03.a, 08.01.a, 01.03.a]
   evidence:
     best: [legal_opinion, consultant_report, market_study]
-    supporting: [public_source, internal_memo]
+    supporting: [public_source, press_article, internal_memo]
     stated: [correspondence, call, officer_note]
   note: This asks about the country's record, not about this project. Name each case and its year. If the search finds nothing,
     record what was searched, where and when.

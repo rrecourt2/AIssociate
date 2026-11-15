@@ -1,4 +1,4 @@
-"""The memory of a deal: sources, facts, subjects, links, decisions and questions, with a log.
+"""The record of a deal, which the code calls `memory`: sources, facts, subjects, links, decisions and questions, with a log.
 
 Nothing is deleted. A record that is replaced stays, marked as replaced.
 """
@@ -12,7 +12,7 @@ from .standard import EXPECTS, fits
 # For each table: the ID prefix, the fields a new record must have, and the other fields it may have.
 TABLES = {
     "sources": ("S", ("title", "kind"),
-                ("where", "fingerprint", "date", "about", "read", "map", "sent_by", "state", "replaced_by", "note")),
+                ("where", "extract", "fingerprint", "date", "about", "read", "map", "sent_by", "state", "replaced_by", "note")),
     "facts": ("F", ("about", "statement", "source"),
               ("label", "value", "unit", "as_of", "place", "said_by", "nothing_found", "answers", "fills",
                "state", "replaced_by", "note")),
@@ -52,7 +52,7 @@ def state_of(memory):
 
 
 def record(memory, by, note, op=None, added=(), changed=None):
-    """Add a log entry. It carries the fingerprint of the entry before it and of the memory after the change."""
+    """Add a log entry. It carries the fingerprint of the entry before it and of the record after the change."""
     log = memory["log"]
     entry = {"n": len(log) + 1, "at": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
              "by": by, "note": note, "op": op, "added": list(added), "changed": changed or {},
@@ -63,7 +63,7 @@ def record(memory, by, note, op=None, added=(), changed=None):
 
 
 def verify(memory):
-    """Problems with the log: a broken chain, or a memory that was changed without a log entry."""
+    """Problems with the log: a broken chain, or a record that was changed without a log entry."""
     problems, prev = [], None
     for entry in memory["log"]:
         body = {key: value for key, value in entry.items() if key != "hash"}
@@ -72,14 +72,14 @@ def verify(memory):
             break
         prev = entry["hash"]
     if not memory["log"] or memory["log"][-1]["state"] != state_of(memory):
-        problems.append("the memory was changed outside the tool since the last log entry")
+        problems.append("the record was changed outside the tool since the last log entry")
     return problems
 
 
 def note_outside_change(memory):
-    """Log that the memory no longer matches its last entry, before a new entry hides it."""
+    """Log that the record no longer matches its last entry, before a new entry hides it."""
     if not memory["log"] or memory["log"][-1]["state"] != state_of(memory):
-        record(memory, "tool", "The memory was changed outside the tool before this entry")
+        record(memory, "tool", "The record was changed outside the tool before this entry")
 
 
 def table_of(memory, rid):
@@ -97,7 +97,7 @@ def as_list(value):
 
 
 def place(memory, change, std, errors):
-    """Give every new record its ID, and replace each "@name" with the ID it stands for."""
+    """Give every new record its ID, and replace each "@name" with the ID it stands for. Returns both."""
     prefixes = {kind["id"]: kind["prefix"] for kind in std["subject_kinds"]}
     names, placed = {}, []
     taken = {rid for table in TABLES for rid in memory[table]}
@@ -141,7 +141,7 @@ def place(memory, change, std, errors):
         for answer in as_list(fields.get("answers")):
             if isinstance(answer, dict) and "for" in answer:
                 answer["for"] = swap(answer["for"])
-    return placed
+    return placed, names
 
 
 def problems_of(table, rid, fields, is_new, memory, known, std):
@@ -179,17 +179,18 @@ def problems_of(table, rid, fields, is_new, memory, known, std):
 
 
 def apply(memory, change, std):
-    """Check a set of changes and apply all of it, or refuse all of it. Returns the log entry."""
+    """Check a set of changes and apply all of it, or refuse all of it. Returns the log entry, and the ID that each
+    "@name" in the set of changes was given."""
     errors = [f"unknown key {key!r}" for key in change if key not in ("by", "note", "base", "op", "deal", *TABLES)]
     if change.get("op") and any(entry["op"] == change["op"] for entry in memory["log"]):
-        return None  # this set of changes was applied before
+        return None, {}  # this set of changes was applied before
     if "base" in change and change["base"] != revision(memory):
-        errors.append(f"the memory is at revision {revision(memory)}, not {change['base']}. Look at it again and resend.")
+        errors.append(f"the record is at revision {revision(memory)}, not {change['base']}. Look at it again and resend.")
     deal = change.get("deal", {})
     errors += [f"deal: unknown field {key!r}" for key in deal if key not in ("name", "stage")]
     if "stage" in deal and deal["stage"] not in std["stage_ids"]:
         errors.append(f"deal: unknown stage {deal['stage']!r}. Known: {', '.join(std['stage_ids'])}")
-    placed = place(memory, change, std, errors)
+    placed, names = place(memory, change, std, errors)
     known = {rid: table for table in TABLES for rid in memory[table]}
     known.update({rid: table for table, rid, _, _ in placed})
     for table, rid, fields, is_new in placed:
@@ -220,4 +221,4 @@ def apply(memory, change, std):
             old = memory[table][replaces]
             changed[replaces] = {"state": old.get("state"), "replaced_by": old.get("replaced_by")}
             old.update(state=STATES[table][1], replaced_by=rid)
-    return record(memory, change.get("by", "unknown"), change.get("note", ""), change.get("op"), added, changed)
+    return record(memory, change.get("by", "unknown"), change.get("note", ""), change.get("op"), added, changed), names

@@ -1,6 +1,6 @@
 {
  "name": "Bankability Standard",
- "version": "4.0.1",
+ "version": "4.1.0",
  "description": "A standard for investment due diligence built on claims that can be disproved. It says what a deal folder holds and what must be known.",
  "licence": "MIT",
  "stages": [
@@ -79,42 +79,49 @@
    "id": "environment",
    "title": "Environment",
    "layer": "party",
+   "asked_of": "perimeter",
    "description": "Country, sector and market, licences and regulation."
   },
   {
    "id": "business",
    "title": "Business",
    "layer": "party",
+   "asked_of": "perimeter",
    "description": "Customers, inputs, operations and assets."
   },
   {
    "id": "governance",
    "title": "People and governance",
    "layer": "party",
+   "asked_of": "entity",
    "description": "Owners and control, integrity, board and controls, management."
   },
   {
    "id": "cash_flow",
    "title": "Cash flow and debt",
    "layer": "party",
+   "asked_of": "perimeter",
    "description": "The accounts, profitability, cash flow against debt service, existing debt."
   },
   {
    "id": "liquidity",
    "title": "Liquidity and financial risks",
    "layer": "party",
+   "asked_of": "perimeter",
    "description": "Liquidity and working capital, currency, interest rate and price risk."
   },
   {
    "id": "es_impact",
    "title": "Environmental, social and impact",
    "layer": "party",
+   "asked_of": "perimeter",
    "description": "E&S risk and its management, land and supply chain, impact and additionality."
   },
   {
    "id": "links",
    "title": "Links",
    "layer": "link",
+   "asked_of": "perimeter",
    "description": "Guarantee, group, key customer, key supplier, builder and operator, other lenders."
   },
   {
@@ -129,13 +136,28 @@
    "id": "party",
    "prefix": "P",
    "title": "Party",
-   "description": "A company, a person or a public body."
+   "description": "A company or a public body."
+  },
+  {
+   "id": "person",
+   "prefix": "N",
+   "title": "Person",
+   "description": "A natural person. A person is asked only what fits a person.",
+   "asked_only": [
+    "CAS_SANCTIONS_001",
+    "CAS_PEP_001",
+    "CAS_KYC_AML_001",
+    "CAS_SOURCE_OF_FUNDS_001",
+    "CAS_LITIGATION_001",
+    "CAS_GUARANTOR_CAPACITY_001"
+   ]
   },
   {
    "id": "facility",
    "prefix": "L",
    "title": "Facility",
-   "description": "A loan, a guarantee facility or another financing, proposed or existing."
+   "description": "A loan under review, a guarantee facility or another financing that the lender considers. Debt that already exists is not a facility. It is a `lends_to` link.",
+   "shown_as": "the loan under review"
   },
   {
    "id": "contract",
@@ -159,7 +181,7 @@
    "id": "group",
    "prefix": "G",
    "title": "Group",
-   "description": "Parties that report or are treated together, such as a consolidated group."
+   "description": "Parties that report or are treated together, such as a consolidated group. A group is the perimeter whose business and money are examined. It is not asked what is asked of a legal entity."
   }
  ],
  "link_types": [
@@ -167,7 +189,10 @@
    "id": "borrows",
    "title": "Borrows under",
    "description": "The party borrows under the facility.",
-   "role_from": "borrower"
+   "role_from": "borrower",
+   "counts_for": [
+    "facility"
+   ]
   },
   {
    "id": "relies_on",
@@ -178,8 +203,11 @@
   {
    "id": "guarantees",
    "title": "Guarantees",
-   "description": "The party guarantees the facility or another party's obligations.",
-   "role_from": "guarantor"
+   "description": "The party guarantees the facility. A guarantee of debt that already exists is a fact about that debt's `lends_to` link.",
+   "role_from": "guarantor",
+   "counts_for": [
+    "facility"
+   ]
   },
   {
    "id": "sponsors",
@@ -219,7 +247,7 @@
   {
    "id": "lends_to",
    "title": "Lends to",
-   "description": "The party lends to another party, including loans within a group.",
+   "description": "The party lends to another party, including loans within a group. Debt that already exists is recorded this way, with its terms, its security and its guarantors as facts about the link.",
    "role_from": "lender"
   },
   {
@@ -242,7 +270,10 @@
   {
    "id": "secures",
    "title": "Is security for",
-   "description": "The asset is security for the facility."
+   "description": "The asset is security for the facility.",
+   "counts_for": [
+    "facility"
+   ]
   },
   {
    "id": "ranks_behind",
@@ -258,13 +289,26 @@
    "id": "supports",
    "title": "Gives support to",
    "description": "The party has given a support undertaking that is not a guarantee. Like a guarantor, it is examined for whether it can and must stand behind the loan.",
-   "role_from": "guarantor"
+   "role_from": "guarantor",
+   "counts_for": [
+    "facility"
+   ]
   },
   {
    "id": "completion_support",
    "title": "Supports completion of",
    "description": "The party supports the completion of a project or the facility that finances it. Like a guarantor, it is examined for whether it can and must stand behind that promise.",
-   "role_from": "guarantor"
+   "role_from": "guarantor",
+   "counts_for": [
+    "facility",
+    "project"
+   ]
+  },
+  {
+   "id": "finances",
+   "title": "Pays for",
+   "description": "The facility pays for a project or an asset. The link runs from the facility to what it pays for.",
+   "role_to": "financed_project"
   },
   {
    "id": "portfolio_support",
@@ -280,9 +324,15 @@
  "source_kinds": [
   {
    "id": "audited_annual_report",
-   "title": "Audited annual report",
-   "description": "Audited annual financial statements with independent audit opinion",
+   "title": "Audited financial statements",
+   "description": "Audited annual financial statements with the independent auditor's opinion, on their own or bound into an annual report",
    "slot": "03.01.a"
+  },
+  {
+   "id": "annual_report",
+   "title": "Annual report",
+   "description": "The company's annual report: its own account of its business, its year and its governance. It is not itself audited, even where it sums up audited figures. A report that holds the full audited statements with the auditor's opinion is filed as audited financial statements.",
+   "slot": "01.01.b"
   },
   {
    "id": "management_accounts",
@@ -408,6 +458,12 @@
    "id": "business_plan",
    "title": "Business plan",
    "description": "Detailed business plan or strategic plan",
+   "slot": "01.01.b"
+  },
+  {
+   "id": "prospectus",
+   "title": "Prospectus",
+   "description": "A prospectus or another offering document for shares, bonds or other securities.",
    "slot": "01.01.b"
   },
   {
@@ -659,7 +715,7 @@
   {
    "id": "other",
    "title": "Other",
-   "description": "Document that does not fit any defined type — requires human review",
+   "description": "A document that fits no other kind. A person has to look at it.",
    "slot": "10.03.a"
   },
   {
@@ -680,7 +736,12 @@
   {
    "id": "public_source",
    "title": "Public source",
-   "description": "Public information: a company website, a news article, a registry website or market data."
+   "description": "Public information other than a press article: a company website, a registry website or market data."
+  },
+  {
+   "id": "press_article",
+   "title": "Press article",
+   "description": "An article in a newspaper, a magazine or a news service."
   },
   {
    "id": "registry_extract",
@@ -1466,7 +1527,9 @@
       ],
       "supporting": [
        "organizational_chart",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "executive_summary",
@@ -1513,7 +1576,9 @@
       ],
       "supporting": [
        "organizational_chart",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -1728,7 +1793,9 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "organizational_chart"
+       "organizational_chart",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "management_presentation",
@@ -1773,7 +1840,9 @@
       "supporting": [
        "bank_statement",
        "management_accounts",
-       "organizational_chart"
+       "organizational_chart",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -1851,6 +1920,51 @@
      "ask": "What are you asking us for? How much, in which currency, for how long, and what will the money pay for?"
     },
     {
+     "id": "OBS_REQUEST_003",
+     "question": "Does the money pay for a project or an asset that can be named: something that is built, bought or expanded, such as a plant, a production line or a site?",
+     "answer": "yes_no",
+     "why": "The checks on a project are asked of the project that the loan pays for, and of no other. A yes puts that project or asset into the structure, linked to the facility. A no means that the money goes into the business as a whole.",
+     "calls_for": [
+      {
+       "is": true,
+       "link": [
+        "finances"
+       ]
+      }
+     ],
+     "look_in": [
+      "01.02.a",
+      "04.01.a",
+      "01.01.a"
+     ],
+     "evidence": {
+      "best": [
+       "term_sheet",
+       "facility_agreement"
+      ],
+      "supporting": [
+       "investment_plan",
+       "internal_memo"
+      ],
+      "stated": [
+       "executive_summary",
+       "business_plan",
+       "correspondence",
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "Will the money pay for one thing that you can name, such as a new plant or line, or the purchase of an asset? Or will it go into the business as a whole?",
+     "note": "Record the project or the asset as a subject, and link the facility to it with a link of the kind finances. Where the money pays for several, link each of them. Working capital, a refinancing and general purposes are a no. Other projects of the business are described in facts and on pages. They get no such link and are not checked.",
+     "leads_to": [
+      {
+       "indicator": "CAS_FEASIBILITY_001",
+       "is": true,
+       "reason": "What the loan pays for is described there, and examined for whether it can be built or bought and run as planned"
+      }
+     ]
+    },
+    {
      "id": "OBS_INVESTOR_ROLE_001",
      "question": "Where would the lender rank against the others who have put money into the business?",
      "answer": "choice",
@@ -1914,7 +2028,9 @@
       "supporting": [
        "debt_schedule",
        "management_accounts",
-       "term_sheet"
+       "term_sheet",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -1962,7 +2078,9 @@
       "supporting": [
        "debt_schedule",
        "management_accounts",
-       "shareholder_register"
+       "shareholder_register",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -2050,7 +2168,9 @@
       "supporting": [
        "investment_plan",
        "term_sheet",
-       "debt_schedule"
+       "debt_schedule",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "executive_summary",
@@ -2153,7 +2273,9 @@
        "investment_plan",
        "financial_model",
        "bank_statement",
-       "shareholder_resolution"
+       "shareholder_resolution",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "business_plan",
@@ -2198,7 +2320,9 @@
       "supporting": [
        "debt_schedule",
        "bank_statement",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -2275,7 +2399,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "financial_projections"
+       "financial_projections",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "business_plan",
@@ -2324,7 +2450,9 @@
       "supporting": [
        "investment_plan",
        "financial_model",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "business_plan",
@@ -2370,7 +2498,9 @@
       ],
       "supporting": [
        "financial_model",
-       "financial_projections"
+       "financial_projections",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "business_plan",
@@ -2425,7 +2555,9 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "bank_statement"
+       "bank_statement",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -2532,7 +2664,9 @@
       "supporting": [
        "term_sheet",
        "organizational_chart",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "executive_summary",
@@ -2569,18 +2703,21 @@
       ],
       "supporting": [
        "management_accounts",
-       "operational_license"
+       "operational_license",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "business_plan",
        "executive_summary",
        "public_source",
+       "press_article",
        "call",
        "officer_note"
       ]
      },
-     "ask": "What does the business do, and which activity brings in the largest part of its revenue?",
-     "note": "Choose the sector that the largest part of revenue comes from. Agribusiness covers growing, processing and trading farm produce. Power covers generating, transmitting and selling electricity."
+     "ask": "What does the business do, and which activity earns the largest part of its profit?",
+     "note": "Choose the sector that earns the largest part of the profit, also where another activity brings in more revenue. A business that trades more than it makes, and earns most of its profit from what it makes, is in manufacturing. OBS_VALUE_CHAIN_001 goes by the same rule. Agribusiness covers growing, processing and trading farm produce. Power covers generating, transmitting and selling electricity."
     },
     {
      "id": "OBS_SECTOR_003",
@@ -2598,10 +2735,13 @@
        "audited_annual_report"
       ],
       "supporting": [
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "public_source",
+       "press_article",
        "correspondence",
        "call",
        "officer_note"
@@ -2645,7 +2785,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "business_plan",
@@ -2655,7 +2797,75 @@
       ]
      },
      "ask": "What is the main role of the business? Does it grow or extract, make, trade, distribute, sell to consumers, provide a service, develop assets, own and operate them, hold a concession, lend, or manage funds?",
-     "note": "Choose the role that earns the largest part of the profit. Choose developer where the business builds assets to sell them, and owner_operator where it keeps and runs them."
+     "note": "Choose the role that earns the largest part of the profit, also where another role brings in more revenue. A business that trades more than it makes, and earns most of its profit from what it makes, is a manufacturer. The sector in OBS_SECTOR_002 goes by the same rule. Choose developer where the business builds assets to sell them, and owner_operator where it keeps and runs them."
+    },
+    {
+     "id": "OBS_BUSINESS_MODEL_001",
+     "question": "How does the business earn its money: what does it buy, what does it do with it, whom does it sell to, and where does its margin come from?",
+     "answer": "text",
+     "why": "A sector and a place in the value chain are labels. The description says what the business does in fact, and every figure is read against it. The pages on the business start from this answer.",
+     "look_in": [
+      "01.01.b",
+      "03.01.a"
+     ],
+     "evidence": {
+      "best": [
+       "audited_annual_report"
+      ],
+      "supporting": [
+       "management_accounts",
+       "market_study",
+       "internal_memo",
+       "annual_report",
+       "prospectus"
+      ],
+      "stated": [
+       "business_plan",
+       "executive_summary",
+       "management_presentation",
+       "public_source",
+       "press_article",
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "Please walk us through the business. What do you buy and from whom, what do you do with it, whom do you sell to, and on which step do you earn your margin?",
+     "note": "Describe, do not judge. A few sentences in the terms of the business itself: the goods, the steps, the customers. Where the accounts show it, say what share of revenue and of profit each activity brings. Where the business has several activities, describe each."
+    },
+    {
+     "id": "OBS_BUSINESS_MODEL_002",
+     "question": "What is particular about this business compared with others of its kind, and how does that show in its figures?",
+     "answer": "text",
+     "why": "Two businesses in one sector can earn their money in different ways. What sets this one apart explains figures that would look wrong beside its peers, such as a thin margin in a business that trades more than it makes.",
+     "due_by": "concept",
+     "look_in": [
+      "03.01.a",
+      "01.01.b",
+      "01.03.a"
+     ],
+     "evidence": {
+      "best": [
+       "audited_annual_report"
+      ],
+      "supporting": [
+       "management_accounts",
+       "market_study",
+       "internal_memo",
+       "annual_report",
+       "prospectus"
+      ],
+      "stated": [
+       "business_plan",
+       "executive_summary",
+       "management_presentation",
+       "public_source",
+       "press_article",
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "What do you do differently from other businesses in your line? What would surprise someone who knows the sector but not your company?",
+     "note": "Name a few things, each with the figure it shows in. Examples are an unusual mix of activities, an owner who is also a customer or a supplier, a location, a season, the way stock is financed, or a rule that applies to this business alone. Leave out what is true of every business of its kind. If nothing sets it apart, say so."
     },
     {
      "id": "OBS_SECTOR_CONFIRM_003",
@@ -2689,7 +2899,9 @@
       "supporting": [
        "management_accounts",
        "interim_financial_statements",
-       "tax_returns"
+       "tax_returns",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "management_presentation",
@@ -2731,7 +2943,9 @@
       "supporting": [
        "management_accounts",
        "interim_financial_statements",
-       "tax_returns"
+       "tax_returns",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "management_presentation",
@@ -2823,7 +3037,9 @@
       ],
       "supporting": [
        "financial_model",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "executive_summary",
@@ -2853,7 +3069,8 @@
       ],
       "stated": [
        "officer_note",
-       "public_source"
+       "public_source",
+       "press_article"
       ]
      },
      "ask_whom": "lender",
@@ -2885,7 +3102,9 @@
       "supporting": [
        "management_accounts",
        "organizational_chart",
-       "financial_model"
+       "financial_model",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -2931,7 +3150,9 @@
       "supporting": [
        "management_accounts",
        "financial_model",
-       "financial_projections"
+       "financial_projections",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "business_plan",
@@ -3085,7 +3306,9 @@
       ],
       "supporting": [
        "financial_model",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -3236,7 +3459,9 @@
       "supporting": [
        "term_sheet",
        "organizational_chart",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "management_presentation",
@@ -3264,6 +3489,7 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "consultant_report",
        "internal_memo"
       ],
@@ -3297,6 +3523,7 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "internal_memo"
       ],
       "stated": [
@@ -3324,6 +3551,7 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "internal_memo"
       ],
       "stated": [
@@ -3354,6 +3582,7 @@
       "supporting": [
        "internal_memo",
        "public_source",
+       "press_article",
        "bank_statement"
       ],
       "stated": [
@@ -3383,7 +3612,8 @@
       "supporting": [
        "consultant_report",
        "internal_memo",
-       "public_source"
+       "public_source",
+       "press_article"
       ],
       "stated": [
        "call",
@@ -3503,7 +3733,7 @@
    "claim": "The project keeps the tariff it was granted until the loan is repaid, or is made whole if the tariff or the rules change.",
    "due_by": "concept",
    "applies_to": [
-    "project"
+    "financed_project"
    ],
    "applies_when": [
     {
@@ -3632,6 +3862,7 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "internal_memo"
       ],
       "stated": [
@@ -3663,6 +3894,7 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "internal_memo"
       ],
       "stated": [
@@ -3933,7 +4165,9 @@
       "supporting": [
        "board_minutes",
        "company_record",
-       "company_certificate"
+       "company_certificate",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -4048,6 +4282,7 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "internal_memo",
        "board_minutes"
       ],
@@ -4210,6 +4445,7 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "internal_memo"
       ],
       "stated": [
@@ -4246,6 +4482,7 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "company_record",
        "internal_memo"
       ],
@@ -4317,7 +4554,9 @@
       ],
       "supporting": [
        "financial_model",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "business_plan",
@@ -4326,7 +4565,7 @@
        "officer_note"
       ]
      },
-     "note": "Use the party's accounts for that year where it was already trading. Otherwise set today's cash cost per unit against that price (for a processor or a trader, today's cash costs other than the main input against that gap). Where the price is fixed and the market adjusts through volume, use the lowest volume. A producer whose costs are among the highest in its market is the first to lose money when the price falls."
+     "note": "Use the party's accounts for that year where it was already trading. Otherwise set today's cash cost per unit against that price (for a processor or a trader, today's cash costs other than the main input against that gap). Where the price is fixed and the market adjusts through volume, use the lowest volume. A producer whose costs are among the highest in its market is the first to lose money when the price falls. The test does not wait for the terms of the loan. If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known."
     },
     {
      "id": "OBS_MARKET_005",
@@ -4347,6 +4586,7 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "internal_memo"
       ],
       "stated": [
@@ -4378,7 +4618,9 @@
       "supporting": [
        "market_study",
        "consultant_report",
-       "financial_model"
+       "financial_model",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "business_plan",
@@ -4414,6 +4656,7 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "internal_memo",
        "company_record"
       ],
@@ -4446,7 +4689,10 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "public_source"
+       "public_source",
+       "press_article",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "business_plan",
@@ -4577,7 +4823,9 @@
       ],
       "supporting": [
        "company_record",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -4673,7 +4921,10 @@
       ],
       "supporting": [
        "company_record",
-       "public_source"
+       "public_source",
+       "press_article",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -4703,7 +4954,10 @@
       "supporting": [
        "company_record",
        "management_accounts",
-       "public_source"
+       "public_source",
+       "press_article",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -4739,7 +4993,8 @@
       "supporting": [
        "company_record",
        "board_minutes",
-       "public_source"
+       "public_source",
+       "press_article"
       ],
       "stated": [
        "call",
@@ -5411,7 +5666,9 @@
       ],
       "supporting": [
        "company_record",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -5431,7 +5688,7 @@
    "claim": "The project will be complete and performing as designed before the first repayment falls due, for no more money than is committed.",
    "due_by": "diligence",
    "applies_to": [
-    "project"
+    "financed_project"
    ],
    "applies_when": [
     {
@@ -5705,7 +5962,7 @@
    "claim": "The plant can deliver to the grid the energy the projections count on, and a buyer is bound to take it or pay for it.",
    "due_by": "concept",
    "applies_to": [
-    "project"
+    "financed_project"
    ],
    "applies_when": [
     {
@@ -5977,7 +6234,9 @@
       ],
       "supporting": [
        "company_record",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -5997,7 +6256,7 @@
    "claim": "The wind, sun, water or fuel will be there, year after year, in the quantity the projections count on.",
    "due_by": "diligence",
    "applies_to": [
-    "project"
+    "financed_project"
    ],
    "applies_when": [
     {
@@ -6286,7 +6545,7 @@
    "claim": "The project can be built on its site for the estimated cost and run as planned, with technology that already works at this scale.",
    "due_by": "diligence",
    "applies_to": [
-    "project"
+    "financed_project"
    ],
    "matters_more_when": [
     {
@@ -6311,6 +6570,41 @@
     }
    ],
    "checks": [
+    {
+     "id": "OBS_FEAS_008",
+     "question": "What is the project: what is built or bought, where, for how much, by when, who pays for it, and what does it add to the business?",
+     "answer": "text",
+     "why": "Opens the topic. The tests that follow ask whether the project can be built and run as planned. This answer says what the plan is, and the page on the project starts from it.",
+     "due_by": "screening",
+     "look_in": [
+      "01.02.a",
+      "05.01.a",
+      "01.01.b"
+     ],
+     "evidence": {
+      "best": [
+       "technical_feasibility",
+       "epc_contract"
+      ],
+      "supporting": [
+       "investment_plan",
+       "board_resolution",
+       "internal_memo",
+       "annual_report",
+       "prospectus"
+      ],
+      "stated": [
+       "business_plan",
+       "executive_summary",
+       "management_presentation",
+       "correspondence",
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "Please describe the project. What will be built or bought, where, at what cost and by when? Who pays for which part, and what will it add to the business (capacity, products, revenue)?",
+     "note": "Give the figures with their dates: the cost, the capacity, the planned start and end, and what has been spent so far. Say how far the project has come (planned, approved, under construction, in operation). Where the loan pays for an asset that is bought and not built, describe the asset and the purchase."
+    },
     {
      "id": "OBS_FEAS_001",
      "question": "Is there a written feasibility study for the project that covers its design, its site, its cost and its schedule?",
@@ -6359,7 +6653,8 @@
       ],
       "supporting": [
        "company_record",
-       "public_source"
+       "public_source",
+       "press_article"
       ],
       "stated": [
        "correspondence",
@@ -6630,7 +6925,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -6672,7 +6969,9 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "financial_model"
+       "financial_model",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -6701,7 +7000,10 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "public_source"
+       "public_source",
+       "press_article",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -6783,7 +7085,10 @@
       "supporting": [
        "company_record",
        "management_accounts",
-       "public_source"
+       "public_source",
+       "press_article",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -6827,7 +7132,10 @@
        "company_record",
        "management_accounts",
        "board_minutes",
-       "public_source"
+       "public_source",
+       "press_article",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -6864,7 +7172,10 @@
       "supporting": [
        "board_minutes",
        "company_record",
-       "public_source"
+       "public_source",
+       "press_article",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -7013,7 +7324,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "financial_model"
+       "financial_model",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -7091,7 +7404,9 @@
       ],
       "supporting": [
        "company_record",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -7204,7 +7519,10 @@
       "supporting": [
        "company_record",
        "management_accounts",
-       "public_source"
+       "public_source",
+       "press_article",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -7233,7 +7551,9 @@
       "supporting": [
        "company_record",
        "board_minutes",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -7263,7 +7583,10 @@
       "supporting": [
        "company_record",
        "board_minutes",
-       "public_source"
+       "public_source",
+       "press_article",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -7462,7 +7785,9 @@
       "supporting": [
        "management_accounts",
        "interim_financial_statements",
-       "bank_statement"
+       "bank_statement",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -7507,7 +7832,9 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "material_contract"
+       "material_contract",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -7548,7 +7875,9 @@
        "financial_model",
        "management_accounts",
        "company_record",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -7557,7 +7886,7 @@
      },
      "ask": "If your largest customer stopped buying tomorrow, how much of its volume could you sell elsewhere within a year, and which costs could you cut?",
      "if_unknown": "Until this is worked out, nobody knows whether the loan hangs on one customer.",
-     "note": "Twelve months is a guide. Take out the revenue from that customer and only the costs that would fall with it within the year. Use the debt service of the first full year of repayment, this loan included. Count customers under common control as one. Where the party sells its whole output to one buyer, the answer is no."
+     "note": "Twelve months is a guide. Take out the revenue from that customer and only the costs that would fall with it within the year. Use the debt service of the first full year of repayment, this loan included. Count customers under common control as one. Where the party sells its whole output to one buyer, the answer is no. The test does not wait for the terms of the loan. If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known."
     },
     {
      "id": "OBS_REV_003",
@@ -7582,7 +7911,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -7617,7 +7948,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -7660,7 +7993,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "interim_financial_statements"
+       "interim_financial_statements",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -7740,7 +8075,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -7773,7 +8110,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -7815,7 +8154,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -8471,7 +8812,8 @@
       "supporting": [
        "board_minutes",
        "credit_rating_report",
-       "public_source"
+       "public_source",
+       "press_article"
       ],
       "stated": [
        "correspondence",
@@ -8509,7 +8851,8 @@
        "audited_annual_report",
        "board_minutes",
        "audit_management_letter",
-       "public_source"
+       "public_source",
+       "press_article"
       ],
       "stated": [
        "correspondence",
@@ -8539,7 +8882,9 @@
       "supporting": [
        "company_record",
        "board_minutes",
-       "audit_management_letter"
+       "audit_management_letter",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -8796,7 +9141,9 @@
       "supporting": [
        "board_minutes",
        "organizational_chart",
-       "corporate_governance_policy"
+       "corporate_governance_policy",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -8824,7 +9171,9 @@
       ],
       "supporting": [
        "board_minutes",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -8990,7 +9339,8 @@
       "supporting": [
        "kyc_package",
        "company_certificate",
-       "public_source"
+       "public_source",
+       "press_article"
       ],
       "stated": [
        "correspondence",
@@ -9045,6 +9395,7 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "internal_memo",
        "consultant_report"
       ],
@@ -9284,7 +9635,9 @@
       "supporting": [
        "company_certificate",
        "board_minutes",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -9325,7 +9678,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -9361,7 +9716,9 @@
       "supporting": [
        "financial_model",
        "management_accounts",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -9398,7 +9755,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -9430,7 +9789,9 @@
       "supporting": [
        "board_minutes",
        "company_certificate",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -9473,7 +9834,8 @@
       "supporting": [
        "audited_annual_report",
        "registry_extract",
-       "public_source"
+       "public_source",
+       "press_article"
       ],
       "stated": [
        "call",
@@ -9606,7 +9968,9 @@
       ],
       "supporting": [
        "organizational_chart",
-       "beneficial_ownership_declaration"
+       "beneficial_ownership_declaration",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -9718,7 +10082,9 @@
       ],
       "supporting": [
        "board_minutes",
-       "shareholder_resolution"
+       "shareholder_resolution",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -9829,7 +10195,9 @@
       "supporting": [
        "management_accounts",
        "shareholder_resolution",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -10122,6 +10490,7 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "consultant_report"
       ],
       "stated": [
@@ -10238,7 +10607,9 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "company_certificate"
+       "company_certificate",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -10454,7 +10825,9 @@
       "supporting": [
        "bank_statement",
        "management_accounts",
-       "kyc_package"
+       "kyc_package",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -10489,7 +10862,9 @@
       ],
       "supporting": [
        "tax_returns",
-       "company_certificate"
+       "company_certificate",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -10562,7 +10937,9 @@
       "supporting": [
        "debt_schedule",
        "registry_extract",
-       "company_certificate"
+       "company_certificate",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -10634,7 +11011,9 @@
       ],
       "supporting": [
        "management_cv",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -10673,7 +11052,9 @@
       ],
       "supporting": [
        "board_minutes",
-       "organizational_chart"
+       "organizational_chart",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -10733,7 +11114,9 @@
       "supporting": [
        "organizational_chart",
        "management_cv",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -10907,7 +11290,9 @@
       ],
       "supporting": [
        "board_minutes",
-       "shareholder_resolution"
+       "shareholder_resolution",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -10941,7 +11326,9 @@
       ],
       "supporting": [
        "board_minutes",
-       "shareholder_resolution"
+       "shareholder_resolution",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -10976,7 +11363,10 @@
       ],
       "supporting": [
        "public_source",
-       "company_record"
+       "press_article",
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11010,7 +11400,9 @@
       ],
       "supporting": [
        "audit_management_letter",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11061,7 +11453,9 @@
       ],
       "supporting": [
        "organizational_chart",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11112,7 +11506,9 @@
        "audited_annual_report"
       ],
       "supporting": [
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11149,7 +11545,9 @@
       ],
       "supporting": [
        "board_minutes",
-       "shareholder_resolution"
+       "shareholder_resolution",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11181,7 +11579,9 @@
       ],
       "supporting": [
        "audit_management_letter",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11219,7 +11619,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11264,7 +11666,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "interim_financial_statements"
+       "interim_financial_statements",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -11377,7 +11781,9 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11414,7 +11820,9 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11454,7 +11862,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11490,7 +11900,9 @@
       "supporting": [
        "debt_schedule",
        "management_accounts",
-       "bank_statement"
+       "bank_statement",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11530,7 +11942,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "bank_statement"
+       "bank_statement",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11571,7 +11985,9 @@
       "supporting": [
        "shareholder_resolution",
        "board_minutes",
-       "valuation_report"
+       "valuation_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11667,7 +12083,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -11694,7 +12112,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -11723,7 +12143,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "financial_model"
+       "financial_model",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -11757,7 +12179,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -11795,7 +12219,9 @@
        "audited_annual_report"
       ],
       "supporting": [
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -11822,7 +12248,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -11903,7 +12331,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "facility_agreement"
+       "facility_agreement",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11950,7 +12380,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "facility_agreement"
+       "facility_agreement",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -11987,7 +12419,9 @@
       "supporting": [
        "debt_schedule",
        "management_accounts",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -12016,7 +12450,9 @@
       "supporting": [
        "management_accounts",
        "bank_statement",
-       "credit_rating_report"
+       "credit_rating_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -12027,9 +12463,9 @@
     },
     {
      "id": "OBS_DEBT_009",
-     "question": "Has the party guaranteed the debt of someone else, or given security for it?",
+     "question": "Has the party guaranteed the debt of someone else, or given security for it, for amounts that together come to more than about a tenth of the party's own debt?",
      "answer": "yes_no",
-     "assumption": "The party answers only for its own debt",
+     "assumption": "The party answers for little debt other than its own and that of the group that repayment relies on",
      "disproved_by": "yes",
      "applies_to": [
       "borrower",
@@ -12047,7 +12483,9 @@
       "supporting": [
        "management_accounts",
        "board_minutes",
-       "registry_extract"
+       "registry_extract",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -12055,7 +12493,8 @@
        "officer_note"
       ]
      },
-     "ask": "Have you signed a guarantee for anyone else's borrowing, or pledged any of your assets for it? For example for a sister company, a shareholder or a supplier."
+     "ask": "Have you signed a guarantee for anyone else's borrowing, or pledged any of your assets for it? For example for a sister company, a shareholder or a supplier. For whom, and for how much?",
+     "note": "A guarantee or security for the debt of a member of the group that repayment relies on does not count: that debt is already counted as the group's own. A tenth is a guide to what matters. What counts is whether the party could pay if the guarantee were called and still service its own debt. Below the guide the answer is no: record for whom, how much and what share of the party's own debt in the reason. Count the full amounts guaranteed, not what is drawn today."
     },
     {
      "id": "OBS_DEBT_010",
@@ -12081,7 +12520,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "facility_agreement"
+       "facility_agreement",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -12196,7 +12637,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "financial_model"
+       "financial_model",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -12257,7 +12700,9 @@
       "supporting": [
        "financial_model",
        "management_accounts",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -12266,7 +12711,7 @@
       ]
      },
      "if_unknown": "Until the cover is worked out, nobody has shown that the loan can be repaid from cash flow.",
-     "note": "Divide the answer to OBS_DS_001 by the answer to OBS_DS_002. A cover worked out from EBITDA (profit before interest, tax, depreciation and amortisation), before tax, working capital and capital spending, is not this figure."
+     "note": "Divide the answer to OBS_DS_001 by the answer to OBS_DS_002. A cover worked out from EBITDA (profit before interest, tax, depreciation and amortisation), before tax, working capital and capital spending, is not this figure. The test does not wait for the terms of the loan. If the cover is already below the reference point on the debt the party owes today, record that figure now and say that it is before the new loan. Record it again when the terms are known."
     },
     {
      "id": "OBS_DS_008",
@@ -12329,14 +12774,16 @@
       "supporting": [
        "financial_model",
        "management_accounts",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
        "officer_note"
       ]
      },
-     "note": "For a party with fewer than five years of accounts, answer for the years there are and say how many. Where the business has changed so much that those years say little, say so. The downside case in Projections and downside then carries the test.",
+     "note": "For a party with fewer than five years of accounts, answer for the years there are and say how many. Where the business has changed so much that those years say little, say so. The downside case in Projections and downside then carries the test. The test does not wait for the terms of the loan. If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known.",
      "leads_to": [
       {
        "indicator": "CAS_PROJECTIONS_001",
@@ -12370,14 +12817,16 @@
       ],
       "supporting": [
        "management_accounts",
-       "financial_model"
+       "financial_model",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
        "officer_note"
       ]
      },
-     "note": "Count all borrowing, leases and shareholder loans that must be repaid, without taking cash off. Take the debt at its highest point in the year, not at the year-end. Take EBITDA without one-off items. Record in the reason the multiple before the loan, and the multiple on net debt (after the cash the party is free to use)."
+     "note": "Count all borrowing, leases and shareholder loans that must be repaid, without taking cash off. Take the debt at its highest point in the year, not at the year-end. Take EBITDA without one-off items. Record in the reason the multiple before the loan, and the multiple on net debt (after the cash the party is free to use). The test does not wait for the terms of the loan. If the multiple is already above the reference point on the debt the party owes today, record that figure now and say that it is before the new loan. Record it again when the terms are known."
     },
     {
      "id": "OBS_DS_006",
@@ -12396,7 +12845,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "financial_model"
+       "financial_model",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -12573,7 +13024,9 @@
       "supporting": [
        "management_accounts",
        "interim_financial_statements",
-       "credit_rating_report"
+       "credit_rating_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "management_presentation",
@@ -12604,7 +13057,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "credit_rating_report"
+       "credit_rating_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -12636,7 +13091,9 @@
        "management_accounts",
        "company_record",
        "credit_rating_report",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -12676,7 +13133,9 @@
       "supporting": [
        "board_minutes",
        "shareholder_resolution",
-       "corporate_governance_policy"
+       "corporate_governance_policy",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -12736,7 +13195,9 @@
       ],
       "supporting": [
        "debt_schedule",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -12867,7 +13328,9 @@
       "supporting": [
        "management_accounts",
        "interim_financial_statements",
-       "credit_rating_report"
+       "credit_rating_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "management_presentation",
@@ -12897,7 +13360,9 @@
        "management_accounts",
        "financial_model",
        "credit_rating_report",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -12934,7 +13399,9 @@
       "supporting": [
        "management_accounts",
        "interim_financial_statements",
-       "credit_rating_report"
+       "credit_rating_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "management_presentation",
@@ -12968,7 +13435,9 @@
       "supporting": [
        "management_accounts",
        "interim_financial_statements",
-       "credit_rating_report"
+       "credit_rating_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "management_presentation",
@@ -12994,7 +13463,9 @@
       "supporting": [
        "management_accounts",
        "interim_financial_statements",
-       "credit_rating_report"
+       "credit_rating_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -13022,7 +13493,9 @@
       "supporting": [
        "company_record",
        "management_accounts",
-       "audit_management_letter"
+       "audit_management_letter",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -13096,7 +13569,9 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "credit_rating_report"
+       "credit_rating_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "management_presentation",
@@ -13128,7 +13603,9 @@
       "supporting": [
        "corporate_governance_policy",
        "company_record",
-       "audit_management_letter"
+       "audit_management_letter",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -13159,7 +13636,9 @@
       "supporting": [
        "company_record",
        "management_accounts",
-       "audit_management_letter"
+       "audit_management_letter",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -13190,7 +13669,9 @@
        "management_accounts",
        "company_record",
        "valuation_report",
-       "credit_rating_report"
+       "credit_rating_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -13227,7 +13708,9 @@
       "supporting": [
        "corporate_governance_policy",
        "board_minutes",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -13255,8 +13738,11 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "credit_rating_report",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "management_presentation",
@@ -13285,7 +13771,9 @@
       "supporting": [
        "company_record",
        "management_accounts",
-       "credit_rating_report"
+       "credit_rating_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "management_presentation",
@@ -13314,7 +13802,9 @@
       ],
       "supporting": [
        "company_record",
-       "credit_rating_report"
+       "credit_rating_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -13344,7 +13834,9 @@
       "supporting": [
        "company_record",
        "management_accounts",
-       "credit_rating_report"
+       "credit_rating_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -13558,7 +14050,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -13588,7 +14082,9 @@
       "supporting": [
        "board_minutes",
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -13753,7 +14249,9 @@
       "supporting": [
        "tax_returns",
        "management_accounts",
-       "bank_statement"
+       "bank_statement",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -13789,7 +14287,9 @@
       ],
       "supporting": [
        "board_minutes",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -13810,9 +14310,9 @@
     },
     {
      "id": "OBS_TAX_008",
-     "question": "Does the party's cash flow count on a tax holiday, an exemption or a reduced rate that ends before this loan is repaid, or that depends on conditions the party is not meeting now (a level of investment, jobs or exports)?",
+     "question": "Does the party save more than about a tenth of a year's profit through a tax holiday, an exemption or a reduced rate that ends before this loan is repaid, or that depends on conditions the party is not meeting now (a level of investment, jobs or exports)?",
      "answer": "yes_no",
-     "assumption": "The tax position that the party's cash flow counts on lasts as long as the loan",
+     "assumption": "The tax savings that matter to the party's cash flow last as long as the loan",
      "disproved_by": "yes",
      "why": "When a tax holiday ends, tax takes a share of the cash flow that the loan was sized on. A regime that is granted on conditions is lost when the conditions are not kept.",
      "look_in": [
@@ -13836,7 +14336,7 @@
        "officer_note"
       ]
      },
-     "note": "Compare the tax the party pays with the standard rate on its profit. A wide gap means that a special regime is at work, whether or not the party has mentioned one. Check that the projections charge the full rate from the day the regime ends.",
+     "note": "A tenth of a year's profit before tax is a guide to what matters. A regime that saves less is a no: record what it is, what it saves in a year and when it ends. Compare the tax the party pays with the standard rate on its profit. A wide gap means that a special regime is at work, whether or not the party has mentioned one. Check that the projections charge the full rate from the day the regime ends. Where the party does not meet the conditions now, the answer is yes whatever the tenor of the loan turns out to be: record it now.",
      "leads_to": [
       {
        "indicator": "CAS_PROJECTIONS_001",
@@ -13863,7 +14363,9 @@
       ],
       "supporting": [
        "tax_returns",
-       "organizational_chart"
+       "organizational_chart",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -13911,7 +14413,9 @@
       "supporting": [
        "bank_statement",
        "management_accounts",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -13986,7 +14490,9 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "credit_rating_report"
+       "credit_rating_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "management_presentation",
@@ -14047,7 +14553,9 @@
       "supporting": [
        "company_record",
        "management_accounts",
-       "credit_rating_report"
+       "credit_rating_report",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -14076,7 +14584,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -14106,7 +14616,9 @@
       "supporting": [
        "debt_schedule",
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -14135,7 +14647,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -14165,7 +14679,9 @@
       "supporting": [
        "company_record",
        "management_accounts",
-       "hedge_document"
+       "hedge_document",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -14196,7 +14712,9 @@
       "supporting": [
        "debt_schedule",
        "management_accounts",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -14359,7 +14877,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -14400,7 +14920,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -14433,7 +14955,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -14460,7 +14984,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -14499,7 +15025,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -14512,9 +15040,9 @@
     },
     {
      "id": "OBS_FX_008",
-     "question": "Is any of the party's debt, the proposed loan included, owed in a currency other than the one in which the party earns the cash flow that services it?",
+     "question": "Is more than about a tenth of the party's debt, the proposed loan included, owed in a currency other than the one in which the party earns the cash flow that services it?",
      "answer": "yes_no",
-     "assumption": "The party's debt is owed in the currency of the cash flow that services it",
+     "assumption": "No more than a small part of the party's debt is owed in a currency other than that of the cash flow that services it",
      "disproved_by": "yes",
      "due_by": "concept",
      "look_in": [
@@ -14530,7 +15058,9 @@
       "supporting": [
        "debt_schedule",
        "term_sheet",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -14538,8 +15068,8 @@
        "officer_note"
       ]
      },
-     "ask": "Is any of your borrowing in a different currency from the income you repay it with? For example a loan in dollars or euros repaid from sales in local currency.",
-     "note": "Go by the currency the cash is paid in. A price set in or linked to another currency but paid in local currency is a protection, not a match. OBS_FX_PASSTHROUGH_001 asks about it.",
+     "ask": "Is any of your borrowing in a different currency from the income you repay it with? For example a loan in dollars or euros repaid from sales in local currency. How much is it, out of all your borrowing?",
+     "note": "A tenth is a guide to what matters. What counts is whether a fall of the earning currency would raise the party's debt service by an amount that matters against its cash flow. Where there is such debt but it stays below the guide, the answer is no: record the amount and its share of all debt in the reason. Go by the currency the cash is paid in. A price set in or linked to another currency but paid in local currency is a protection, not a match. OBS_FX_PASSTHROUGH_001 asks about it. The test does not wait for the terms of the loan. If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known.",
      "leads_to": [
       {
        "indicator": "CAS_COUNTRY_RISK_001",
@@ -14578,7 +15108,8 @@
       "supporting": [
        "financial_model",
        "audited_annual_report",
-       "public_source"
+       "public_source",
+       "press_article"
       ],
       "stated": [
        "call",
@@ -14587,7 +15118,7 @@
      },
      "ask_whom": "lender",
      "if_unknown": "Nobody knows how far the currency can fall before a payment is missed.",
-     "note": "Take the fall from published exchange rates and name the twelve months. Take the party's prices and volumes in those months from its own accounts where it was already trading. If no such case has been run, the check stays open.",
+     "note": "Take the fall from published exchange rates and name the twelve months. Take the party's prices and volumes in those months from its own accounts where it was already trading. If no such case has been run, the check stays open. The test does not wait for the terms of the loan. If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known.",
      "leads_to": [
       {
        "indicator": "CAS_DEBT_SERVICE_001",
@@ -14664,7 +15195,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "management_presentation",
@@ -14709,7 +15242,9 @@
       "supporting": [
        "management_accounts",
        "financial_model",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -14756,7 +15291,9 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "corporate_governance_policy"
+       "corporate_governance_policy",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -14923,7 +15460,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "interim_financial_statements"
+       "interim_financial_statements",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -14992,7 +15531,9 @@
       "supporting": [
        "management_accounts",
        "bank_statement",
-       "debt_schedule"
+       "debt_schedule",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -15055,7 +15596,9 @@
        "management_accounts",
        "bank_statement",
        "company_record",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -15200,7 +15743,9 @@
       ],
       "supporting": [
        "debt_schedule",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -15229,7 +15774,9 @@
       "supporting": [
        "debt_schedule",
        "financial_model",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "management_presentation",
@@ -15237,7 +15784,7 @@
        "officer_note"
       ]
      },
-     "note": "Three points is a guide. Where the reference rate has stood more than three points above today's level within the last ten years, test against that level. For a business without a full year of trading, use the first full year of the base case.",
+     "note": "Three points is a guide. Where the reference rate has stood more than three points above today's level within the last ten years, test against that level. For a business without a full year of trading, use the first full year of the base case. The test does not wait for the terms of the loan. If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known.",
      "leads_to": [
       {
        "indicator": "CAS_DEBT_SERVICE_001",
@@ -15265,7 +15812,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "market_study"
+       "market_study",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -15300,7 +15849,9 @@
       ],
       "supporting": [
        "company_record",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -15338,7 +15889,9 @@
       "supporting": [
        "company_record",
        "management_accounts",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -15374,7 +15927,9 @@
       "supporting": [
        "company_record",
        "board_minutes",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -15535,7 +16090,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -15563,7 +16120,9 @@
       ],
       "supporting": [
        "company_record",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -15593,7 +16152,9 @@
       ],
       "supporting": [
        "company_record",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -15647,7 +16208,9 @@
       ],
       "supporting": [
        "company_record",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -15702,7 +16265,9 @@
       ],
       "supporting": [
        "company_record",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -15728,7 +16293,9 @@
       ],
       "supporting": [
        "company_record",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -15785,7 +16352,7 @@
    "applies_to": [
     "borrower",
     "repayment_source",
-    "project"
+    "financed_project"
    ],
    "matters_more_when": [
     {
@@ -15940,7 +16507,9 @@
       "supporting": [
        "company_record",
        "board_minutes",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -16041,7 +16610,9 @@
       ],
       "supporting": [
        "company_record",
-       "regulatory_document"
+       "regulatory_document",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -16130,7 +16701,9 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "material_contract"
+       "material_contract",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -16261,7 +16834,9 @@
       "supporting": [
        "company_record",
        "company_certificate",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -16347,6 +16922,7 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "market_study",
        "internal_memo"
       ],
@@ -16726,7 +17302,7 @@
    "applies_to": [
     "borrower",
     "repayment_source",
-    "project"
+    "financed_project"
    ],
    "applies_when": [
     {
@@ -16897,6 +17473,7 @@
       "supporting": [
        "stakeholder_engagement_plan",
        "public_source",
+       "press_article",
        "company_record"
       ],
       "stated": [
@@ -17013,6 +17590,7 @@
       ],
       "supporting": [
        "public_source",
+       "press_article",
        "company_record"
       ],
       "stated": [
@@ -17044,6 +17622,7 @@
       "supporting": [
        "company_record",
        "public_source",
+       "press_article",
        "supply_agreement"
       ],
       "stated": [
@@ -17084,7 +17663,8 @@
       ],
       "supporting": [
        "company_record",
-       "supply_agreement"
+       "supply_agreement",
+       "press_article"
       ],
       "stated": [
        "correspondence",
@@ -17145,7 +17725,7 @@
    "applies_to": [
     "borrower",
     "repayment_source",
-    "project"
+    "financed_project"
    ],
    "matters_more_when": [
     {
@@ -17516,7 +18096,8 @@
       ],
       "supporting": [
        "company_record",
-       "public_source"
+       "public_source",
+       "press_article"
       ],
       "stated": [
        "correspondence",
@@ -17549,7 +18130,9 @@
       "supporting": [
        "management_accounts",
        "technical_feasibility",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -17679,7 +18262,9 @@
       "supporting": [
        "organizational_chart",
        "shareholder_register",
-       "beneficial_ownership_declaration"
+       "beneficial_ownership_declaration",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -18416,6 +19001,87 @@
      "note": "Answer from the financial model and the credit paper, not from memory. An equity injection, a shareholder loan or a promise to cover cost overruns in the projections means support_from_owner. Debt of the owner that is serviced from dividends, fees or loans from the company means cash_from_owned. \"The company\" stands for whatever is owned or sponsored."
     },
     {
+     "id": "OBS_GROUP_011",
+     "question": "How much debt does the owner owe on its own account (loans, bonds and leases in its own name), at the latest balance sheet date?",
+     "answer": "number",
+     "unit": "currency",
+     "why": "This is the debt that the cash coming up from the company has to help service. The consolidated accounts do not show it, because they add the company's debt to the owner's.",
+     "due_by": "concept",
+     "when": [
+      {
+       "check": "OBS_GROUP_001",
+       "is": "cash_from_owned"
+      },
+      {
+       "check": "OBS_GROUP_001",
+       "is": "both"
+      }
+     ],
+     "look_in": [
+      "03.01.a",
+      "04.03.a"
+     ],
+     "evidence": {
+      "best": [
+       "audited_annual_report"
+      ],
+      "supporting": [
+       "debt_schedule",
+       "management_accounts",
+       "annual_report",
+       "prospectus"
+      ],
+      "stated": [
+       "correspondence",
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "How much does the owner itself owe, leaving out the debt of the companies it owns? Please share the owner's own accounts.",
+     "note": "Use the owner's own accounts, not the consolidated ones. Say the date and the currency. Leave out the debt of the companies it owns, also where the owner has guaranteed it, and name such guarantees in the reason."
+    },
+    {
+     "id": "OBS_GROUP_012",
+     "question": "How much cash did the owner receive from the company in the last financial year (dividends, fees, interest, and loans that the company repaid or gave to it)?",
+     "answer": "number",
+     "unit": "currency",
+     "why": "Set against what the owner owes, this shows how much of the owner's debt service the company carries, and whether what comes up is enough.",
+     "due_by": "concept",
+     "when": [
+      {
+       "check": "OBS_GROUP_001",
+       "is": "cash_from_owned"
+      },
+      {
+       "check": "OBS_GROUP_001",
+       "is": "both"
+      }
+     ],
+     "look_in": [
+      "03.01.a",
+      "03.01.b"
+     ],
+     "evidence": {
+      "best": [
+       "audited_annual_report"
+      ],
+      "supporting": [
+       "management_accounts",
+       "bank_statement",
+       "board_minutes",
+       "annual_report",
+       "prospectus"
+      ],
+      "stated": [
+       "correspondence",
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "How much cash did the owner receive from the company last year, as dividends, fees, interest or loans?",
+     "note": "Count cash received in the year, not dividends declared or income booked. Take it from the owner's own cash flow statement, or from the company's payments to the owner. Say the year and the currency, and how much of it was loans from the company."
+    },
+    {
      "id": "OBS_GROUP_002",
      "question": "Has the owner bound itself in writing to support the company: by a guarantee of the loan, or by a signed undertaking to put money in?",
      "answer": "yes_no",
@@ -18496,7 +19162,9 @@
       "supporting": [
        "organizational_chart",
        "management_accounts",
-       "debt_schedule"
+       "debt_schedule",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -18541,7 +19209,9 @@
        "bank_statement",
        "board_minutes",
        "shareholder_resolution",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -18578,7 +19248,9 @@
       "supporting": [
        "management_accounts",
        "debt_schedule",
-       "bank_statement"
+       "bank_statement",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -18661,7 +19333,9 @@
       ],
       "supporting": [
        "debt_schedule",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -18711,7 +19385,9 @@
        "management_accounts",
        "board_minutes",
        "shareholder_resolution",
-       "bank_statement"
+       "bank_statement",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -18760,7 +19436,9 @@
       "supporting": [
        "bank_statement",
        "management_accounts",
-       "corporate_governance_policy"
+       "corporate_governance_policy",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -18790,7 +19468,9 @@
       "supporting": [
        "debt_schedule",
        "management_accounts",
-       "organizational_chart"
+       "organizational_chart",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -19266,7 +19946,9 @@
       "supporting": [
        "management_accounts",
        "company_certificate",
-       "tax_returns"
+       "tax_returns",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -19297,7 +19979,9 @@
       "supporting": [
        "management_accounts",
        "bank_statement",
-       "company_certificate"
+       "company_certificate",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -19327,7 +20011,9 @@
       "supporting": [
        "debt_schedule",
        "company_certificate",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -19357,7 +20043,9 @@
       "supporting": [
        "management_accounts",
        "organizational_chart",
-       "company_certificate"
+       "company_certificate",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -19408,7 +20096,9 @@
       "supporting": [
        "company_certificate",
        "bank_statement",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -19444,7 +20134,10 @@
       "supporting": [
        "board_minutes",
        "bank_statement",
-       "public_source"
+       "public_source",
+       "press_article",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -19517,7 +20210,8 @@
       ],
       "supporting": [
        "audited_annual_report",
-       "public_source"
+       "public_source",
+       "press_article"
       ],
       "stated": [
        "correspondence",
@@ -19580,7 +20274,9 @@
       "supporting": [
        "company_record",
        "management_accounts",
-       "financial_model"
+       "financial_model",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -19612,7 +20308,9 @@
       "supporting": [
        "company_record",
        "management_accounts",
-       "financial_model"
+       "financial_model",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -19702,7 +20400,10 @@
       "supporting": [
        "internal_memo",
        "company_record",
-       "public_source"
+       "public_source",
+       "press_article",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -19733,7 +20434,9 @@
       "supporting": [
        "company_record",
        "bank_statement",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -19993,7 +20696,9 @@
       ],
       "supporting": [
        "debt_schedule",
-       "facility_agreement"
+       "facility_agreement",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -20051,7 +20756,9 @@
       ],
       "supporting": [
        "debt_schedule",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -20086,7 +20793,9 @@
       ],
       "supporting": [
        "debt_schedule",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -20640,7 +21349,9 @@
       "supporting": [
        "management_accounts",
        "organizational_chart",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -20663,10 +21374,12 @@
       "guarantees_given",
       "fees_and_shared_costs",
       "leases",
-      "asset_transfers"
+      "asset_transfers",
+      "guarantees_and_security_received",
+      "pay_and_advances_to_insiders"
      ],
      "many": true,
-     "why": "Each kind takes value out in its own way: sales below the market price, purchases above it, loans that are not repaid, guarantees that are called, fees for nothing. Loans given open the checks on what is owed to the party.",
+     "why": "Each kind takes value out in its own way: sales below the market price, purchases above it, loans that are not repaid, guarantees that are called, fees for nothing, pay and advances beyond what the work is worth. Guarantees and security received take nothing out, but they show how far the party's borrowing rests on its owners' own means. Loans given open the checks on what is owed to the party.",
      "due_by": "concept",
      "when": [
       {
@@ -20679,13 +21392,6 @@
        "is": "loans_given",
        "link": [
         "lends_to"
-       ],
-       "end": "from"
-      },
-      {
-       "is": "guarantees_given",
-       "link": [
-        "guarantees"
        ],
        "end": "from"
       }
@@ -20701,7 +21407,9 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -20709,6 +21417,7 @@
        "officer_note"
       ]
      },
+     "note": "Choose every kind that applies. Choose guarantees_and_security_received where a shareholder, a director or a related company guarantees the party's debt or pledges its own assets for it, and record who gave what as a fact about the link that holds that debt. Choose pay_and_advances_to_insiders for salaries, bonuses and advances to shareholders, directors, managers and their families. A loan to a related company is loans_given. A guarantee that the party has given for a related party's debt needs no link: record for whom and how much in a fact. Its size is asked under OBS_DEBT_009.",
      "leads_to": [
       {
        "indicator": "CAS_DEBT_001",
@@ -20740,7 +21449,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -20775,7 +21486,9 @@
       "supporting": [
        "company_record",
        "management_accounts",
-       "board_minutes"
+       "board_minutes",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -20846,7 +21559,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -20881,7 +21596,9 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "bank_statement"
+       "bank_statement",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -20921,7 +21638,9 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -20950,7 +21669,9 @@
       "supporting": [
        "audit_management_letter",
        "shareholder_register",
-       "organizational_chart"
+       "organizational_chart",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -20980,7 +21701,9 @@
       "supporting": [
        "board_minutes",
        "organizational_chart",
-       "management_presentation"
+       "management_presentation",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -21045,7 +21768,9 @@
       ],
       "supporting": [
        "company_record",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -21107,7 +21832,10 @@
       ],
       "supporting": [
        "company_record",
-       "public_source"
+       "public_source",
+       "press_article",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -21182,7 +21910,9 @@
       "supporting": [
        "management_accounts",
        "company_record",
-       "bank_statement"
+       "bank_statement",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -21394,7 +22124,10 @@
       "supporting": [
        "board_minutes",
        "bank_statement",
-       "public_source"
+       "public_source",
+       "press_article",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -21808,7 +22541,9 @@
       "supporting": [
        "management_accounts",
        "interim_financial_statements",
-       "internal_memo"
+       "internal_memo",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -21892,7 +22627,9 @@
       "supporting": [
        "company_record",
        "company_certificate",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -21923,7 +22660,9 @@
       ],
       "supporting": [
        "internal_memo",
-       "correspondence"
+       "correspondence",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "call",
@@ -22337,7 +23076,9 @@
       ],
       "supporting": [
        "interim_financial_statements",
-       "management_accounts"
+       "management_accounts",
+       "annual_report",
+       "prospectus"
       ],
       "stated": [
        "correspondence",
@@ -22974,7 +23715,8 @@
       ],
       "supporting": [
        "internal_memo",
-       "public_source"
+       "public_source",
+       "press_article"
       ],
       "stated": [
        "call",

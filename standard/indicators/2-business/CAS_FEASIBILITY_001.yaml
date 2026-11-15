@@ -4,7 +4,7 @@ pillar: business
 claim: The project can be built on its site for the estimated cost and run as planned, with technology that already works
   at this scale.
 due_by: diligence
-applies_to: [project]
+applies_to: [financed_project]
 matters_more_when:
 - {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'Nothing has been built yet, so the studies are all there is to rely
     on'}
@@ -15,6 +15,23 @@ look_again_when:
     risks that are known'}
 - {new_source: epc_contract, reason: A signed construction contract replaces estimates with prices}
 checks:
+- id: OBS_FEAS_008
+  question: 'What is the project: what is built or bought, where, for how much, by when, who pays for it, and what does
+    it add to the business?'
+  answer: text
+  why: Opens the topic. The tests that follow ask whether the project can be built and run as planned. This answer says
+    what the plan is, and the page on the project starts from it.
+  due_by: screening
+  look_in: [01.02.a, 05.01.a, 01.01.b]
+  evidence:
+    best: [technical_feasibility, epc_contract]
+    supporting: [investment_plan, board_resolution, internal_memo, annual_report, prospectus]
+    stated: [business_plan, executive_summary, management_presentation, correspondence, call, officer_note]
+  ask: Please describe the project. What will be built or bought, where, at what cost and by when? Who pays for which part,
+    and what will it add to the business (capacity, products, revenue)?
+  note: 'Give the figures with their dates: the cost, the capacity, the planned start and end, and what has been spent so
+    far. Say how far the project has come (planned, approved, under construction, in operation). Where the loan pays for
+    an asset that is bought and not built, describe the asset and the purchase.'
 - id: OBS_FEAS_001
   question: Is there a written feasibility study for the project that covers its design, its site, its cost and its schedule?
   answer: yes_no
@@ -39,7 +56,7 @@ checks:
   look_in: [05.01.a, 10.03.a]
   evidence:
     best: [technical_feasibility, consultant_report]
-    supporting: [company_record, public_source]
+    supporting: [company_record, public_source, press_article]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Where is this technology already running commercially at a similar size? Since when, and who can confirm how it performs?
   note: 'A pilot plant, a demonstration unit or the first plant of its kind is a no. So is a known technology used at several

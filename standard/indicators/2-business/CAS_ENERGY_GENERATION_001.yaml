@@ -4,7 +4,7 @@ pillar: business
 claim: The plant can deliver to the grid the energy the projections count on, and a buyer is bound to take it or pay for
   it.
 due_by: concept
-applies_to: [project]
+applies_to: [financed_project]
 applies_when:
 - {check: OBS_SECTOR_002, is: power}
 matters_more_when:
@@ -134,7 +134,7 @@ checks:
   look_in: [05.01.a, 03.01.a, 10.03.a]
   evidence:
     best: [technical_feasibility, audited_annual_report]
-    supporting: [company_record, management_accounts]
+    supporting: [company_record, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Please share the metered energy delivered in each of the last three years, with the buyer's statements or invoices.
   note: Take metered energy at the delivery point. Where the plant has run for less than three years, use the years there

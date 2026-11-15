@@ -56,7 +56,7 @@ checks:
   look_in: [03.01.a, 07.01.a, 02.06.d]
   evidence:
     best: [audited_annual_report, operational_license, adverse_media_screen, consultant_report]
-    supporting: [company_record, company_certificate, management_accounts]
+    supporting: [company_record, company_certificate, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Here is the list of activities we cannot finance. Does your company, or any company it controls, do any of these,
     even as a small part of its business? If so, what share of revenue does it bring?
@@ -97,7 +97,7 @@ checks:
   look_in: [07.02.a, 10.03.a, 02.06.d]
   evidence:
     best: [consultant_report, esia_report, adverse_media_screen]
-    supporting: [public_source, market_study, internal_memo]
+    supporting: [public_source, press_article, market_study, internal_memo]
     stated: [correspondence, call, officer_note]
   ask: Where are your sites, and where do your main raw materials come from? Please name the regions, not only the countries.
   note: This is about the setting, not about what the business has done. A yes means that the tests on land, labour and

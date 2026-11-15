@@ -50,7 +50,7 @@ checks:
   look_in: [03.01.a, 02.06.b, 10.01.a]
   evidence:
     best: [audited_annual_report, aml_screening]
-    supporting: [management_accounts, company_record, company_certificate]
+    supporting: [management_accounts, company_record, company_certificate, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: In the last three years, have you sold to, bought from or been paid from a country under embargo, or dealt with anyone
     on a sanctions list? Please include sales through agents and distributors.

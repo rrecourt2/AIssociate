@@ -26,7 +26,7 @@ checks:
   look_in: [05.01.a, 10.03.a, 02.06.d]
   evidence:
     best: [technical_feasibility, consultant_report, adverse_media_screen]
-    supporting: [company_record, public_source]
+    supporting: [company_record, public_source, press_article]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Which comparable jobs has this firm done in the last five years? For each, was it finished on time, did the plant
     pass its tests, and who at the client can confirm it?
@@ -44,7 +44,7 @@ checks:
   look_in: [03.01.a, 06.02.a, 06.03.a]
   evidence:
     best: [audited_annual_report, credit_rating_report, epc_contract, om_agreement]
-    supporting: [management_accounts, technical_feasibility, internal_memo]
+    supporting: [management_accounts, technical_feasibility, internal_memo, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   if_unknown: Damages and warranties are worth nothing if the firm that owes them cannot pay.
   note: Take the accounts of the company that signs the contract, not those of its group. Where liability has no cap, set
@@ -109,7 +109,7 @@ checks:
   look_in: [02.01.c, 03.01.a, 02.03.a]
   evidence:
     best: [registry_extract, audited_annual_report]
-    supporting: [organizational_chart, shareholder_register, beneficial_ownership_declaration]
+    supporting: [organizational_chart, shareholder_register, beneficial_ownership_declaration, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Is the builder or the operator part of the sponsor's group, or owned by any of the same people?
   note: A sponsor that controls both sides of the contract decides whether damages are claimed, a bond is called or the
