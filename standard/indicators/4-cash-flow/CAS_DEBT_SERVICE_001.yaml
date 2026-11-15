@@ -73,6 +73,29 @@ checks:
   if_unknown: Until the cover is worked out, nobody has shown that the loan can be repaid from cash flow.
   note: Divide the answer to OBS_DS_001 by the answer to OBS_DS_002. A cover worked out from EBITDA (profit before interest,
     tax, depreciation and amortisation), before tax, working capital and capital spending, is not this figure.
+- id: OBS_DS_008
+  question: In the lender's base case, what is the lowest yearly cover of debt service by cash flow available for debt service
+    over the life of the loan?
+  answer: number
+  unit: times
+  assumption: In every year of the base case the cash flow covers debt service with room to spare
+  flag_when: below 1.2
+  why: The same convention as OBS_DS_003. Lenders to projects with contracted revenue commonly size the debt at about this
+    level or higher, and ask for more where revenue follows the market. An institution can set its own figure.
+  when:
+  - {check: OBS_SECTOR_001, is: project}
+  - {check: OBS_LIFECYCLE_001, is: greenfield}
+  - {check: OBS_CASHFLOW_BASIS_001, is: projected}
+  look_in: [03.02.b]
+  evidence:
+    best: [internal_memo, consultant_report]
+    supporting: [financial_model, financial_projections]
+    stated: [call, officer_note]
+  ask_whom: lender
+  if_unknown: Until the lowest cover is known, nobody has shown that the loan can be repaid from cash flow in every year.
+  note: Say which year the lowest cover falls in. Work out the cash flow as in OBS_DS_001 and the debt service as in OBS_DS_002,
+    year by year. The base case is the lender's own, or one an independent adviser has checked. The party's model as received
+    is the party's own word. If no such case has been run, the check stays open.
 - id: OBS_DS_004
   question: Would the party's cash flow available for debt service in the worst of the last five financial years have covered
     that same debt service in full?
@@ -93,20 +116,25 @@ checks:
   - {indicator: CAS_PROJECTIONS_001, is: false, reason: The downside case shows whether such a year would lead to a missed
       payment under this loan}
 - id: OBS_DS_005
-  question: What is the party's net debt after this loan, as a multiple of its EBITDA (profit before interest, tax, depreciation
+  question: What is the party's total debt after this loan, as a multiple of its EBITDA (profit before interest, tax, depreciation
     and amortisation) of the last financial year?
   answer: number
   unit: times
-  why: The multiple says how many years of profit the debt stands for. It is read against what businesses of this kind carry,
-    and against the same multiple before the loan.
+  assumption: After this loan the party owes no more than about four years of its EBITDA
+  flag_when: above 4
+  why: 'Bank supervisors in the euro area and in the United States use total debt above about four times EBITDA to mark
+    out leveraged lending. Four is a guide for an operating company: read it against what businesses of this kind carry.
+    An institution can set its own figure.'
+  when:
+  - {check: OBS_SECTOR_001, is: corporate}
   look_in: [03.01.a, 04.03.a]
   evidence:
     best: [audited_annual_report, debt_schedule]
     supporting: [management_accounts, financial_model]
     stated: [call, officer_note]
-  note: Net debt is all borrowing, leases and shareholder loans that must be repaid, less cash the party is free to use.
-    Where borrowing is seasonal, take debt at its highest point in the year, not at year-end. Take EBITDA without one-off
-    items. Record the multiple before the loan as well.
+  note: Count all borrowing, leases and shareholder loans that must be repaid, without taking cash off. Take the debt at
+    its highest point in the year, not at the year-end. Take EBITDA without one-off items. Record in the reason the multiple
+    before the loan, and the multiple on net debt (after the cash the party is free to use).
 - id: OBS_DS_006
   question: Over the last three financial years taken together, was the party's cash from operations (before interest and
     tax) less than about two thirds of its EBITDA (profit before interest, tax, depreciation and amortisation)?
@@ -124,23 +152,6 @@ checks:
     the answer.
   leads_to:
   - {indicator: CAS_WORKING_CAP_001, is: true, reason: The gap between profit and cash usually sits in receivables and stock}
-- id: OBS_DS_007
-  question: 'Must the party refinance debt during the life of this loan: a final payment on this loan of more than about
-    a third of its amount, or another loan that falls due in one payment before this loan is repaid?'
-  answer: yes_no
-  assumption: The party's debt is repaid from cash flow over its life, without a refinancing
-  disproved_by: 'yes'
-  why: A large final payment is not repaid from cash flow. It is repaid by another lender, and whether one will be there
-    on that day is outside the party's control.
-  due_by: concept
-  look_in: [04.01.a, 04.03.a]
-  evidence:
-    best: [facility_agreement, debt_schedule]
-    supporting: [term_sheet, financial_model]
-    stated: [correspondence, call, officer_note]
-  note: 'A third is a guide. Leave out revolving working-capital lines: Liquidity asks whether they are committed.'
-  leads_to:
-  - {indicator: CAS_TERM_SHEET_001, is: true, reason: The repayment profile is a term of the loan and can still be changed}
 - id: OBS_DS_MIT_001
   question: Do the loan terms require a debt service reserve account that is funded in cash before the first repayment,
     holds at least the next payment of interest and principal, and is pledged to the lender?
@@ -150,6 +161,7 @@ checks:
   disproved_by: 'no'
   when:
   - {check: OBS_DS_003, against: true}
+  - {check: OBS_DS_008, against: true}
   - {check: OBS_DS_004, against: true}
   look_in: [04.01.a, 04.02.b]
   evidence:
@@ -157,22 +169,6 @@ checks:
     supporting: [term_sheet, bank_statement]
     stated: [correspondence, call, officer_note]
   note: A reserve buys time for one or two payments. It does not mend a cash flow that stays short.
-- id: OBS_DS_MIT_002
-  question: Do the loan terms require the party to use surplus cash to prepay this loan (a cash sweep), so that the final
-    payment shrinks in the years the business does well?
-  answer: yes_no
-  mitigant: true
-  assumption: Surplus cash reduces the debt that would have to be refinanced
-  disproved_by: 'no'
-  when:
-  - {check: OBS_DS_007, against: true}
-  look_in: [04.01.a]
-  evidence:
-    best: [facility_agreement]
-    supporting: [term_sheet, financial_model]
-    stated: [correspondence, call, officer_note]
-  note: Check what counts as surplus cash, and whether dividends are paid before the sweep or after it. A sweep on this
-    loan does nothing for a final payment owed to another lender.
 - id: OBS_DS_MIT_003
   question: Has an owner or sponsor undertaken in writing to pay in cash when the party's cash flow falls short of its debt
     service?
@@ -182,6 +178,7 @@ checks:
   disproved_by: 'no'
   when:
   - {check: OBS_DS_003, against: true}
+  - {check: OBS_DS_008, against: true}
   - {check: OBS_DS_004, against: true}
   calls_for:
   - is: true

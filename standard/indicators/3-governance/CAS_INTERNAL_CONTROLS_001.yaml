@@ -69,19 +69,18 @@ checks:
   ask: Do you have an internal audit, in-house or by an outside firm? To whom does it report, and could we see its last
     report?
 - id: OBS_IC_004
-  question: In the last three years, has the party had a fraud, an unauthorised payment, an unexplained loss of cash or
-    stock, or a restatement of its accounts?
+  question: In the last three years, has the party had a fraud, an unauthorised payment, or an unexplained loss of cash
+    or stock?
   answer: yes_no
-  assumption: 'The controls have held: no fraud, unauthorised payment, unexplained loss or restatement in the last three
-    years'
+  assumption: 'The controls have held: no fraud, unauthorised payment or unexplained loss in the last three years'
   disproved_by: 'yes'
   look_in: [03.01.e, 03.01.a, 02.02.a]
   evidence:
     best: [audit_management_letter, audited_annual_report]
     supporting: [board_minutes, company_record]
     stated: [correspondence, call, officer_note]
-  ask: In the last three years, has there been a fraud, a payment nobody had approved, a loss of cash or stock you could
-    not explain, or a correction of accounts already issued? Please include cases that are settled.
+  ask: In the last three years, has there been a fraud, a payment nobody had approved, or a loss of cash or stock you could
+    not explain? Please include cases that are settled.
   if_unknown: If neither the auditor's letters nor the board minutes have been seen, the party's no is its own word.
   note: A party that says yes is believed.
 - id: OBS_IC_005

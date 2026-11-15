@@ -1,7 +1,9 @@
 id: CAS_BOARD_001
 title: Board
 pillar: governance
-claim: A body that management and the main shareholder do not control can say no to them, and has done so.
+claim: The party's large decisions (borrowing, large investments, dealings with its owners) need the approval of a body
+  that has at least one member independent of management and of the main shareholder, and that body sees the party's figures
+  at least every quarter.
 due_by: diligence
 applies_to: [borrower, repayment_source]
 matters_more_when:
@@ -27,20 +29,6 @@ checks:
     supporting: [board_minutes, organizational_chart, audited_annual_report]
     stated: [correspondence, call, officer_note]
   ask: Does your company have a board of directors that meets separately from the management team?
-- id: OBS_BOARD_002
-  question: How many members does the board have?
-  answer: number
-  unit: count
-  why: 'Sets the scale for what follows: one independent member counts for more on a board of three than on a board of twelve.'
-  due_by: concept
-  when:
-  - {check: OBS_BOARD_001, is: true}
-  look_in: [02.05.c, 02.01.c]
-  evidence:
-    best: [registry_extract, board_composition, audited_annual_report]
-    supporting: [board_minutes]
-    stated: [correspondence, call, officer_note]
-  note: Say how many of them are executives of the party.
 - id: OBS_BOARD_003
   question: Does the board have at least one member who is not an employee of the party, is not a shareholder nor a shareholder's
     relative or nominee, and does no other business with the party?
@@ -57,7 +45,8 @@ checks:
     stated: [correspondence, call, officer_note]
   ask: 'Is any member of your board independent: not an employee, not a shareholder or related to one, and with no other
     business with the company?'
-  note: A director named by another lender or by a financial investor counts, if there is no other tie.
+  note: A director named by another lender or by a financial investor counts, if there is no other tie. Record how many
+    members the board has and how many of them are executives.
 - id: OBS_BOARD_004
   question: Did the board meet at least four times in each of the last two financial years?
   answer: yes_no
@@ -89,8 +78,7 @@ checks:
   question: In the last three years, has the board, or the body that oversees management in its place, turned down, sent
     back or changed a proposal from management or from the main shareholder?
   answer: yes_no
-  assumption: The board has said no to management or to the main shareholder at least once in the last three years
-  disproved_by: 'no'
+  why: Shows whether the approval of the board is more than a formality.
   look_in: [02.02.a, 02.02.c]
   evidence:
     best: [board_minutes]

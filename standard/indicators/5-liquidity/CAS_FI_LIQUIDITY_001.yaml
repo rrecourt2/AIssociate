@@ -140,6 +140,22 @@ checks:
   note: A fifth is a guide. Take the highest month-end of the last twelve months. Record what share of the loans in foreign
     currency went to borrowers without income in that currency. Where the loan under review is in foreign currency, work
     the position out again with it included.
+- id: OBS_FIL_009
+  question: In the last three years, has the institution missed a payment to a lender, breached a financial covenant in
+    a loan agreement, or asked a lender for a waiver or an extension?
+  answer: yes_no
+  assumption: The institution has paid and performed as agreed under its own borrowings
+  disproved_by: 'yes'
+  due_by: concept
+  look_in: [03.01.a, 04.03.a, 10.03.a]
+  evidence:
+    best: [audited_annual_report, facility_agreement, credit_rating_report]
+    supporting: [debt_schedule, management_accounts, board_minutes]
+    stated: [correspondence, call, officer_note]
+  ask: In the last three years, was there any moment when a payment to one of your lenders was late, a financial covenant
+    was not met, or you asked a lender for a waiver or for more time?
+  note: An institution that says yes is believed. An institution that says no is believed once the accounts, a lender or
+    a credit report bear it out. Deposits are not meant here.
 - id: OBS_FIL_004
   question: Is the institution admitted to a standing lending facility of its central bank, and does it hold unpledged assets
     today that the central bank accepts as collateral?
@@ -162,3 +178,17 @@ checks:
   note: Access in name is not enough. The collateral must be in hand and free. A central bank lends its own currency, so
     the facility does not answer a shortage of foreign currency. Record whether the institution has drawn on it in the last
     twelve months, and why. Frequent use is itself a sign of strain.
+- id: OBS_FIL_010
+  question: Have the lenders concerned confirmed in writing that the breach is cured or waived?
+  answer: yes_no
+  mitigant: true
+  assumption: The lenders concerned have confirmed that the breach is cured or waived
+  disproved_by: 'no'
+  when:
+  - {check: OBS_FIL_009, against: true}
+  look_in: [10.02.a, 04.03.a]
+  evidence:
+    best: [facility_agreement, correspondence]
+    supporting: [audited_annual_report, board_minutes]
+    stated: [call, officer_note]
+  note: The letter must come from the lender concerned. The institution's own account of it is not a confirmation.

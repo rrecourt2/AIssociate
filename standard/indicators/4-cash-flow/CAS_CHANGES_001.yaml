@@ -70,8 +70,9 @@ checks:
     best: [audited_annual_report, consultant_report]
     supporting: [management_accounts, company_record]
     stated: [correspondence, call, officer_note]
-  note: A fifth is a guide. If there was no such change, answer no and say so. Support for a cause is an ageing list, a
-    stock count or a contract with new payment terms. Management's explanation alone is not support.
+  note: A fifth is a guide. Compare working capital as days of sales at the start and at the end of the three years. If
+    there was no such change, answer no and say so. Support for a cause is an ageing list, a stock count or a contract with
+    new payment terms. Management's explanation alone is not support.
   leads_to:
   - {indicator: CAS_WORKING_CAP_001, is: true, reason: Whether the receivables can be collected and the stock sold is tested
       there}

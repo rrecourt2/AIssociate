@@ -21,8 +21,8 @@ checks:
     coming down from the owner, on cash coming up from the company, on both, or on neither?'
   answer: choice
   options: [support_from_owner, cash_from_owned, both, neither]
-  why: Most ties in a chain of owners carry nothing that the lender counts on. Then the answer is neither, and nothing more
-    is asked about the tie.
+  why: Most ties in a chain of owners carry nothing that the lender counts on. Then the answer is neither, and only OBS_GROUP_010
+    is still asked about the tie.
   due_by: screening
   look_in: [03.02.b, 02.03.a]
   evidence:
@@ -185,6 +185,26 @@ checks:
     treasury?
   note: The cash pooling agreement shows who owes whom. In the audited accounts a pooled balance appears as an amount due
     from a group company, not as cash.
+- id: OBS_GROUP_010
+  question: Does the owner, or a holding company between the owner and the company, owe debt that it can service only with
+    dividends, fees or loans from the company?
+  answer: yes_no
+  assumption: The owner does not need the company's cash to service its own debt
+  disproved_by: 'yes'
+  why: An owner that needs the company's cash to pay its own lenders takes it out whatever state the company is in. That
+    is how a sound company is weakened from above.
+  look_in: [03.01.a, 04.03.a, 02.03.a]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [debt_schedule, management_accounts, organizational_chart]
+    stated: [correspondence, call, officer_note]
+  ask: Does the owner, or any holding company above the company, have debt of its own? What does it pay the interest and
+    the repayments from?
+  if_unknown: Where the owner's own accounts have not been seen, its debt is not known.
+  note: This check does not hang on OBS_GROUP_001. It is asked whichever way the lender relies on the tie, and where it
+    relies on neither. Use the owner's own accounts, not the consolidated ones, and set its debt service against its income
+    from everything other than the company. Debt taken on to buy the company's shares often sits in a holding company above
+    it.
 - id: OBS_GROUP_MIT_001
   question: Do the lender's loan terms bind the company itself to limits on dividends, on loans and guarantees to the owner
     and the group, and on taking part in a cash pool?
@@ -195,6 +215,7 @@ checks:
   when:
   - {check: OBS_GROUP_008, against: true}
   - {check: OBS_GROUP_009, against: true}
+  - {check: OBS_GROUP_010, against: true}
   look_in: [04.01.a, 04.01.b]
   evidence:
     best: [facility_agreement]

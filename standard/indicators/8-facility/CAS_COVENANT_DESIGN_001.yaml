@@ -137,6 +137,19 @@ checks:
     stated: [correspondence, call, officer_note]
   note: Where the facility gives no right to cure with new money, the answer is no. Also read how the new money is counted.
     Money counted as cash flow hides the breach. Money used to repay debt reduces it.
+- id: OBS_COV_010
+  question: Do the terms of the facility give the lender the right to demand repayment if control of the borrower passes
+    to someone else without its consent, or if a guarantor or sponsor that the lender relies on ceases to own the borrower?
+  answer: yes_no
+  assumption: The lender can leave if the owners it lent to are replaced
+  disproved_by: 'no'
+  look_in: [04.01.a, 04.01.b]
+  evidence:
+    best: [term_sheet, facility_agreement]
+    supporting: [internal_memo]
+    stated: [correspondence, call, officer_note]
+  note: Read how control is defined. A sale of shares higher up the chain of ownership should count as a change of control
+    too. A clause that only obliges the borrower to tell the lender of the change does not give this right.
 - id: OBS_COV_008
   question: Does the compliance certificate for the latest test date show every financial covenant within its limit?
   answer: yes_no

@@ -1,8 +1,8 @@
 id: CAS_PROJECTIONS_001
 title: Projections and downside
 pillar: cash_flow
-claim: Repayment does not depend on the party doing better than it has done before, and debt service is still paid in a
-  downside case.
+claim: The projections rest on assumptions that can be checked against the party's own record, and debt service is still
+  paid when revenue, margin and timing are as bad as the party has seen.
 due_by: diligence
 applies_to: [borrower, repayment_source]
 matters_more_when:
@@ -128,8 +128,10 @@ checks:
   ask_whom: lender
   if_unknown: Nobody knows how much can go wrong before a payment is missed.
   note: A case that trims the base case by a few percent is not a downside. For a business without five years behind it,
-    use the worst that businesses of the same kind have seen and say which. If no such case has been run, the check stays
-    open.
+    use the worst that businesses of the same kind have seen and say which. Run the case with this facility drawn in full
+    and with the existing debt. If no such case has been run, the check stays open.
+  leads_to:
+  - {indicator: CAS_TERM_SHEET_001, is: false, reason: The amount and the profile of the loan can still be changed}
 - id: OBS_PROJ_007
   question: By what share can revenue fall below the base case, with costs behaving as they did in the party's past, before
     a payment of debt service is missed?

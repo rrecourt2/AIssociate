@@ -70,16 +70,19 @@ checks:
   note: Read the other agreement itself for a limit on new debt and for a negative pledge (a promise not to give security
     to anyone else). The consent must come from the other lender. The party's own account of it is not a consent.
 - id: OBS_LENDER_004
-  question: Is the final maturity of the other loan earlier than the final maturity of the lender's loan?
+  question: Does the other loan fall due in a single payment, or come up for renewal, before the lender's loan is repaid,
+    for an amount the party could not repay from one year's cash flow after its other debt service?
   answer: yes_no
-  assumption: The other loan does not have to be repaid or refinanced while the lender's loan is outstanding
+  assumption: The other loan can be repaid from cash flow as it falls due, without a refinancing, while the lender's loan
+    is outstanding
   disproved_by: 'yes'
   look_in: [04.01.b, 04.03.a, 03.01.a]
   evidence:
     best: [facility_agreement, audited_annual_report]
     supporting: [debt_schedule, management_accounts]
     stated: [correspondence, call, officer_note]
-  note: A line that runs for a year and is then renewed falls due at its next renewal date.
+  note: A line that runs for a year and is then renewed falls due at its next renewal date. A loan that is repaid in instalments
+    from cash flow is a no.
   leads_to:
   - {indicator: CAS_DEBT_SERVICE_001, is: true, reason: 'The other loan is repaid or refinanced during the life of the lender''s
       loan, so that payment has to be in the cash flow'}

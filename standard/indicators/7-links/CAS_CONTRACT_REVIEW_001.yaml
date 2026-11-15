@@ -67,7 +67,8 @@ checks:
   ask: When does this contract end? Is there a right to extend it, and whose right is it?
   if_unknown: The projections may count on the contract in years in which it no longer exists.
   note: This check does not hang on OBS_CONT_001, so that the review cannot close on one answer. An option to extend that
-    only the other side can use does not lengthen the term.
+    only the other side can use does not lengthen the term. Record how much time lies between the final maturity and the
+    end of the contract (the tail).
   leads_to:
   - {indicator: CAS_PROJECTIONS_001, is: true, reason: 'The years after the contract ends should be projected at market
       terms, not at contract terms'}

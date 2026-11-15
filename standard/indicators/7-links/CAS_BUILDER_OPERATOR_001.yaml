@@ -66,7 +66,9 @@ checks:
   ask: Is the construction contract a fixed-price, fixed-date contract for the whole of the works? If the works are split,
     who answers for the gaps between the contracts?
   note: Where the works are split between several contracts, the answer is no unless one party has signed to answer for
-    the whole. Say which parts of the price can still move, such as provisional sums, indexation or ground conditions.
+    the whole. Say which parts of the price can still move, such as provisional sums, indexation or ground conditions. For
+    equipment added to a running plant, a supply and installation contract with the maker, with a fixed price and a date,
+    counts as yes.
 - id: OBS_BUILDOP_004
   question: Does the operator's contract run at least until the final maturity of the loan, with no right for the operator
     to end it earlier at its own choice?

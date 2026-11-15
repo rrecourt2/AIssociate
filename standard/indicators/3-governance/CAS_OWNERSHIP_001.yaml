@@ -28,27 +28,11 @@ checks:
     stated: [correspondence, call, officer_note]
   note: A tenth is a guide. A family that votes together counts as one shareholder only if nothing shows that its members
     disagree.
-- id: OBS_OWN_001
-  question: Does the shareholder register or a registry extract, no more than twelve months old, show the same holders and
-    the same holdings as the party has declared?
-  answer: yes_no
-  assumption: The official record of who holds the party's shares matches what the party has told the lender
-  disproved_by: 'no'
-  due_by: concept
-  look_in: [02.04.a, 02.01.c]
-  evidence:
-    best: [shareholder_register, registry_extract]
-    supporting: [audited_annual_report, organizational_chart, beneficial_ownership_declaration]
-    stated: [correspondence, call, officer_note]
-  ask: Could we have an up-to-date copy of the shareholder register, or an extract from the company registry that lists
-    the shareholders?
-  note: Twelve months is a guide. What counts is that no transfer has taken place since. A transfer that was agreed but
-    not registered is a difference.
 - id: OBS_OWN_005
-  question: Are there circular or cross holdings (the party or its subsidiaries hold shares in its own owners), or holdings
-    whose holder or size cannot be established?
+  question: 'Are there circular or cross holdings: does the party, or a company it controls, hold shares in any of its own
+    owners?'
   answer: yes_no
-  assumption: No part of the party's shareholding is circular or unexplained
+  assumption: No part of the party's shareholding is circular
   disproved_by: 'yes'
   due_by: concept
   look_in: [02.04.a, 02.01.c, 03.01.a]
@@ -58,8 +42,8 @@ checks:
     stated: [correspondence, call, officer_note]
   if_unknown: If the holdings cannot be drawn on one page with every line ending in a name, treat the answer as not known.
   leads_to:
-  - {indicator: CAS_BENEFICIAL_OWNERSHIP_001, is: true, reason: A holding that cannot be established means the chain of
-      owners is not known}
+  - {indicator: CAS_BENEFICIAL_OWNERSHIP_001, is: true, reason: A chain of owners that runs in a circle does not end at
+      a person}
 - id: OBS_OWN_003
   question: Have the shareholders agreed in writing how they decide together, how shares may change hands and how a deadlock
     is broken (in a shareholders' agreement or in the articles)?
@@ -141,7 +125,8 @@ checks:
   ask: Do the owners plan to sell, to bring in a new investor, to list the company or to hand over to the next generation
     during the life of the loan?
   leads_to:
-  - {indicator: CAS_TERM_SHEET_001, is: true, reason: The terms have to say what happens to the loan when control changes}
+  - {indicator: CAS_COVENANT_DESIGN_001, is: true, reason: The terms have to give the lender the right to leave when control
+      changes}
 - id: OBS_OWN_010
   question: Over the last three financial years taken together, did dividends, share buy-backs and loans or advances to
     shareholders exceed the party's profit after tax?

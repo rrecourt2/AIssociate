@@ -59,7 +59,8 @@ checks:
   if_unknown: A guarantor whose wealth is in land, unlisted shares or the borrower itself can be worth the amount and still
     be unable to pay it.
   note: 90 days is a guide. Use the period the guarantee gives the guarantor to pay where that is shorter. Shares in the
-    borrower and claims on the borrower do not count.
+    borrower and claims on the borrower do not count. Count the cash after the guarantor's own debt repayments, interest
+    and taxes of the next twelve months, and after what could be called under its other guarantees at the same moment.
 - id: OBS_GTOR_004
   question: Do the guarantees, sureties and other contingent liabilities that the guarantor has already given, added to
     this guarantee, come to more than its net worth?
@@ -76,11 +77,11 @@ checks:
     but not yet paid in. Use the net worth given under OBS_GTOR_002. A person's guarantees appear in no accounts. Ask for
     a signed list and check it against a credit bureau report where there is one.
 - id: OBS_GTOR_005
-  question: Leaving out everything that comes from the borrower and the borrower's group (dividends, fees, sales to them,
-    loans to them and the value of its shares in them), do the guarantor's income and net worth still cover the guaranteed
-    amount?
+  question: Leaving out everything that comes from the borrower and the companies the borrower controls (dividends, fees,
+    sales to them, loans to them and the value of the guarantor's shares in them), do the guarantor's income and net worth
+    still cover the guaranteed amount?
   answer: yes_no
-  assumption: The guarantor's means to pay do not come from the borrower or the borrower's group
+  assumption: The guarantor's means to pay do not come from the borrower or from the companies the borrower controls
   disproved_by: 'no'
   why: A guarantee from someone who lives off the borrower adds a signature, not a second way out. The two would fail together.
   due_by: concept
@@ -90,17 +91,22 @@ checks:
     supporting: [management_accounts, organizational_chart, company_certificate]
     stated: [correspondence, call, officer_note]
   note: A guarantor in the same business and the same market as the borrower can fail with it even where the two have no
-    dealings with each other. Where that is so, say it in the reason.
+    dealings with each other. Where that is so, say it in the reason. Where the guarantor is the borrower's parent, the
+    parent's other businesses count as its own.
   leads_to:
   - {indicator: CAS_REPAYMENT_THESIS_001, is: false, reason: A guarantor that would fail together with the borrower is not
       a second way out}
 - id: OBS_GTOR_006
-  question: Has the guarantor named assets worth at least the guaranteed amount (what each is, where it is, and the register
-    or account that shows it), and are those assets free of any pledge or charge to others?
+  question: 'Do the guarantor''s latest accounts (for a person: a list of assets with the register or account that shows
+    each) show assets free of any pledge or charge to others that are worth at least the guaranteed amount?'
   answer: yes_no
   assumption: A creditor with a judgment against the guarantor would find assets to seize that are worth the guaranteed
     amount
   disproved_by: 'no'
+  when:
+  - {check: OBS_GTOR_001, is: company}
+  - {check: OBS_GTOR_001, is: person}
+  - {check: OBS_GTOR_001, is: public_body}
   look_in: [02.01.c, 05.02.a, 03.01.a]
   evidence:
     best: [registry_extract, valuation_report, audited_annual_report]

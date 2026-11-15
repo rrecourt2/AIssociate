@@ -89,7 +89,8 @@ checks:
     supplier's site all count. Give the amount at its highest point in the year.
 - id: OBS_SUPPLIER_MIT_001
   question: 'What would keep the buyer supplied if this supplier stopped: stock of the input that lasts until a new supplier
-    delivers, a second supplier that already delivers and could cover the full need, both, or neither?'
+    delivers, a second supplier that already delivers part of the need and is bound by contract to raise its deliveries,
+    both, or neither?'
   answer: choice
   options: [stock, second_source, both, neither]
   mitigant: true
@@ -105,4 +106,5 @@ checks:
     best: [supply_agreement, consultant_report]
     supporting: [company_record, management_accounts]
     stated: [correspondence, call, officer_note]
-  note: Give the stock in days of use, and the share of the need that the second supplier delivers today.
+  note: Give the stock in days of use, and the share of the need that the second supplier delivers today and is bound to
+    deliver.

@@ -120,20 +120,6 @@ checks:
     estimates how much will be?
   note: A no needs a grid study or the operator's record behind it. If the search finds nothing, record what was searched,
     where and when. Where nobody has studied it, the answer is not known.
-- id: OBS_EGEN_006
-  question: Has the chosen model of the main generating equipment (such as the turbine, the module and inverter, or the
-    engine) run in commercial operation at other plants, under conditions like those at this site?
-  answer: yes_no
-  assumption: The chosen equipment has a record in commercial operation
-  disproved_by: 'no'
-  look_in: [05.01.a, 06.02.a]
-  evidence:
-    best: [technical_feasibility, consultant_report]
-    supporting: [epc_contract, supply_agreement, company_record]
-    stated: [correspondence, call, officer_note, management_presentation]
-  ask: Which make and model of generating equipment will be used? Where does that model already run, and since when?
-  note: A new model or a prototype from an established maker is a no. The maker's record is not the model's record. Two
-    years of operation at several plants is a guide. Whether the technology as such is proven is asked in OBS_FEAS_002.
 - id: OBS_EGEN_008
   question: Has the energy the plant delivered in each of the last three full years reached the yearly figure the projections
     count on?

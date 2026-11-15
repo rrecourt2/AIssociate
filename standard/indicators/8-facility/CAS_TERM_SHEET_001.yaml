@@ -1,7 +1,7 @@
 id: CAS_TERM_SHEET_001
 title: Terms
 pillar: facility
-claim: The loan's size, tenor, repayment schedule and currency fit the cash flow that repays it.
+claim: The loan's tenor and repayment schedule fit the cash flow that repays it.
 due_by: diligence
 applies_to: [facility]
 matters_more_when:
@@ -40,25 +40,9 @@ checks:
     supporting: [internal_memo]
     stated: [correspondence, call, officer_note]
   note: A term marked "to be agreed", or a range in place of a figure, counts as left open.
-- id: OBS_TS_006
-  question: Is the loan due to be repaid in full before the financed asset reaches the end of its useful life, and before
-    any contract, concession, lease or licence that the repaying cash flow depends on runs out?
-  answer: yes_no
-  assumption: The loan is repaid before the asset, the contract or the licence behind its cash flow ends
-  disproved_by: 'no'
-  due_by: concept
-  look_in: [04.01.a, 06.01.a, 06.05.a]
-  evidence:
-    best: [term_sheet, facility_agreement, offtake_agreement, lease_agreement, operational_license, technical_feasibility]
-    supporting: [financial_model, material_contract, internal_memo]
-    stated: [business_plan, correspondence, call, officer_note]
-  if_unknown: A loan that outlives what pays for it is repaid, in its last years, from a cash flow nobody has promised.
-  note: Count a contract as ending on the first date the other side may end it without cause, or on which it has to be renewed.
-    Record how much time lies between the final maturity and that date (the tail). Where the loan finances no single asset
-    or contract, answer for the contracts and licences the business cannot run without.
 - id: OBS_TS_007
   question: Set against a month-by-month cash flow, does any repayment fall due before the cash to pay it has come in (during
-    construction or ramp-up, or ahead of the season's sales)?
+    a ramp-up, or ahead of the season's sales)?
   answer: yes_no
   assumption: Each repayment falls due after the cash that pays it has come in
   disproved_by: 'yes'
@@ -70,13 +54,14 @@ checks:
   ask: In which months does your cash come in, and when would the first repayment fall? If the loan pays for an investment,
     when will that investment start to earn?
   note: A yearly cash flow hides this. Use a monthly or quarterly one for the grace period, the ramp-up and one full season.
-    Take the date of completion from the builder's programme or the engineer's report, not from the plan.
+    For a project under construction, the first repayment is set against completion under OBS_ECON_007.
 - id: OBS_TS_008
   question: 'Does repayment in full depend on a refinancing or a sale at maturity: a bullet, or a final instalment larger
     than the cash flow of its year can pay?'
   answer: yes_no
   assumption: The loan is repaid in full from cash flow by its final maturity, without a refinancing or a sale
   disproved_by: 'yes'
+  due_by: concept
   look_in: [04.01.a, 03.02.b]
   evidence:
     best: [term_sheet, facility_agreement]
@@ -87,40 +72,6 @@ checks:
   leads_to:
   - {indicator: CAS_PROJECTIONS_001, is: true, reason: The cash flow and the value at maturity have to be strong enough
       for another lender to take the loan over}
-- id: OBS_TS_005
-  question: With the facility drawn in full, does the lender's own downside case show cash flow available for debt service
-    covering the scheduled debt service on this loan and on the existing debt in every year?
-  answer: yes_no
-  assumption: The amount of the loan is within what the cash flow can service, also when things go worse than planned
-  disproved_by: 'no'
-  look_in: [03.02.b, 03.01.a]
-  evidence:
-    best: [internal_memo, audited_annual_report]
-    supporting: [financial_model, financial_projections, management_accounts]
-    stated: [business_plan, correspondence, call, officer_note]
-  ask_whom: lender
-  if_unknown: The amount has then been set by what the plan costs, not by what the cash flow can repay.
-  note: The downside case is the lender's, not the party's. If none has been run, the answer is not known. Leave a bullet
-    or a large final instalment out of this answer. OBS_TS_008 asks about it.
-  leads_to:
-  - {indicator: CAS_DEBT_SERVICE_001, is: false, reason: The cash flow does not carry the loan at this size}
-- id: OBS_TS_009
-  question: Is the facility in the same currency as the cash flow that repays it?
-  answer: yes_no
-  assumption: The loan is in the currency of the cash flow that repays it
-  disproved_by: 'no'
-  due_by: concept
-  look_in: [04.01.a, 03.01.a, 06.01.a]
-  evidence:
-    best: [term_sheet, facility_agreement, audited_annual_report, offtake_agreement]
-    supporting: [management_accounts, financial_model, material_contract]
-    stated: [business_plan, correspondence, call, officer_note]
-  ask: In which currency are your customers' payments made, and in which currency would the loan be?
-  note: Go by the currency the cash is paid in. A price that is set in or linked to another currency but paid in local currency
-    is a protection, not a match. It is looked at under currency risk.
-  leads_to:
-  - {indicator: CAS_FX_001, is: false, reason: A fall in the earning currency raises the debt service in the party's own
-      money}
 - id: OBS_TS_004
   question: Are the proposed tenor, grace period and repayment profile within what lenders have agreed for comparable loans
     in this sector and country?
@@ -147,3 +98,18 @@ checks:
     supporting: [term_sheet]
     stated: [call, officer_note]
   ask_whom: lender
+- id: OBS_TS_MIT_001
+  question: Do the loan terms require the borrower to use surplus cash to prepay this loan (a cash sweep), so that the final
+    payment shrinks in the years the business does well?
+  answer: yes_no
+  mitigant: true
+  assumption: Surplus cash reduces the debt that would have to be refinanced
+  disproved_by: 'no'
+  when:
+  - {check: OBS_TS_008, against: true}
+  look_in: [04.01.a, 04.01.b]
+  evidence:
+    best: [facility_agreement]
+    supporting: [term_sheet, financial_model]
+    stated: [correspondence, call, officer_note]
+  note: Check what counts as surplus cash, and whether dividends are paid before the sweep or after it.

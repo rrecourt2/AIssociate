@@ -113,7 +113,7 @@ checks:
     stated: [call, officer_note, correspondence]
   ask: In the last three years, has a product of yours been recalled, sent back in bulk, taken off a customer's list or
     stopped by an authority?
-  note: If the search finds nothing, record what was searched, where and when. For an agribusiness, rejected shipments and
+  note: If the search finds nothing, record what was searched, where and when. For an agribusiness, border rejections and
     lost certificates are asked in OBS_AGRI_007.
 - id: OBS_OPS_007
   question: Does the party's production depend on a plant that someone else owns or runs, or on a brand, a technology or
@@ -145,7 +145,6 @@ checks:
   assumption: A second site or a back-up can carry at least half of the party's output when the main one fails
   disproved_by: 'no'
   when:
-  - {check: OBS_OPS_003, against: true}
   - {check: OBS_OPS_004, against: true}
   look_in: [05.01.a, 06.01.a]
   evidence:
@@ -155,4 +154,26 @@ checks:
   ask: If your main site or your power, water or transport failed, where would you produce, and how much could you produce
     there within a month?
   note: 'Half and a month are guides. A back-up that has never carried production is a plan: ask when it last did. Insurance
-    for the profit lost is asked under Insurance.'
+    for a site or line that is lost is asked in OBS_OPS_MIT_002.'
+- id: OBS_OPS_MIT_002
+  question: Do property and business interruption policies in force cover the cost of rebuilding the site or line as new
+    and the gross profit lost for as long as the rebuilding would take?
+  answer: yes_no
+  mitigant: true
+  assumption: Insurance pays for rebuilding the site or line and for the profit lost meanwhile
+  disproved_by: 'no'
+  when:
+  - {check: OBS_OPS_003, against: true}
+  look_in: [08.03.a, 08.03.b, 05.02.a]
+  evidence:
+    best: [insurance_policy, valuation_report]
+    supporting: [insurance_broker_report, company_record]
+    stated: [call, officer_note, correspondence]
+  ask: What are the sums insured for your main site or line and for lost profit, and for how many months does the cover
+    for lost profit run? How long would it take to rebuild and restart?
+  note: Both parts must hold for a yes. Set the sum insured against the cost of rebuilding as new, not against book value.
+    Set the months of cover for lost profit against the time it would take to rebuild, with the delivery of the machines.
+    Insurance pays money. It does not keep the customers who went elsewhere while the plant stood still.
+  leads_to:
+  - {indicator: CAS_COVERAGE_001, is: true, reason: 'The cover counts only if the policies are in force, the peril is not
+      excluded and the insurer can pay'}

@@ -32,6 +32,10 @@ checks:
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Do you owe money to any bank, lender, leasing company or shareholder at the moment? A yes or no is enough to start
     with.
+  leads_to:
+  - {indicator: CAS_COVENANT_DESIGN_001, is: true, reason: The new covenants have to fit beside the existing ones}
+  - {indicator: CAS_OTHER_LENDERS_001, is: true, reason: A lender with covenants can call its loan before this lender can
+      act}
 - id: OBS_DEBT_002
   question: What is the total debt outstanding, including leases and shareholder loans?
   answer: number
@@ -46,7 +50,8 @@ checks:
     supporting: [management_accounts, facility_agreement]
     stated: [correspondence, call, officer_note]
   ask: How much do you owe in total today, to all lenders together? Please include leases and loans from shareholders.
-  note: Take the figure at its highest point in the year where borrowing is seasonal, and say which date it is for.
+  note: Take the figure at its highest point in the year where borrowing is seasonal, and say which date it is for. Say
+    how much of it falls due within twelve months.
 - id: OBS_DEBT_008
   question: In the last three years, has the party missed a payment, breached a covenant, asked a lender for a waiver or
     a standstill, or had a loan rescheduled?
@@ -64,24 +69,6 @@ checks:
   ask: In the last three years, was there any moment when a payment to a lender was late, a covenant was not met, or you
     asked a lender for more time?
   note: A party that says yes is believed. A party that says no is believed once the accounts or a lender bear it out.
-- id: OBS_DEBT_003
-  question: When does the debt fall due?
-  answer: choice
-  options: [short_term_dominant, balanced, long_term_dominant]
-  assumption: The debt does not fall due faster than the party's cash flow can repay it
-  flag_when: is short_term_dominant
-  why: Debt due within a year must be repaid from cash or rolled over. If the lenders do not roll it over, a profitable
-    business can still fail.
-  due_by: concept
-  when:
-  - {check: OBS_DEBT_001, is: true}
-  look_in: [04.03.a, 03.01.a]
-  evidence:
-    best: [audited_annual_report, debt_schedule]
-    supporting: [management_accounts, facility_agreement]
-    stated: [correspondence, call, officer_note]
-  ask: Is most of your debt due within the next year, spread over several years, or mostly due later? A repayment schedule
-    would answer this.
 - id: OBS_DEBT_007
   question: Do the audited accounts, the security registry or a credit report show borrowings, leases or charges that the
     party has not mentioned?
@@ -100,6 +87,7 @@ checks:
   answer: yes_no
   assumption: The party answers only for its own debt
   disproved_by: 'yes'
+  applies_to: [borrower, repayment_source]
   look_in: [03.01.a, 04.02.a]
   evidence:
     best: [audited_annual_report, guarantee_agreement]
@@ -107,48 +95,25 @@ checks:
     stated: [correspondence, call, officer_note]
   ask: Have you signed a guarantee for anyone else's borrowing, or pledged any of your assets for it? For example for a
     sister company, a shareholder or a supplier.
-- id: OBS_DEBT_004
-  question: Does any of the debt rank behind the senior lenders (subordinated loans, shareholder loans)?
+- id: OBS_DEBT_010
+  question: Is the party's debt that falls due within twelve months larger than its stock and trade receivables together,
+    so that part of it finances fixed assets, losses or loans to others?
   answer: yes_no
-  why: Debt that ranks behind is a cushion for a senior lender, as long as it cannot be repaid first.
-  applies_to: [borrower, repayment_source]
+  assumption: Debt that falls due within a year finances only stock and receivables that turn into cash within the year
+  disproved_by: 'yes'
+  why: Short-term lines that finance stock and receivables are repaid when the goods are sold and the customers pay. Short-term
+    debt that paid for a building or covered a loss has nothing to repay it when it falls due.
   when:
   - {check: OBS_DEBT_001, is: true}
-  look_in: [04.03.a, 04.02.c, 03.01.a]
+  look_in: [03.01.a, 04.03.a]
   evidence:
-    best: [facility_agreement, intercreditor_agreement, audited_annual_report]
-    supporting: [debt_schedule, term_sheet]
-    stated: [call, officer_note]
-- id: OBS_DEBT_005
-  question: Do the existing loans carry financial covenants?
-  answer: yes_no
-  why: Existing covenants limit what a new lender can ask for, and a breach of them can bring every loan down together.
-  applies_to: [borrower, repayment_source]
-  when:
-  - {check: OBS_DEBT_001, is: true}
-  look_in: [04.03.a, 03.01.a]
-  evidence:
-    best: [facility_agreement]
-    supporting: [audited_annual_report, debt_schedule]
+    best: [audited_annual_report, debt_schedule]
+    supporting: [management_accounts, facility_agreement]
     stated: [correspondence, call, officer_note]
-  ask: Do your current loan agreements set financial covenants, such as a minimum debt service cover or a maximum leverage?
-  leads_to:
-  - {indicator: CAS_COVENANT_DESIGN_001, is: true, reason: The new covenants have to fit beside the existing ones}
-  - {indicator: CAS_OTHER_LENDERS_001, is: true, reason: A lender with covenants can call its loan before this lender can
-      act}
-- id: OBS_DEBT_006
-  question: What is the ratio of debt to equity at its highest point in the year?
-  answer: number
-  unit: ratio
-  why: Leverage is read at its worst, not at the year-end date the party chose.
-  applies_to: [borrower, repayment_source]
-  when:
-  - {check: OBS_DEBT_001, is: true}
-  look_in: [03.01.a, 03.01.b]
-  evidence:
-    best: [audited_annual_report]
-    supporting: [management_accounts]
-    stated: [call, officer_note]
+  ask: How much of your debt falls due within the next twelve months, and what does it finance?
+  note: Count overdrafts, lines that come up for renewal within the year and the part of long-term loans that falls due
+    within it. Take debt, stock and receivables at the same date, and at the seasonal peak of borrowing where there is one.
+    Record the three figures.
 - id: OBS_DEBT_MIT_001
   question: Have the lenders concerned confirmed in writing that the missed payment or breach is cured or waived?
   answer: yes_no

@@ -15,24 +15,6 @@ look_again_when:
     its release'}
 - {new_source: jv_agreement, reason: A sponsor support agreement can change what the giver owes and when}
 checks:
-- id: OBS_COMPSUPPORT_001
-  question: Does the undertaking cover the completion of the project (its cost to complete, its completion by a date, or
-    its passing of performance tests)?
-  answer: yes_no
-  why: Opens the topic. Support for completion is called before the project earns anything, so its terms differ from those
-    of a guarantee of the debt. A "no" does not close the topic. OBS_COMPSUPPORT_005 is asked whatever the answer.
-  due_by: screening
-  look_in: [04.02.a, 02.02.g, 04.01.b]
-  evidence:
-    best: [guarantee_agreement, jv_agreement, facility_agreement]
-    supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
-  ask: What exactly does the support cover? The cost to complete, completion by a date, the performance tests, or the debt
-    service until completion?
-  note: Where the undertaking covers only the debt, it is a guarantee and belongs on a guarantees link (CAS_GUARANTEE_001).
-  leads_to:
-  - {indicator: CAS_GUARANTOR_CAPACITY_001, is: true, reason: The support is worth what its giver can pay on the day it
-      is called}
 - id: OBS_COMPSUPPORT_002
   question: Which events oblige the giver of the support to pay or to act?
   answer: choice
@@ -43,23 +25,20 @@ checks:
   why: Support that can be argued about when it is called does not arrive in time. Where the trigger is unclear, the giver
     decides whether it must pay.
   due_by: concept
-  when:
-  - {check: OBS_COMPSUPPORT_001, is: true}
   look_in: [04.02.a, 02.02.g, 04.01.b]
   evidence:
     best: [guarantee_agreement, jv_agreement, facility_agreement]
     supporting: [term_sheet, internal_memo]
     stated: [correspondence, call, officer_note]
   note: Choose unclear where the trigger depends on the giver's own judgement, on an event that is not defined, or on a
-    document not yet written. Unclear may be chosen together with other options.
+    document not yet written. Unclear may be chosen together with other options. Where the undertaking covers only the debt,
+    it is a guarantee and belongs on a guarantees link (CAS_GUARANTEE_001).
 - id: OBS_COMPSUPPORT_006
   question: Is the support unlimited in amount, or capped at no less than the cost overrun in the independent engineer's
     downside case?
   answer: yes_no
   assumption: The amount of the support covers a plausible cost overrun
   disproved_by: 'no'
-  when:
-  - {check: OBS_COMPSUPPORT_001, is: true}
   look_in: [04.02.a, 05.01.a, 03.02.b]
   evidence:
     best: [guarantee_agreement, jv_agreement, technical_feasibility]
@@ -77,8 +56,6 @@ checks:
   flag_when: is unclear
   why: Where the end of the support is unclear, the giver can claim it has been released when the project runs into trouble,
     which is when the support is needed.
-  when:
-  - {check: OBS_COMPSUPPORT_001, is: true}
   look_in: [04.02.a, 02.02.g, 04.01.b]
   evidence:
     best: [guarantee_agreement, jv_agreement, facility_agreement]
@@ -98,8 +75,6 @@ checks:
   why: A release that the project, its builder or its sponsor can certify for itself ends the support on the word of the
     party that is supported. Only an independent engineer's certificate or the lender's own approval keeps the decision
     out of its hands.
-  when:
-  - {check: OBS_COMPSUPPORT_001, is: true}
   look_in: [04.02.a, 02.02.g, 04.01.b]
   evidence:
     best: [guarantee_agreement, jv_agreement, facility_agreement]
@@ -121,3 +96,6 @@ checks:
   if_unknown: Support that the lender cannot call depends on the sponsor choosing to honour it.
   note: A draft, a term sheet or a letter of comfort is a no. So is an undertaking given only to the borrower, which the
     lender cannot call unless it is assigned.
+  leads_to:
+  - {indicator: CAS_GUARANTOR_CAPACITY_001, is: true, reason: The support is worth what its giver can pay on the day it
+      is called}

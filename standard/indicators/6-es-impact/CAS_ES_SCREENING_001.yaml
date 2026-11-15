@@ -45,20 +45,8 @@ checks:
     supporting: [internal_memo, term_sheet]
     stated: [call, officer_note]
   ask_whom: lender
-  note: Name each list and its version or date. Where no list applies, say so.
-- id: OBS_ESG_MANDATE_002
-  question: Do other lenders or investors in the deal, or those the borrower is approaching, apply environmental, social
-    or exclusion requirements that differ from the lender's own?
-  answer: yes_no
-  why: The strictest requirement among the financiers is the one the borrower has to meet. One action plan agreed between
-    them spares the borrower several.
-  look_in: [04.01.a, 04.03.b]
-  evidence:
-    best: [term_sheet, dfi_facility_document, intercreditor_agreement]
-    supporting: [internal_memo, correspondence]
-    stated: [call, officer_note]
-  ask: Which other lenders or investors are you talking to about this financing? Has any of them set environmental or social
-    requirements, or told you of activities it does not finance?
+  note: 'Name each list and its version or date. Where no list applies, say so. Where another financier applies a stricter
+    environmental or social standard, name it: the strictest is the one the borrower has to meet.'
 - id: OBS_ES_001
   question: Does the business that the loan finances, including the companies the borrower controls, carry on any activity
     that is on an exclusion list that applies to the deal?
@@ -137,6 +125,26 @@ checks:
   note: A is harm that is diverse, irreversible or without precedent. B is limited harm, mostly at the site, that known
     measures can deal with. C is little or no harm. FI is money passed on through a financial intermediary, where the risk
     sits in the loans the intermediary makes. A category given at screening is provisional. Say who set it and when.
+- id: OBS_ES_006
+  question: Does the financial intermediary screen the loans it makes against an exclusion list and for environmental and
+    social risk, under a written procedure with a named person in charge, and can it show loans that it refused or made
+    subject to conditions on those grounds?
+  answer: yes_no
+  assumption: The financial intermediary screens its own lending for excluded activities and for environmental and social
+    risk, and acts on the result
+  disproved_by: 'no'
+  due_by: diligence
+  when:
+  - {check: OBS_ES_004, is: FI}
+  look_in: [10.03.a, 07.02.b]
+  evidence:
+    best: [consultant_report]
+    supporting: [esms_policy, company_record, corporate_governance_policy]
+    stated: [correspondence, call, officer_note, management_presentation]
+  ask: How do you check the loans you make for activities on an exclusion list and for environmental and social risk? Who
+    is in charge of it, and can you show us loans that you turned down or attached conditions to for these reasons?
+  note: A procedure on paper is not enough. Ask for the list of loans screened in the last twelve months, with the result
+    for each. OBS_ENV_007 asks about the management system for the party's own operations, not for its lending.
 - id: OBS_ES_005
   question: Has a specialist who is independent of the borrower assessed the deal against the environmental and social standard
     that the lender applies, covering every topic that arises?

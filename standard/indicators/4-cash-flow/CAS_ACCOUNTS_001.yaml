@@ -51,6 +51,28 @@ checks:
     stated: [correspondence, call, officer_note]
   note: Record whether the firm is registered with the audit regulator or the professional body where it works, and any
     tie between the firm and the party's owners or managers.
+- id: OBS_ACC_010
+  question: Is the auditor registered with the body that oversees auditors in its country, does it audit other companies
+    of about the party's size, and is it free of any other tie to the party or its owners (no family tie, no shareholding,
+    no bookkeeping for the party)?
+  answer: yes_no
+  assumption: The auditor is registered, experienced with companies of this size and independent of the party and its owners
+  disproved_by: 'no'
+  why: An audit is worth what the auditor is worth. A one-person firm that is tied to the owner, or that also keeps the
+    party's books, signs what it is given.
+  due_by: concept
+  when:
+  - {check: OBS_ACC_001, is: true}
+  look_in: [03.01.a, 07.01.a]
+  evidence:
+    best: [regulatory_document, audited_annual_report]
+    supporting: [public_source, company_record]
+    stated: [correspondence, call, officer_note]
+  ask: Is your audit firm registered with the body that oversees auditors? Which other companies of your size does it audit?
+    Does it, or anyone in it, do other work for you or have a tie to your owners?
+  note: All three parts must hold for a yes. Say which part fails. Look the firm up in the public register of the audit
+    regulator or the professional body. If a search for ties between the firm and the owners finds nothing, record what
+    was searched, where and when. "About the party's size" is a guide.
 - id: OBS_ACC_003
   question: Does the auditor's report on the latest accounts carry a qualified or adverse opinion, a disclaimer, an emphasis
     of matter, or a paragraph on doubt that the party can continue as a going concern?
@@ -195,3 +217,23 @@ checks:
     stated: [call, officer_note]
   note: A few percent is a guide. A party that keeps no monthly or quarterly accounts cannot show this. Answer no for it
     and say so.
+- id: OBS_ACC_011
+  question: Does the revenue in the accounts agree, within a few percent, with the turnover declared in the party's value
+    added or sales tax returns and with the receipts on its bank statements for the same year?
+  answer: yes_no
+  assumption: The tax returns and the bank statements bear out the revenue in the accounts
+  disproved_by: 'no'
+  why: The tax authority and the bank keep records that the party does not control. Where an audit carries little weight,
+    setting sales against them is how overstated revenue, or a second set of books, is found.
+  applies_to: [borrower, repayment_source]
+  look_in: [03.01.d, 03.01.b, 03.01.a]
+  evidence:
+    best: [tax_returns, bank_statement, consultant_report]
+    supporting: [management_accounts, company_record]
+    stated: [call, officer_note]
+  ask: Please send your value added or sales tax returns for the last financial year, as filed, and the statements of all
+    your bank accounts for the same months.
+  note: A few percent is a guide. Use the returns as filed and the statements of all the party's bank accounts. Allow for
+    sales that carry no value added or sales tax (exports, exempt goods), for the tax itself in the receipts, and for receipts
+    that are not sales (loans, money from the owners). Record each difference and its cause. A party that cannot produce
+    the returns or the statements is a no.

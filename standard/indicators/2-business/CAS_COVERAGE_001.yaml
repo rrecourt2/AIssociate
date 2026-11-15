@@ -129,21 +129,3 @@ checks:
   ask: In the last five years, has an insurer refused or reduced a claim of yours, or cancelled or declined to renew a policy?
     May we see the claims record from your broker or insurer?
   note: Ask for the claims record from the insurer or the broker, not only from the party.
-- id: OBS_INS_008
-  question: Is the lender named as loss payee (the one to whom the insurer pays a claim), or as co-insured, on the policies
-    that cover the assets given as security?
-  answer: yes_no
-  assumption: Insurance money for an asset given as security is paid to the lender
-  disproved_by: 'no'
-  due_by: disbursement
-  when:
-  - {check: OBS_COLLATERAL_001, is: single_asset}
-  - {check: OBS_COLLATERAL_001, is: multi_asset}
-  - {check: OBS_COLLATERAL_001, is: enterprise}
-  look_in: [08.03.a, 08.01.b]
-  evidence:
-    best: [insurance_policy]
-    supporting: [conditions_precedent_checklist, insurance_broker_report, security_agreement]
-    stated: [correspondence, call, officer_note]
-  note: 'Asked of the party whose assets secure the loan. An endorsement on the policy, or a notice that the insurer has
-    acknowledged, shows it: a clause in the loan agreement that asks for it does not.'

@@ -1,7 +1,8 @@
 id: CAS_ENERGY_REGULATORY_001
 title: 'Power: tariff and regulation'
 pillar: environment
-claim: The tariff and the rules the project's revenue rests on will stay as they are until the loan is repaid.
+claim: The project keeps the tariff it was granted until the loan is repaid, or is made whole if the tariff or the rules
+  change.
 due_by: concept
 applies_to: [project]
 applies_when:
@@ -16,24 +17,6 @@ look_again_when:
     against a change in law}
 - {new_source: legal_opinion, reason: Counsel's review can find a missing licence or a rule that is about to change}
 checks:
-- id: OBS_EREG_001
-  question: Does the project hold, in its own name and in force, the licence or permit it needs to generate and sell electricity?
-  answer: yes_no
-  assumption: The project holds the licence to generate and sell electricity
-  disproved_by: 'no'
-  due_by: screening
-  look_in: [07.01.a, 08.01.a]
-  evidence:
-    best: [operational_license, regulatory_document, legal_opinion]
-    supporting: [company_record, internal_memo]
-    stated: [correspondence, call, officer_note]
-  ask: Does the project hold its generation licence? Please share it, or give its number, the authority that issued it and
-    the date it expires.
-  if_unknown: Without the licence the project has no right to sell what it generates.
-  note: A provisional licence, an application or a licence held by the sponsor or a sister company is a no. Record the expiry
-    date and set it against the final maturity of the loan.
-  leads_to:
-  - {indicator: CAS_REGULATORY_001, is: false, reason: The other licences and permits of the business need the same look}
 - id: OBS_EREG_002
   question: How is the price for the project's electricity set?
   answer: choice

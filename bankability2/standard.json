@@ -1,6 +1,6 @@
 {
  "name": "Bankability Standard",
- "version": "4.0.0",
+ "version": "4.0.1",
  "description": "A standard for investment due diligence built on claims that can be disproved. It says what a deal folder holds and what must be known.",
  "licence": "MIT",
  "stages": [
@@ -1627,41 +1627,6 @@
      ]
     },
     {
-     "id": "OBS_SUPPORT_EVENTS_001",
-     "question": "For each support arrangement, which event obliges the supporter to pay or to act, and which event ends its obligation?",
-     "answer": "text",
-     "why": "A support that ends at completion, or on a ratio being met, is no longer there in the years after.",
-     "due_by": "concept",
-     "when": [
-      {
-       "check": "OBS_SUPPORT_TOPOLOGY_001",
-       "is": true
-      }
-     ],
-     "look_in": [
-      "04.02.a",
-      "04.01.a",
-      "02.02.g"
-     ],
-     "evidence": {
-      "best": [
-       "guarantee_agreement",
-       "facility_agreement",
-       "jv_agreement"
-      ],
-      "supporting": [
-       "term_sheet",
-       "internal_memo"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "For each guarantee or undertaking, what makes it payable and what brings it to an end? For example a shortfall in debt service, completion of the project, the funding of a reserve account or repayment of the facility."
-    },
-    {
      "id": "OBS_KEY_CONTRACTS_002",
      "question": "Does repayment depend on one contract or a few contracts (for example a sales or offtake contract, a concession, a lease or a supply contract), so that the loss of one of them would put debt service in doubt?",
      "answer": "yes_no",
@@ -1707,42 +1672,6 @@
        "reason": "A sales contract is worth what the customer is able to pay"
       }
      ]
-    },
-    {
-     "id": "OBS_KEY_CONTRACTS_001",
-     "question": "Which contracts does repayment depend on, who is the other party to each, and when does each end?",
-     "answer": "text",
-     "due_by": "concept",
-     "when": [
-      {
-       "check": "OBS_KEY_CONTRACTS_002",
-       "is": true
-      }
-     ],
-     "look_in": [
-      "06.01.a",
-      "06.05.a",
-      "06.04.a"
-     ],
-     "evidence": {
-      "best": [
-       "offtake_agreement",
-       "lease_agreement",
-       "supply_agreement",
-       "material_contract"
-      ],
-      "supporting": [
-       "company_record",
-       "internal_memo"
-      ],
-      "stated": [
-       "business_plan",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Which contracts matter most for repaying the loan? For each one, who is the other party and until when does it run?",
-     "note": "A contract that ends before the loan is repaid has to be renewed or replaced. Say so in the answer."
     },
     {
      "id": "OBS_STRUCTURE_001",
@@ -2060,7 +1989,7 @@
       ]
      },
      "ask_whom": "lender",
-     "note": "This is about the lender's own products and limits. Whether the lender is the right source of the money is asked under impact and additionality."
+     "note": "This is about the lender's own products and limits. For the country limit, ask whoever keeps the limits and record the date. Whether the lender is the right source of the money is asked under impact and additionality."
     },
     {
      "id": "OBS_USE_001",
@@ -2178,12 +2107,67 @@
      },
      "ask": "Could you show us the full cost of the plan and where each part of the money comes from? Which of these sources are signed or already paid in, and which are still being discussed?",
      "if_unknown": "A plan that is only partly funded can stop half way, with the lender's money already spent.",
-     "note": "Committed means signed or paid in. A source that is still being negotiated is not committed.",
+     "note": "Committed means signed or paid in. A source that is still being negotiated is not committed. Equity the sponsor intends to put in, or a loan still in another lender's approval process, is not committed. Say how much is still open and who is expected to provide it.",
      "leads_to": [
       {
        "indicator": "CAS_COMPLETION_SUPPORT_001",
        "is": false,
        "reason": "A gap in the funding has to be closed by someone who is bound to close it"
+      },
+      {
+       "indicator": "CAS_CONDITIONS_001",
+       "is": false,
+       "reason": "Funding that is not yet committed is usually made a condition of the first drawdown"
+      }
+     ]
+    },
+    {
+     "id": "OBS_USE_004",
+     "question": "Is at least about a third of the cost of the plan paid in cash by the owners or from the business's own retained cash, before the lender's money or in step with it, and not in kind, by revaluing assets or with borrowed money?",
+     "answer": "yes_no",
+     "assumption": "The owners carry a share of the plan in cash and stand to lose it first",
+     "disproved_by": "no",
+     "due_by": "concept",
+     "when": [
+      {
+       "check": "OBS_CAPEX_PLAN_001",
+       "is": true
+      },
+      {
+       "check": "OBS_LIFECYCLE_001",
+       "is": "greenfield"
+      }
+     ],
+     "look_in": [
+      "03.01.a",
+      "04.01.a",
+      "01.02.a"
+     ],
+     "evidence": {
+      "best": [
+       "audited_annual_report",
+       "facility_agreement",
+       "jv_agreement"
+      ],
+      "supporting": [
+       "investment_plan",
+       "financial_model",
+       "bank_statement",
+       "shareholder_resolution"
+      ],
+      "stated": [
+       "business_plan",
+       "correspondence",
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "How much of the cost of the plan do the owners pay themselves, in cash? When is that money paid in, before our loan is drawn or alongside it, and where does it come from?",
+     "note": "A third is a guide. An institution can set its own share.",
+     "leads_to": [
+      {
+       "indicator": "CAS_SOURCE_OF_FUNDS_001",
+       "reason": "Where the owners' money comes from, and whether it is theirs, is examined there"
       }
      ]
     },
@@ -2350,66 +2334,7 @@
       ]
      },
      "ask": "Do you plan to build, expand or replace on a scale that needs outside money, or that the growth in your plan depends on?",
-     "note": "This covers a new plant, a large expansion and a major overhaul. The routine replacement of worn equipment is not meant."
-    },
-    {
-     "id": "OBS_LIFECYCLE_002",
-     "question": "For how many full financial years does the business have audited accounts?",
-     "answer": "number",
-     "unit": "years",
-     "why": "The length of the audited record is how much of the repayment story someone independent has checked.",
-     "look_in": [
-      "03.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "audited_annual_report"
-      ],
-      "supporting": [
-       "registry_extract"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Since which year have the accounts of the business been audited, and by whom?",
-     "note": "Count the accounts of the business that repays the loan. A new vehicle with a long-standing sponsor has none of its own, and the answer is 0."
-    },
-    {
-     "id": "OBS_LIFECYCLE_CONFIRM_001",
-     "question": "Is construction, installation or a major refurbishment under way at the business today?",
-     "answer": "yes_no",
-     "why": "Checks the stage against what is happening on the ground. A business where building is under way is not established, whatever it is called.",
-     "calls_for": [
-      {
-       "is": true,
-       "kind": "project"
-      }
-     ],
-     "look_in": [
-      "06.02.a",
-      "05.01.a",
-      "03.01.b"
-     ],
-     "evidence": {
-      "best": [
-       "epc_contract",
-       "technical_feasibility"
-      ],
-      "supporting": [
-       "management_accounts",
-       "board_minutes",
-       "company_record"
-      ],
-      "stated": [
-       "public_source",
-       "call",
-       "officer_note"
-      ]
-     },
-     "note": "A site visit answers this best. Record what was seen, and when, in a note by the officer."
+     "note": "This covers a new plant, a large expansion and a major overhaul. The routine replacement of worn equipment is not meant. A site visit answers best whether building is under way. Record what was seen, and when."
     },
     {
      "id": "OBS_LIFECYCLE_CONFIRM_002",
@@ -2617,7 +2542,7 @@
      },
      "ask_whom": "lender",
      "if_unknown": "Until the kind of credit is known, the tool cannot say which indicators apply.",
-     "note": "The answer is for the deal. It can be recorded for one party alone when that party is a different kind of credit from the rest of the deal, for example a bank that guarantees a factory's loan."
+     "note": "The answer is for the deal. It can be recorded for one party alone when that party is a different kind of credit from the rest of the deal, for example a bank that guarantees a factory's loan. The standard has no checks yet for a fund's own repayment (net asset value against debt, uncalled commitments of its investors, concentration of its portfolio). Where the answer is fund, record these as open by hand."
     },
     {
      "id": "OBS_SECTOR_002",
@@ -2776,9 +2701,9 @@
     },
     {
      "id": "OBS_SECTOR_CONFIRM_004",
-     "question": "Does more than half of the revenue, or more than half of the profit, come from something other than the stated business (for example trading, the sale or revaluation of property, financial income or dealings with related parties)?",
+     "question": "Does more than half of the profit before tax come from something other than the stated business (for example trading gains, the sale or revaluation of property, financial income or dealings with related parties)?",
      "answer": "yes_no",
-     "assumption": "Most of the revenue and most of the profit come from the stated business",
+     "assumption": "Most of the profit comes from the stated business",
      "disproved_by": "yes",
      "due_by": "concept",
      "when": [
@@ -3324,24 +3249,6 @@
      "if_unknown": "Until the countries are named, none of the country checks can be answered."
     },
     {
-     "id": "OBS_COUNTRY_002",
-     "question": "Do the lender's own rules allow this exposure in each of those countries: no exclusion, and room under the country limit for the amount asked?",
-     "answer": "yes_no",
-     "assumption": "The lender's own rules allow this exposure in the country",
-     "disproved_by": "no",
-     "evidence": {
-      "best": [
-       "internal_memo"
-      ],
-      "stated": [
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask_whom": "lender",
-     "note": "Ask whoever keeps the country limits, and record the date. A limit that is full today can have room by signing, and the other way round."
-    },
-    {
      "id": "OBS_COUNTRY_003",
      "question": "Is the government of the country from which the loan is serviced in default on its foreign debt, restructuring it, or drawing emergency financing to meet its payments abroad?",
      "answer": "yes_no",
@@ -3461,9 +3368,9 @@
     },
     {
      "id": "OBS_COUNTRY_005",
-     "question": "Could a foreign lender obtain a judgment or an arbitral award against the borrower, have it recognised in the country where the borrower and the security are, and enforce it there within about three years?",
+     "question": "Could a foreign lender obtain a judgment or an arbitral award against the borrower on the loan, have it recognised in the borrower's country and collect on it there within about three years?",
      "answer": "yes_no",
-     "assumption": "A foreign lender can enforce its loan and its security through the country's courts within about three years",
+     "assumption": "A foreign lender can enforce its loan claim through the country's courts within about three years",
      "disproved_by": "no",
      "due_by": "diligence",
      "look_in": [
@@ -3593,7 +3500,7 @@
    "id": "CAS_ENERGY_REGULATORY_001",
    "title": "Power: tariff and regulation",
    "pillar": "environment",
-   "claim": "The tariff and the rules the project's revenue rests on will stay as they are until the loan is repaid.",
+   "claim": "The project keeps the tariff it was granted until the loan is repaid, or is made whole if the tariff or the rules change.",
    "due_by": "concept",
    "applies_to": [
     "project"
@@ -3626,44 +3533,6 @@
     }
    ],
    "checks": [
-    {
-     "id": "OBS_EREG_001",
-     "question": "Does the project hold, in its own name and in force, the licence or permit it needs to generate and sell electricity?",
-     "answer": "yes_no",
-     "assumption": "The project holds the licence to generate and sell electricity",
-     "disproved_by": "no",
-     "due_by": "screening",
-     "look_in": [
-      "07.01.a",
-      "08.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "operational_license",
-       "regulatory_document",
-       "legal_opinion"
-      ],
-      "supporting": [
-       "company_record",
-       "internal_memo"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Does the project hold its generation licence? Please share it, or give its number, the authority that issued it and the date it expires.",
-     "if_unknown": "Without the licence the project has no right to sell what it generates.",
-     "note": "A provisional licence, an application or a licence held by the sponsor or a sister company is a no. Record the expiry date and set it against the final maturity of the loan.",
-     "leads_to": [
-      {
-       "indicator": "CAS_REGULATORY_001",
-       "is": false,
-       "reason": "The other licences and permits of the business need the same look"
-      }
-     ]
-    },
     {
      "id": "OBS_EREG_002",
      "question": "How is the price for the project's electricity set?",
@@ -4036,7 +3905,7 @@
       ]
      },
      "ask": "Please share your key licences and permits, or a confirmation from the authority that they are in force. Is any of them held by another company of the group, or by a person?",
-     "note": "This check does not hang on OBS_REG_001, so that the topic cannot close on one answer. Where the party says it needs no licence, a legal opinion or the authority's own register should bear that out. A licence held by a sister company or by the owner in person is not held by the party."
+     "note": "This check does not hang on OBS_REG_001, so that the topic cannot close on one answer. Where the party says it needs no licence, a legal opinion or the authority's own register should bear that out. A licence held by a sister company or by the owner in person is not held by the party. For a power project this is first of all the licence to generate and sell electricity. A provisional licence or an application is a no."
     },
     {
      "id": "OBS_REG_003",
@@ -4430,9 +4299,9 @@
     },
     {
      "id": "OBS_MARKET_004",
-     "question": "At the lowest price of the last ten years, would the party's revenue still cover its cash operating costs and its debt service, the proposed loan included?",
+     "question": "At the lowest price of the last ten years (for a processor or a trader: in the year in which the gap between its selling price and the price of its main input was narrowest), would the party's revenue still cover its cash operating costs and its debt service, the proposed loan included?",
      "answer": "yes_no",
-     "assumption": "The party covers its cash costs and its debt service at the lowest price of the last ten years",
+     "assumption": "The party covers its cash costs and its debt service at the lowest price, or the narrowest spread, of the last ten years",
      "disproved_by": "no",
      "due_by": "diligence",
      "look_in": [
@@ -4457,7 +4326,7 @@
        "officer_note"
       ]
      },
-     "note": "Use the party's accounts for that year where it was already trading. Otherwise set today's cash cost per unit against that price. Where the price is fixed and the market adjusts through volume, use the lowest volume. A producer whose costs are among the highest in its market is the first to lose money when the price falls."
+     "note": "Use the party's accounts for that year where it was already trading. Otherwise set today's cash cost per unit against that price (for a processor or a trader, today's cash costs other than the main input against that gap). Where the price is fixed and the market adjusts through volume, use the lowest volume. A producer whose costs are among the highest in its market is the first to lose money when the price falls."
     },
     {
      "id": "OBS_MARKET_005",
@@ -4491,7 +4360,7 @@
     },
     {
      "id": "OBS_MARKET_006",
-     "question": "Does the party's margin depend on an import tariff, a quota, a subsidy, a tax break or a regulated price that the government can change or end during the life of the loan?",
+     "question": "Does the party's margin depend on an import tariff, a quota, an export ban or levy, a subsidy or a regulated price that the government can change or end during the life of the loan?",
      "answer": "yes_no",
      "assumption": "The party's margin does not rest on a measure that the government can withdraw",
      "disproved_by": "yes",
@@ -4518,7 +4387,8 @@
        "officer_note"
       ]
      },
-     "ask": "Would you still make money if the import duty, the subsidy, the tax break or the regulated price you benefit from were taken away?",
+     "ask": "Would you still make money if the import duty, the quota, the export ban or levy, the subsidy or the regulated price that applies to your business were changed or taken away?",
+     "note": "A regulated price, an export ban, a quota or a levy can protect the party in one year and squeeze it in the next. The test is whether a decision the party does not control can change its margin. Name the measure. A tax holiday or reduced rate is asked under OBS_TAX_008.",
      "leads_to": [
       {
        "indicator": "CAS_REGULATORY_001",
@@ -4556,6 +4426,37 @@
      },
      "ask": "Who could take your customers in the next few years? Is anyone building new capacity, or importing at a lower price than yours?",
      "note": "Count only what can be named today, such as a plant under construction, an import that is already landing or a product that buyers are already switching to. If the search finds nothing, record what was searched, where and when."
+    },
+    {
+     "id": "OBS_MARKET_009",
+     "question": "Over the last three years, has the party lost share in its main market (its sales grew more slowly than the market's, or fell faster)?",
+     "answer": "yes_no",
+     "assumption": "The party has held its place against its competitors over the last three years",
+     "disproved_by": "yes",
+     "look_in": [
+      "01.03.a",
+      "03.01.a"
+     ],
+     "evidence": {
+      "best": [
+       "market_study",
+       "consultant_report",
+       "audited_annual_report"
+      ],
+      "supporting": [
+       "management_accounts",
+       "company_record",
+       "public_source"
+      ],
+      "stated": [
+       "business_plan",
+       "management_presentation",
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "How have your sales moved over the last three years compared with your market as a whole? Who has gained share, and who has lost it?",
+     "note": "Set the party's sales, from its accounts, against the figures for the market used in OBS_MARKET_001, in volume where both are known. Name the source of the market figures. Where the party has traded for less than three years, answer for the time it has traded and say so."
     },
     {
      "id": "OBS_MARKET_008",
@@ -4654,7 +4555,7 @@
     },
     {
      "new_source": "audited_annual_report",
-     "reason": "The accounts of a new season show intake, advances recovered and stock written off"
+     "reason": "The accounts of a new season show intake and stock written off"
     }
    ],
    "checks": [
@@ -4663,7 +4564,7 @@
      "question": "What share of the crop or other farm produce that the party processes or trades, by volume, does it buy from farmers or outgrowers that it does not control?",
      "answer": "number",
      "unit": "percent",
-     "why": "Produce from the party's own farms is in its hands. Produce bought from independent farmers can go to another buyer in any season. The larger this share, the more the checks on side-selling and on advances count.",
+     "why": "Produce from the party's own farms is in its hands. Produce bought from independent farmers can go to another buyer in any season. The larger this share, the more the check on side-selling, and the check on advances under Working capital, count.",
      "due_by": "screening",
      "look_in": [
       "03.01.a",
@@ -4718,36 +4619,40 @@
      "note": "Four fifths is a guide. Look at the seasons in which the market price rose above the contract price: that is when side-selling shows. Answer no, and say so, where the party buys nothing from contracted or financed farmers."
     },
     {
-     "id": "OBS_AGRI_003",
-     "question": "In any of the last three seasons, did farmers fail to repay more than about a tenth of the advances or inputs that the party gave them on credit?",
+     "id": "OBS_AGRI_010",
+     "question": "Is the highest yearly volume of crop, milk or other farm produce that the projections count on no more than the party took in during its best season of the last five, or is the extra volume contracted with named farmers, cooperatives or suppliers who have it to sell?",
      "answer": "yes_no",
-     "assumption": "Farmers repay the advances and inputs that the party gives them on credit",
-     "disproved_by": "yes",
+     "assumption": "The farm produce that the projections count on has been delivered before, or is contracted with those who have it",
+     "disproved_by": "no",
+     "why": "A processing line built ahead of its supply runs below capacity, whatever the plant can do. The produce has to exist and has to be the party's to buy.",
      "look_in": [
-      "03.01.a",
-      "03.01.b"
+      "06.04.a",
+      "05.01.a",
+      "03.02.b"
      ],
      "evidence": {
       "best": [
-       "audited_annual_report"
+       "supply_agreement",
+       "technical_feasibility"
       ],
       "supporting": [
+       "financial_model",
        "company_record",
        "management_accounts"
       ],
       "stated": [
        "call",
        "officer_note",
-       "correspondence"
+       "business_plan"
       ]
      },
-     "ask": "How much did you advance to farmers in cash, seed or fertiliser in each of the last three seasons, and how much of it had come back by the end of each season?",
-     "note": "A tenth is a guide. Count an advance that was carried over into the next season as not repaid. Answer no, and say so, where the party gives no advances.",
+     "ask": "What is the highest yearly intake in your projections, and what was your intake in each of the last five seasons? Where will the extra volume come from, and is it under contract?",
+     "note": "Use volume, not value. A letter of intent, or a list of farmers the party hopes to sign, is not a contract. Where the extra volume is to come from the party's own new plantings or herd, say when they will first yield.",
      "leads_to": [
       {
-       "indicator": "CAS_WORKING_CAP_001",
-       "is": true,
-       "reason": "Advances that do not come back are working capital that is lost, not tied up"
+       "indicator": "CAS_PROJECTIONS_001",
+       "is": false,
+       "reason": "The volumes in the projections then have to be cut to what the supply can deliver"
       }
      ]
     },
@@ -4817,44 +4722,8 @@
      ]
     },
     {
-     "id": "OBS_AGRI_006",
-     "question": "Does a government body set, cap or put a floor under the price that the party pays for its crop or the price at which it sells its product?",
-     "answer": "yes_no",
-     "assumption": "The party buys its crop and sells its product at prices that no government body sets",
-     "disproved_by": "yes",
-     "due_by": "concept",
-     "look_in": [
-      "07.01.a",
-      "01.03.a"
-     ],
-     "evidence": {
-      "best": [
-       "regulatory_document",
-       "market_study"
-      ],
-      "supporting": [
-       "company_record",
-       "public_source"
-      ],
-      "stated": [
-       "call",
-       "officer_note",
-       "correspondence"
-      ]
-     },
-     "ask": "Is the price you pay farmers, or the price at which you sell, set or limited by a government body?",
-     "note": "A fixed price can protect the party in one year and squeeze it in the next. The test is whether a decision the party does not control can change its margin. Export bans, quotas and levies work the same way: record them here.",
-     "leads_to": [
-      {
-       "indicator": "CAS_REGULATORY_001",
-       "is": true,
-       "reason": "The rule that sets the price, and how it can change, is examined there"
-      }
-     ]
-    },
-    {
      "id": "OBS_AGRI_007",
-     "question": "In the last five years, was a shipment of the party rejected by a buyer or at a border for food safety, residues, pests or quality, or was a certificate that it needs in order to sell (food safety, organic, plant health or export approval) suspended or withdrawn?",
+     "question": "In the last five years, was a shipment of the party stopped at a border for food safety, residues or pests, or was a certificate that it needs in order to sell (food safety, organic, plant health or export approval) suspended or withdrawn?",
      "answer": "yes_no",
      "assumption": "The party's product meets the food safety and plant health rules of its markets, and the party has kept the certificates it needs in order to sell",
      "disproved_by": "yes",
@@ -4878,14 +4747,14 @@
        "correspondence"
       ]
      },
-     "ask": "In the last five years, was any shipment of yours rejected by a buyer or at a border? Was any of your certificates suspended or withdrawn?",
-     "note": "If the search finds nothing, record what was searched, where and when. Some importing markets publish their border rejections."
+     "ask": "In the last five years, was any shipment of yours stopped at a border? Was any of your certificates suspended or withdrawn?",
+     "note": "If the search finds nothing, record what was searched, where and when. Some importing markets publish their border rejections. A batch or shipment that a customer rejected is asked in OBS_OPS_006."
     },
     {
      "id": "OBS_AGRI_008",
-     "question": "Does the party own, or hold under a contract that runs through the season, the storage and (for a product that spoils) the cold chain needed to keep its product saleable until it is sold?",
+     "question": "Does the party own, or hold under a contract that runs through the season, what it needs to keep the produce from spoiling on the way in and on the way out: collection, cooling and testing at intake between the farm and the plant, and storage and (for a product that spoils) the cold chain until the product is sold?",
      "answer": "yes_no",
-     "assumption": "The party controls the storage and the cold chain that its product needs until it is sold",
+     "assumption": "The party controls the collection, the storage and the cold chain that its raw produce and its product need",
      "disproved_by": "no",
      "look_in": [
       "05.01.a",
@@ -4907,8 +4776,8 @@
        "correspondence"
       ]
      },
-     "ask": "Where is your product stored between harvest and sale, and who owns the stores, the cold rooms and the refrigerated transport?",
-     "note": "Products that spoil include fresh fruit and vegetables, flowers, milk, meat and fish. For grain and other dry crops, ask about drying and about storage free of pests and damp."
+     "ask": "How does the produce get from the farm to your plant, and who owns the collection points, the cooling and the testing at intake? Where is your product stored until it is sold, and who owns the stores, the cold rooms and the refrigerated transport?",
+     "note": "Both the way in and the way out must hold for a yes. Say which part is missing. Products that spoil include fresh fruit and vegetables, flowers, milk, meat and fish. For grain and other dry crops, ask about drying and about storage free of pests and damp."
     },
     {
      "id": "OBS_AGRI_009",
@@ -5552,48 +5421,6 @@
      },
      "ask": "In the last five years, has an insurer refused or reduced a claim of yours, or cancelled or declined to renew a policy? May we see the claims record from your broker or insurer?",
      "note": "Ask for the claims record from the insurer or the broker, not only from the party."
-    },
-    {
-     "id": "OBS_INS_008",
-     "question": "Is the lender named as loss payee (the one to whom the insurer pays a claim), or as co-insured, on the policies that cover the assets given as security?",
-     "answer": "yes_no",
-     "assumption": "Insurance money for an asset given as security is paid to the lender",
-     "disproved_by": "no",
-     "due_by": "disbursement",
-     "when": [
-      {
-       "check": "OBS_COLLATERAL_001",
-       "is": "single_asset"
-      },
-      {
-       "check": "OBS_COLLATERAL_001",
-       "is": "multi_asset"
-      },
-      {
-       "check": "OBS_COLLATERAL_001",
-       "is": "enterprise"
-      }
-     ],
-     "look_in": [
-      "08.03.a",
-      "08.01.b"
-     ],
-     "evidence": {
-      "best": [
-       "insurance_policy"
-      ],
-      "supporting": [
-       "conditions_precedent_checklist",
-       "insurance_broker_report",
-       "security_agreement"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "note": "Asked of the party whose assets secure the loan. An endorsement on the policy, or a notice that the insurer has acknowledged, shows it: a clause in the loan agreement that asks for it does not."
     }
    ]
   },
@@ -5679,36 +5506,6 @@
      "note": "A letter of intent, a preferred bidder or a contract still under negotiation is a no. The terms of the contract and the builder itself are examined on the link to the builder (CAS_BUILDER_OPERATOR_001)."
     },
     {
-     "id": "OBS_ECON_002",
-     "question": "Has the builder chosen for the project completed at least one project of the same technology and of about the same size?",
-     "answer": "yes_no",
-     "assumption": "The builder has built a project like this one before",
-     "disproved_by": "no",
-     "due_by": "concept",
-     "look_in": [
-      "05.01.a",
-      "10.03.a"
-     ],
-     "evidence": {
-      "best": [
-       "technical_feasibility",
-       "consultant_report"
-      ],
-      "supporting": [
-       "company_record",
-       "public_source"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note",
-       "management_presentation"
-      ]
-     },
-     "ask": "Which comparable projects has your builder completed? Please give the name, size, technology, country and year of each, and a contact at the client.",
-     "note": "The builder's own list of references is its own word until a client, a lender or an independent engineer confirms it. \"About the same size\" is a guide. How that earlier work went is asked on the link to the builder (OBS_BUILDOP_001)."
-    },
-    {
      "id": "OBS_ECON_003",
      "question": "Does the construction contract make handover depend on performance tests against stated figures (such as capacity, output or efficiency), with damages or a right to reject the works if the figures are not met?",
      "answer": "yes_no",
@@ -5742,9 +5539,9 @@
     },
     {
      "id": "OBS_ECON_004",
-     "question": "Would the damages the builder must pay for delay, up to their cap, cover the interest and repayments that fall due during a delay of six months?",
+     "question": "Would the damages the builder must pay for delay, up to their cap, cover the interest and repayments that fall due during a delay of six months and that the existing business could not pay from its own cash flow?",
      "answer": "yes_no",
-     "assumption": "Damages for delay cover the debt service that falls due while the project is late",
+     "assumption": "Damages for delay cover the debt service that falls due while the project is late and that the existing business cannot pay",
      "disproved_by": "no",
      "when": [
       {
@@ -5771,7 +5568,7 @@
        "officer_note"
       ]
      },
-     "note": "Six months is a guide. Use the delay the independent engineer thinks plausible where there is one. Record the daily rate, the cap as a share of the contract price, and for how long after handover the builder must repair defects."
+     "note": "Six months is a guide. Use the delay the independent engineer thinks plausible where there is one. For a new project with no existing business, the damages have to cover all the debt service of those months. For a line added to a running business, take off what the existing business can pay, and say how much that is. Record the daily rate, the cap as a share of the contract price, and for how long after handover the builder must repair defects."
     },
     {
      "id": "OBS_ECON_005",
@@ -5809,46 +5606,6 @@
      },
      "ask": "Has an independent engineer or cost consultant reviewed the budget? If construction has started, please share the latest report on cost to date and cost to complete.",
      "note": "minor_overrun means the overrun fits within the contingency that is left. material_overrun means it does not. For a project that has not started, compare the budget with the independent engineer's or cost consultant's own estimate."
-    },
-    {
-     "id": "OBS_ECON_006",
-     "question": "Do signed commitments (equity, other loans and grants) cover the whole budget, contingency included, so that no part of the funding is still to be found when the lender first pays out?",
-     "answer": "yes_no",
-     "assumption": "All the money needed to finish the project is committed before the lender pays out",
-     "disproved_by": "no",
-     "look_in": [
-      "01.02.a",
-      "04.01.b",
-      "04.03.b"
-     ],
-     "evidence": {
-      "best": [
-       "facility_agreement",
-       "dfi_facility_document",
-       "jv_agreement",
-       "bank_statement"
-      ],
-      "supporting": [
-       "investment_plan",
-       "financial_model",
-       "board_resolution"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note",
-       "management_presentation"
-      ]
-     },
-     "ask": "Please list every source of funds for the project, with the amount, who provides it, and whether it is signed, approved or still under discussion.",
-     "note": "Equity the sponsor intends to put in, or a loan still in another lender's approval process, is not committed. Say how much is still open and who is expected to provide it.",
-     "leads_to": [
-      {
-       "indicator": "CAS_CONDITIONS_001",
-       "is": false,
-       "reason": "Funding that is not yet committed is usually made a condition of the first drawdown"
-      }
-     ]
     },
     {
      "id": "OBS_ECON_007",
@@ -5893,19 +5650,11 @@
        "against": true
       },
       {
-       "check": "OBS_ECON_002",
-       "against": true
-      },
-      {
        "check": "OBS_ECON_004",
        "against": true
       },
       {
        "check": "OBS_ECON_005",
-       "against": true
-      },
-      {
-       "check": "OBS_ECON_006",
        "against": true
       }
      ],
@@ -6196,36 +5945,6 @@
      "note": "A no needs a grid study or the operator's record behind it. If the search finds nothing, record what was searched, where and when. Where nobody has studied it, the answer is not known."
     },
     {
-     "id": "OBS_EGEN_006",
-     "question": "Has the chosen model of the main generating equipment (such as the turbine, the module and inverter, or the engine) run in commercial operation at other plants, under conditions like those at this site?",
-     "answer": "yes_no",
-     "assumption": "The chosen equipment has a record in commercial operation",
-     "disproved_by": "no",
-     "look_in": [
-      "05.01.a",
-      "06.02.a"
-     ],
-     "evidence": {
-      "best": [
-       "technical_feasibility",
-       "consultant_report"
-      ],
-      "supporting": [
-       "epc_contract",
-       "supply_agreement",
-       "company_record"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note",
-       "management_presentation"
-      ]
-     },
-     "ask": "Which make and model of generating equipment will be used? Where does that model already run, and since when?",
-     "note": "A new model or a prototype from an established maker is a no. The maker's record is not the model's record. Two years of operation at several plants is a guide. Whether the technology as such is proven is asked in OBS_FEAS_002."
-    },
-    {
      "id": "OBS_EGEN_008",
      "question": "Has the energy the plant delivered in each of the last three full years reached the yearly figure the projections count on?",
      "answer": "yes_no",
@@ -6435,38 +6154,7 @@
       ]
      },
      "if_unknown": "Without a P90 the debt cannot be set against a poor year.",
-     "note": "Say whether the P90 is for a single year or for an average over ten years. The single-year figure is the lower of the two and the one that matters for a year's debt service. Record both yields in gigawatt hours as well."
-    },
-    {
-     "id": "OBS_ERES_004",
-     "question": "By how much does the resource at the site vary from one year to the next (the standard deviation of the yearly values, as a share of their average)?",
-     "answer": "number",
-     "unit": "percent",
-     "why": "The more the resource varies between years, the larger the reserve the project needs to pay its debt through a poor year.",
-     "when": [
-      {
-       "check": "OBS_ERES_006",
-       "is": true
-      }
-     ],
-     "look_in": [
-      "05.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "technical_feasibility"
-      ],
-      "supporting": [
-       "consultant_report",
-       "company_record"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "note": "Record the number of years the figure rests on. For water, also record the driest year on record as a share of the average."
+     "note": "Say whether the P90 is for a single year or for an average over ten years. The single-year figure is the lower of the two and the one that matters for a year's debt service. Record both yields in gigawatt hours as well. For water, also record the driest year on record as a share of the average."
     },
     {
      "id": "OBS_ERES_008",
@@ -6681,24 +6369,24 @@
       ]
      },
      "ask": "Where is this technology already running commercially at a similar size? Since when, and who can confirm how it performs?",
-     "note": "A pilot plant, a demonstration unit or the first plant of its kind is a no. So is a known technology used at several times its largest size so far, or with a feedstock or in a climate it has not run in. The supplier's own list of references is the supplier's word."
+     "note": "A pilot plant, a demonstration unit or the first plant of its kind is a no. So is a known technology used at several times its largest size so far, or with a feedstock or in a climate it has not run in. The supplier's own list of references is the supplier's word. For a power plant, answer for the chosen model of the main generating equipment, not for its maker or its technology family: a new model from an established maker is a no. Two years of operation at several plants is a guide."
     },
     {
      "id": "OBS_FEAS_005",
-     "question": "Does the project hold the rights it needs to its site (the land, the way in, and the connections to power, water and transport) under signed agreements or registered title that run beyond the final maturity of the loan?",
+     "question": "Does the project hold the rights of way and the connections it needs (the way in to the site, and the connections to water and transport) under signed agreements that run beyond the final maturity of the loan?",
      "answer": "yes_no",
-     "assumption": "The project holds the rights to its land, its access and its connections for the life of the loan",
+     "assumption": "The project holds its access and its connections for the life of the loan",
      "disproved_by": "no",
      "due_by": "concept",
      "look_in": [
       "06.05.a",
-      "04.02.b",
+      "06.01.a",
       "08.01.a"
      ],
      "evidence": {
       "best": [
        "lease_agreement",
-       "security_agreement",
+       "material_contract",
        "legal_opinion",
        "regulatory_document"
       ],
@@ -6712,13 +6400,13 @@
        "officer_note"
       ]
      },
-     "ask": "Do you own or lease the whole site, and are the rights of way and the utility connections signed? Please share the title, the lease and the connection agreements.",
-     "note": "An option, a letter of intent or an application that is still pending is a no until it is signed or granted. Say which right is missing. For a power project the grid connection has its own check (OBS_EGEN_003).",
+     "ask": "Are the rights of way to the site and the connections to water and transport signed? Please share the agreements, with the date on which each ends.",
+     "note": "An option, a letter of intent or an application that is still pending is a no until it is signed or granted. Say which right is missing. The land itself is asked under OBS_LAND_001, and the grid connection of a power project under OBS_EGEN_003.",
      "leads_to": [
       {
        "indicator": "CAS_LAND_SUPPLY_CHAIN_001",
        "is": false,
-       "reason": "Land that is not yet secured may still have to be acquired from people who live on it or use it"
+       "reason": "A right of way that is not yet secured may still have to be acquired from people who live on the land or use it"
       }
      ]
     },
@@ -6824,10 +6512,10 @@
     },
     {
      "id": "OBS_FEAS_007",
-     "question": "Does the supplier of the technology, or the builder, guarantee the plant's output and availability in a signed contract, with damages if they are not reached?",
+     "question": "Does the supplier of the technology warrant the plant's output and availability for at least two years after handover, in a signed contract, with damages if they are not reached?",
      "answer": "yes_no",
      "mitigant": true,
-     "assumption": "The supplier or the builder is bound to pay if the technology does not perform",
+     "assumption": "The supplier must pay if the technology does not perform in its first years of operation",
      "disproved_by": "no",
      "when": [
       {
@@ -6856,12 +6544,12 @@
        "officer_note"
       ]
      },
-     "note": "A guarantee is worth what its giver can pay. A young technology company with little capital does not carry this risk, whatever it signs.",
+     "note": "A warranty is worth what its giver can pay. A young technology company with little capital does not carry this risk, whatever it signs. Two years is a guide. Performance at handover is asked under OBS_ECON_003.",
      "leads_to": [
       {
        "indicator": "CAS_BUILDER_OPERATOR_001",
        "is": true,
-       "reason": "The guarantee is worth what the builder or supplier behind it can pay"
+       "reason": "The warranty is worth what the supplier behind it can pay"
       }
      ]
     }
@@ -6920,7 +6608,7 @@
      "id": "OBS_INPUT_001",
      "question": "Is there one input (a feedstock, a fuel, a utility, a component or goods for resale) that the party cannot produce or trade without, or one supplier that provides about a fifth or more of what it buys?",
      "answer": "yes_no",
-     "why": "Opens the topic. A no is not the end of it: OBS_INPUT_002 is read from the cost breakdown whatever the answer here.",
+     "why": "Opens the topic. A no is not the end of it: OBS_INPUT_002 and OBS_INPUT_010 are read from the accounts whatever the answer here.",
      "due_by": "screening",
      "calls_for": [
       {
@@ -6971,9 +6659,7 @@
      "question": "What share of the party's cost of sales does its largest single bought-in input take?",
      "answer": "number",
      "unit": "percent",
-     "assumption": "The party's costs are spread over several inputs, so that the price of one does not decide its margin",
-     "flag_when": "above 30",
-     "why": "When one input takes about a third of the cost of sales, a rise of a fifth in its price adds some six percent to that cost, which is more than the operating margin of many processors and traders. Thirty percent is a guide: set it against the party's own margin.",
+     "why": "The share says how much of the margin a rise in the price of that one input can take. A processor, a miller, a dairy or a trader spends most of its cost of sales on one input, and that is sound as long as it can pass a rise on. OBS_INPUT_010 tests whether it has.",
      "due_by": "concept",
      "look_in": [
       "03.01.a",
@@ -6995,7 +6681,36 @@
       ]
      },
      "ask": "Which single input costs you the most, and roughly what share of your cost of sales is it?",
-     "note": "This check does not hang on OBS_INPUT_001, so that the topic cannot close on one answer. Take the figure from the breakdown of the cost of sales, not from what the party says. Where the figure is above the reference point and OBS_INPUT_001 was answered no, look at that answer again: this input is then the critical input."
+     "note": "Take the figure from the breakdown of the cost of sales, not from what the party says. Where one input takes about a third of the cost of sales or more and OBS_INPUT_001 was answered no, look at that answer again: this input is then the critical input. A third is a guide."
+    },
+    {
+     "id": "OBS_INPUT_010",
+     "question": "In any of the last five financial years in which the price of the party's largest input rose by about a tenth or more, did its gross margin fall by about a fifth of its level or more (for example from 20 percent to 16)?",
+     "answer": "yes_no",
+     "assumption": "The party has passed on rises in the price of its largest input, so that its margin held",
+     "disproved_by": "yes",
+     "why": "What matters is not how large the input is in the costs but whether the gap between the selling price and the price of the input holds when the input costs more.",
+     "look_in": [
+      "03.01.a",
+      "03.01.b"
+     ],
+     "evidence": {
+      "best": [
+       "audited_annual_report"
+      ],
+      "supporting": [
+       "management_accounts",
+       "company_record",
+       "public_source"
+      ],
+      "stated": [
+       "correspondence",
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "In which of the last five years did the price of your main input rise the most? What was your gross margin in that year and in the year before?",
+     "note": "A tenth and a fifth are guides. This check does not hang on OBS_INPUT_001, so that the topic cannot close on one answer. Take the price of the input from the party's purchase records or from a published price, and the margin from the accounts. Where the price did not rise by about a tenth in any of the five years, the record shows nothing either way. Leave the check open and say so."
     },
     {
      "id": "OBS_INPUT_003",
@@ -7124,43 +6839,6 @@
      "note": "The party has a reason to understate this. Compare its answer with production volumes against capacity, and with what the supplier or the press reported. If the search finds nothing, record what was searched, where and when."
     },
     {
-     "id": "OBS_INPUT_009",
-     "question": "Is the supply of the critical input contracted until the final repayment date of the proposed loan?",
-     "answer": "yes_no",
-     "assumption": "The supply of the critical input is contracted for the life of the loan",
-     "disproved_by": "no",
-     "when": [
-      {
-       "check": "OBS_INPUT_003",
-       "is": "single_source"
-      },
-      {
-       "check": "OBS_INPUT_003",
-       "is": "dual_source"
-      }
-     ],
-     "look_in": [
-      "06.04.a"
-     ],
-     "evidence": {
-      "best": [
-       "supply_agreement"
-      ],
-      "supporting": [
-       "material_contract",
-       "company_record"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Until what date is the supply of this input secured by contract? Can the supplier end the contract before then?",
-     "if_unknown": "Without the end date of the contract, nobody can say whether the supply outlasts the loan.",
-     "note": "Answer no where there is no contract, where it ends earlier, or where the supplier can end it without cause before then. Record the end date. The check is asked only where one or two suppliers could deliver: an input bought freely from many sellers needs no long contract."
-    },
-    {
      "id": "OBS_INPUT_007",
      "question": "Is there a court case, a dispute with an authority or a regulatory proceeding, pending or threatened, that could change the price the party pays for the critical input or stop its supply?",
      "answer": "yes_no",
@@ -7206,50 +6884,39 @@
     },
     {
      "id": "OBS_INPUT_MIT_001",
-     "question": "What protects the supply of the critical input, or its price?",
+     "question": "What limits the effect on the party of a rise in the price of the critical input?",
      "answer": "choice",
      "options": [
       "price_fixed_by_contract",
-      "supplier_must_deliver_or_pay",
-      "own_storage",
-      "second_source",
+      "price_passed_on_under_sales_contracts",
+      "hedged",
       "none"
      ],
      "many": true,
      "mitigant": true,
-     "assumption": "A contract term, a stock or a second source protects the supply or the price of the critical input",
+     "assumption": "A contract or a hedge limits what a rise in the price of the critical input costs the party",
      "flag_when": "is none",
-     "why": "With none of these, an interruption or a price rise reaches the party's production and margin at once and in full.",
+     "why": "With none of these, a rise in the price of the input reaches the party's margin at once and in full.",
      "when": [
       {
-       "check": "OBS_INPUT_002",
-       "against": true
-      },
-      {
-       "check": "OBS_INPUT_003",
+       "check": "OBS_INPUT_010",
        "against": true
       },
       {
        "check": "OBS_INPUT_004",
        "against": true
-      },
-      {
-       "check": "OBS_INPUT_005",
-       "against": true
-      },
-      {
-       "check": "OBS_INPUT_009",
-       "against": true
       }
      ],
      "look_in": [
       "06.04.a",
-      "05.01.a"
+      "06.01.a",
+      "04.03.a"
      ],
      "evidence": {
       "best": [
        "supply_agreement",
-       "technical_feasibility"
+       "offtake_agreement",
+       "hedge_document"
       ],
       "supporting": [
        "company_record",
@@ -7261,8 +6928,8 @@
        "officer_note"
       ]
      },
-     "ask": "What protects this supply: a price fixed in the contract, a duty on the supplier to deliver or pay, storage that you control, or a second source?",
-     "note": "Name only what is in a signed contract or can be seen on site, and say how many days of production the storage covers. A price fixed in a signed contract counts, also where the supplier is a state body. A tariff that an authority can change by its own decision does not."
+     "ask": "What limits the effect of a price rise on you: a price fixed in your supply contract, sales contracts that pass the rise on to your customers, or a hedge?",
+     "note": "Name only what is in a signed contract or a hedge confirmation, and say until when it runs and what share of the party's need it covers. A price fixed in a signed contract counts, also where the supplier is a state body. A tariff that an authority can change by its own decision does not. What protects the supply itself is asked in OBS_INPUT_MIT_002 and on the link to the supplier."
     },
     {
      "id": "OBS_INPUT_MIT_002",
@@ -7273,7 +6940,7 @@
      "disproved_by": "no",
      "when": [
       {
-       "check": "OBS_INPUT_002",
+       "check": "OBS_INPUT_010",
        "against": true
       },
       {
@@ -7286,10 +6953,6 @@
       },
       {
        "check": "OBS_INPUT_005",
-       "against": true
-      },
-      {
-       "check": "OBS_INPUT_009",
        "against": true
       }
      ],
@@ -7324,7 +6987,7 @@
      "why": "Where less than half of the earnings comes from elsewhere, what is left when the input stops is unlikely to carry the party's fixed costs and its debt service. Half is a guide: the real measure is whether the rest covers debt service.",
      "when": [
       {
-       "check": "OBS_INPUT_002",
+       "check": "OBS_INPUT_010",
        "against": true
       },
       {
@@ -7337,10 +7000,6 @@
       },
       {
        "check": "OBS_INPUT_005",
-       "against": true
-      },
-      {
-       "check": "OBS_INPUT_009",
        "against": true
       }
      ],
@@ -7613,7 +7272,7 @@
       ]
      },
      "ask": "In the last three years, has a product of yours been recalled, sent back in bulk, taken off a customer's list or stopped by an authority?",
-     "note": "If the search finds nothing, record what was searched, where and when. For an agribusiness, rejected shipments and lost certificates are asked in OBS_AGRI_007."
+     "note": "If the search finds nothing, record what was searched, where and when. For an agribusiness, border rejections and lost certificates are asked in OBS_AGRI_007."
     },
     {
      "id": "OBS_OPS_007",
@@ -7672,10 +7331,6 @@
      "disproved_by": "no",
      "when": [
       {
-       "check": "OBS_OPS_003",
-       "against": true
-      },
-      {
        "check": "OBS_OPS_004",
        "against": true
       }
@@ -7700,7 +7355,50 @@
       ]
      },
      "ask": "If your main site or your power, water or transport failed, where would you produce, and how much could you produce there within a month?",
-     "note": "Half and a month are guides. A back-up that has never carried production is a plan: ask when it last did. Insurance for the profit lost is asked under Insurance."
+     "note": "Half and a month are guides. A back-up that has never carried production is a plan: ask when it last did. Insurance for a site or line that is lost is asked in OBS_OPS_MIT_002."
+    },
+    {
+     "id": "OBS_OPS_MIT_002",
+     "question": "Do property and business interruption policies in force cover the cost of rebuilding the site or line as new and the gross profit lost for as long as the rebuilding would take?",
+     "answer": "yes_no",
+     "mitigant": true,
+     "assumption": "Insurance pays for rebuilding the site or line and for the profit lost meanwhile",
+     "disproved_by": "no",
+     "when": [
+      {
+       "check": "OBS_OPS_003",
+       "against": true
+      }
+     ],
+     "look_in": [
+      "08.03.a",
+      "08.03.b",
+      "05.02.a"
+     ],
+     "evidence": {
+      "best": [
+       "insurance_policy",
+       "valuation_report"
+      ],
+      "supporting": [
+       "insurance_broker_report",
+       "company_record"
+      ],
+      "stated": [
+       "call",
+       "officer_note",
+       "correspondence"
+      ]
+     },
+     "ask": "What are the sums insured for your main site or line and for lost profit, and for how many months does the cover for lost profit run? How long would it take to rebuild and restart?",
+     "note": "Both parts must hold for a yes. Set the sum insured against the cost of rebuilding as new, not against book value. Set the months of cover for lost profit against the time it would take to rebuild, with the delivery of the machines. Insurance pays money. It does not keep the customers who went elsewhere while the plant stood still.",
+     "leads_to": [
+      {
+       "indicator": "CAS_COVERAGE_001",
+       "is": true,
+       "reason": "The cover counts only if the policies are in force, the peril is not excluded and the insurer can pay"
+      }
+     ]
     }
    ]
   },
@@ -7751,7 +7449,7 @@
      "id": "OBS_REV_001",
      "question": "Does the party earn revenue from sales today?",
      "answer": "yes_no",
-     "why": "Opens the topic. A business with no revenue yet is a different deal: its customers are judged from signed contracts and a market study, not from a sales record. OBS_BUYER_CONC_001 is asked either way.",
+     "why": "Opens the topic. A business with no revenue yet is a different deal: its customers are judged from signed contracts and a market study, not from a sales record. OBS_BUYER_CONC_001 and OBS_REV_008 are asked either way.",
      "due_by": "screening",
      "look_in": [
       "03.01.a",
@@ -7783,52 +7481,10 @@
      ]
     },
     {
-     "id": "OBS_REV_002",
-     "question": "How does the party mainly earn its revenue?",
-     "answer": "choice",
-     "options": [
-      "product_sales",
-      "services",
-      "subscriptions",
-      "project_based",
-      "mixed"
-     ],
-     "why": "The model says how revenue is lost. Product sales fall with volume or price, project work with an empty order book, subscriptions with cancellations.",
-     "due_by": "screening",
-     "when": [
-      {
-       "check": "OBS_REV_001",
-       "is": true
-      }
-     ],
-     "look_in": [
-      "03.01.a",
-      "03.01.b"
-     ],
-     "evidence": {
-      "best": [
-       "audited_annual_report"
-      ],
-      "supporting": [
-       "management_accounts",
-       "company_record"
-      ],
-      "stated": [
-       "business_plan",
-       "management_presentation",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "How does the company mainly earn its money? By selling products, by providing services, from subscriptions, from project contracts, or from a mix of these?",
-     "note": "Choose mixed only where no one model brings in more than about half of revenue."
-    },
-    {
      "id": "OBS_BUYER_CONC_001",
      "question": "Does any single customer bring in about a tenth or more of the party's revenue, or would it under contracts already signed?",
      "answer": "yes_no",
-     "assumption": "The party's revenue does not hang on any one customer",
-     "disproved_by": "yes",
+     "why": "A customer of this size has to be in the structure, where its own ability and obligation to pay are examined. A yes does not go against the claim. Whether the party could lose its largest customer is tested in OBS_REV_008.",
      "due_by": "concept",
      "calls_for": [
       {
@@ -7869,6 +7525,39 @@
        "reason": "The customer's own ability and obligation to pay then decide part of the party's revenue"
       }
      ]
+    },
+    {
+     "id": "OBS_REV_008",
+     "question": "If the largest customer stopped buying and its volume were not replaced for twelve months, would the party's cash flow still cover its debt service?",
+     "answer": "yes_no",
+     "assumption": "The party can lose its largest customer for a year and still service its debt",
+     "disproved_by": "no",
+     "why": "The claim is about what the loss of one customer would do to debt service, not about how large the customer is.",
+     "look_in": [
+      "03.01.a",
+      "03.02.b",
+      "06.01.a"
+     ],
+     "evidence": {
+      "best": [
+       "audited_annual_report",
+       "offtake_agreement",
+       "consultant_report"
+      ],
+      "supporting": [
+       "financial_model",
+       "management_accounts",
+       "company_record",
+       "internal_memo"
+      ],
+      "stated": [
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "If your largest customer stopped buying tomorrow, how much of its volume could you sell elsewhere within a year, and which costs could you cut?",
+     "if_unknown": "Until this is worked out, nobody knows whether the loan hangs on one customer.",
+     "note": "Twelve months is a guide. Take out the revenue from that customer and only the costs that would fall with it within the year. Use the debt service of the first full year of repayment, this loan included. Count customers under common control as one. Where the party sells its whole output to one buyer, the answer is no."
     },
     {
      "id": "OBS_REV_003",
@@ -8028,48 +7717,13 @@
      ]
     },
     {
-     "id": "OBS_REV_006",
-     "question": "Is part of the party's revenue fixed under signed contracts that run for more than a year, or under subscriptions that renew?",
-     "answer": "yes_no",
-     "why": "Contracted revenue is steadier than spot sales, but only as good as the customer and the contract behind it.",
-     "due_by": "concept",
-     "look_in": [
-      "06.01.a",
-      "03.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "offtake_agreement",
-       "audited_annual_report"
-      ],
-      "supporting": [
-       "material_contract",
-       "management_accounts",
-       "company_record"
-      ],
-      "stated": [
-       "call",
-       "officer_note",
-       "management_presentation"
-      ]
-     },
-     "ask": "Do you sell under contracts that run for more than a year, or under subscriptions? Roughly what share of your sales do they bring?",
-     "leads_to": [
-      {
-       "indicator": "CAS_CONTRACT_REVIEW_001",
-       "is": true,
-       "reason": "What the contract fixes, and how it can end, has to be read in the contract itself"
-      }
-     ]
-    },
-    {
      "id": "OBS_REC_GOV_001",
      "question": "What share of the party's receivables is owed by government bodies (unpaid sales to the state, subsidies, tax and duty refunds)?",
      "answer": "number",
      "unit": "percent",
      "assumption": "The party does not wait on government bodies for a large part of what it is owed",
      "flag_when": "above 20",
-     "why": "Government bodies pay when their budget allows, and a supplier can rarely press them or take them to court. At about a fifth of receivables, a delay of some months takes a large part of the party's working capital. A fifth is a guide.",
+     "why": "In many countries government bodies pay late when their budgets are tight, and enforcing a claim against them can be slow. At about a fifth of receivables, a delay of some months takes a large part of the party's working capital. A fifth is a guide.",
      "when": [
       {
        "check": "OBS_REV_001",
@@ -8141,7 +7795,7 @@
      "why": "Where less than half is backed, most of the loss from a customer that does not pay stays with the party. Half is a guide.",
      "when": [
       {
-       "check": "OBS_BUYER_CONC_001",
+       "check": "OBS_REV_008",
        "against": true
       },
       {
@@ -8353,7 +8007,7 @@
        "officer_note"
       ]
      },
-     "note": "Common practice sets the threshold at a quarter of the shares or votes. Many lenders set it lower, and lower still where the risk is higher: use the lender's own. Where no one is above it, identify the person who in fact controls the party, or failing that its most senior manager. For a party that is a natural person, the question is whether that person's own identity has been checked."
+     "note": "Common practice sets the threshold at a quarter of the shares or votes. Many lenders set it lower, and lower still where the risk is higher: use the lender's own. Where no one is above it, identify the person who in fact controls the party, or failing that its most senior manager. For a party that is a natural person, the question is whether that person's own identity has been checked. Use extracts no more than about twelve months old. A holder or a holding that differs from what the party declared, or a transfer agreed but not registered, is a no."
     },
     {
      "id": "OBS_BO_005",
@@ -8521,7 +8175,7 @@
    "id": "CAS_BOARD_001",
    "title": "Board",
    "pillar": "governance",
-   "claim": "A body that management and the main shareholder do not control can say no to them, and has done so.",
+   "claim": "The party's large decisions (borrowing, large investments, dealings with its owners) need the approval of a body that has at least one member independent of management and of the main shareholder, and that body sees the party's figures at least every quarter.",
    "due_by": "diligence",
    "applies_to": [
     "borrower",
@@ -8588,40 +8242,6 @@
      "ask": "Does your company have a board of directors that meets separately from the management team?"
     },
     {
-     "id": "OBS_BOARD_002",
-     "question": "How many members does the board have?",
-     "answer": "number",
-     "unit": "count",
-     "why": "Sets the scale for what follows: one independent member counts for more on a board of three than on a board of twelve.",
-     "due_by": "concept",
-     "when": [
-      {
-       "check": "OBS_BOARD_001",
-       "is": true
-      }
-     ],
-     "look_in": [
-      "02.05.c",
-      "02.01.c"
-     ],
-     "evidence": {
-      "best": [
-       "registry_extract",
-       "board_composition",
-       "audited_annual_report"
-      ],
-      "supporting": [
-       "board_minutes"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "note": "Say how many of them are executives of the party."
-    },
-    {
      "id": "OBS_BOARD_003",
      "question": "Does the board have at least one member who is not an employee of the party, is not a shareholder nor a shareholder's relative or nominee, and does no other business with the party?",
      "answer": "yes_no",
@@ -8656,7 +8276,7 @@
       ]
      },
      "ask": "Is any member of your board independent: not an employee, not a shareholder or related to one, and with no other business with the company?",
-     "note": "A director named by another lender or by a financial investor counts, if there is no other tie."
+     "note": "A director named by another lender or by a financial investor counts, if there is no other tie. Record how many members the board has and how many of them are executives."
     },
     {
      "id": "OBS_BOARD_004",
@@ -8725,8 +8345,7 @@
      "id": "OBS_BOARD_007",
      "question": "In the last three years, has the board, or the body that oversees management in its place, turned down, sent back or changed a proposal from management or from the main shareholder?",
      "answer": "yes_no",
-     "assumption": "The board has said no to management or to the main shareholder at least once in the last three years",
-     "disproved_by": "no",
+     "why": "Shows whether the approval of the board is more than a formality.",
      "look_in": [
       "02.02.a",
       "02.02.c"
@@ -9189,9 +8808,9 @@
     },
     {
      "id": "OBS_IC_004",
-     "question": "In the last three years, has the party had a fraud, an unauthorised payment, an unexplained loss of cash or stock, or a restatement of its accounts?",
+     "question": "In the last three years, has the party had a fraud, an unauthorised payment, or an unexplained loss of cash or stock?",
      "answer": "yes_no",
-     "assumption": "The controls have held: no fraud, unauthorised payment, unexplained loss or restatement in the last three years",
+     "assumption": "The controls have held: no fraud, unauthorised payment or unexplained loss in the last three years",
      "disproved_by": "yes",
      "look_in": [
       "03.01.e",
@@ -9213,7 +8832,7 @@
        "officer_note"
       ]
      },
-     "ask": "In the last three years, has there been a fraud, a payment nobody had approved, a loss of cash or stock you could not explain, or a correction of accounts already issued? Please include cases that are settled.",
+     "ask": "In the last three years, has there been a fraud, a payment nobody had approved, or a loss of cash or stock you could not explain? Please include cases that are settled.",
      "if_unknown": "If neither the auditor's letters nor the board minutes have been seen, the party's no is its own word.",
      "note": "A party that says yes is believed."
     },
@@ -9285,7 +8904,7 @@
    "id": "CAS_KYC_AML_001",
    "title": "Integrity record",
    "pillar": "governance",
-   "claim": "Nothing in the record of the party or of the people who own and run it points to fraud, corruption or money laundering, and the party has its own controls against them.",
+   "claim": "Nothing in the record of the party or of the people who own and run it points to fraud, corruption or money laundering, and the party has its own rules against bribery.",
    "due_by": "diligence",
    "applies_to": [
     "borrower",
@@ -9349,7 +8968,7 @@
      },
      "ask": "In the last ten years, has a court, a regulator, a tax authority or a development bank fined, penalised or debarred you for fraud, bribery, money laundering, tax evasion or a breach of sanctions? Please include matters that were settled.",
      "if_unknown": "A record that has not been disclosed and cannot be checked is not a clean record.",
-     "note": "Ten years is a guide: an older matter that is still talked about counts. A settlement without admission counts. A criminal case against a person goes under OBS_KYC_008. Other fines and orders go under OBS_LIT_005. If the search finds nothing, record what was searched, where and when."
+     "note": "Ten years is a guide: an older matter that is still talked about counts. A settlement without admission counts. A criminal case against a person goes under OBS_KYC_008. If the search finds nothing, record what was searched, where and when."
     },
     {
      "id": "OBS_KYC_008",
@@ -9437,10 +9056,10 @@
      "note": "Record who made the allegation, when, and what became of it. One report in a source with a known grudge weighs less than several that do not depend on each other, but it is still recorded. A penalty or a conviction goes under OBS_KYC_003 or OBS_KYC_008. If the search finds nothing, record what was searched, where and when."
     },
     {
-     "id": "OBS_KYC_001",
-     "question": "Is a named person or unit at the party in charge of compliance with the law on bribery, money laundering and sanctions, with a direct line to the board or to the owners?",
+     "id": "OBS_KYC_009",
+     "question": "Does the party have a written code of conduct or policy against bribery, approved by its board or its owners, with a named person who answers for it and a way for staff to report a breach without going through their own manager?",
      "answer": "yes_no",
-     "assumption": "Someone at the party answers for compliance and can reach the board without going through management",
+     "assumption": "The party has written rules against bribery, someone who answers for them and a way to report a breach",
      "disproved_by": "no",
      "applies_to": [
       "borrower",
@@ -9448,18 +9067,18 @@
      ],
      "look_in": [
       "02.05.a",
-      "02.03.a",
+      "02.02.a",
       "03.01.e"
      ],
      "evidence": {
       "best": [
-       "audit_management_letter",
-       "regulatory_document",
-       "board_resolution"
+       "corporate_governance_policy",
+       "board_resolution",
+       "audit_management_letter"
       ],
       "supporting": [
+       "board_minutes",
        "organizational_chart",
-       "corporate_governance_policy",
        "company_record"
       ],
       "stated": [
@@ -9468,8 +9087,8 @@
        "officer_note"
       ]
      },
-     "ask": "Who in your company is responsible for compliance, and to whom does that person report?",
-     "note": "In a small business this can be one senior person beside other duties. What counts is that the person is named and does not report to the people whose payments are checked."
+     "ask": "Do you have a written code of conduct or a policy against bribery? Who answers for it, and how can a member of staff report a breach?",
+     "note": "All three parts are needed for a yes. In a small business the person can be an owner or a senior manager beside other duties, and the way to report can be a named director or an outside address. What counts is that a report can reach someone other than the manager it concerns."
     },
     {
      "id": "OBS_KYC_004",
@@ -9480,6 +9099,16 @@
      "applies_to": [
       "borrower",
       "repayment_source"
+     ],
+     "when": [
+      {
+       "check": "OBS_SECTOR_001",
+       "is": "financial_institution"
+      },
+      {
+       "check": "OBS_SECTOR_003",
+       "is": true
+      }
      ],
      "look_in": [
       "02.05.a",
@@ -9512,6 +9141,16 @@
       "borrower",
       "repayment_source"
      ],
+     "when": [
+      {
+       "check": "OBS_SECTOR_001",
+       "is": "financial_institution"
+      },
+      {
+       "check": "OBS_SECTOR_003",
+       "is": true
+      }
+     ],
      "look_in": [
       "03.01.e",
       "10.03.a",
@@ -9533,7 +9172,7 @@
       ]
      },
      "ask": "Before you take on a new customer, agent or large supplier, what do you check about them, and where is that kept?",
-     "note": "For a financial institution this is the identification of customers that its regulator requires. For other businesses look at agents and intermediaries, and at customers who pay in cash or from someone else's account. Ask to see the file of one recent counterparty."
+     "note": "For a financial institution this is the identification of customers that its regulator requires. Ask to see the file of one recent counterparty."
     },
     {
      "id": "OBS_KYC_005",
@@ -9772,9 +9411,9 @@
     },
     {
      "id": "OBS_LIT_004",
-     "question": "Is a regulator, a tax authority, a competition authority or a prosecutor investigating the party, or has one given notice that it will?",
+     "question": "Is a regulator, a competition authority or a prosecutor investigating the party, or has one given notice that it will?",
      "answer": "yes_no",
-     "assumption": "No authority has an inquiry open that could end in a penalty, a tax bill or the loss of a licence",
+     "assumption": "No authority has an inquiry open that could end in a penalty or the loss of a licence",
      "disproved_by": "yes",
      "due_by": "concept",
      "look_in": [
@@ -9799,8 +9438,8 @@
        "officer_note"
       ]
      },
-     "ask": "Is any authority looking into your company at the moment: the tax office, a regulator, the competition authority, a prosecutor? A routine inspection with no findings does not count.",
-     "note": "This check does not hang on OBS_LIT_001. A tax audit that every company of this size gets is routine until it ends in an assessment.",
+     "ask": "Is any authority looking into your company at the moment: a regulator, the competition authority, a prosecutor? A routine inspection with no findings does not count.",
+     "note": "This check does not hang on OBS_LIT_001. Tax audits and tax disputes are asked under OBS_TAX_005.",
      "leads_to": [
       {
        "indicator": "CAS_KYC_AML_001",
@@ -9813,41 +9452,6 @@
        "reason": "An inquiry by a regulator can put a licence at risk"
       }
      ]
-    },
-    {
-     "id": "OBS_LIT_005",
-     "question": "In the last five years, has a regulator, a tax authority or another public body fined the party, ordered it to pay or to stop an activity, or suspended a licence or a permit?",
-     "answer": "yes_no",
-     "assumption": "No public body has fined the party, stopped an activity or suspended a licence in the last five years",
-     "disproved_by": "yes",
-     "applies_to": [
-      "borrower",
-      "repayment_source"
-     ],
-     "look_in": [
-      "07.01.a",
-      "03.01.a",
-      "08.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "regulatory_document",
-       "audited_annual_report",
-       "legal_opinion"
-      ],
-      "supporting": [
-       "board_minutes",
-       "company_record",
-       "company_certificate"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "In the last five years, has any authority fined you, ordered you to pay or to stop something, or suspended a licence or a permit?",
-     "note": "Five years is a guide. One small fine is an incident. Several from the same authority are a pattern, and the next step is often a suspension. A penalty for fraud, bribery or money laundering also goes under OBS_KYC_003."
     },
     {
      "id": "OBS_LIT_007",
@@ -9983,40 +9587,10 @@
      "note": "A tenth is a guide. A family that votes together counts as one shareholder only if nothing shows that its members disagree."
     },
     {
-     "id": "OBS_OWN_001",
-     "question": "Does the shareholder register or a registry extract, no more than twelve months old, show the same holders and the same holdings as the party has declared?",
-     "answer": "yes_no",
-     "assumption": "The official record of who holds the party's shares matches what the party has told the lender",
-     "disproved_by": "no",
-     "due_by": "concept",
-     "look_in": [
-      "02.04.a",
-      "02.01.c"
-     ],
-     "evidence": {
-      "best": [
-       "shareholder_register",
-       "registry_extract"
-      ],
-      "supporting": [
-       "audited_annual_report",
-       "organizational_chart",
-       "beneficial_ownership_declaration"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Could we have an up-to-date copy of the shareholder register, or an extract from the company registry that lists the shareholders?",
-     "note": "Twelve months is a guide. What counts is that no transfer has taken place since. A transfer that was agreed but not registered is a difference."
-    },
-    {
      "id": "OBS_OWN_005",
-     "question": "Are there circular or cross holdings (the party or its subsidiaries hold shares in its own owners), or holdings whose holder or size cannot be established?",
+     "question": "Are there circular or cross holdings: does the party, or a company it controls, hold shares in any of its own owners?",
      "answer": "yes_no",
-     "assumption": "No part of the party's shareholding is circular or unexplained",
+     "assumption": "No part of the party's shareholding is circular",
      "disproved_by": "yes",
      "due_by": "concept",
      "look_in": [
@@ -10045,7 +9619,7 @@
       {
        "indicator": "CAS_BENEFICIAL_OWNERSHIP_001",
        "is": true,
-       "reason": "A holding that cannot be established means the chain of owners is not known"
+       "reason": "A chain of owners that runs in a circle does not end at a person"
       }
      ]
     },
@@ -10232,9 +9806,9 @@
      "ask": "Do the owners plan to sell, to bring in a new investor, to list the company or to hand over to the next generation during the life of the loan?",
      "leads_to": [
       {
-       "indicator": "CAS_TERM_SHEET_001",
+       "indicator": "CAS_COVENANT_DESIGN_001",
        "is": true,
-       "reason": "The terms have to say what happens to the loan when control changes"
+       "reason": "The terms have to give the lender the right to leave when control changes"
       }
      ]
     },
@@ -10278,7 +9852,7 @@
    "id": "CAS_PEP_001",
    "title": "Political exposure",
    "pillar": "governance",
-   "claim": "No politically exposed person owns, controls or benefits from the party in a way the lender has not examined.",
+   "claim": "Where a politically exposed person owns, controls or directs the party, the wealth behind that person's stake is explained and the business does not depend on that person's office.",
    "due_by": "diligence",
    "applies_to": [
     "borrower",
@@ -11378,6 +10952,42 @@
      "note": "Record whether the firm is registered with the audit regulator or the professional body where it works, and any tie between the firm and the party's owners or managers."
     },
     {
+     "id": "OBS_ACC_010",
+     "question": "Is the auditor registered with the body that oversees auditors in its country, does it audit other companies of about the party's size, and is it free of any other tie to the party or its owners (no family tie, no shareholding, no bookkeeping for the party)?",
+     "answer": "yes_no",
+     "assumption": "The auditor is registered, experienced with companies of this size and independent of the party and its owners",
+     "disproved_by": "no",
+     "why": "An audit is worth what the auditor is worth. A one-person firm that is tied to the owner, or that also keeps the party's books, signs what it is given.",
+     "due_by": "concept",
+     "when": [
+      {
+       "check": "OBS_ACC_001",
+       "is": true
+      }
+     ],
+     "look_in": [
+      "03.01.a",
+      "07.01.a"
+     ],
+     "evidence": {
+      "best": [
+       "regulatory_document",
+       "audited_annual_report"
+      ],
+      "supporting": [
+       "public_source",
+       "company_record"
+      ],
+      "stated": [
+       "correspondence",
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "Is your audit firm registered with the body that oversees auditors? Which other companies of your size does it audit? Does it, or anyone in it, do other work for you or have a tie to your owners?",
+     "note": "All three parts must hold for a yes. Say which part fails. Look the firm up in the public register of the audit regulator or the professional body. If a search for ties between the firm and the owners finds nothing, record what was searched, where and when. \"About the party's size\" is a guide."
+    },
+    {
      "id": "OBS_ACC_003",
      "question": "Does the auditor's report on the latest accounts carry a qualified or adverse opinion, a disclaimer, an emphasis of matter, or a paragraph on doubt that the party can continue as a going concern?",
      "answer": "yes_no",
@@ -11662,6 +11272,40 @@
       ]
      },
      "note": "A few percent is a guide. A party that keeps no monthly or quarterly accounts cannot show this. Answer no for it and say so."
+    },
+    {
+     "id": "OBS_ACC_011",
+     "question": "Does the revenue in the accounts agree, within a few percent, with the turnover declared in the party's value added or sales tax returns and with the receipts on its bank statements for the same year?",
+     "answer": "yes_no",
+     "assumption": "The tax returns and the bank statements bear out the revenue in the accounts",
+     "disproved_by": "no",
+     "why": "The tax authority and the bank keep records that the party does not control. Where an audit carries little weight, setting sales against them is how overstated revenue, or a second set of books, is found.",
+     "applies_to": [
+      "borrower",
+      "repayment_source"
+     ],
+     "look_in": [
+      "03.01.d",
+      "03.01.b",
+      "03.01.a"
+     ],
+     "evidence": {
+      "best": [
+       "tax_returns",
+       "bank_statement",
+       "consultant_report"
+      ],
+      "supporting": [
+       "management_accounts",
+       "company_record"
+      ],
+      "stated": [
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "Please send your value added or sales tax returns for the last financial year, as filed, and the statements of all your bank accounts for the same months.",
+     "note": "A few percent is a guide. Use the returns as filed and the statements of all the party's bank accounts. Allow for sales that carry no value added or sales tax (exports, exempt goods), for the tax itself in the receipts, and for receipts that are not sales (loans, money from the owners). Record each difference and its cause. A party that cannot produce the returns or the statements is a no."
     }
    ]
   },
@@ -11818,7 +11462,7 @@
        "officer_note"
       ]
      },
-     "note": "A fifth is a guide. If there was no such change, answer no and say so. Support for a cause is an ageing list, a stock count or a contract with new payment terms. Management's explanation alone is not support.",
+     "note": "A fifth is a guide. Compare working capital as days of sales at the start and at the end of the three years. If there was no such change, answer no and say so. Support for a cause is an ageing list, a stock count or a contract with new payment terms. Management's explanation alone is not support.",
      "leads_to": [
       {
        "indicator": "CAS_WORKING_CAP_001",
@@ -12186,41 +11830,6 @@
       ]
      },
      "note": "A quarter is a guide. Gains that brought in no cash, such as revaluations, are asked about in The accounts (OBS_ACC_008)."
-    },
-    {
-     "id": "OBS_COST_005",
-     "question": "Do purchases from related parties, and fees, rent or interest paid to them, make up more than about a tenth of the party's costs?",
-     "answer": "yes_no",
-     "assumption": "The party's margin does not depend on prices set with related parties",
-     "disproved_by": "yes",
-     "why": "A price set between related parties can be moved at will. Set too high, it takes cash out of the party. Set too low, it flatters the margin the lender counts on.",
-     "look_in": [
-      "03.01.a",
-      "03.01.b"
-     ],
-     "evidence": {
-      "best": [
-       "audited_annual_report"
-      ],
-      "supporting": [
-       "management_accounts",
-       "company_record"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Do you buy goods or services from your shareholders, from companies they own or from your directors, or pay them fees, rent or interest? Roughly what share of your costs is that?",
-     "note": "A tenth is a guide. Related parties are the owners, companies under the same owners, and directors and their families. The note on related parties in the audited accounts gives the amounts.",
-     "leads_to": [
-      {
-       "indicator": "CAS_RELATED_PARTY_001",
-       "is": true,
-       "reason": "Whether these dealings are at market prices is tested there"
-      }
-     ]
     }
    ]
   },
@@ -12303,7 +11912,19 @@
        "management_presentation"
       ]
      },
-     "ask": "Do you owe money to any bank, lender, leasing company or shareholder at the moment? A yes or no is enough to start with."
+     "ask": "Do you owe money to any bank, lender, leasing company or shareholder at the moment? A yes or no is enough to start with.",
+     "leads_to": [
+      {
+       "indicator": "CAS_COVENANT_DESIGN_001",
+       "is": true,
+       "reason": "The new covenants have to fit beside the existing ones"
+      },
+      {
+       "indicator": "CAS_OTHER_LENDERS_001",
+       "is": true,
+       "reason": "A lender with covenants can call its loan before this lender can act"
+      }
+     ]
     },
     {
      "id": "OBS_DEBT_002",
@@ -12338,7 +11959,7 @@
       ]
      },
      "ask": "How much do you owe in total today, to all lenders together? Please include leases and loans from shareholders.",
-     "note": "Take the figure at its highest point in the year where borrowing is seasonal, and say which date it is for."
+     "note": "Take the figure at its highest point in the year where borrowing is seasonal, and say which date it is for. Say how much of it falls due within twelve months."
     },
     {
      "id": "OBS_DEBT_008",
@@ -12378,46 +11999,6 @@
      "note": "A party that says yes is believed. A party that says no is believed once the accounts or a lender bear it out."
     },
     {
-     "id": "OBS_DEBT_003",
-     "question": "When does the debt fall due?",
-     "answer": "choice",
-     "options": [
-      "short_term_dominant",
-      "balanced",
-      "long_term_dominant"
-     ],
-     "assumption": "The debt does not fall due faster than the party's cash flow can repay it",
-     "flag_when": "is short_term_dominant",
-     "why": "Debt due within a year must be repaid from cash or rolled over. If the lenders do not roll it over, a profitable business can still fail.",
-     "due_by": "concept",
-     "when": [
-      {
-       "check": "OBS_DEBT_001",
-       "is": true
-      }
-     ],
-     "look_in": [
-      "04.03.a",
-      "03.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "audited_annual_report",
-       "debt_schedule"
-      ],
-      "supporting": [
-       "management_accounts",
-       "facility_agreement"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Is most of your debt due within the next year, spread over several years, or mostly due later? A repayment schedule would answer this."
-    },
-    {
      "id": "OBS_DEBT_007",
      "question": "Do the audited accounts, the security registry or a credit report show borrowings, leases or charges that the party has not mentioned?",
      "answer": "yes_no",
@@ -12450,6 +12031,10 @@
      "answer": "yes_no",
      "assumption": "The party answers only for its own debt",
      "disproved_by": "yes",
+     "applies_to": [
+      "borrower",
+      "repayment_source"
+     ],
      "look_in": [
       "03.01.a",
       "04.02.a"
@@ -12473,98 +12058,12 @@
      "ask": "Have you signed a guarantee for anyone else's borrowing, or pledged any of your assets for it? For example for a sister company, a shareholder or a supplier."
     },
     {
-     "id": "OBS_DEBT_004",
-     "question": "Does any of the debt rank behind the senior lenders (subordinated loans, shareholder loans)?",
+     "id": "OBS_DEBT_010",
+     "question": "Is the party's debt that falls due within twelve months larger than its stock and trade receivables together, so that part of it finances fixed assets, losses or loans to others?",
      "answer": "yes_no",
-     "why": "Debt that ranks behind is a cushion for a senior lender, as long as it cannot be repaid first.",
-     "applies_to": [
-      "borrower",
-      "repayment_source"
-     ],
-     "when": [
-      {
-       "check": "OBS_DEBT_001",
-       "is": true
-      }
-     ],
-     "look_in": [
-      "04.03.a",
-      "04.02.c",
-      "03.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "facility_agreement",
-       "intercreditor_agreement",
-       "audited_annual_report"
-      ],
-      "supporting": [
-       "debt_schedule",
-       "term_sheet"
-      ],
-      "stated": [
-       "call",
-       "officer_note"
-      ]
-     }
-    },
-    {
-     "id": "OBS_DEBT_005",
-     "question": "Do the existing loans carry financial covenants?",
-     "answer": "yes_no",
-     "why": "Existing covenants limit what a new lender can ask for, and a breach of them can bring every loan down together.",
-     "applies_to": [
-      "borrower",
-      "repayment_source"
-     ],
-     "when": [
-      {
-       "check": "OBS_DEBT_001",
-       "is": true
-      }
-     ],
-     "look_in": [
-      "04.03.a",
-      "03.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "facility_agreement"
-      ],
-      "supporting": [
-       "audited_annual_report",
-       "debt_schedule"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Do your current loan agreements set financial covenants, such as a minimum debt service cover or a maximum leverage?",
-     "leads_to": [
-      {
-       "indicator": "CAS_COVENANT_DESIGN_001",
-       "is": true,
-       "reason": "The new covenants have to fit beside the existing ones"
-      },
-      {
-       "indicator": "CAS_OTHER_LENDERS_001",
-       "is": true,
-       "reason": "A lender with covenants can call its loan before this lender can act"
-      }
-     ]
-    },
-    {
-     "id": "OBS_DEBT_006",
-     "question": "What is the ratio of debt to equity at its highest point in the year?",
-     "answer": "number",
-     "unit": "ratio",
-     "why": "Leverage is read at its worst, not at the year-end date the party chose.",
-     "applies_to": [
-      "borrower",
-      "repayment_source"
-     ],
+     "assumption": "Debt that falls due within a year finances only stock and receivables that turn into cash within the year",
+     "disproved_by": "yes",
+     "why": "Short-term lines that finance stock and receivables are repaid when the goods are sold and the customers pay. Short-term debt that paid for a building or covered a loss has nothing to repay it when it falls due.",
      "when": [
       {
        "check": "OBS_DEBT_001",
@@ -12573,20 +12072,25 @@
      ],
      "look_in": [
       "03.01.a",
-      "03.01.b"
+      "04.03.a"
      ],
      "evidence": {
       "best": [
-       "audited_annual_report"
+       "audited_annual_report",
+       "debt_schedule"
       ],
       "supporting": [
-       "management_accounts"
+       "management_accounts",
+       "facility_agreement"
       ],
       "stated": [
+       "correspondence",
        "call",
        "officer_note"
       ]
-     }
+     },
+     "ask": "How much of your debt falls due within the next twelve months, and what does it finance?",
+     "note": "Count overdrafts, lines that come up for renewal within the year and the part of long-term loans that falls due within it. Take debt, stock and receivables at the same date, and at the seasonal peak of borrowing where there is one. Record the three figures."
     },
     {
      "id": "OBS_DEBT_MIT_001",
@@ -12765,6 +12269,49 @@
      "note": "Divide the answer to OBS_DS_001 by the answer to OBS_DS_002. A cover worked out from EBITDA (profit before interest, tax, depreciation and amortisation), before tax, working capital and capital spending, is not this figure."
     },
     {
+     "id": "OBS_DS_008",
+     "question": "In the lender's base case, what is the lowest yearly cover of debt service by cash flow available for debt service over the life of the loan?",
+     "answer": "number",
+     "unit": "times",
+     "assumption": "In every year of the base case the cash flow covers debt service with room to spare",
+     "flag_when": "below 1.2",
+     "why": "The same convention as OBS_DS_003. Lenders to projects with contracted revenue commonly size the debt at about this level or higher, and ask for more where revenue follows the market. An institution can set its own figure.",
+     "when": [
+      {
+       "check": "OBS_SECTOR_001",
+       "is": "project"
+      },
+      {
+       "check": "OBS_LIFECYCLE_001",
+       "is": "greenfield"
+      },
+      {
+       "check": "OBS_CASHFLOW_BASIS_001",
+       "is": "projected"
+      }
+     ],
+     "look_in": [
+      "03.02.b"
+     ],
+     "evidence": {
+      "best": [
+       "internal_memo",
+       "consultant_report"
+      ],
+      "supporting": [
+       "financial_model",
+       "financial_projections"
+      ],
+      "stated": [
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask_whom": "lender",
+     "if_unknown": "Until the lowest cover is known, nobody has shown that the loan can be repaid from cash flow in every year.",
+     "note": "Say which year the lowest cover falls in. Work out the cash flow as in OBS_DS_001 and the debt service as in OBS_DS_002, year by year. The base case is the lender's own, or one an independent adviser has checked. The party's model as received is the party's own word. If no such case has been run, the check stays open."
+    },
+    {
      "id": "OBS_DS_004",
      "question": "Would the party's cash flow available for debt service in the worst of the last five financial years have covered that same debt service in full?",
      "answer": "yes_no",
@@ -12800,10 +12347,18 @@
     },
     {
      "id": "OBS_DS_005",
-     "question": "What is the party's net debt after this loan, as a multiple of its EBITDA (profit before interest, tax, depreciation and amortisation) of the last financial year?",
+     "question": "What is the party's total debt after this loan, as a multiple of its EBITDA (profit before interest, tax, depreciation and amortisation) of the last financial year?",
      "answer": "number",
      "unit": "times",
-     "why": "The multiple says how many years of profit the debt stands for. It is read against what businesses of this kind carry, and against the same multiple before the loan.",
+     "assumption": "After this loan the party owes no more than about four years of its EBITDA",
+     "flag_when": "above 4",
+     "why": "Bank supervisors in the euro area and in the United States use total debt above about four times EBITDA to mark out leveraged lending. Four is a guide for an operating company: read it against what businesses of this kind carry. An institution can set its own figure.",
+     "when": [
+      {
+       "check": "OBS_SECTOR_001",
+       "is": "corporate"
+      }
+     ],
      "look_in": [
       "03.01.a",
       "04.03.a"
@@ -12822,7 +12377,7 @@
        "officer_note"
       ]
      },
-     "note": "Net debt is all borrowing, leases and shareholder loans that must be repaid, less cash the party is free to use. Where borrowing is seasonal, take debt at its highest point in the year, not at year-end. Take EBITDA without one-off items. Record the multiple before the loan as well."
+     "note": "Count all borrowing, leases and shareholder loans that must be repaid, without taking cash off. Take the debt at its highest point in the year, not at the year-end. Take EBITDA without one-off items. Record in the reason the multiple before the loan, and the multiple on net debt (after the cash the party is free to use)."
     },
     {
      "id": "OBS_DS_006",
@@ -12858,42 +12413,6 @@
      ]
     },
     {
-     "id": "OBS_DS_007",
-     "question": "Must the party refinance debt during the life of this loan: a final payment on this loan of more than about a third of its amount, or another loan that falls due in one payment before this loan is repaid?",
-     "answer": "yes_no",
-     "assumption": "The party's debt is repaid from cash flow over its life, without a refinancing",
-     "disproved_by": "yes",
-     "why": "A large final payment is not repaid from cash flow. It is repaid by another lender, and whether one will be there on that day is outside the party's control.",
-     "due_by": "concept",
-     "look_in": [
-      "04.01.a",
-      "04.03.a"
-     ],
-     "evidence": {
-      "best": [
-       "facility_agreement",
-       "debt_schedule"
-      ],
-      "supporting": [
-       "term_sheet",
-       "financial_model"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "note": "A third is a guide. Leave out revolving working-capital lines: Liquidity asks whether they are committed.",
-     "leads_to": [
-      {
-       "indicator": "CAS_TERM_SHEET_001",
-       "is": true,
-       "reason": "The repayment profile is a term of the loan and can still be changed"
-      }
-     ]
-    },
-    {
      "id": "OBS_DS_MIT_001",
      "question": "Do the loan terms require a debt service reserve account that is funded in cash before the first repayment, holds at least the next payment of interest and principal, and is pledged to the lender?",
      "answer": "yes_no",
@@ -12903,6 +12422,10 @@
      "when": [
       {
        "check": "OBS_DS_003",
+       "against": true
+      },
+      {
+       "check": "OBS_DS_008",
        "against": true
       },
       {
@@ -12932,38 +12455,6 @@
      "note": "A reserve buys time for one or two payments. It does not mend a cash flow that stays short."
     },
     {
-     "id": "OBS_DS_MIT_002",
-     "question": "Do the loan terms require the party to use surplus cash to prepay this loan (a cash sweep), so that the final payment shrinks in the years the business does well?",
-     "answer": "yes_no",
-     "mitigant": true,
-     "assumption": "Surplus cash reduces the debt that would have to be refinanced",
-     "disproved_by": "no",
-     "when": [
-      {
-       "check": "OBS_DS_007",
-       "against": true
-      }
-     ],
-     "look_in": [
-      "04.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "facility_agreement"
-      ],
-      "supporting": [
-       "term_sheet",
-       "financial_model"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "note": "Check what counts as surplus cash, and whether dividends are paid before the sweep or after it. A sweep on this loan does nothing for a final payment owed to another lender."
-    },
-    {
      "id": "OBS_DS_MIT_003",
      "question": "Has an owner or sponsor undertaken in writing to pay in cash when the party's cash flow falls short of its debt service?",
      "answer": "yes_no",
@@ -12973,6 +12464,10 @@
      "when": [
       {
        "check": "OBS_DS_003",
+       "against": true
+      },
+      {
+       "check": "OBS_DS_008",
        "against": true
       },
       {
@@ -13650,7 +13145,7 @@
      "unit": "percent",
      "assumption": "Few loans are kept out of the bad-loan figure by restructuring them",
      "flag_when": "above 5",
-     "why": "Loans restructured because the borrower could not pay are the first place where bad loans hide. They are counted as performing and carry little provision. Banking supervisors treat a bank as having a bad-loan problem when five percent of its loans are non-performing (the European Banking Authority's guidelines on non-performing exposures apply from that level). Where the restructured loans alone reach that size, the reported ratio says little. Five percent is a guide. An institution can set its own figure.",
+     "why": "Loans restructured because the borrower could not pay are the first place where bad loans hide. They are counted as performing and carry little provision. The European Banking Authority's guidelines ask banks in the European Union whose non-performing loans reach five percent of their loans to adopt a plan to reduce them. Other supervisors use other levels. Where the restructured loans alone reach that size, the reported ratio says little. Five percent is a guide. An institution can set its own figure.",
      "look_in": [
       "03.01.a",
       "07.01.a",
@@ -13677,7 +13172,7 @@
     },
     {
      "id": "OBS_FIP_002",
-     "question": "Do the institution's loan-loss provisions, together with collateral at an independent valuation, cover its non-performing loans in full?",
+     "question": "Do the institution's loan-loss provisions alone cover at least about half of its non-performing loans, and do provisions together with collateral at its forced-sale value cover them in full?",
      "answer": "yes_no",
      "assumption": "The loss in the non-performing loans is provided for",
      "disproved_by": "no",
@@ -13703,7 +13198,7 @@
       ]
      },
      "ask": "What provisions do you hold against your non-performing loans, and what collateral? When was the collateral last valued, and by whom?",
-     "note": "Count only collateral that the institution holds under a registered charge and that an independent valuer has valued within the last two years. Record the coverage ratio (provisions as a percentage of non-performing loans) as well. Where the supervisor or the auditor has asked for more provisions, the answer is no.",
+     "note": "Count only collateral that the institution holds under a registered charge and that an independent valuer has valued within the last two years. Record the coverage ratio (provisions as a percentage of non-performing loans) as well. Where the supervisor or the auditor has asked for more provisions, the answer is no. Half is a guide. An institution can set its own figure.",
      "leads_to": [
       {
        "indicator": "CAS_FI_CAPITAL_001",
@@ -13828,6 +13323,37 @@
      },
      "ask": "Please send the list of your twenty largest exposures, with borrowers that belong together shown as one group, and each as a percentage of your capital.",
      "note": "Ten exposures and the whole of capital are a guide. Count loans, guarantees and undrawn commitments. Record the largest single exposure as a share of capital, and whether it is within the limit the regulator sets for one borrower. Ask how the institution decides which borrowers are connected."
+    },
+    {
+     "id": "OBS_FIP_009",
+     "question": "Are more than about half of the institution's loans in foreign currency owed by borrowers who do not earn that currency?",
+     "answer": "yes_no",
+     "assumption": "The institution lends foreign currency mainly to borrowers who earn it",
+     "disproved_by": "yes",
+     "why": "A borrower who earns local currency and owes foreign currency owes more after a devaluation and earns the same. The institution's own currency position can be matched while its borrowers carry the mismatch, and their losses come back to it as bad loans.",
+     "look_in": [
+      "03.01.a",
+      "07.01.a",
+      "10.03.a"
+     ],
+     "evidence": {
+      "best": [
+       "audited_annual_report",
+       "regulatory_document"
+      ],
+      "supporting": [
+       "company_record",
+       "management_accounts",
+       "credit_rating_report"
+      ],
+      "stated": [
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "What share of your loan book is in foreign currency? How much of that is lent to borrowers who earn that currency, such as exporters, and how do you establish it?",
+     "if_unknown": "An institution that does not know which of its borrowers earn the currency they borrow in cannot say what a devaluation would do to its loan book.",
+     "note": "Half is a guide. Record the share of the whole loan book that is in foreign currency. A borrower earns the currency where its sales are paid in it. Loans in local currency whose amount follows the exchange rate count as foreign currency. Where the institution lends no foreign currency, answer no and say so."
     }
    ]
   },
@@ -13835,7 +13361,7 @@
    "id": "CAS_PROJECTIONS_001",
    "title": "Projections and downside",
    "pillar": "cash_flow",
-   "claim": "Repayment does not depend on the party doing better than it has done before, and debt service is still paid in a downside case.",
+   "claim": "The projections rest on assumptions that can be checked against the party's own record, and debt service is still paid when revenue, margin and timing are as bad as the party has seen.",
    "due_by": "diligence",
    "applies_to": [
     "borrower",
@@ -14098,7 +13624,14 @@
      },
      "ask_whom": "lender",
      "if_unknown": "Nobody knows how much can go wrong before a payment is missed.",
-     "note": "A case that trims the base case by a few percent is not a downside. For a business without five years behind it, use the worst that businesses of the same kind have seen and say which. If no such case has been run, the check stays open."
+     "note": "A case that trims the base case by a few percent is not a downside. For a business without five years behind it, use the worst that businesses of the same kind have seen and say which. Run the case with this facility drawn in full and with the existing debt. If no such case has been run, the check stays open.",
+     "leads_to": [
+      {
+       "indicator": "CAS_TERM_SHEET_001",
+       "is": false,
+       "reason": "The amount and the profile of the loan can still be changed"
+      }
+     ]
     },
     {
      "id": "OBS_PROJ_007",
@@ -14169,34 +13702,6 @@
    ],
    "checks": [
     {
-     "id": "OBS_TAX_001",
-     "question": "Is the party registered with the tax authority in its own name, as a registration certificate or a current tax clearance shows?",
-     "answer": "yes_no",
-     "assumption": "The party is registered with the tax authority",
-     "disproved_by": "no",
-     "due_by": "screening",
-     "look_in": [
-      "02.06.c",
-      "03.01.d"
-     ],
-     "evidence": {
-      "best": [
-       "tax_clearance"
-      ],
-      "supporting": [
-       "tax_returns",
-       "company_record"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Can you send us your tax registration certificate, or a recent tax clearance certificate?",
-     "if_unknown": "A business that is not registered has not been paying tax in its own name, and what it owes is unknown."
-    },
-    {
      "id": "OBS_TAX_004",
      "question": "Has the party filed every tax return that fell due in the last three years: income tax, value added or sales tax, and payroll taxes?",
      "answer": "yes_no",
@@ -14224,7 +13729,8 @@
       ]
      },
      "ask": "Are all your tax returns for the last three years filed (income tax, value added or sales tax, payroll taxes)? A tax clearance certificate, or the filed returns with proof of filing, would show it.",
-     "if_unknown": "Years for which no return is filed stay open to assessment, and nobody knows for how much."
+     "if_unknown": "Years for which no return is filed stay open to assessment, and nobody knows for how much.",
+     "note": "A party that is not registered with the tax authority in its own name is a no."
     },
     {
      "id": "OBS_TAX_006",
@@ -14233,7 +13739,7 @@
      "assumption": "The party has paid its taxes when due",
      "disproved_by": "yes",
      "why": "Unpaid tax is borrowing from the state without its consent. A business that falls behind on tax is usually short of cash, and the tax authority can often collect faster than a lender.",
-     "due_by": "concept",
+     "due_by": "screening",
      "look_in": [
       "02.06.c",
       "03.01.a",
@@ -14267,9 +13773,9 @@
     },
     {
      "id": "OBS_TAX_005",
-     "question": "In the last three years, has the tax authority raised an additional assessment against the party, or is a tax audit or a tax dispute open now?",
+     "question": "In the last three years, has the tax authority raised an additional assessment against the party, or is a tax dispute open now, for an amount (with penalties and interest) above about a tenth of the party's yearly profit before tax?",
      "answer": "yes_no",
-     "assumption": "The tax authority has claimed no more tax from the party than the party declared",
+     "assumption": "The tax authority claims no amount from the party, beyond what the party declared, that would take more than about a tenth of a year's profit",
      "disproved_by": "yes",
      "look_in": [
       "07.01.a",
@@ -14293,7 +13799,7 @@
      },
      "ask": "Has the tax authority audited you in the last three years, asked for more tax than you declared, or is any audit or dispute still open? What amounts are involved?",
      "if_unknown": "An open tax claim of unknown size sits outside every figure in the analysis.",
-     "note": "An audit that closed without further tax is a no. Say that it took place and which years it closed. The notes on contingent liabilities in the audited accounts list open tax claims. If a search of court or tax registers finds nothing, record what was searched, where and when.",
+     "note": "A routine audit with no assessment is a no. Record it in the reason. A tenth is a guide. Say which years an audit covered and whether it is closed. Record the amount of every assessment or dispute, also one below the guide. The notes on contingent liabilities in the audited accounts list open tax claims. If a search of court or tax registers finds nothing, record what was searched, where and when.",
      "leads_to": [
       {
        "indicator": "CAS_LITIGATION_001",
@@ -14301,35 +13807,6 @@
        "reason": "An open tax dispute is a claim against the party like any other"
       }
      ]
-    },
-    {
-     "id": "OBS_TAX_002",
-     "question": "Does the party benefit from a tax holiday, an exemption, a reduced rate or another special tax regime?",
-     "answer": "yes_no",
-     "why": "Opens the question of what the party's cash flow would be without it. OBS_TAX_008 asks whether it lasts as long as the loan, and is asked whatever the answer here.",
-     "due_by": "concept",
-     "look_in": [
-      "02.06.c",
-      "07.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "tax_clearance",
-       "regulatory_document",
-       "audited_annual_report"
-      ],
-      "supporting": [
-       "tax_returns",
-       "financial_model"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note",
-       "management_presentation"
-      ]
-     },
-     "ask": "Do you benefit from any tax incentive, such as a tax holiday, an exemption, a reduced rate or the status of a special economic zone? Until when does it run, and on what conditions?"
     },
     {
      "id": "OBS_TAX_008",
@@ -14699,6 +14176,38 @@
      "note": "A fifth is a guide. Take the highest month-end of the last twelve months. Record what share of the loans in foreign currency went to borrowers without income in that currency. Where the loan under review is in foreign currency, work the position out again with it included."
     },
     {
+     "id": "OBS_FIL_009",
+     "question": "In the last three years, has the institution missed a payment to a lender, breached a financial covenant in a loan agreement, or asked a lender for a waiver or an extension?",
+     "answer": "yes_no",
+     "assumption": "The institution has paid and performed as agreed under its own borrowings",
+     "disproved_by": "yes",
+     "due_by": "concept",
+     "look_in": [
+      "03.01.a",
+      "04.03.a",
+      "10.03.a"
+     ],
+     "evidence": {
+      "best": [
+       "audited_annual_report",
+       "facility_agreement",
+       "credit_rating_report"
+      ],
+      "supporting": [
+       "debt_schedule",
+       "management_accounts",
+       "board_minutes"
+      ],
+      "stated": [
+       "correspondence",
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "In the last three years, was there any moment when a payment to one of your lenders was late, a financial covenant was not met, or you asked a lender for a waiver or for more time?",
+     "note": "An institution that says yes is believed. An institution that says no is believed once the accounts, a lender or a credit report bear it out. Deposits are not meant here."
+    },
+    {
      "id": "OBS_FIL_004",
      "question": "Is the institution admitted to a standing lending facility of its central bank, and does it hold unpledged assets today that the central bank accepts as collateral?",
      "answer": "yes_no",
@@ -14746,6 +14255,39 @@
      },
      "ask": "Can you borrow from the central bank when you need to? Against which assets, and have you done so in the last twelve months?",
      "note": "Access in name is not enough. The collateral must be in hand and free. A central bank lends its own currency, so the facility does not answer a shortage of foreign currency. Record whether the institution has drawn on it in the last twelve months, and why. Frequent use is itself a sign of strain."
+    },
+    {
+     "id": "OBS_FIL_010",
+     "question": "Have the lenders concerned confirmed in writing that the breach is cured or waived?",
+     "answer": "yes_no",
+     "mitigant": true,
+     "assumption": "The lenders concerned have confirmed that the breach is cured or waived",
+     "disproved_by": "no",
+     "when": [
+      {
+       "check": "OBS_FIL_009",
+       "against": true
+      }
+     ],
+     "look_in": [
+      "10.02.a",
+      "04.03.a"
+     ],
+     "evidence": {
+      "best": [
+       "facility_agreement",
+       "correspondence"
+      ],
+      "supporting": [
+       "audited_annual_report",
+       "board_minutes"
+      ],
+      "stated": [
+       "call",
+       "officer_note"
+      ]
+     },
+     "note": "The letter must come from the lender concerned. The institution's own account of it is not a confirmation."
     }
    ]
   },
@@ -14753,11 +14295,21 @@
    "id": "CAS_FX_001",
    "title": "Currency risk",
    "pillar": "liquidity",
-   "claim": "A move in the exchange rate, in either direction, would not stop the party from servicing its debt.",
+   "claim": "A fall in the currency the party earns, against the currencies it owes and buys in, would not stop it from servicing its debt.",
    "due_by": "diligence",
    "applies_to": [
     "borrower",
     "repayment_source"
+   ],
+   "applies_when": [
+    {
+     "check": "OBS_SECTOR_001",
+     "is": "corporate"
+    },
+    {
+     "check": "OBS_SECTOR_001",
+     "is": "project"
+    }
    ],
    "matters_more_when": [
     {
@@ -14795,7 +14347,7 @@
      "id": "OBS_FX_001",
      "question": "Does the party earn any of its revenue in a foreign currency, or at prices that are set in one?",
      "answer": "yes_no",
-     "why": "Opens the revenue side. A \"no\" is not the end of it. OBS_FX_008, OBS_FX_CAPEX_001 and OBS_FX_TRANSLATION_001 are asked whatever the answer, and the currency note in the audited accounts shows whether the answer is right.",
+     "why": "Opens the revenue side. A \"no\" is not the end of it. OBS_FX_008 and OBS_FX_CAPEX_001 are asked whatever the answer, and the currency note in the audited accounts shows whether the answer is right.",
      "due_by": "screening",
      "look_in": [
       "03.01.a",
@@ -14863,9 +14415,7 @@
      "question": "What share of the party's revenue is earned in a foreign currency, or at prices set in one?",
      "answer": "number",
      "unit": "percent",
-     "assumption": "A rise in the local currency would reduce only a small part of the party's revenue",
-     "flag_when": "above 20",
-     "why": "Revenue in a foreign currency buys less against local costs when the local currency rises, or when local inflation runs ahead of the exchange rate. Above about a fifth of revenue, a move of a fifth in the rate shifts total revenue by 4 per cent or more, a large part of a normal operating margin. The figure is a guide carried over from earlier practice, and an institution can set its own. The same revenue is a cover for costs and debt in that currency, which OBS_HEDGE_004 asks about.",
+     "why": "The share says how much of the revenue can cover costs and debt in that currency.",
      "due_by": "concept",
      "when": [
       {
@@ -14989,11 +14539,60 @@
       ]
      },
      "ask": "Is any of your borrowing in a different currency from the income you repay it with? For example a loan in dollars or euros repaid from sales in local currency.",
+     "note": "Go by the currency the cash is paid in. A price set in or linked to another currency but paid in local currency is a protection, not a match. OBS_FX_PASSTHROUGH_001 asks about it.",
      "leads_to": [
       {
        "indicator": "CAS_COUNTRY_RISK_001",
        "is": true,
        "reason": "Debt owed in a foreign currency also has to be converted and transferred abroad"
+      },
+      {
+       "indicator": "CAS_TERM_SHEET_001",
+       "is": true,
+       "reason": "The currency of the loan is a term that can still be changed"
+      }
+     ]
+    },
+    {
+     "id": "OBS_FX_009",
+     "question": "If the currency in which the party earns its cash flow fell against the currency of its debt by as much as in its worst twelve months of the last ten years, and the party raised its prices no faster than it did then, would its cash flow still cover the service of all its debt, the proposed loan included?",
+     "answer": "yes_no",
+     "assumption": "The party can service its debt after a fall of its earning currency as deep as the worst of the last ten years",
+     "disproved_by": "no",
+     "why": "A mismatch says only that a fall in the currency raises the debt service in the party's own money. The test is whether the cash flow carries a fall that has already happened once.",
+     "when": [
+      {
+       "check": "OBS_FX_008",
+       "is": true
+      }
+     ],
+     "look_in": [
+      "03.02.b",
+      "03.01.a"
+     ],
+     "evidence": {
+      "best": [
+       "internal_memo",
+       "consultant_report"
+      ],
+      "supporting": [
+       "financial_model",
+       "audited_annual_report",
+       "public_source"
+      ],
+      "stated": [
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask_whom": "lender",
+     "if_unknown": "Nobody knows how far the currency can fall before a payment is missed.",
+     "note": "Take the fall from published exchange rates and name the twelve months. Take the party's prices and volumes in those months from its own accounts where it was already trading. If no such case has been run, the check stays open.",
+     "leads_to": [
+      {
+       "indicator": "CAS_DEBT_SERVICE_001",
+       "is": false,
+       "reason": "The cash flow does not carry the debt once the currency has fallen"
       }
      ]
     },
@@ -15029,36 +14628,8 @@
      "if_unknown": "A fall in the currency between the order and the payment would leave the investment plan short of funds."
     },
     {
-     "id": "OBS_FX_TRANSLATION_001",
-     "question": "Does more than about a fifth of the party's assets, liabilities or profit sit in subsidiaries or balances that are kept in a currency other than its reporting currency?",
-     "answer": "yes_no",
-     "assumption": "Only a small part of the party's balance sheet and profit is translated from another currency",
-     "disproved_by": "yes",
-     "why": "Translation moves reported equity, leverage and profit without any cash moving. That can breach a covenant on net worth or leverage.",
-     "look_in": [
-      "03.01.a",
-      "03.01.b"
-     ],
-     "evidence": {
-      "best": [
-       "audited_annual_report"
-      ],
-      "supporting": [
-       "management_accounts",
-       "organizational_chart"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Do you have subsidiaries, assets or liabilities that are kept in another currency and translated into your reporting currency? Roughly what share of the group do they make up?",
-     "note": "About a fifth is a guide. What counts is whether a currency move could breach a covenant by translation alone."
-    },
-    {
      "id": "OBS_FX_PASSTHROUGH_001",
-     "question": "When a fall in the local currency raises its input costs, can the party raise its selling prices to recover the rise within one quarter?",
+     "question": "When the local currency falls, can the party raise its selling prices within one quarter to recover the rise in its input costs and in its debt service (for example because its prices are set in or linked to the foreign currency)?",
      "answer": "choice",
      "options": [
       "full_passthrough",
@@ -15067,12 +14638,16 @@
       "none"
      ],
      "mitigant": true,
-     "assumption": "The party recovers a currency-driven rise in its input costs through its selling prices within one quarter",
+     "assumption": "The party recovers a currency-driven rise in its input costs and its debt service through its selling prices within one quarter",
      "flag_when": "is not full_passthrough",
-     "why": "Only a full recovery within a quarter keeps the margin whole. With a partial one, or with prices set by the state, the party carries the rest itself.",
+     "why": "Only a full recovery within a quarter keeps the margin and the cover of debt service whole. With a partial one, or with prices set by the state, the party carries the rest itself.",
      "when": [
       {
        "check": "OBS_FX_INPUT_001",
+       "against": true
+      },
+      {
+       "check": "OBS_FX_008",
        "against": true
       }
      ],
@@ -15098,7 +14673,7 @@
        "officer_note"
       ]
      },
-     "ask": "When a weaker currency raises your input costs, can you raise your selling prices to match within a quarter, fully or in part? Or are your prices set or capped by the state?",
+     "ask": "When a weaker currency raises your input costs and the cost of your foreign-currency debt, can you raise your selling prices to match within a quarter, fully or in part? Are your prices set in or linked to a foreign currency, or are they set or capped by the state?",
      "note": "Look at what happened to the gross margin in the last year in which the currency fell sharply. That is better evidence than a price clause that has never been used."
     },
     {
@@ -15109,10 +14684,6 @@
      "assumption": "Receipts and payments in the same currency offset each other, so that only a small net amount is exposed",
      "disproved_by": "no",
      "when": [
-      {
-       "check": "OBS_FX_002",
-       "against": true
-      },
       {
        "check": "OBS_FX_INPUT_001",
        "against": true
@@ -15160,10 +14731,6 @@
      "why": "When half or less is hedged, at least half of any currency move still reaches the cash flow. Treasury policies commonly hedge between half and all of the committed exposure of the coming year. An institution can set its own point.",
      "when": [
       {
-       "check": "OBS_FX_002",
-       "against": true
-      },
-      {
        "check": "OBS_FX_INPUT_001",
        "against": true
       },
@@ -15178,7 +14745,8 @@
      ],
      "look_in": [
       "04.03.a",
-      "03.01.a"
+      "03.01.a",
+      "02.05.a"
      ],
      "evidence": {
       "best": [
@@ -15187,7 +14755,8 @@
       ],
       "supporting": [
        "management_accounts",
-       "company_record"
+       "company_record",
+       "corporate_governance_policy"
       ],
       "stated": [
        "correspondence",
@@ -15196,7 +14765,7 @@
       ]
      },
      "ask": "What part of your foreign-currency exposure for the next twelve months is hedged today, and with which contracts? Please share the confirmations or the bank's hedge report.",
-     "note": "Count only contracts that are signed. Where there are none, the answer is 0. The party's own figure needs the bank's confirmations behind it."
+     "note": "Count only contracts that are signed. Where there are none, the answer is 0. The party's own figure needs the bank's confirmations behind it. A board-approved hedging policy shows that the cover will be kept up."
     },
     {
      "id": "OBS_HEDGE_TENOR_001",
@@ -15206,10 +14775,6 @@
      "assumption": "The hedges run for as long as the exposure they cover",
      "disproved_by": "no",
      "when": [
-      {
-       "check": "OBS_FX_002",
-       "against": true
-      },
       {
        "check": "OBS_FX_INPUT_001",
        "against": true
@@ -15252,10 +14817,6 @@
      "disproved_by": "no",
      "when": [
       {
-       "check": "OBS_FX_002",
-       "against": true
-      },
-      {
        "check": "OBS_FX_INPUT_001",
        "against": true
       },
@@ -15288,55 +14849,6 @@
       ]
      },
      "note": "Record the bank's rating where it has one. A hedge with a weak bank fails when the currency moves most. Where there are no hedging contracts, the answer is no."
-    },
-    {
-     "id": "OBS_HEDGE_001",
-     "question": "Has the party's board approved a written policy that says which foreign-currency exposures are hedged, up to what share, for how long and with which instruments?",
-     "answer": "yes_no",
-     "mitigant": true,
-     "assumption": "The party hedges its currency exposure under a written policy approved by its board",
-     "disproved_by": "no",
-     "when": [
-      {
-       "check": "OBS_FX_002",
-       "against": true
-      },
-      {
-       "check": "OBS_FX_INPUT_001",
-       "against": true
-      },
-      {
-       "check": "OBS_FX_008",
-       "against": true
-      },
-      {
-       "check": "OBS_FX_CAPEX_001",
-       "against": true
-      }
-     ],
-     "look_in": [
-      "02.05.a",
-      "03.01.a",
-      "02.02.a"
-     ],
-     "evidence": {
-      "best": [
-       "corporate_governance_policy",
-       "audited_annual_report"
-      ],
-      "supporting": [
-       "board_minutes",
-       "company_record"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note",
-       "management_presentation"
-      ]
-     },
-     "ask": "Do you have a written policy for managing currency risk, approved by your board? Please share it.",
-     "note": "A policy shows that hedging is done by rule and will be kept up. It does not show how much is hedged today, which OBS_HEDGE_003 asks."
     }
    ]
   },
@@ -15421,36 +14933,6 @@
      },
      "ask": "How much cash do you have in the bank today that you could use to pay a bill tomorrow? Please leave out anything that is pledged to a lender or held for someone else.",
      "note": "Say which date and which currency. For a group, say which companies hold the cash."
-    },
-    {
-     "id": "OBS_LIQ_002",
-     "question": "What is the party's current ratio (current assets divided by current liabilities) at its latest balance sheet date?",
-     "answer": "number",
-     "unit": "ratio",
-     "why": "A first reading of what turns into cash within a year against what is due within a year. It counts stock and receivables as if they were cash, and it is taken on a single day, so it opens the topic and settles nothing. OBS_LIQ_007 is the test.",
-     "due_by": "concept",
-     "applies_to": [
-      "borrower",
-      "repayment_source"
-     ],
-     "look_in": [
-      "03.01.a",
-      "03.01.b"
-     ],
-     "evidence": {
-      "best": [
-       "audited_annual_report"
-      ],
-      "supporting": [
-       "management_accounts",
-       "interim_financial_statements"
-      ],
-      "stated": [
-       "call",
-       "officer_note"
-      ]
-     },
-     "note": "Say which date the figure is for. Where borrowing is seasonal, give the figure at the seasonal peak as well."
     },
     {
      "id": "OBS_LIQ_007",
@@ -15588,76 +15070,6 @@
        "indicator": "CAS_DEBT_001",
        "is": true,
        "reason": "A party that ran short of cash has often asked its lenders for more time as well"
-      }
-     ]
-    },
-    {
-     "id": "OBS_LIQ_005",
-     "question": "How many days does the party take, on average, to pay its suppliers (trade payables divided by the cost of sales, times 365)?",
-     "answer": "number",
-     "unit": "days",
-     "why": "The figure is read against the credit terms the suppliers give and against earlier years. Payable days that run beyond the terms, or that lengthen from year to year, mean that suppliers are financing the party without having agreed to. They can stop delivering.",
-     "applies_to": [
-      "borrower",
-      "repayment_source"
-     ],
-     "look_in": [
-      "03.01.a",
-      "03.01.b"
-     ],
-     "evidence": {
-      "best": [
-       "audited_annual_report"
-      ],
-      "supporting": [
-       "management_accounts",
-       "company_record"
-      ],
-      "stated": [
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "How long do you take to pay your suppliers, and what terms do they give you? An ageing list of your payables would answer this.",
-     "note": "Record the suppliers' usual terms beside the figure. The ageing list of payables shows what is overdue."
-    },
-    {
-     "id": "OBS_LIQ_009",
-     "question": "If the whole guaranteed amount were called today, would the guarantor's free cash and undrawn committed credit lines cover both the call and its own debt repayments, interest and taxes of the next twelve months?",
-     "answer": "yes_no",
-     "assumption": "The guarantor can pay a call in cash and still pay what it owes itself",
-     "disproved_by": "no",
-     "applies_to": [
-      "guarantor"
-     ],
-     "look_in": [
-      "03.01.a",
-      "03.01.b",
-      "04.03.a"
-     ],
-     "evidence": {
-      "best": [
-       "audited_annual_report",
-       "bank_statement",
-       "facility_agreement"
-      ],
-      "supporting": [
-       "management_accounts",
-       "debt_schedule",
-       "internal_memo"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "note": "Assets that would first have to be sold do not count here. The guarantor's capacity asks about them. Where the guarantor has given other guarantees, count what could be called under them at the same moment. For a guarantor who is a person, take bank and custody statements, not a statement of net worth.",
-     "leads_to": [
-      {
-       "indicator": "CAS_GUARANTOR_CAPACITY_001",
-       "is": false,
-       "reason": "A guarantor without the cash must sell assets or borrow to pay, and that indicator asks whether it could"
       }
      ]
     },
@@ -16131,7 +15543,7 @@
       ]
      },
      "ask": "How long does it take from the day you pay for your inputs to the day your customers pay you? If the figure is not to hand, we can work it out from your stock, receivables and payables.",
-     "note": "Where the monthly figures allow it, work the cycle out at the seasonal peak as well as at the year-end, and say which date each figure is for."
+     "note": "Where the monthly figures allow it, work the cycle out at the seasonal peak as well as at the year-end, and say which date each figure is for. Give days of stock, receivables and payables separately, and set payable days against the suppliers' terms."
     },
     {
      "id": "OBS_WC_002",
@@ -16324,7 +15736,7 @@
       ]
      },
      "ask": "Do you pay suppliers or farmers in advance? How much is outstanding today, and how much of it was paid more than a season ago?",
-     "note": "Ask for the advances by recipient and by date paid. Record the amount that is overdue and set it against the party's equity. An advance that is rolled into the next season has not come back.",
+     "note": "Ask for the advances by recipient and by date paid. Record the amount that is overdue and set it against the party's equity. An advance that is rolled into the next season has not come back. For an agribusiness, look at each of the last three seasons. Unrecovered advances above about a tenth of those given are a pattern.",
      "leads_to": [
       {
        "indicator": "CAS_SUPPLIER_LINK_001",
@@ -16334,46 +15746,11 @@
      ]
     },
     {
-     "id": "OBS_WC_004",
-     "question": "Over the last three financial years, has the cash tied up in stock and receivables, less trade payables, grown faster than the party's sales?",
-     "answer": "yes_no",
-     "assumption": "Working capital has grown no faster than sales",
-     "disproved_by": "yes",
-     "why": "When working capital outgrows sales, customers are paying later, stock is not selling, or sales are booked that are not real. Each of them uses cash that the profit and loss account does not show.",
-     "due_by": "concept",
-     "look_in": [
-      "03.01.a",
-      "03.01.b"
-     ],
-     "evidence": {
-      "best": [
-       "audited_annual_report"
-      ],
-      "supporting": [
-       "management_accounts",
-       "company_record"
-      ],
-      "stated": [
-       "call",
-       "officer_note"
-      ]
-     },
-     "if_unknown": "Without three years of balance sheets the trend cannot be read, and one year's figure says little.",
-     "note": "Compare working capital as days of sales at the start and at the end of the three years. Where a business was bought or sold in that time, compare like with like and say so.",
-     "leads_to": [
-      {
-       "indicator": "CAS_CHANGES_001",
-       "is": true,
-       "reason": "Working capital that outgrows sales is a change that needs a cause"
-      }
-     ]
-    },
-    {
      "id": "OBS_WC_008",
-     "question": "Is the party's highest working-capital need of the year financed in full by its own cash and by committed credit lines that run until after the stock and receivables they finance have turned into cash?",
+     "question": "Do the credit lines that finance the party's seasonal stock and receivables fall due, or come up for the bank's review, before that stock and those receivables have turned into cash?",
      "answer": "yes_no",
-     "assumption": "The peak of working capital is financed by money that stays for the whole season",
-     "disproved_by": "no",
+     "assumption": "The lines that finance the season stay in place until its stock and receivables have turned into cash",
+     "disproved_by": "yes",
      "look_in": [
       "04.01.b",
       "04.03.a",
@@ -16395,7 +15772,7 @@
       ]
      },
      "ask": "In which month do you need the most money for stock and receivables, and how much? Which credit lines pay for it, and when does each of them fall due?",
-     "note": "Take the peak from the monthly figures of the last two years, not from the year-end balance sheet. A line that falls due, or comes up for the bank's review, in the middle of the season is a no. Liquidity asks whether a line is committed (OBS_LIQ_003)."
+     "note": "Take the peak from the monthly figures of the last two years, not from the year-end balance sheet. A line that falls due, or comes up for the bank's review, in the middle of the season is a yes. A party that finances its season from its own cash alone is a no. Liquidity asks whether a line is committed (OBS_LIQ_003)."
     }
    ]
   },
@@ -16861,33 +16238,7 @@
       ]
      },
      "ask_whom": "lender",
-     "note": "Name each list and its version or date. Where no list applies, say so."
-    },
-    {
-     "id": "OBS_ESG_MANDATE_002",
-     "question": "Do other lenders or investors in the deal, or those the borrower is approaching, apply environmental, social or exclusion requirements that differ from the lender's own?",
-     "answer": "yes_no",
-     "why": "The strictest requirement among the financiers is the one the borrower has to meet. One action plan agreed between them spares the borrower several.",
-     "look_in": [
-      "04.01.a",
-      "04.03.b"
-     ],
-     "evidence": {
-      "best": [
-       "term_sheet",
-       "dfi_facility_document",
-       "intercreditor_agreement"
-      ],
-      "supporting": [
-       "internal_memo",
-       "correspondence"
-      ],
-      "stated": [
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Which other lenders or investors are you talking to about this financing? Has any of them set environmental or social requirements, or told you of activities it does not finance?"
+     "note": "Name each list and its version or date. Where no list applies, say so. Where another financier applies a stricter environmental or social standard, name it: the strictest is the one the borrower has to meet."
     },
     {
      "id": "OBS_ES_001",
@@ -17053,6 +16404,42 @@
      },
      "ask_whom": "lender",
      "note": "A is harm that is diverse, irreversible or without precedent. B is limited harm, mostly at the site, that known measures can deal with. C is little or no harm. FI is money passed on through a financial intermediary, where the risk sits in the loans the intermediary makes. A category given at screening is provisional. Say who set it and when."
+    },
+    {
+     "id": "OBS_ES_006",
+     "question": "Does the financial intermediary screen the loans it makes against an exclusion list and for environmental and social risk, under a written procedure with a named person in charge, and can it show loans that it refused or made subject to conditions on those grounds?",
+     "answer": "yes_no",
+     "assumption": "The financial intermediary screens its own lending for excluded activities and for environmental and social risk, and acts on the result",
+     "disproved_by": "no",
+     "due_by": "diligence",
+     "when": [
+      {
+       "check": "OBS_ES_004",
+       "is": "FI"
+      }
+     ],
+     "look_in": [
+      "10.03.a",
+      "07.02.b"
+     ],
+     "evidence": {
+      "best": [
+       "consultant_report"
+      ],
+      "supporting": [
+       "esms_policy",
+       "company_record",
+       "corporate_governance_policy"
+      ],
+      "stated": [
+       "correspondence",
+       "call",
+       "officer_note",
+       "management_presentation"
+      ]
+     },
+     "ask": "How do you check the loans you make for activities on an exclusion list and for environmental and social risk? Who is in charge of it, and can you show us loans that you turned down or attached conditions to for these reasons?",
+     "note": "A procedure on paper is not enough. Ask for the list of loans screened in the last twelve months, with the result for each. OBS_ENV_007 asks about the management system for the party's own operations, not for its lending."
     },
     {
      "id": "OBS_ES_005",
@@ -18202,7 +17589,7 @@
       ]
      },
      "ask": "Is the construction contract a fixed-price, fixed-date contract for the whole of the works? If the works are split, who answers for the gaps between the contracts?",
-     "note": "Where the works are split between several contracts, the answer is no unless one party has signed to answer for the whole. Say which parts of the price can still move, such as provisional sums, indexation or ground conditions."
+     "note": "Where the works are split between several contracts, the answer is no unless one party has signed to answer for the whole. Say which parts of the price can still move, such as provisional sums, indexation or ground conditions. For equipment added to a running plant, a supply and installation contract with the maker, with a fixed price and a date, counts as yes."
     },
     {
      "id": "OBS_BUILDOP_004",
@@ -18428,43 +17815,6 @@
    ],
    "checks": [
     {
-     "id": "OBS_COMPSUPPORT_001",
-     "question": "Does the undertaking cover the completion of the project (its cost to complete, its completion by a date, or its passing of performance tests)?",
-     "answer": "yes_no",
-     "why": "Opens the topic. Support for completion is called before the project earns anything, so its terms differ from those of a guarantee of the debt. A \"no\" does not close the topic. OBS_COMPSUPPORT_005 is asked whatever the answer.",
-     "due_by": "screening",
-     "look_in": [
-      "04.02.a",
-      "02.02.g",
-      "04.01.b"
-     ],
-     "evidence": {
-      "best": [
-       "guarantee_agreement",
-       "jv_agreement",
-       "facility_agreement"
-      ],
-      "supporting": [
-       "term_sheet",
-       "internal_memo"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "What exactly does the support cover? The cost to complete, completion by a date, the performance tests, or the debt service until completion?",
-     "note": "Where the undertaking covers only the debt, it is a guarantee and belongs on a guarantees link (CAS_GUARANTEE_001).",
-     "leads_to": [
-      {
-       "indicator": "CAS_GUARANTOR_CAPACITY_001",
-       "is": true,
-       "reason": "The support is worth what its giver can pay on the day it is called"
-      }
-     ]
-    },
-    {
      "id": "OBS_COMPSUPPORT_002",
      "question": "Which events oblige the giver of the support to pay or to act?",
      "answer": "choice",
@@ -18482,12 +17832,6 @@
      "flag_when": "is unclear",
      "why": "Support that can be argued about when it is called does not arrive in time. Where the trigger is unclear, the giver decides whether it must pay.",
      "due_by": "concept",
-     "when": [
-      {
-       "check": "OBS_COMPSUPPORT_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "04.02.a",
       "02.02.g",
@@ -18509,7 +17853,7 @@
        "officer_note"
       ]
      },
-     "note": "Choose unclear where the trigger depends on the giver's own judgement, on an event that is not defined, or on a document not yet written. Unclear may be chosen together with other options."
+     "note": "Choose unclear where the trigger depends on the giver's own judgement, on an event that is not defined, or on a document not yet written. Unclear may be chosen together with other options. Where the undertaking covers only the debt, it is a guarantee and belongs on a guarantees link (CAS_GUARANTEE_001)."
     },
     {
      "id": "OBS_COMPSUPPORT_006",
@@ -18517,12 +17861,6 @@
      "answer": "yes_no",
      "assumption": "The amount of the support covers a plausible cost overrun",
      "disproved_by": "no",
-     "when": [
-      {
-       "check": "OBS_COMPSUPPORT_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "04.02.a",
       "05.01.a",
@@ -18565,12 +17903,6 @@
      "assumption": "The undertaking states when the support ends",
      "flag_when": "is unclear",
      "why": "Where the end of the support is unclear, the giver can claim it has been released when the project runs into trouble, which is when the support is needed.",
-     "when": [
-      {
-       "check": "OBS_COMPSUPPORT_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "04.02.a",
       "02.02.g",
@@ -18611,12 +17943,6 @@
      "assumption": "The support is released only on a certificate from an independent engineer or with the lender's approval",
      "flag_when": "is not independent_engineer_certificate or lender_approval",
      "why": "A release that the project, its builder or its sponsor can certify for itself ends the support on the word of the party that is supported. Only an independent engineer's certificate or the lender's own approval keeps the decision out of its hands.",
-     "when": [
-      {
-       "check": "OBS_COMPSUPPORT_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "04.02.a",
       "02.02.g",
@@ -18668,7 +17994,14 @@
       ]
      },
      "if_unknown": "Support that the lender cannot call depends on the sponsor choosing to honour it.",
-     "note": "A draft, a term sheet or a letter of comfort is a no. So is an undertaking given only to the borrower, which the lender cannot call unless it is assigned."
+     "note": "A draft, a term sheet or a letter of comfort is a no. So is an undertaking given only to the borrower, which the lender cannot call unless it is assigned.",
+     "leads_to": [
+      {
+       "indicator": "CAS_GUARANTOR_CAPACITY_001",
+       "is": true,
+       "reason": "The support is worth what its giver can pay on the day it is called"
+      }
+     ]
     }
    ]
   },
@@ -18825,7 +18158,7 @@
      },
      "ask": "When does this contract end? Is there a right to extend it, and whose right is it?",
      "if_unknown": "The projections may count on the contract in years in which it no longer exists.",
-     "note": "This check does not hang on OBS_CONT_001, so that the review cannot close on one answer. An option to extend that only the other side can use does not lengthen the term.",
+     "note": "This check does not hang on OBS_CONT_001, so that the review cannot close on one answer. An option to extend that only the other side can use does not lengthen the term. Record how much time lies between the final maturity and the end of the contract (the tail).",
      "leads_to": [
       {
        "indicator": "CAS_PROJECTIONS_001",
@@ -19058,7 +18391,7 @@
       "both",
       "neither"
      ],
-     "why": "Most ties in a chain of owners carry nothing that the lender counts on. Then the answer is neither, and nothing more is asked about the tie.",
+     "why": "Most ties in a chain of owners carry nothing that the lender counts on. Then the answer is neither, and only OBS_GROUP_010 is still asked about the tie.",
      "due_by": "screening",
      "look_in": [
       "03.02.b",
@@ -19439,6 +18772,37 @@
      "note": "The cash pooling agreement shows who owes whom. In the audited accounts a pooled balance appears as an amount due from a group company, not as cash."
     },
     {
+     "id": "OBS_GROUP_010",
+     "question": "Does the owner, or a holding company between the owner and the company, owe debt that it can service only with dividends, fees or loans from the company?",
+     "answer": "yes_no",
+     "assumption": "The owner does not need the company's cash to service its own debt",
+     "disproved_by": "yes",
+     "why": "An owner that needs the company's cash to pay its own lenders takes it out whatever state the company is in. That is how a sound company is weakened from above.",
+     "look_in": [
+      "03.01.a",
+      "04.03.a",
+      "02.03.a"
+     ],
+     "evidence": {
+      "best": [
+       "audited_annual_report"
+      ],
+      "supporting": [
+       "debt_schedule",
+       "management_accounts",
+       "organizational_chart"
+      ],
+      "stated": [
+       "correspondence",
+       "call",
+       "officer_note"
+      ]
+     },
+     "ask": "Does the owner, or any holding company above the company, have debt of its own? What does it pay the interest and the repayments from?",
+     "if_unknown": "Where the owner's own accounts have not been seen, its debt is not known.",
+     "note": "This check does not hang on OBS_GROUP_001. It is asked whichever way the lender relies on the tie, and where it relies on neither. Use the owner's own accounts, not the consolidated ones, and set its debt service against its income from everything other than the company. Debt taken on to buy the company's shares often sits in a holding company above it."
+    },
+    {
      "id": "OBS_GROUP_MIT_001",
      "question": "Do the lender's loan terms bind the company itself to limits on dividends, on loans and guarantees to the owner and the group, and on taking part in a cash pool?",
      "answer": "yes_no",
@@ -19452,6 +18816,10 @@
       },
       {
        "check": "OBS_GROUP_009",
+       "against": true
+      },
+      {
+       "check": "OBS_GROUP_010",
        "against": true
       }
      ],
@@ -19690,9 +19058,9 @@
     },
     {
      "id": "OBS_GUARANTEE_POWER_001",
-     "question": "Does the guarantor have the power to give this guarantee, and has it been approved as its own rules and the law require (corporate benefit, board or shareholder approval, exchange-control or regulatory consent)?",
+     "question": "Does the guarantor receive a benefit of its own from the loan it guarantees, or has counsel confirmed that the guarantee cannot be set aside for lack of benefit to the guarantor or as financial assistance?",
      "answer": "yes_no",
-     "assumption": "The guarantee is validly given",
+     "assumption": "The guarantee cannot be set aside for lack of benefit to the guarantor",
      "disproved_by": "no",
      "due_by": "legal",
      "look_in": [
@@ -19715,7 +19083,8 @@
        "officer_note"
       ]
      },
-     "if_unknown": "A guarantee given without power or approval can be set aside when it is called."
+     "if_unknown": "A guarantee that brings its giver no benefit may be challenged when it is called.",
+     "note": "Power and approvals are asked under Legal standing and Authorisation."
     },
     {
      "id": "OBS_GUARANTEE_ENFORCE_001",
@@ -19937,7 +19306,7 @@
       ]
      },
      "if_unknown": "A guarantor whose wealth is in land, unlisted shares or the borrower itself can be worth the amount and still be unable to pay it.",
-     "note": "90 days is a guide. Use the period the guarantee gives the guarantor to pay where that is shorter. Shares in the borrower and claims on the borrower do not count."
+     "note": "90 days is a guide. Use the period the guarantee gives the guarantor to pay where that is shorter. Shares in the borrower and claims on the borrower do not count. Count the cash after the guarantor's own debt repayments, interest and taxes of the next twelve months, and after what could be called under its other guarantees at the same moment."
     },
     {
      "id": "OBS_GTOR_004",
@@ -19971,9 +19340,9 @@
     },
     {
      "id": "OBS_GTOR_005",
-     "question": "Leaving out everything that comes from the borrower and the borrower's group (dividends, fees, sales to them, loans to them and the value of its shares in them), do the guarantor's income and net worth still cover the guaranteed amount?",
+     "question": "Leaving out everything that comes from the borrower and the companies the borrower controls (dividends, fees, sales to them, loans to them and the value of the guarantor's shares in them), do the guarantor's income and net worth still cover the guaranteed amount?",
      "answer": "yes_no",
-     "assumption": "The guarantor's means to pay do not come from the borrower or the borrower's group",
+     "assumption": "The guarantor's means to pay do not come from the borrower or from the companies the borrower controls",
      "disproved_by": "no",
      "why": "A guarantee from someone who lives off the borrower adds a signature, not a second way out. The two would fail together.",
      "due_by": "concept",
@@ -19996,7 +19365,7 @@
        "officer_note"
       ]
      },
-     "note": "A guarantor in the same business and the same market as the borrower can fail with it even where the two have no dealings with each other. Where that is so, say it in the reason.",
+     "note": "A guarantor in the same business and the same market as the borrower can fail with it even where the two have no dealings with each other. Where that is so, say it in the reason. Where the guarantor is the borrower's parent, the parent's other businesses count as its own.",
      "leads_to": [
       {
        "indicator": "CAS_REPAYMENT_THESIS_001",
@@ -20007,10 +19376,24 @@
     },
     {
      "id": "OBS_GTOR_006",
-     "question": "Has the guarantor named assets worth at least the guaranteed amount (what each is, where it is, and the register or account that shows it), and are those assets free of any pledge or charge to others?",
+     "question": "Do the guarantor's latest accounts (for a person: a list of assets with the register or account that shows each) show assets free of any pledge or charge to others that are worth at least the guaranteed amount?",
      "answer": "yes_no",
      "assumption": "A creditor with a judgment against the guarantor would find assets to seize that are worth the guaranteed amount",
      "disproved_by": "no",
+     "when": [
+      {
+       "check": "OBS_GTOR_001",
+       "is": "company"
+      },
+      {
+       "check": "OBS_GTOR_001",
+       "is": "person"
+      },
+      {
+       "check": "OBS_GTOR_001",
+       "is": "public_body"
+      }
+     ],
      "look_in": [
       "02.01.c",
       "05.02.a",
@@ -20286,20 +19669,20 @@
      ]
     },
     {
-     "id": "OBS_OFFTAKER_003",
+     "id": "OBS_OFFTAKER_009",
      "question": "What is the customer's credit standing?",
      "answer": "choice",
      "options": [
-      "sovereign_or_government",
       "investment_grade",
-      "sub_investment_grade",
+      "rated_BB",
+      "rated_B_or_below",
       "unrated_strong",
       "unrated_weak",
       "unknown"
      ],
      "assumption": "The customer's ability to pay is known, and it is not weak",
-     "flag_when": "is unrated_weak or unknown",
-     "why": "A customer whose ability to pay is weak, or cannot be judged, makes contracted revenue no more certain than revenue without a contract. A rated customer below investment grade is not flagged, because its standing is known and can be priced and watched.",
+     "flag_when": "is rated_B_or_below or unrated_weak or unknown",
+     "why": "A rating in the single-B range or below says that the agency itself sees a real chance of default within the life of a loan. Contracted revenue from such a customer is no more certain than revenue without a contract.",
      "due_by": "concept",
      "when": [
       {
@@ -20328,7 +19711,7 @@
       ]
      },
      "ask": "Does this customer have a credit rating, or can you share its latest audited accounts or a credit report on it?",
-     "note": "Choose unrated_strong where there is no rating but the customer's audited accounts show profits, cash and debt it can carry. Choose unrated_weak where they show losses, heavy debt or late payment. Choose unknown where neither a rating nor accounts have been seen. sovereign_or_government says who the customer is, not that it pays on time. OBS_OFFTAKER_004 asks that. Give the rating and its date in the reason."
+     "note": "investment_grade means a rating of BBB- (or Baa3) or higher. rated_BB means the double-B range just below it. rated_B_or_below means single-B or lower. Choose unrated_strong where there is no rating but the customer's audited accounts show profits, cash and debt it can carry. Choose unrated_weak where they show losses, heavy debt or late payment. Choose unknown where neither a rating nor accounts have been seen. A government body without its own rating takes the rating of its state. A rating does not say that the customer pays on time. OBS_OFFTAKER_004 asks that. Give the agency, the rating and its date in the reason."
     },
     {
      "id": "OBS_OFFTAKER_004",
@@ -20397,19 +19780,22 @@
      "note": "Six months and a tenth are guides. What counts is whether the seller could go on servicing its debt while it finds other buyers. Where there is one possible buyer by law or by geography (a single power buyer, the only processor within reach), the answer is no."
     },
     {
-     "id": "OBS_OFFTAKER_008",
-     "question": "Can the customer stop buying, or force a lower price, before the loan is repaid: does the contract end before the final repayment date, may the customer end it without a breach by the seller, or may it reopen the price?",
+     "id": "OBS_OFFTAKER_010",
+     "question": "In the last three years, has the customer cut the price it pays, lengthened its payment term, charged the seller rebates or fees that were not agreed, or dropped a product of the seller, without the seller's consent?",
      "answer": "yes_no",
-     "assumption": "The customer is bound to buy, at the agreed price, until the loan is repaid",
+     "assumption": "The customer has kept to the prices and terms it agreed with the seller",
      "disproved_by": "yes",
+     "why": "A large customer that buys without a long contract can use its weight through price cuts, rebates, longer payment terms and delisting. The checks on the contract do not show that.",
      "when": [
       {
-       "check": "OBS_OFFTAKER_006",
+       "check": "OBS_OFFTAKER_001",
        "is": true
       }
      ],
      "look_in": [
-      "06.01.a"
+      "06.01.a",
+      "10.03.a",
+      "03.01.b"
      ],
      "evidence": {
       "best": [
@@ -20417,8 +19803,9 @@
        "material_contract"
       ],
       "supporting": [
-       "term_sheet",
-       "internal_memo"
+       "company_record",
+       "management_accounts",
+       "bank_statement"
       ],
       "stated": [
        "correspondence",
@@ -20426,7 +19813,8 @@
        "officer_note"
       ]
      },
-     "note": "Read the clauses on term, termination, price review and volume. An option to extend that only the customer can use does not lengthen the term."
+     "ask": "In the last three years, has this customer cut its price, taken longer to pay, charged you rebates or fees you had not agreed, or dropped one of your products, without your consent?",
+     "note": "Set the agreed prices and terms beside what the customer in fact paid, and when, over the three years. The seller's price lists, credit notes and ageing list of receivables show it. A change that both sides negotiated and signed is not a yes. A seller that says yes is believed."
     },
     {
      "id": "OBS_OFFTAKER_005",
@@ -20471,7 +19859,7 @@
      "disproved_by": "no",
      "when": [
       {
-       "check": "OBS_OFFTAKER_003",
+       "check": "OBS_OFFTAKER_009",
        "against": true
       },
       {
@@ -20647,9 +20035,9 @@
     },
     {
      "id": "OBS_LENDER_004",
-     "question": "Is the final maturity of the other loan earlier than the final maturity of the lender's loan?",
+     "question": "Does the other loan fall due in a single payment, or come up for renewal, before the lender's loan is repaid, for an amount the party could not repay from one year's cash flow after its other debt service?",
      "answer": "yes_no",
-     "assumption": "The other loan does not have to be repaid or refinanced while the lender's loan is outstanding",
+     "assumption": "The other loan can be repaid from cash flow as it falls due, without a refinancing, while the lender's loan is outstanding",
      "disproved_by": "yes",
      "look_in": [
       "04.01.b",
@@ -20671,7 +20059,7 @@
        "officer_note"
       ]
      },
-     "note": "A line that runs for a year and is then renewed falls due at its next renewal date.",
+     "note": "A line that runs for a year and is then renewed falls due at its next renewal date. A loan that is repaid in instalments from cash flow is a no.",
      "leads_to": [
       {
        "indicator": "CAS_DEBT_SERVICE_001",
@@ -21334,7 +20722,7 @@
      "question": "What is the total yearly value of the party's dealings with related parties (sales, purchases, fees, rents and interest), as a percentage of its revenue?",
      "answer": "number",
      "unit": "percent",
-     "why": "Says how much of the business runs through related parties, and so how much hangs on the prices between them. Loans and balances are asked separately.",
+     "why": "Says how much of the business runs through related parties, and so how much hangs on the prices between them. A price set between related parties can be moved at will. Set too high, it takes cash out of the party. Set too low, it flatters the margin the lender counts on. Loans and balances are asked separately.",
      "due_by": "concept",
      "when": [
       {
@@ -21360,7 +20748,7 @@
       ]
      },
      "ask": "What is the total value of all your dealings with related parties in the last financial year, as a percentage of your revenue? The notes to your audited accounts should give the breakdown.",
-     "note": "Take the last full financial year and name it."
+     "note": "Take the last full financial year and name it. Give purchases and payments also as a share of costs."
     },
     {
      "id": "OBS_RP_003",
@@ -21807,7 +21195,7 @@
     },
     {
      "id": "OBS_SUPPLIER_MIT_001",
-     "question": "What would keep the buyer supplied if this supplier stopped: stock of the input that lasts until a new supplier delivers, a second supplier that already delivers and could cover the full need, both, or neither?",
+     "question": "What would keep the buyer supplied if this supplier stopped: stock of the input that lasts until a new supplier delivers, a second supplier that already delivers part of the need and is bound by contract to raise its deliveries, both, or neither?",
      "answer": "choice",
      "options": [
       "stock",
@@ -21848,7 +21236,7 @@
        "officer_note"
       ]
      },
-     "note": "Give the stock in days of use, and the share of the need that the second supplier delivers today."
+     "note": "Give the stock in days of use, and the share of the need that the second supplier delivers today and is bound to deliver."
     }
    ]
   },
@@ -22144,60 +21532,6 @@
      "note": "The resolution has to fit this transaction (the lender, the amount, the documents). A general approval \"to raise finance\", or one for another amount, is not this resolution. For a party without a board (a natural person, a public body), ask for whatever approval takes its place and say what it is."
     },
     {
-     "id": "OBS_AUTH_005",
-     "question": "What still has to happen before the party's approval of the transaction is in place?",
-     "answer": "choice",
-     "options": [
-      "board_meeting_required",
-      "shareholder_approval_required",
-      "amendment_to_articles_required",
-      "regulatory_approval_required",
-      "already_scheduled",
-      "unknown"
-     ],
-     "many": true,
-     "why": "The answer says how long the approval will take and what belongs among the conditions precedent.",
-     "due_by": "diligence",
-     "when": [
-      {
-       "check": "OBS_AUTH_001",
-       "is": false
-      },
-      {
-       "check": "OBS_AUTH_004",
-       "against": true
-      },
-      {
-       "check": "OBS_AUTH_008",
-       "against": true
-      },
-      {
-       "check": "OBS_AUTH_007",
-       "against": true
-      }
-     ],
-     "look_in": [
-      "02.01.b",
-      "08.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "legal_opinion",
-       "memorandum_and_articles"
-      ],
-      "supporting": [
-       "board_minutes",
-       "internal_memo"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Which approvals are still to come (the board, the shareholders, a change to the articles, an authority), and is a date set for each?"
-    },
-    {
      "id": "OBS_AUTH_004",
      "question": "Do the party's articles, as they stand today, allow its directors to commit it to this transaction at this amount, without exceeding any cap on borrowing, guarantees or security?",
      "answer": "yes_no",
@@ -22298,35 +21632,6 @@
      "note": "An answer of not_required should rest on the advice of counsel in the party's country. This check is about approvals for the financing itself. Licences to run the business are looked at under licences and regulation."
     },
     {
-     "id": "OBS_AUTH_003",
-     "question": "Do the party's own rules limit who may sign for it and up to what amount (signing limits, joint signatures, a list of authorised signatories)?",
-     "answer": "yes_no",
-     "why": "Says which rules the signatures have to be checked against. OBS_AUTH_006 is the test.",
-     "due_by": "diligence",
-     "look_in": [
-      "02.01.b",
-      "02.05.a",
-      "02.02.a"
-     ],
-     "evidence": {
-      "best": [
-       "memorandum_and_articles",
-       "board_resolution",
-       "registry_extract"
-      ],
-      "supporting": [
-       "corporate_governance_policy",
-       "company_certificate"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Who may sign for the company, alone or together, and up to what amount? Is this written in the articles, a board resolution or a delegation of authority?"
-    },
-    {
      "id": "OBS_AUTH_006",
      "question": "Are the persons who sign the documents authorised to bind the party for this amount, by the board resolution or a power of attorney, and within any signing limit?",
      "answer": "yes_no",
@@ -22354,7 +21659,7 @@
        "officer_note"
       ]
      },
-     "note": "Match the names and the signatures on the documents to the resolution or the power of attorney, and to the specimen signatures. Check that a power of attorney is still in force and covers this transaction. This check does not hang on OBS_AUTH_003."
+     "note": "Match the names and the signatures on the documents to the resolution or the power of attorney, and to the specimen signatures. Check that a power of attorney is still in force and covers this transaction. Ask for the party's signing rules (limits, joint signatures, list of signatories) and check against them."
     },
     {
      "id": "OBS_AUTH_002",
@@ -22988,6 +22293,32 @@
      "note": "Where the facility gives no right to cure with new money, the answer is no. Also read how the new money is counted. Money counted as cash flow hides the breach. Money used to repay debt reduces it."
     },
     {
+     "id": "OBS_COV_010",
+     "question": "Do the terms of the facility give the lender the right to demand repayment if control of the borrower passes to someone else without its consent, or if a guarantor or sponsor that the lender relies on ceases to own the borrower?",
+     "answer": "yes_no",
+     "assumption": "The lender can leave if the owners it lent to are replaced",
+     "disproved_by": "no",
+     "look_in": [
+      "04.01.a",
+      "04.01.b"
+     ],
+     "evidence": {
+      "best": [
+       "term_sheet",
+       "facility_agreement"
+      ],
+      "supporting": [
+       "internal_memo"
+      ],
+      "stated": [
+       "correspondence",
+       "call",
+       "officer_note"
+      ]
+     },
+     "note": "Read how control is defined. A sale of shares higher up the chain of ownership should count as a change of control too. A clause that only obliges the borrower to tell the lender of the change does not give this right."
+    },
+    {
      "id": "OBS_COV_008",
      "question": "Does the compliance certificate for the latest test date show every financial covenant within its limit?",
      "answer": "yes_no",
@@ -23163,51 +22494,11 @@
       ]
      },
      "ask": "Are all annual returns filed and all registry fees paid? A recent certificate of good standing or registry extract would show it.",
-     "note": "Record the date of the extract. Standing can lapse between diligence and signing, so a fresh extract is usual before the documents are signed."
-    },
-    {
-     "id": "OBS_LEGAL_005",
-     "question": "What has to be done to restore the party's good standing?",
-     "answer": "choice",
-     "options": [
-      "file_annual_returns",
-      "pay_fees",
-      "resolve_dispute",
-      "reinstatement_required",
-      "unknown"
-     ],
-     "many": true,
-     "why": "The answer says how long the gap takes to close, and whether it can be left as a condition precedent or has to be closed before approval.",
-     "when": [
-      {
-       "check": "OBS_LEGAL_002",
-       "is": false
-      }
-     ],
-     "look_in": [
-      "02.01.c",
-      "08.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "legal_opinion",
-       "regulatory_document",
-       "registry_extract"
-      ],
-      "supporting": [
-       "internal_memo",
-       "company_record"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "What is outstanding with the registry (returns, fees, something else), and by when will it be put right?",
+     "note": "Record the date of the extract. Standing can lapse between diligence and signing, so a fresh extract is usual before the documents are signed.",
      "leads_to": [
       {
        "indicator": "CAS_CONDITIONS_001",
+       "is": false,
        "reason": "A lapse that is not cured by approval has to become a condition precedent"
       }
      ]
@@ -23410,9 +22701,9 @@
     },
     {
      "id": "OBS_SECASSET_005",
-     "question": "If the business stopped, could the asset still be sold to a buyer outside it for about its forced-sale value?",
+     "question": "Have assets of this kind been sold in this country in the last three years to buyers outside the business that used them, at prices that bear out the forced-sale value counted on?",
      "answer": "yes_no",
-     "assumption": "The asset keeps its value when the business stops, and there are buyers for it",
+     "assumption": "There are buyers for the asset outside the business, and past sales bear out the value counted on",
      "disproved_by": "no",
      "look_in": [
       "05.02.a",
@@ -23432,7 +22723,7 @@
        "officer_note"
       ]
      },
-     "note": "Typical cases for a no: a plant built for one purpose or in a remote place, stock that only this business can use, receivables that customers stop paying once supply ends, shares in the borrower itself. 'About' is a guide: what counts is whether the value survives the failure that makes the lender need it."
+     "note": "Three years is a guide. Record the sales relied on: what was sold, when, and at what price. Typical cases for a no: a plant built for one purpose or in a remote place, stock that only this business can use, receivables that customers stop paying once supply ends, shares in the borrower itself. Cash on deposit is not sold: leave the check unanswered and record that decision with its reason."
     },
     {
      "id": "OBS_SECASSET_006",
@@ -23595,7 +22886,7 @@
        "officer_note"
       ]
      },
-     "note": "If only one of the two holds, answer no and say which. Bare land has nothing to insure: leave the check unanswered and record that decision with its reason.",
+     "note": "If only one of the two holds, answer no and say which. An endorsement on the policy, or a notice that the insurer has acknowledged, shows that the lender is loss payee: a clause in the loan agreement that asks for it does not. Bare land has nothing to insure: leave the check unanswered and record that decision with its reason.",
      "leads_to": [
       {
        "indicator": "CAS_COVERAGE_001",
@@ -23983,47 +23274,6 @@
      "note": "Choose every kind that is offered. 'contract_rights' covers an assignment of contracts, of a concession or of insurance proceeds. Choose 'none' only on its own."
     },
     {
-     "id": "OBS_SECPKG_002",
-     "question": "Is a guarantee offered for the facility by a parent company, a sponsor or another party?",
-     "answer": "yes_no",
-     "why": "A guarantee is the other half of the second way out. It is examined on its own link, not here.",
-     "due_by": "screening",
-     "calls_for": [
-      {
-       "is": true,
-       "link": [
-        "guarantees"
-       ]
-      }
-     ],
-     "look_in": [
-      "04.01.a",
-      "04.02.a"
-     ],
-     "evidence": {
-      "best": [
-       "guarantee_agreement"
-      ],
-      "supporting": [
-       "term_sheet",
-       "board_resolution"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Would a parent company, a sponsor or anyone else guarantee this loan? If so, who, and for how much?",
-     "leads_to": [
-      {
-       "indicator": "CAS_GUARANTEE_001",
-       "is": true,
-       "reason": "What the guarantee covers and whether it can be called is tested there"
-      }
-     ]
-    },
-    {
      "id": "OBS_FACILITY_EXPOSURE_001",
      "question": "What is the most the lender can be owed under the facility: the full amount committed, plus interest that is capitalised or can run unpaid, at its highest point?",
      "answer": "number",
@@ -24051,50 +23301,6 @@
       ]
      },
      "note": "Say in which currency, and whether a grace period or capitalised interest lifts the figure above the amount committed."
-    },
-    {
-     "id": "OBS_SECPKG_003",
-     "question": "Is the real estate offered as security free of any mortgage, charge or other claim that would rank ahead of the lender?",
-     "answer": "yes_no",
-     "assumption": "The lender would hold the first claim on the real estate offered",
-     "disproved_by": "no",
-     "due_by": "concept",
-     "when": [
-      {
-       "check": "OBS_SECPKG_001",
-       "is": "real_estate"
-      }
-     ],
-     "look_in": [
-      "04.02.b",
-      "02.01.c",
-      "05.02.a"
-     ],
-     "evidence": {
-      "best": [
-       "registry_extract",
-       "security_agreement",
-       "legal_opinion"
-      ],
-      "supporting": [
-       "valuation_report",
-       "audited_annual_report"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "Is the land or the building you are offering already mortgaged or charged to anyone, or claimed by anyone else? The title deeds and a recent extract from the land register would show it.",
-     "note": "This is the first look, for the real estate as a whole. Each property is then searched and valued on its own under CAS_SECURITY_ASSET_001.",
-     "leads_to": [
-      {
-       "indicator": "CAS_SECURITY_ASSET_001",
-       "is": false,
-       "reason": "The earlier claim is examined on the property that carries it"
-      }
-     ]
     },
     {
      "id": "OBS_SECPKG_004",
@@ -24133,6 +23339,7 @@
      "answer": "yes_no",
      "assumption": "The lender holds the security at first rank and for itself alone",
      "disproved_by": "yes",
+     "due_by": "concept",
      "when": [
       {
        "check": "OBS_SECPKG_001",
@@ -24326,7 +23533,7 @@
    "id": "CAS_TERM_SHEET_001",
    "title": "Terms",
    "pillar": "facility",
-   "claim": "The loan's size, tenor, repayment schedule and currency fit the cash flow that repays it.",
+   "claim": "The loan's tenor and repayment schedule fit the cash flow that repays it.",
    "due_by": "diligence",
    "applies_to": [
     "facility"
@@ -24415,44 +23622,8 @@
      "note": "A term marked \"to be agreed\", or a range in place of a figure, counts as left open."
     },
     {
-     "id": "OBS_TS_006",
-     "question": "Is the loan due to be repaid in full before the financed asset reaches the end of its useful life, and before any contract, concession, lease or licence that the repaying cash flow depends on runs out?",
-     "answer": "yes_no",
-     "assumption": "The loan is repaid before the asset, the contract or the licence behind its cash flow ends",
-     "disproved_by": "no",
-     "due_by": "concept",
-     "look_in": [
-      "04.01.a",
-      "06.01.a",
-      "06.05.a"
-     ],
-     "evidence": {
-      "best": [
-       "term_sheet",
-       "facility_agreement",
-       "offtake_agreement",
-       "lease_agreement",
-       "operational_license",
-       "technical_feasibility"
-      ],
-      "supporting": [
-       "financial_model",
-       "material_contract",
-       "internal_memo"
-      ],
-      "stated": [
-       "business_plan",
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "if_unknown": "A loan that outlives what pays for it is repaid, in its last years, from a cash flow nobody has promised.",
-     "note": "Count a contract as ending on the first date the other side may end it without cause, or on which it has to be renewed. Record how much time lies between the final maturity and that date (the tail). Where the loan finances no single asset or contract, answer for the contracts and licences the business cannot run without."
-    },
-    {
      "id": "OBS_TS_007",
-     "question": "Set against a month-by-month cash flow, does any repayment fall due before the cash to pay it has come in (during construction or ramp-up, or ahead of the season's sales)?",
+     "question": "Set against a month-by-month cash flow, does any repayment fall due before the cash to pay it has come in (during a ramp-up, or ahead of the season's sales)?",
      "answer": "yes_no",
      "assumption": "Each repayment falls due after the cash that pays it has come in",
      "disproved_by": "yes",
@@ -24480,7 +23651,7 @@
       ]
      },
      "ask": "In which months does your cash come in, and when would the first repayment fall? If the loan pays for an investment, when will that investment start to earn?",
-     "note": "A yearly cash flow hides this. Use a monthly or quarterly one for the grace period, the ramp-up and one full season. Take the date of completion from the builder's programme or the engineer's report, not from the plan."
+     "note": "A yearly cash flow hides this. Use a monthly or quarterly one for the grace period, the ramp-up and one full season. For a project under construction, the first repayment is set against completion under OBS_ECON_007."
     },
     {
      "id": "OBS_TS_008",
@@ -24488,6 +23659,7 @@
      "answer": "yes_no",
      "assumption": "The loan is repaid in full from cash flow by its final maturity, without a refinancing or a sale",
      "disproved_by": "yes",
+     "due_by": "concept",
      "look_in": [
       "04.01.a",
       "03.02.b"
@@ -24515,85 +23687,6 @@
        "indicator": "CAS_PROJECTIONS_001",
        "is": true,
        "reason": "The cash flow and the value at maturity have to be strong enough for another lender to take the loan over"
-      }
-     ]
-    },
-    {
-     "id": "OBS_TS_005",
-     "question": "With the facility drawn in full, does the lender's own downside case show cash flow available for debt service covering the scheduled debt service on this loan and on the existing debt in every year?",
-     "answer": "yes_no",
-     "assumption": "The amount of the loan is within what the cash flow can service, also when things go worse than planned",
-     "disproved_by": "no",
-     "look_in": [
-      "03.02.b",
-      "03.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "internal_memo",
-       "audited_annual_report"
-      ],
-      "supporting": [
-       "financial_model",
-       "financial_projections",
-       "management_accounts"
-      ],
-      "stated": [
-       "business_plan",
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask_whom": "lender",
-     "if_unknown": "The amount has then been set by what the plan costs, not by what the cash flow can repay.",
-     "note": "The downside case is the lender's, not the party's. If none has been run, the answer is not known. Leave a bullet or a large final instalment out of this answer. OBS_TS_008 asks about it.",
-     "leads_to": [
-      {
-       "indicator": "CAS_DEBT_SERVICE_001",
-       "is": false,
-       "reason": "The cash flow does not carry the loan at this size"
-      }
-     ]
-    },
-    {
-     "id": "OBS_TS_009",
-     "question": "Is the facility in the same currency as the cash flow that repays it?",
-     "answer": "yes_no",
-     "assumption": "The loan is in the currency of the cash flow that repays it",
-     "disproved_by": "no",
-     "due_by": "concept",
-     "look_in": [
-      "04.01.a",
-      "03.01.a",
-      "06.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "term_sheet",
-       "facility_agreement",
-       "audited_annual_report",
-       "offtake_agreement"
-      ],
-      "supporting": [
-       "management_accounts",
-       "financial_model",
-       "material_contract"
-      ],
-      "stated": [
-       "business_plan",
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "ask": "In which currency are your customers' payments made, and in which currency would the loan be?",
-     "note": "Go by the currency the cash is paid in. A price that is set in or linked to another currency but paid in local currency is a protection, not a match. It is looked at under currency risk.",
-     "leads_to": [
-      {
-       "indicator": "CAS_FX_001",
-       "is": false,
-       "reason": "A fall in the earning currency raises the debt service in the party's own money"
       }
      ]
     },
@@ -24645,6 +23738,39 @@
       ]
      },
      "ask_whom": "lender"
+    },
+    {
+     "id": "OBS_TS_MIT_001",
+     "question": "Do the loan terms require the borrower to use surplus cash to prepay this loan (a cash sweep), so that the final payment shrinks in the years the business does well?",
+     "answer": "yes_no",
+     "mitigant": true,
+     "assumption": "Surplus cash reduces the debt that would have to be refinanced",
+     "disproved_by": "no",
+     "when": [
+      {
+       "check": "OBS_TS_008",
+       "against": true
+      }
+     ],
+     "look_in": [
+      "04.01.a",
+      "04.01.b"
+     ],
+     "evidence": {
+      "best": [
+       "facility_agreement"
+      ],
+      "supporting": [
+       "term_sheet",
+       "financial_model"
+      ],
+      "stated": [
+       "correspondence",
+       "call",
+       "officer_note"
+      ]
+     },
+     "note": "Check what counts as surplus cash, and whether dividends are paid before the sweep or after it."
     }
    ]
   }

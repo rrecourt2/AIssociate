@@ -46,22 +46,6 @@ checks:
     cash on deposit, or your rights under contracts. A list with rough values is enough to start with.
   note: Choose every kind that is offered. 'contract_rights' covers an assignment of contracts, of a concession or of insurance
     proceeds. Choose 'none' only on its own.
-- id: OBS_SECPKG_002
-  question: Is a guarantee offered for the facility by a parent company, a sponsor or another party?
-  answer: yes_no
-  why: A guarantee is the other half of the second way out. It is examined on its own link, not here.
-  due_by: screening
-  calls_for:
-  - is: true
-    link: [guarantees]
-  look_in: [04.01.a, 04.02.a]
-  evidence:
-    best: [guarantee_agreement]
-    supporting: [term_sheet, board_resolution]
-    stated: [correspondence, call, officer_note]
-  ask: Would a parent company, a sponsor or anyone else guarantee this loan? If so, who, and for how much?
-  leads_to:
-  - {indicator: CAS_GUARANTEE_001, is: true, reason: What the guarantee covers and whether it can be called is tested there}
 - id: OBS_FACILITY_EXPOSURE_001
   question: 'What is the most the lender can be owed under the facility: the full amount committed, plus interest that is
     capitalised or can run unpaid, at its highest point?'
@@ -75,26 +59,6 @@ checks:
     supporting: [term_sheet, financial_model, internal_memo]
     stated: [correspondence, call, officer_note]
   note: Say in which currency, and whether a grace period or capitalised interest lifts the figure above the amount committed.
-- id: OBS_SECPKG_003
-  question: Is the real estate offered as security free of any mortgage, charge or other claim that would rank ahead of
-    the lender?
-  answer: yes_no
-  assumption: The lender would hold the first claim on the real estate offered
-  disproved_by: 'no'
-  due_by: concept
-  when:
-  - {check: OBS_SECPKG_001, is: real_estate}
-  look_in: [04.02.b, 02.01.c, 05.02.a]
-  evidence:
-    best: [registry_extract, security_agreement, legal_opinion]
-    supporting: [valuation_report, audited_annual_report]
-    stated: [correspondence, call, officer_note]
-  ask: Is the land or the building you are offering already mortgaged or charged to anyone, or claimed by anyone else? The
-    title deeds and a recent extract from the land register would show it.
-  note: This is the first look, for the real estate as a whole. Each property is then searched and valued on its own under
-    CAS_SECURITY_ASSET_001.
-  leads_to:
-  - {indicator: CAS_SECURITY_ASSET_001, is: false, reason: The earlier claim is examined on the property that carries it}
 - id: OBS_SECPKG_004
   question: Can the payments due under the main contracts, or from the main customers, be assigned to the lender and paid
     into an account the lender controls?
@@ -117,6 +81,7 @@ checks:
   answer: yes_no
   assumption: The lender holds the security at first rank and for itself alone
   disproved_by: 'yes'
+  due_by: concept
   when:
   - {check: OBS_SECPKG_001, is: real_estate}
   - {check: OBS_SECPKG_001, is: equipment}

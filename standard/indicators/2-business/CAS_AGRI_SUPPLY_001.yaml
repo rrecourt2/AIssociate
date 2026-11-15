@@ -13,8 +13,7 @@ matters_more_when:
 look_again_when:
 - {check: OBS_AGRI_005, is: true, reason: 'A season has been lost, so what it cost and whether the protections worked need
     a new look'}
-- {new_source: audited_annual_report, reason: 'The accounts of a new season show intake, advances recovered and stock written
-    off'}
+- {new_source: audited_annual_report, reason: The accounts of a new season show intake and stock written off}
 checks:
 - id: OBS_AGRI_001
   question: What share of the crop or other farm produce that the party processes or trades, by volume, does it buy from
@@ -22,7 +21,8 @@ checks:
   answer: number
   unit: percent
   why: Produce from the party's own farms is in its hands. Produce bought from independent farmers can go to another buyer
-    in any season. The larger this share, the more the checks on side-selling and on advances count.
+    in any season. The larger this share, the more the check on side-selling, and the check on advances under Working capital,
+    count.
   due_by: screening
   look_in: [03.01.a, 05.01.a]
   evidence:
@@ -47,24 +47,28 @@ checks:
     Was there a season in which they sold to others?
   note: 'Four fifths is a guide. Look at the seasons in which the market price rose above the contract price: that is when
     side-selling shows. Answer no, and say so, where the party buys nothing from contracted or financed farmers.'
-- id: OBS_AGRI_003
-  question: In any of the last three seasons, did farmers fail to repay more than about a tenth of the advances or inputs
-    that the party gave them on credit?
+- id: OBS_AGRI_010
+  question: Is the highest yearly volume of crop, milk or other farm produce that the projections count on no more than
+    the party took in during its best season of the last five, or is the extra volume contracted with named farmers, cooperatives
+    or suppliers who have it to sell?
   answer: yes_no
-  assumption: Farmers repay the advances and inputs that the party gives them on credit
-  disproved_by: 'yes'
-  look_in: [03.01.a, 03.01.b]
+  assumption: The farm produce that the projections count on has been delivered before, or is contracted with those who
+    have it
+  disproved_by: 'no'
+  why: A processing line built ahead of its supply runs below capacity, whatever the plant can do. The produce has to exist
+    and has to be the party's to buy.
+  look_in: [06.04.a, 05.01.a, 03.02.b]
   evidence:
-    best: [audited_annual_report]
-    supporting: [company_record, management_accounts]
-    stated: [call, officer_note, correspondence]
-  ask: How much did you advance to farmers in cash, seed or fertiliser in each of the last three seasons, and how much of
-    it had come back by the end of each season?
-  note: A tenth is a guide. Count an advance that was carried over into the next season as not repaid. Answer no, and say
-    so, where the party gives no advances.
+    best: [supply_agreement, technical_feasibility]
+    supporting: [financial_model, company_record, management_accounts]
+    stated: [call, officer_note, business_plan]
+  ask: What is the highest yearly intake in your projections, and what was your intake in each of the last five seasons?
+    Where will the extra volume come from, and is it under contract?
+  note: Use volume, not value. A letter of intent, or a list of farmers the party hopes to sign, is not a contract. Where
+    the extra volume is to come from the party's own new plantings or herd, say when they will first yield.
   leads_to:
-  - {indicator: CAS_WORKING_CAP_001, is: true, reason: 'Advances that do not come back are working capital that is lost,
-      not tied up'}
+  - {indicator: CAS_PROJECTIONS_001, is: false, reason: The volumes in the projections then have to be cut to what the supply
+      can deliver}
 - id: OBS_AGRI_004
   question: What was the party's lowest yearly harvest or intake in the last ten years, as a percentage of the average of
     those years?
@@ -98,28 +102,10 @@ checks:
     records finds nothing, record what was searched, where and when.
   leads_to:
   - {indicator: CAS_PROJECTIONS_001, is: true, reason: The downside case should repeat a season of that kind}
-- id: OBS_AGRI_006
-  question: Does a government body set, cap or put a floor under the price that the party pays for its crop or the price
-    at which it sells its product?
-  answer: yes_no
-  assumption: The party buys its crop and sells its product at prices that no government body sets
-  disproved_by: 'yes'
-  due_by: concept
-  look_in: [07.01.a, 01.03.a]
-  evidence:
-    best: [regulatory_document, market_study]
-    supporting: [company_record, public_source]
-    stated: [call, officer_note, correspondence]
-  ask: Is the price you pay farmers, or the price at which you sell, set or limited by a government body?
-  note: 'A fixed price can protect the party in one year and squeeze it in the next. The test is whether a decision the
-    party does not control can change its margin. Export bans, quotas and levies work the same way: record them here.'
-  leads_to:
-  - {indicator: CAS_REGULATORY_001, is: true, reason: 'The rule that sets the price, and how it can change, is examined
-      there'}
 - id: OBS_AGRI_007
-  question: In the last five years, was a shipment of the party rejected by a buyer or at a border for food safety, residues,
-    pests or quality, or was a certificate that it needs in order to sell (food safety, organic, plant health or export
-    approval) suspended or withdrawn?
+  question: In the last five years, was a shipment of the party stopped at a border for food safety, residues or pests,
+    or was a certificate that it needs in order to sell (food safety, organic, plant health or export approval) suspended
+    or withdrawn?
   answer: yes_no
   assumption: The party's product meets the food safety and plant health rules of its markets, and the party has kept the
     certificates it needs in order to sell
@@ -129,25 +115,28 @@ checks:
     best: [regulatory_document, consultant_report]
     supporting: [company_record, board_minutes, public_source]
     stated: [call, officer_note, correspondence]
-  ask: In the last five years, was any shipment of yours rejected by a buyer or at a border? Was any of your certificates
-    suspended or withdrawn?
+  ask: In the last five years, was any shipment of yours stopped at a border? Was any of your certificates suspended or
+    withdrawn?
   note: If the search finds nothing, record what was searched, where and when. Some importing markets publish their border
-    rejections.
+    rejections. A batch or shipment that a customer rejected is asked in OBS_OPS_006.
 - id: OBS_AGRI_008
-  question: Does the party own, or hold under a contract that runs through the season, the storage and (for a product that
-    spoils) the cold chain needed to keep its product saleable until it is sold?
+  question: 'Does the party own, or hold under a contract that runs through the season, what it needs to keep the produce
+    from spoiling on the way in and on the way out: collection, cooling and testing at intake between the farm and the plant,
+    and storage and (for a product that spoils) the cold chain until the product is sold?'
   answer: yes_no
-  assumption: The party controls the storage and the cold chain that its product needs until it is sold
+  assumption: The party controls the collection, the storage and the cold chain that its raw produce and its product need
   disproved_by: 'no'
   look_in: [05.01.a, 06.05.a, 06.01.a]
   evidence:
     best: [technical_feasibility, lease_agreement, material_contract]
     supporting: [company_record]
     stated: [call, officer_note, correspondence]
-  ask: Where is your product stored between harvest and sale, and who owns the stores, the cold rooms and the refrigerated
+  ask: How does the produce get from the farm to your plant, and who owns the collection points, the cooling and the testing
+    at intake? Where is your product stored until it is sold, and who owns the stores, the cold rooms and the refrigerated
     transport?
-  note: Products that spoil include fresh fruit and vegetables, flowers, milk, meat and fish. For grain and other dry crops,
-    ask about drying and about storage free of pests and damp.
+  note: Both the way in and the way out must hold for a yes. Say which part is missing. Products that spoil include fresh
+    fruit and vegetables, flowers, milk, meat and fish. For grain and other dry crops, ask about drying and about storage
+    free of pests and damp.
 - id: OBS_AGRI_009
   question: In which months of the year is the party's cash lowest and its borrowing highest, and what causes it?
   answer: text

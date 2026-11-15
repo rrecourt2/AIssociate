@@ -76,18 +76,20 @@ checks:
   note: If the valuer gives no forced-sale value, say what discount was taken from the market value and why. Say how long
     a sale is assumed to take.
 - id: OBS_SECASSET_005
-  question: If the business stopped, could the asset still be sold to a buyer outside it for about its forced-sale value?
+  question: Have assets of this kind been sold in this country in the last three years to buyers outside the business that
+    used them, at prices that bear out the forced-sale value counted on?
   answer: yes_no
-  assumption: The asset keeps its value when the business stops, and there are buyers for it
+  assumption: There are buyers for the asset outside the business, and past sales bear out the value counted on
   disproved_by: 'no'
   look_in: [05.02.a, 10.03.a]
   evidence:
     best: [valuation_report, consultant_report]
     supporting: [company_record, internal_memo]
     stated: [call, officer_note]
-  note: 'Typical cases for a no: a plant built for one purpose or in a remote place, stock that only this business can use,
-    receivables that customers stop paying once supply ends, shares in the borrower itself. ''About'' is a guide: what counts
-    is whether the value survives the failure that makes the lender need it.'
+  note: 'Three years is a guide. Record the sales relied on: what was sold, when, and at what price. Typical cases for a
+    no: a plant built for one purpose or in a remote place, stock that only this business can use, receivables that customers
+    stop paying once supply ends, shares in the borrower itself. Cash on deposit is not sold: leave the check unanswered
+    and record that decision with its reason.'
 - id: OBS_SECASSET_006
   question: Does the title document or a search of the registers show any charge, lien, lease, attachment or other claim
     on the asset besides the lender's own?
@@ -164,7 +166,8 @@ checks:
     best: [insurance_policy, insurance_broker_report]
     supporting: [conditions_precedent_checklist]
     stated: [correspondence, call, officer_note]
-  note: 'If only one of the two holds, answer no and say which. Bare land has nothing to insure: leave the check unanswered
-    and record that decision with its reason.'
+  note: 'If only one of the two holds, answer no and say which. An endorsement on the policy, or a notice that the insurer
+    has acknowledged, shows that the lender is loss payee: a clause in the loan agreement that asks for it does not. Bare
+    land has nothing to insure: leave the check unanswered and record that decision with its reason.'
   leads_to:
   - {indicator: CAS_COVERAGE_001, is: false, reason: The party's insurance as a whole is examined there}

@@ -66,10 +66,12 @@ checks:
   - {indicator: CAS_RATE_PRICE_RISK_001, is: true, reason: A party that takes the market's price carries price risk on its
       stock and its forward sales}
 - id: OBS_MARKET_004
-  question: At the lowest price of the last ten years, would the party's revenue still cover its cash operating costs and
-    its debt service, the proposed loan included?
+  question: 'At the lowest price of the last ten years (for a processor or a trader: in the year in which the gap between
+    its selling price and the price of its main input was narrowest), would the party''s revenue still cover its cash operating
+    costs and its debt service, the proposed loan included?'
   answer: yes_no
-  assumption: The party covers its cash costs and its debt service at the lowest price of the last ten years
+  assumption: The party covers its cash costs and its debt service at the lowest price, or the narrowest spread, of the
+    last ten years
   disproved_by: 'no'
   due_by: diligence
   look_in: [03.01.a, 01.03.a, 03.02.b]
@@ -78,8 +80,9 @@ checks:
     supporting: [financial_model, management_accounts]
     stated: [business_plan, management_presentation, call, officer_note]
   note: Use the party's accounts for that year where it was already trading. Otherwise set today's cash cost per unit against
-    that price. Where the price is fixed and the market adjusts through volume, use the lowest volume. A producer whose
-    costs are among the highest in its market is the first to lose money when the price falls.
+    that price (for a processor or a trader, today's cash costs other than the main input against that gap). Where the price
+    is fixed and the market adjusts through volume, use the lowest volume. A producer whose costs are among the highest
+    in its market is the first to lose money when the price falls.
 - id: OBS_MARKET_005
   question: In the last five years, has a direct competitor of the party, of similar size or larger, become insolvent, defaulted
     on its debt or had its debt restructured?
@@ -96,8 +99,8 @@ checks:
   ask: Has any of your competitors failed or had to restructure its debt in the last five years? What went wrong?
   note: Record who failed and why. If the search finds nothing, record what was searched, where and when.
 - id: OBS_MARKET_006
-  question: Does the party's margin depend on an import tariff, a quota, a subsidy, a tax break or a regulated price that
-    the government can change or end during the life of the loan?
+  question: Does the party's margin depend on an import tariff, a quota, an export ban or levy, a subsidy or a regulated
+    price that the government can change or end during the life of the loan?
   answer: yes_no
   assumption: The party's margin does not rest on a measure that the government can withdraw
   disproved_by: 'yes'
@@ -106,8 +109,11 @@ checks:
     best: [regulatory_document, tax_clearance, audited_annual_report]
     supporting: [market_study, consultant_report, financial_model]
     stated: [business_plan, management_presentation, call, officer_note]
-  ask: Would you still make money if the import duty, the subsidy, the tax break or the regulated price you benefit from
-    were taken away?
+  ask: Would you still make money if the import duty, the quota, the export ban or levy, the subsidy or the regulated price
+    that applies to your business were changed or taken away?
+  note: A regulated price, an export ban, a quota or a levy can protect the party in one year and squeeze it in the next.
+    The test is whether a decision the party does not control can change its margin. Name the measure. A tax holiday or
+    reduced rate is asked under OBS_TAX_008.
   leads_to:
   - {indicator: CAS_REGULATORY_001, is: true, reason: A measure the margin rests on should be checked for any change that
       is pending}
@@ -126,6 +132,22 @@ checks:
     than yours?
   note: Count only what can be named today, such as a plant under construction, an import that is already landing or a product
     that buyers are already switching to. If the search finds nothing, record what was searched, where and when.
+- id: OBS_MARKET_009
+  question: Over the last three years, has the party lost share in its main market (its sales grew more slowly than the
+    market's, or fell faster)?
+  answer: yes_no
+  assumption: The party has held its place against its competitors over the last three years
+  disproved_by: 'yes'
+  look_in: [01.03.a, 03.01.a]
+  evidence:
+    best: [market_study, consultant_report, audited_annual_report]
+    supporting: [management_accounts, company_record, public_source]
+    stated: [business_plan, management_presentation, call, officer_note]
+  ask: How have your sales moved over the last three years compared with your market as a whole? Who has gained share, and
+    who has lost it?
+  note: Set the party's sales, from its accounts, against the figures for the market used in OBS_MARKET_001, in volume where
+    both are known. Name the source of the market figures. Where the party has traded for less than three years, answer
+    for the time it has traded and say so.
 - id: OBS_MARKET_008
   question: Does the party hold signed sales contracts, at a fixed or floor price and for volumes the buyer must take or
     pay for, that cover its debt service in each year of the loan?

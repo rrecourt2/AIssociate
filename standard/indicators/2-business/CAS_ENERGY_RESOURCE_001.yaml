@@ -80,23 +80,8 @@ checks:
     stated: [correspondence, call, officer_note]
   if_unknown: Without a P90 the debt cannot be set against a poor year.
   note: Say whether the P90 is for a single year or for an average over ten years. The single-year figure is the lower of
-    the two and the one that matters for a year's debt service. Record both yields in gigawatt hours as well.
-- id: OBS_ERES_004
-  question: By how much does the resource at the site vary from one year to the next (the standard deviation of the yearly
-    values, as a share of their average)?
-  answer: number
-  unit: percent
-  why: The more the resource varies between years, the larger the reserve the project needs to pay its debt through a poor
-    year.
-  when:
-  - {check: OBS_ERES_006, is: true}
-  look_in: [05.01.a]
-  evidence:
-    best: [technical_feasibility]
-    supporting: [consultant_report, company_record]
-    stated: [correspondence, call, officer_note]
-  note: Record the number of years the figure rests on. For water, also record the driest year on record as a share of the
-    average.
+    the two and the one that matters for a year's debt service. Record both yields in gigawatt hours as well. For water,
+    also record the driest year on record as a share of the average.
 - id: OBS_ERES_008
   question: Does the project still pay its debt service in full in every year of the loan if the yield is the single-year
     P90 instead of the P50?

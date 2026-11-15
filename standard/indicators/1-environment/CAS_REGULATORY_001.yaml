@@ -43,7 +43,8 @@ checks:
     them held by another company of the group, or by a person?
   note: This check does not hang on OBS_REG_001, so that the topic cannot close on one answer. Where the party says it needs
     no licence, a legal opinion or the authority's own register should bear that out. A licence held by a sister company
-    or by the owner in person is not held by the party.
+    or by the owner in person is not held by the party. For a power project this is first of all the licence to generate
+    and sell electricity. A provisional licence or an application is a no.
 - id: OBS_REG_003
   question: In the last three years, has a regulator or a licensing authority sent the party a warning, a notice of breach,
     a fine or an order to show cause?

@@ -21,7 +21,7 @@ checks:
   question: Does the party earn revenue from sales today?
   answer: yes_no
   why: 'Opens the topic. A business with no revenue yet is a different deal: its customers are judged from signed contracts
-    and a market study, not from a sales record. OBS_BUYER_CONC_001 is asked either way.'
+    and a market study, not from a sales record. OBS_BUYER_CONC_001 and OBS_REV_008 are asked either way.'
   due_by: screening
   look_in: [03.01.a, 03.01.b]
   evidence:
@@ -32,29 +32,12 @@ checks:
   leads_to:
   - {indicator: CAS_FEASIBILITY_001, is: false, reason: 'With no sales record, the case for future revenue rests on the
       feasibility work'}
-- id: OBS_REV_002
-  question: How does the party mainly earn its revenue?
-  answer: choice
-  options: [product_sales, services, subscriptions, project_based, mixed]
-  why: The model says how revenue is lost. Product sales fall with volume or price, project work with an empty order book,
-    subscriptions with cancellations.
-  due_by: screening
-  when:
-  - {check: OBS_REV_001, is: true}
-  look_in: [03.01.a, 03.01.b]
-  evidence:
-    best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
-    stated: [business_plan, management_presentation, call, officer_note]
-  ask: How does the company mainly earn its money? By selling products, by providing services, from subscriptions, from
-    project contracts, or from a mix of these?
-  note: Choose mixed only where no one model brings in more than about half of revenue.
 - id: OBS_BUYER_CONC_001
   question: Does any single customer bring in about a tenth or more of the party's revenue, or would it under contracts
     already signed?
   answer: yes_no
-  assumption: The party's revenue does not hang on any one customer
-  disproved_by: 'yes'
+  why: A customer of this size has to be in the structure, where its own ability and obligation to pay are examined. A yes
+    does not go against the claim. Whether the party could lose its largest customer is tested in OBS_REV_008.
   due_by: concept
   calls_for:
   - is: true
@@ -73,6 +56,24 @@ checks:
   leads_to:
   - {indicator: CAS_OFFTAKER_CREDIT_001, is: true, reason: The customer's own ability and obligation to pay then decide
       part of the party's revenue}
+- id: OBS_REV_008
+  question: If the largest customer stopped buying and its volume were not replaced for twelve months, would the party's
+    cash flow still cover its debt service?
+  answer: yes_no
+  assumption: The party can lose its largest customer for a year and still service its debt
+  disproved_by: 'no'
+  why: The claim is about what the loss of one customer would do to debt service, not about how large the customer is.
+  look_in: [03.01.a, 03.02.b, 06.01.a]
+  evidence:
+    best: [audited_annual_report, offtake_agreement, consultant_report]
+    supporting: [financial_model, management_accounts, company_record, internal_memo]
+    stated: [call, officer_note]
+  ask: If your largest customer stopped buying tomorrow, how much of its volume could you sell elsewhere within a year,
+    and which costs could you cut?
+  if_unknown: Until this is worked out, nobody knows whether the loan hangs on one customer.
+  note: Twelve months is a guide. Take out the revenue from that customer and only the costs that would fall with it within
+    the year. Use the debt service of the first full year of repayment, this loan included. Count customers under common
+    control as one. Where the party sells its whole output to one buyer, the answer is no.
 - id: OBS_REV_003
   question: Do the three largest customers together bring in more than half of the party's revenue?
   answer: yes_no
@@ -145,22 +146,6 @@ checks:
   leads_to:
   - {indicator: CAS_WORKING_CAP_001, is: true, reason: 'Stock, receivables and borrowing peak with the season'}
   - {indicator: CAS_LIQUIDITY_001, is: true, reason: Cash is thinnest just before the season pays}
-- id: OBS_REV_006
-  question: Is part of the party's revenue fixed under signed contracts that run for more than a year, or under subscriptions
-    that renew?
-  answer: yes_no
-  why: Contracted revenue is steadier than spot sales, but only as good as the customer and the contract behind it.
-  due_by: concept
-  look_in: [06.01.a, 03.01.a]
-  evidence:
-    best: [offtake_agreement, audited_annual_report]
-    supporting: [material_contract, management_accounts, company_record]
-    stated: [call, officer_note, management_presentation]
-  ask: Do you sell under contracts that run for more than a year, or under subscriptions? Roughly what share of your sales
-    do they bring?
-  leads_to:
-  - {indicator: CAS_CONTRACT_REVIEW_001, is: true, reason: 'What the contract fixes, and how it can end, has to be read
-      in the contract itself'}
 - id: OBS_REC_GOV_001
   question: What share of the party's receivables is owed by government bodies (unpaid sales to the state, subsidies, tax
     and duty refunds)?
@@ -168,8 +153,9 @@ checks:
   unit: percent
   assumption: The party does not wait on government bodies for a large part of what it is owed
   flag_when: above 20
-  why: Government bodies pay when their budget allows, and a supplier can rarely press them or take them to court. At about
-    a fifth of receivables, a delay of some months takes a large part of the party's working capital. A fifth is a guide.
+  why: In many countries government bodies pay late when their budgets are tight, and enforcing a claim against them can
+    be slow. At about a fifth of receivables, a delay of some months takes a large part of the party's working capital.
+    A fifth is a guide.
   when:
   - {check: OBS_REV_001, is: true}
   look_in: [03.01.a, 03.01.b]
@@ -210,7 +196,7 @@ checks:
   why: Where less than half is backed, most of the loss from a customer that does not pay stays with the party. Half is
     a guide.
   when:
-  - {check: OBS_BUYER_CONC_001, against: true}
+  - {check: OBS_REV_008, against: true}
   - {check: OBS_REV_003, against: true}
   look_in: [03.01.a, 03.01.b, 08.03.a]
   evidence:

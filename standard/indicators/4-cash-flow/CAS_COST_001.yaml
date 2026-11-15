@@ -114,22 +114,3 @@ checks:
     supporting: [management_accounts, company_record]
     stated: [call, officer_note]
   note: A quarter is a guide. Gains that brought in no cash, such as revaluations, are asked about in The accounts (OBS_ACC_008).
-- id: OBS_COST_005
-  question: Do purchases from related parties, and fees, rent or interest paid to them, make up more than about a tenth
-    of the party's costs?
-  answer: yes_no
-  assumption: The party's margin does not depend on prices set with related parties
-  disproved_by: 'yes'
-  why: A price set between related parties can be moved at will. Set too high, it takes cash out of the party. Set too low,
-    it flatters the margin the lender counts on.
-  look_in: [03.01.a, 03.01.b]
-  evidence:
-    best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
-    stated: [correspondence, call, officer_note]
-  ask: Do you buy goods or services from your shareholders, from companies they own or from your directors, or pay them
-    fees, rent or interest? Roughly what share of your costs is that?
-  note: A tenth is a guide. Related parties are the owners, companies under the same owners, and directors and their families.
-    The note on related parties in the audited accounts gives the amounts.
-  leads_to:
-  - {indicator: CAS_RELATED_PARTY_001, is: true, reason: Whether these dealings are at market prices is tested there}

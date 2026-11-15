@@ -95,20 +95,6 @@ checks:
   - {indicator: CAS_COMPLETION_SUPPORT_001, is: true, reason: 'Support for completion ends at a defined event, and that
       event has to be examined'}
   - {indicator: CAS_PORTFOLIO_SUPPORT_001, is: true, reason: Cash shared between projects ties the fate of one to the others}
-- id: OBS_SUPPORT_EVENTS_001
-  question: For each support arrangement, which event obliges the supporter to pay or to act, and which event ends its obligation?
-  answer: text
-  why: A support that ends at completion, or on a ratio being met, is no longer there in the years after.
-  due_by: concept
-  when:
-  - {check: OBS_SUPPORT_TOPOLOGY_001, is: true}
-  look_in: [04.02.a, 04.01.a, 02.02.g]
-  evidence:
-    best: [guarantee_agreement, facility_agreement, jv_agreement]
-    supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
-  ask: For each guarantee or undertaking, what makes it payable and what brings it to an end? For example a shortfall in
-    debt service, completion of the project, the funding of a reserve account or repayment of the facility.
 - id: OBS_KEY_CONTRACTS_002
   question: Does repayment depend on one contract or a few contracts (for example a sales or offtake contract, a concession,
     a lease or a supply contract), so that the loss of one of them would put debt service in doubt?
@@ -127,19 +113,6 @@ checks:
   - {indicator: CAS_CONTRACT_REVIEW_001, is: true, reason: The terms of each such contract decide whether the cash flow
       can be counted on}
   - {indicator: CAS_OFFTAKER_CREDIT_001, is: true, reason: A sales contract is worth what the customer is able to pay}
-- id: OBS_KEY_CONTRACTS_001
-  question: Which contracts does repayment depend on, who is the other party to each, and when does each end?
-  answer: text
-  due_by: concept
-  when:
-  - {check: OBS_KEY_CONTRACTS_002, is: true}
-  look_in: [06.01.a, 06.05.a, 06.04.a]
-  evidence:
-    best: [offtake_agreement, lease_agreement, supply_agreement, material_contract]
-    supporting: [company_record, internal_memo]
-    stated: [business_plan, call, officer_note]
-  ask: Which contracts matter most for repaying the loan? For each one, who is the other party and until when does it run?
-  note: A contract that ends before the loan is repaid has to be renewed or replaced. Say so in the answer.
 - id: OBS_STRUCTURE_001
   question: Could the borrower, or another party that repayment relies on, still change before signing (a company that is
     yet to be set up, a guarantor or a buyer that is not yet chosen, a group that is being reorganised)?

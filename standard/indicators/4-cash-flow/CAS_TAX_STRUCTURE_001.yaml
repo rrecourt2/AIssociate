@@ -17,20 +17,6 @@ look_again_when:
 - {new_source: regulatory_document, reason: A notice or an assessment from the tax authority changes what is owed}
 - {new_source: audited_annual_report, reason: New accounts show new tax provisions and contingent liabilities}
 checks:
-- id: OBS_TAX_001
-  question: Is the party registered with the tax authority in its own name, as a registration certificate or a current tax
-    clearance shows?
-  answer: yes_no
-  assumption: The party is registered with the tax authority
-  disproved_by: 'no'
-  due_by: screening
-  look_in: [02.06.c, 03.01.d]
-  evidence:
-    best: [tax_clearance]
-    supporting: [tax_returns, company_record]
-    stated: [correspondence, call, officer_note]
-  ask: Can you send us your tax registration certificate, or a recent tax clearance certificate?
-  if_unknown: A business that is not registered has not been paying tax in its own name, and what it owes is unknown.
 - id: OBS_TAX_004
   question: 'Has the party filed every tax return that fell due in the last three years: income tax, value added or sales
     tax, and payroll taxes?'
@@ -46,6 +32,7 @@ checks:
   ask: Are all your tax returns for the last three years filed (income tax, value added or sales tax, payroll taxes)? A
     tax clearance certificate, or the filed returns with proof of filing, would show it.
   if_unknown: Years for which no return is filed stay open to assessment, and nobody knows for how much.
+  note: A party that is not registered with the tax authority in its own name is a no.
 - id: OBS_TAX_006
   question: Does the party owe tax that is past its due date, or is it paying off tax arrears under a plan agreed with the
     tax authority?
@@ -54,7 +41,7 @@ checks:
   disproved_by: 'yes'
   why: Unpaid tax is borrowing from the state without its consent. A business that falls behind on tax is usually short
     of cash, and the tax authority can often collect faster than a lender.
-  due_by: concept
+  due_by: screening
   look_in: [02.06.c, 03.01.a, 03.01.d]
   evidence:
     best: [tax_clearance, audited_annual_report]
@@ -67,9 +54,11 @@ checks:
   - {indicator: CAS_LIQUIDITY_001, is: true, reason: Tax arrears are a sign that cash is short}
 - id: OBS_TAX_005
   question: In the last three years, has the tax authority raised an additional assessment against the party, or is a tax
-    audit or a tax dispute open now?
+    dispute open now, for an amount (with penalties and interest) above about a tenth of the party's yearly profit before
+    tax?
   answer: yes_no
-  assumption: The tax authority has claimed no more tax from the party than the party declared
+  assumption: The tax authority claims no amount from the party, beyond what the party declared, that would take more than
+    about a tenth of a year's profit
   disproved_by: 'yes'
   look_in: [07.01.a, 03.01.a]
   evidence:
@@ -79,24 +68,12 @@ checks:
   ask: Has the tax authority audited you in the last three years, asked for more tax than you declared, or is any audit
     or dispute still open? What amounts are involved?
   if_unknown: An open tax claim of unknown size sits outside every figure in the analysis.
-  note: An audit that closed without further tax is a no. Say that it took place and which years it closed. The notes on
-    contingent liabilities in the audited accounts list open tax claims. If a search of court or tax registers finds nothing,
-    record what was searched, where and when.
+  note: A routine audit with no assessment is a no. Record it in the reason. A tenth is a guide. Say which years an audit
+    covered and whether it is closed. Record the amount of every assessment or dispute, also one below the guide. The notes
+    on contingent liabilities in the audited accounts list open tax claims. If a search of court or tax registers finds
+    nothing, record what was searched, where and when.
   leads_to:
   - {indicator: CAS_LITIGATION_001, is: true, reason: An open tax dispute is a claim against the party like any other}
-- id: OBS_TAX_002
-  question: Does the party benefit from a tax holiday, an exemption, a reduced rate or another special tax regime?
-  answer: yes_no
-  why: Opens the question of what the party's cash flow would be without it. OBS_TAX_008 asks whether it lasts as long as
-    the loan, and is asked whatever the answer here.
-  due_by: concept
-  look_in: [02.06.c, 07.01.a]
-  evidence:
-    best: [tax_clearance, regulatory_document, audited_annual_report]
-    supporting: [tax_returns, financial_model]
-    stated: [correspondence, call, officer_note, management_presentation]
-  ask: Do you benefit from any tax incentive, such as a tax holiday, an exemption, a reduced rate or the status of a special
-    economic zone? Until when does it run, and on what conditions?
 - id: OBS_TAX_008
   question: Does the party's cash flow count on a tax holiday, an exemption or a reduced rate that ends before this loan
     is repaid, or that depends on conditions the party is not meeting now (a level of investment, jobs or exports)?

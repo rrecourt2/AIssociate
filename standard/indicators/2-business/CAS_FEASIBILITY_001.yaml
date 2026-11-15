@@ -42,28 +42,31 @@ checks:
     supporting: [company_record, public_source]
     stated: [correspondence, call, officer_note, management_presentation]
   ask: Where is this technology already running commercially at a similar size? Since when, and who can confirm how it performs?
-  note: A pilot plant, a demonstration unit or the first plant of its kind is a no. So is a known technology used at several
-    times its largest size so far, or with a feedstock or in a climate it has not run in. The supplier's own list of references
-    is the supplier's word.
+  note: 'A pilot plant, a demonstration unit or the first plant of its kind is a no. So is a known technology used at several
+    times its largest size so far, or with a feedstock or in a climate it has not run in. The supplier''s own list of references
+    is the supplier''s word. For a power plant, answer for the chosen model of the main generating equipment, not for its
+    maker or its technology family: a new model from an established maker is a no. Two years of operation at several plants
+    is a guide.'
 - id: OBS_FEAS_005
-  question: Does the project hold the rights it needs to its site (the land, the way in, and the connections to power, water
-    and transport) under signed agreements or registered title that run beyond the final maturity of the loan?
+  question: Does the project hold the rights of way and the connections it needs (the way in to the site, and the connections
+    to water and transport) under signed agreements that run beyond the final maturity of the loan?
   answer: yes_no
-  assumption: The project holds the rights to its land, its access and its connections for the life of the loan
+  assumption: The project holds its access and its connections for the life of the loan
   disproved_by: 'no'
   due_by: concept
-  look_in: [06.05.a, 04.02.b, 08.01.a]
+  look_in: [06.05.a, 06.01.a, 08.01.a]
   evidence:
-    best: [lease_agreement, security_agreement, legal_opinion, regulatory_document]
+    best: [lease_agreement, material_contract, legal_opinion, regulatory_document]
     supporting: [technical_feasibility, company_record]
     stated: [correspondence, call, officer_note]
-  ask: Do you own or lease the whole site, and are the rights of way and the utility connections signed? Please share the
-    title, the lease and the connection agreements.
+  ask: Are the rights of way to the site and the connections to water and transport signed? Please share the agreements,
+    with the date on which each ends.
   note: An option, a letter of intent or an application that is still pending is a no until it is signed or granted. Say
-    which right is missing. For a power project the grid connection has its own check (OBS_EGEN_003).
+    which right is missing. The land itself is asked under OBS_LAND_001, and the grid connection of a power project under
+    OBS_EGEN_003.
   leads_to:
-  - {indicator: CAS_LAND_SUPPLY_CHAIN_001, is: false, reason: Land that is not yet secured may still have to be acquired
-      from people who live on it or use it}
+  - {indicator: CAS_LAND_SUPPLY_CHAIN_001, is: false, reason: A right of way that is not yet secured may still have to be
+      acquired from people who live on the land or use it}
 - id: OBS_FEAS_006
   question: Does the cost estimate rest on signed contracts or binding bids for the larger part of the cost, and carry a
     contingency for the part that is not fixed?
@@ -113,11 +116,11 @@ checks:
     that has not been measured, or a single route for delivery. Name each open risk. A study that names no risk at all has
     not looked.
 - id: OBS_FEAS_007
-  question: Does the supplier of the technology, or the builder, guarantee the plant's output and availability in a signed
-    contract, with damages if they are not reached?
+  question: Does the supplier of the technology warrant the plant's output and availability for at least two years after
+    handover, in a signed contract, with damages if they are not reached?
   answer: yes_no
   mitigant: true
-  assumption: The supplier or the builder is bound to pay if the technology does not perform
+  assumption: The supplier must pay if the technology does not perform in its first years of operation
   disproved_by: 'no'
   when:
   - {check: OBS_FEAS_002, against: true}
@@ -126,8 +129,7 @@ checks:
     best: [epc_contract, supply_agreement, material_contract]
     supporting: [technical_feasibility, company_record]
     stated: [correspondence, call, officer_note]
-  note: A guarantee is worth what its giver can pay. A young technology company with little capital does not carry this
-    risk, whatever it signs.
+  note: A warranty is worth what its giver can pay. A young technology company with little capital does not carry this risk,
+    whatever it signs. Two years is a guide. Performance at handover is asked under OBS_ECON_003.
   leads_to:
-  - {indicator: CAS_BUILDER_OPERATOR_001, is: true, reason: The guarantee is worth what the builder or supplier behind it
-      can pay}
+  - {indicator: CAS_BUILDER_OPERATOR_001, is: true, reason: The warranty is worth what the supplier behind it can pay}

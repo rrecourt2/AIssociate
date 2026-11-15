@@ -57,15 +57,14 @@ checks:
     stated: [correspondence, call, officer_note, management_presentation]
   leads_to:
   - {indicator: CAS_CONTRACT_REVIEW_001, is: true, reason: The contract is reviewed as a subject of its own}
-- id: OBS_OFFTAKER_003
+- id: OBS_OFFTAKER_009
   question: What is the customer's credit standing?
   answer: choice
-  options: [sovereign_or_government, investment_grade, sub_investment_grade, unrated_strong, unrated_weak, unknown]
+  options: [investment_grade, rated_BB, rated_B_or_below, unrated_strong, unrated_weak, unknown]
   assumption: The customer's ability to pay is known, and it is not weak
-  flag_when: is unrated_weak or unknown
-  why: A customer whose ability to pay is weak, or cannot be judged, makes contracted revenue no more certain than revenue
-    without a contract. A rated customer below investment grade is not flagged, because its standing is known and can be
-    priced and watched.
+  flag_when: is rated_B_or_below or unrated_weak or unknown
+  why: A rating in the single-B range or below says that the agency itself sees a real chance of default within the life
+    of a loan. Contracted revenue from such a customer is no more certain than revenue without a contract.
   due_by: concept
   when:
   - {check: OBS_OFFTAKER_001, is: true}
@@ -75,10 +74,12 @@ checks:
     supporting: [internal_memo, company_record, public_source]
     stated: [correspondence, call, officer_note]
   ask: Does this customer have a credit rating, or can you share its latest audited accounts or a credit report on it?
-  note: Choose unrated_strong where there is no rating but the customer's audited accounts show profits, cash and debt it
-    can carry. Choose unrated_weak where they show losses, heavy debt or late payment. Choose unknown where neither a rating
-    nor accounts have been seen. sovereign_or_government says who the customer is, not that it pays on time. OBS_OFFTAKER_004
-    asks that. Give the rating and its date in the reason.
+  note: investment_grade means a rating of BBB- (or Baa3) or higher. rated_BB means the double-B range just below it. rated_B_or_below
+    means single-B or lower. Choose unrated_strong where there is no rating but the customer's audited accounts show profits,
+    cash and debt it can carry. Choose unrated_weak where they show losses, heavy debt or late payment. Choose unknown where
+    neither a rating nor accounts have been seen. A government body without its own rating takes the rating of its state.
+    A rating does not say that the customer pays on time. OBS_OFFTAKER_004 asks that. Give the agency, the rating and its
+    date in the reason.
 - id: OBS_OFFTAKER_004
   question: Over the last twelve months, has the customer paid the seller within the agreed payment term or, where it has
     not yet bought from the seller, paid its other suppliers under comparable contracts on time?
@@ -112,21 +113,26 @@ checks:
   note: Six months and a tenth are guides. What counts is whether the seller could go on servicing its debt while it finds
     other buyers. Where there is one possible buyer by law or by geography (a single power buyer, the only processor within
     reach), the answer is no.
-- id: OBS_OFFTAKER_008
-  question: 'Can the customer stop buying, or force a lower price, before the loan is repaid: does the contract end before
-    the final repayment date, may the customer end it without a breach by the seller, or may it reopen the price?'
+- id: OBS_OFFTAKER_010
+  question: In the last three years, has the customer cut the price it pays, lengthened its payment term, charged the seller
+    rebates or fees that were not agreed, or dropped a product of the seller, without the seller's consent?
   answer: yes_no
-  assumption: The customer is bound to buy, at the agreed price, until the loan is repaid
+  assumption: The customer has kept to the prices and terms it agreed with the seller
   disproved_by: 'yes'
+  why: A large customer that buys without a long contract can use its weight through price cuts, rebates, longer payment
+    terms and delisting. The checks on the contract do not show that.
   when:
-  - {check: OBS_OFFTAKER_006, is: true}
-  look_in: [06.01.a]
+  - {check: OBS_OFFTAKER_001, is: true}
+  look_in: [06.01.a, 10.03.a, 03.01.b]
   evidence:
     best: [offtake_agreement, material_contract]
-    supporting: [term_sheet, internal_memo]
+    supporting: [company_record, management_accounts, bank_statement]
     stated: [correspondence, call, officer_note]
-  note: Read the clauses on term, termination, price review and volume. An option to extend that only the customer can use
-    does not lengthen the term.
+  ask: In the last three years, has this customer cut its price, taken longer to pay, charged you rebates or fees you had
+    not agreed, or dropped one of your products, without your consent?
+  note: Set the agreed prices and terms beside what the customer in fact paid, and when, over the three years. The seller's
+    price lists, credit notes and ageing list of receivables show it. A change that both sides negotiated and signed is
+    not a yes. A seller that says yes is believed.
 - id: OBS_OFFTAKER_005
   question: If the customer ends the contract early, takes less than the agreed volume or pays late, does the contract oblige
     it to pay a stated amount (a termination payment, a take-or-pay or minimum payment, interest on late payment)?
@@ -151,7 +157,7 @@ checks:
   assumption: The customer's payments are backed by more than its own promise to pay
   disproved_by: 'no'
   when:
-  - {check: OBS_OFFTAKER_003, against: true}
+  - {check: OBS_OFFTAKER_009, against: true}
   - {check: OBS_OFFTAKER_004, against: true}
   look_in: [04.02.b, 06.01.a, 08.03.a]
   evidence:

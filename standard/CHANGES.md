@@ -1,59 +1,72 @@
 # Changes
 
-## Version 4.0.0: a new framework
+## Version 4: a new framework
 
-Version 4.0.0 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room, the kinds of source and the stages are unchanged.
+Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room, the kinds of source and the stages are unchanged. Version 4.0.1 is version 4.0.0 after two reviews. This section describes 4.0.1.
 
 ### What changed
 
 - **Claims.** Every indicator is now one claim: what the lender relies on, in a sentence that can turn out false. There are 70 of them.
 - **Three jobs.** A check is a question, a test or a mitigant. A test states its own assumption, and the assumption is always what the lender relies on, so an answer against it is bad news. The old standard tested assumptions nobody holds, such as "Entity is debt-free". Those are now plain questions, and the tests ask what matters: "The party has paid its lenders as agreed".
-- **Nine pillars in four layers** replace the eight workstreams: the deal; then each party on its own (environment, business, people and governance, cash flow and debt, liquidity and financial risks, environmental, social and impact); then the links; then the facility. No pillar holds more than a sixth of the checks. In version 3 more than half were financial and commercial, and twelve were environmental and social.
+- **Nine pillars in four layers** replace the eight workstreams: the deal; then each party on its own (environment, business, people and governance, cash flow and debt, liquidity and financial risks, environmental, social and impact); then the links; then the facility. No pillar holds more than 18 percent of the checks. In version 3 more than half were financial and commercial, and twelve were environmental and social.
 - **Checks follow reliance.** A facility `relies_on` the party or group whose cash flow repays it, whoever signs the loan. That party gets the full view. A guarantor is asked whether it can pay and must pay, and no longer how it runs a factory.
 - **Links have their own checks.** A guarantee, a support undertaking, an owner or a group, a key customer, a key supplier, a builder or an operator, another lender and an asset given as security are each examined where they exist.
 - **Discovery opens what applies.** The kind of credit (`OBS_SECTOR_001`: corporate, project, financial institution or fund) decides which view of a party applies. The sector (`OBS_SECTOR_002`) switches on the checks for power and for agribusiness. Until discovery has answered, those checks wait.
-- **Discovery calls for structure.** 62 answers mean that a party, a link, an asset, a project or a contract must be in the structure. The tool says so until it is there, or until a decision says why it is not needed.
-- **Mitigants.** 66 checks are mitigants. Each is asked once a test it answers has gone against the claim. In version 3 two indicators had a mitigant.
-- **Stages after due diligence.** 27 checks are due at approval, legal documentation, disbursement or monitoring. In version 3 none was.
+- **Discovery calls for structure.** 60 answers mean that a party, a link, an asset, a project or a contract must be in the structure. The tool says so until it is there, or until a decision says why it is not needed.
+- **Mitigants.** 67 checks are mitigants. Each is asked once a test it answers has gone against the claim. In version 3 two indicators had a mitigant.
+- **Stages after due diligence.** 26 checks are due at approval, legal documentation, disbursement or monitoring. In version 3 none was.
 
 ### The numbers
 
-| | Version 3.0.1 | Version 4.0.0 |
+| | Version 3.0.1 | Version 4.0.1 |
 |---|---|---|
 | Indicators | 50 | 70 |
-| Checks | 267 | 570 |
-| of which questions, tests, mitigants | | 129, 375, 66 |
-| Checks due at screening, concept, due diligence, later | 76, 33, 158, 0 | 93, 159, 291, 27 |
-| Reference points | 16 (11 on a number, 5 on a choice) | 52 (16 on a number, 36 on a choice), each with its reason |
+| Checks | 267 | 544 |
+| of which questions, tests, mitigants | | 112, 365, 67 |
+| Checks due at screening, concept, due diligence, later | 76, 33, 158, 0 | 85, 148, 285, 26 |
+| Reference points | 16 (11 on a number, 5 on a choice) | 51 (16 on a number, 35 on a choice), each with its reason |
 
-250 of the 267 checks keep their ID. Most were reworded. 49 of the 50 indicators keep their ID: `CAS_DISCOVERY_ESG_MANDATE_001` is gone and its three checks are in `CAS_ES_SCREENING_001`. Titles changed.
+216 of the 267 checks keep their ID. Most were reworded. 328 checks are new. 49 of the 50 indicators keep their ID: `CAS_DISCOVERY_ESG_MANDATE_001` is gone and its checks are in `CAS_ES_SCREENING_001`. Titles changed.
 
 ### Checks that were dropped
 
-An ID is never used again for another meaning. Where the question changed in substance, the check has a new ID.
+An ID is never used again for another meaning. 51 checks of version 3 are gone.
+
+**Replaced by a sharper check under a new ID**
 
 | Dropped | Why | Now |
 |---|---|---|
 | `OBS_BORROWER_002` | Asked whether the borrower has employees | `OBS_BORROWER_004`: the borrower carries on the business itself |
 | `OBS_SECTOR_CONFIRM_001`, `OBS_SECTOR_CONFIRM_002` | Cross-checked property businesses only | `OBS_SECTOR_CONFIRM_003`, `OBS_SECTOR_CONFIRM_004`: the accounts show the stated business |
-| `OBS_INPUT_006` | "Remaining tenor below 5 years" means nothing without the loan | `OBS_INPUT_009`: supply is contracted until the loan is repaid |
+| `OBS_INPUT_006` | "Remaining tenor below 5 years" means nothing without the loan | `OBS_SUPPLIER_004`, asked about each key supplier |
 | `OBS_CONT_004` | Asked about expiry within twelve months | `OBS_CONT_005`: before the loan is repaid |
 | `OBS_ERES_003` | Asked for two numbers in one answer | `OBS_ERES_007`: the P90 yield as a share of the P50 |
 | `OBS_LIQ_001` | Yes or no on "cash reserves" | `OBS_LIQ_006`: the amount of free cash |
 | `OBS_WC_003` | "Is inventory management documented" cannot fail in a way that matters | `OBS_WC_006`: stock is counted and valued by someone independent |
 | `OBS_SECPKG_005` | "Consistent with the risk profile" names nothing to measure against | `OBS_SECPKG_006`: forced-sale value against the most that can be owed |
-| `OBS_TS_003` | "Appropriate for the risk profile", likewise | `OBS_TS_006`, `OBS_TS_007`, `OBS_TS_008`: tenor, timing of repayments, reliance on a refinancing |
-| `OBS_COST_003` | Repeated `OBS_INPUT_001` | |
-| `OBS_HEDGE_002` | Repeated `OBS_HEDGE_003` and `OBS_HEDGE_004` | |
-| `OBS_FIG_005` | Repeated `OBS_ACC_001` and `OBS_ACC_003` | |
-| `OBS_BO_003`, `OBS_OWN_002`, `OBS_LEGAL_004`, `OBS_INVESTOR_ROLE_004` | Each repeated a neighbour | |
+| `OBS_TS_003` | "Appropriate for the risk profile", likewise | `OBS_TS_007`, `OBS_TS_008`: timing of repayments, reliance on a refinancing |
+| `OBS_OFFTAKER_003` | A customer rated single-B passed because its standing "is known" | `OBS_OFFTAKER_009`: a rating of B or below goes against the claim |
+| `OBS_KYC_001` | Asked every company for a compliance officer | `OBS_KYC_009`: written rules against bribery, someone who answers for them, a way to report |
+| `OBS_DEBT_003` | "Mostly short-term" is sound for seasonal stock | `OBS_DEBT_010`: short-term debt that finances fixed assets or losses |
+
+**Asked in a better place: on the link, the asset, the contract or another indicator**
+
+`OBS_SUPPORT_EVENTS_001` (on each support link). `OBS_KEY_CONTRACTS_001` (`OBS_CONT_002`, `OBS_CONT_005`). `OBS_ECON_002` (`OBS_BUILDOP_001`). `OBS_EGEN_006` (`OBS_FEAS_002`). `OBS_EREG_001` (`OBS_REG_002`). `OBS_SECPKG_002` (`OBS_SUPPORT_TOPOLOGY_001`). `OBS_SECPKG_003` (`OBS_SECASSET_006`, `OBS_SECPKG_007`). `OBS_TS_005` (`OBS_PROJ_006`). `OBS_COST_003` (`OBS_INPUT_001`). `OBS_COST_005` (`OBS_RP_002`). `OBS_OWN_001` (`OBS_BO_002`). `OBS_WC_004` (`OBS_CHG_003`). `OBS_LIT_005` (the checks on each authority: `OBS_REG_003`, `OBS_TAX_005`, `OBS_ENV_006`, `OBS_SOC_004`, `OBS_KYC_003`). `OBS_HEDGE_001`, `OBS_HEDGE_002` (`OBS_HEDGE_003`, `OBS_HEDGE_004`). `OBS_FIG_005` (`OBS_ACC_001`, `OBS_ACC_003`). `OBS_COMPSUPPORT_001` (the kind of link says it). `OBS_LIFECYCLE_CONFIRM_001` (`OBS_CAPEX_PLAN_001`). `OBS_TAX_001` (`OBS_TAX_004`). `OBS_DEBT_004` (`OBS_LENDER_001`). `OBS_DEBT_005` (`OBS_LENDER_006`). `OBS_DEBT_006` (`OBS_DS_005`).
+
+**Questions whose answer nothing used**
+
+`OBS_BOARD_002`, `OBS_AUTH_003`, `OBS_AUTH_005`, `OBS_LEGAL_005`, `OBS_LIQ_002`, `OBS_LIQ_005`, `OBS_ERES_004`, `OBS_ESG_MANDATE_002`, `OBS_REV_002`, `OBS_REV_006`, `OBS_TAX_002`, and `OBS_FX_TRANSLATION_001`, which moves reported equity and not cash.
+
+**Repeated a neighbour**
+
+`OBS_BO_003`, `OBS_OWN_002`, `OBS_LEGAL_004`, `OBS_INVESTOR_ROLE_004`.
 
 ### Answers that no longer fit
 
 A deal that recorded answers under version 3 has to answer these again. The options changed:
 
 - `OBS_SECTOR_001` (now the kind of credit), `OBS_SECTOR_002` (now eight sectors), `OBS_VALUE_CHAIN_001`, `OBS_LIFECYCLE_001`.
-- `OBS_GUARANTEE_KIND_001`, `OBS_FX_003`, `OBS_INPUT_MIT_001`, `OBS_COV_001`, `OBS_COV_004`, `OBS_KYC_005`, `OBS_BO_006`.
+- `OBS_GUARANTEE_KIND_001`, `OBS_FX_003`, `OBS_INPUT_MIT_001`, `OBS_COV_001`, `OBS_COV_004`, `OBS_KYC_005`.
 - `OBS_ESG_MANDATE_003` is now a text answer.
 
 ### The format
@@ -69,25 +82,40 @@ A deal that recorded answers under version 3 has to answer these again. The opti
 ### How it was made and checked
 
 1. The framework was written first, from the first Bankability's method, from how the rating agencies build a credit view and from development-bank practice.
-2. Eleven writers each rewrote one part against the framework and one common brief. A checker refused output that broke the format or the rules it can test.
-3. Every one of the 441 tests and mitigants was then judged blind: a judge saw the question and the assumption, not the answer the standard marks as going against it. No yes/no test and no test on a number had the wrong direction. Six tests on a choice differed on a middle option. Three were changed: `OBS_EREG_002` (a hybrid tariff now also goes against), `OBS_EGEN_007` (so does a shared curtailment risk) and `OBS_LIFECYCLE_CONFIRM_002` (the question now defines its options).
+2. Eleven writers each rewrote one part against the framework and one common brief. A checker refused output that broke the format or the rules it can test. That was version 4.0.0, with 570 checks.
+3. Every test and mitigant was judged blind: a judge saw the question and the assumption, not the answer the standard marks as going against it. No yes/no test and no test on a number had the wrong direction. Six tests on a choice differed on a middle option, and three were changed.
+4. Two reviewers then read the whole standard, one for overlap between the parts and one as a credit practitioner. All but four of their 110 findings were applied. That is version 4.0.1. The 46 tests that were added or reworded were judged blind again by two judges, who agreed with the standard on every one.
 
 Nobody who does credit work for a living has reviewed it yet.
 
+### What the two reviews changed (4.0.1)
+
+- **The financial core was thin.** New tests: leverage (`OBS_DS_005`, total debt above four times EBITDA), the lowest projected cover for a project or a new business (`OBS_DS_008`), a fall of the earning currency as deep as the worst of the last ten years (`OBS_FX_009`), short-term debt that finances fixed assets (`OBS_DEBT_010`), the auditor's standing (`OBS_ACC_010`), and revenue against tax returns and bank statements (`OBS_ACC_011`).
+- **Some tests challenged almost every sound deal**, so that "challenged" said little. A share of revenue in foreign currency (`OBS_FX_002`), a largest input above 30 percent of cost (`OBS_INPUT_002`), a customer above a tenth of revenue (`OBS_BUYER_CONC_001`) and a board that never said no (`OBS_BOARD_007`) are now questions. The tests ask what matters instead: whether the margin held when the input price rose (`OBS_INPUT_010`), and whether the party could lose its largest customer for a year (`OBS_REV_008`). `OBS_LENDER_004`, `OBS_MARKET_004` and `OBS_TAX_005` were reworded for the same reason.
+- **Agribusiness and customers.** Farm produce for added capacity (`OBS_AGRI_010`), collection and cooling on the way in (`OBS_AGRI_008`), and a large customer that cuts prices or lengthens payment terms without a contract (`OBS_OFFTAKER_010`).
+- **Owners.** The owners' own cash in the plan (`OBS_USE_004`), an owner that needs the company's cash for its own debt (`OBS_GROUP_010`), the lender's right to leave when control changes (`OBS_COV_010`), and the party's place against its competitors (`OBS_MARKET_009`).
+- **Banks.** The institution's record with its own lenders (`OBS_FIL_009`), loans in foreign currency to borrowers who do not earn it (`OBS_FIP_009`), and the screening of its own lending for environmental and social risk (`OBS_ES_006`).
+- **Mitigants.** Business interruption insurance for a single plant (`OBS_OPS_MIT_002`), and a cash sweep where repayment depends on a refinancing (`OBS_TS_MIT_001`).
+- **Overlap.** 47 checks went: 34 from version 3 and 13 that were new in 4.0.0. They are in the lists above.
+- **Claims** of four indicators were rewritten to say what a lender relies on: projections, the board, political exposure, and the power tariff.
+
 ### For a credit reviewer
 
-- **Reference points on a number.** `OBS_DS_003` debt service cover below 1.2. `OBS_ACC_005` accounts older than 18 months. `OBS_FX_002` foreign-currency revenue above 20 percent. `OBS_FX_INPUT_001` imported inputs above 25 percent. `OBS_HEDGE_003` hedged share at most 50 percent. `OBS_INPUT_002` largest input above 30 percent of cost. `OBS_INPUT_MIT_003` and `OBS_REC_SECURITY_001` below 50 percent. `OBS_REC_GOV_001` above 20 percent. `OBS_REV_004` revenue falling. `OBS_WC_005` overdue receivables above 10 percent. `OBS_RP_EXPOSURE_001` above 10 percent of equity. `OBS_RP_PEAK_001` above 1.5. `OBS_FIC_002` capital headroom below 2 points. `OBS_FIP_004` restructured loans above 5 percent. `OBS_SECPKG_006` cover below 100 percent. Each has its reason in `why`. An institution changes them in its own layer.
-- **Tests that will go against the claim in many sound deals**, by design, so that the mitigant is asked: an unsecured loan (`OBS_COLLATERAL_001`), a refinancing (`OBS_USE_002`), a loan in a currency the party does not earn (`OBS_FX_008`, `OBS_TS_009`), a price-taker (`OBS_MARKET_003`), a single plant (`OBS_OPS_003`), a board that has never said no (`OBS_BOARD_007`), another loan that falls due earlier (`OBS_LENDER_004`), a subsidised tariff (`OBS_EREG_004`), a company without a compliance officer (`OBS_KYC_001`).
-- **Sizes named in questions** ("about a tenth", "about a fifth", "three years") are guides and say so in their notes.
+- **Reference points on a number.** `OBS_DS_003` and `OBS_DS_008` debt service cover below 1.2. `OBS_DS_005` total debt above 4 times EBITDA. `OBS_ACC_005` accounts older than 18 months. `OBS_FX_INPUT_001` imported inputs above 25 percent. `OBS_HEDGE_003` hedged share at most 50 percent. `OBS_INPUT_MIT_003` and `OBS_REC_SECURITY_001` below 50 percent. `OBS_REC_GOV_001` above 20 percent. `OBS_REV_004` revenue falling. `OBS_WC_005` overdue receivables above 10 percent. `OBS_RP_EXPOSURE_001` above 10 percent of equity. `OBS_RP_PEAK_001` above 1.5. `OBS_FIC_002` capital headroom below 2 points. `OBS_FIP_004` restructured loans above 5 percent. `OBS_SECPKG_006` cover below 100 percent. Each has its reason in `why`. An institution changes them in its own layer.
+- **Tests that still go against the claim in many sound deals**, by design, so that the mitigant is asked: an unsecured loan (`OBS_COLLATERAL_001`), a refinancing (`OBS_USE_002`), debt in a currency the party does not earn (`OBS_FX_008`), a price-taker (`OBS_MARKET_003`), a single plant (`OBS_OPS_003`), a subsidised tariff (`OBS_EREG_004`).
+- **Sizes named in questions** ("about a tenth", "about a third", "three years") are guides and say so in their notes.
 - **Words that carry a definition** in their note: `mixed` in `OBS_CASHFLOW_BASIS_001`, `blended` in `OBS_LIFECYCLE_CONFIRM_002`, the border between agribusiness and trade in `OBS_SECTOR_002`.
+- **The four new checks with the most wording of their own**: `OBS_KYC_009`, `OBS_OFFTAKER_010`, `OBS_GROUP_010`, `OBS_ACC_010`.
 
 ### Known gaps
 
-- **No module for funds.** A fund gets the deal, the links and the facility, and little about itself.
-- **Overlap between pillars has not been pruned.** The writers could not see each other's work. Known neighbours: a failing utility (`OBS_OPS_004`, `OBS_INPUT_005`); a rejected product (`OBS_OPS_006`, `OBS_AGRI_007`); cash conversion (`OBS_DS_006`, `OBS_CHG_005` and working capital); refinancing (`OBS_DS_007`, `OBS_DEBT_003`, `OBS_TS_008`); a customer's contract (`OBS_OFFTAKER_008`, `OBS_CONT_005`, `OBS_CONT_006`); a penalty for financial crime (`OBS_LIT_005`, `OBS_KYC_003`); charges on assets (`OBS_LENDER_002`, `OBS_SECPKG_003`, `OBS_SECASSET_006`, `OBS_SECLG_002`).
+- **No module for funds or for real estate.** A fund gets the deal, the links and the facility, and nothing about its own repayment. `OBS_SECTOR_001` says so in its note.
+- **The modules are uneven.** Power has four indicators, agribusiness one.
+- **Banks.** The quality of capital and the use of the money by a bank that lends it on are not asked.
+- **Projects.** Disbursement against an independent engineer's certificates is not asked.
+- **Currency.** A rise of the local currency against foreign-currency revenue is not tested.
 - **`lends_to` covers a loan received and a loan given.** The checks on another lender make no sense for a loan the party gave to an affiliate. The first check says so.
 - **Kinds of source are missing** for a land title, a court search, an independent engineer's report, a certificate from a certification scheme and an impact report. The checks use the nearest kind.
-- **A bank's own lending** is not examined for environmental and social risk.
 - **A party that is a person or a public body** does not fit every check on legal standing and authorisation.
 
 ## Versions 3.0.0 and 3.0.1: the copy from the first Bankability

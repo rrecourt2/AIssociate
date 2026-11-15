@@ -58,8 +58,9 @@ checks:
     interest), as a percentage of its revenue?
   answer: number
   unit: percent
-  why: Says how much of the business runs through related parties, and so how much hangs on the prices between them. Loans
-    and balances are asked separately.
+  why: Says how much of the business runs through related parties, and so how much hangs on the prices between them. A price
+    set between related parties can be moved at will. Set too high, it takes cash out of the party. Set too low, it flatters
+    the margin the lender counts on. Loans and balances are asked separately.
   due_by: concept
   when:
   - {check: OBS_RP_001, is: true}
@@ -70,7 +71,7 @@ checks:
     stated: [call, officer_note]
   ask: What is the total value of all your dealings with related parties in the last financial year, as a percentage of
     your revenue? The notes to your audited accounts should give the breakdown.
-  note: Take the last full financial year and name it.
+  note: Take the last full financial year and name it. Give purchases and payments also as a share of costs.
 - id: OBS_RP_003
   question: Are the prices and terms of the party's dealings with related parties the same as it gets, or would get, from
     unrelated parties?

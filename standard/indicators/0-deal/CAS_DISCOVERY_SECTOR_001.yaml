@@ -23,7 +23,9 @@ checks:
   ask_whom: lender
   if_unknown: Until the kind of credit is known, the tool cannot say which indicators apply.
   note: The answer is for the deal. It can be recorded for one party alone when that party is a different kind of credit
-    from the rest of the deal, for example a bank that guarantees a factory's loan.
+    from the rest of the deal, for example a bank that guarantees a factory's loan. The standard has no checks yet for a
+    fund's own repayment (net asset value against debt, uncalled commitments of its investors, concentration of its portfolio).
+    Where the answer is fund, record these as open by hand.
 - id: OBS_SECTOR_002
   question: Which sector is the business in?
   answer: choice
@@ -88,10 +90,10 @@ checks:
   note: Read the revenue note or the segment note, not the description at the front of the report. The check is not asked
     of a business that does not operate yet, because it has no revenue to read.
 - id: OBS_SECTOR_CONFIRM_004
-  question: Does more than half of the revenue, or more than half of the profit, come from something other than the stated
-    business (for example trading, the sale or revaluation of property, financial income or dealings with related parties)?
+  question: Does more than half of the profit before tax come from something other than the stated business (for example
+    trading gains, the sale or revaluation of property, financial income or dealings with related parties)?
   answer: yes_no
-  assumption: Most of the revenue and most of the profit come from the stated business
+  assumption: Most of the profit comes from the stated business
   disproved_by: 'yes'
   due_by: concept
   when:

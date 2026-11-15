@@ -1,7 +1,8 @@
 id: CAS_PEP_001
 title: Political exposure
 pillar: governance
-claim: No politically exposed person owns, controls or benefits from the party in a way the lender has not examined.
+claim: Where a politically exposed person owns, controls or directs the party, the wealth behind that person's stake is
+  explained and the business does not depend on that person's office.
 due_by: diligence
 applies_to: [borrower, repayment_source, guarantor, sponsor, shareholder, controller]
 matters_more_when:

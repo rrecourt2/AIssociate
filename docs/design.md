@@ -177,7 +177,7 @@ The standard says what a deal folder holds and what must be known. It is data on
 | Structure | Holds | Size |
 |---|---|---|
 | Data room | Where each document belongs | 10 folders, 32 sub-folders, 64 slots |
-| Checks | What must be known, as claims in nine pillars | 9 pillars, 70 indicators, 570 checks |
+| Checks | What must be known, as claims in nine pillars | 9 pillars, 70 indicators, 544 checks |
 | Systems | What each of the bank's systems asks for | Private to the institution |
 
 ### 6.1 Claims and checks

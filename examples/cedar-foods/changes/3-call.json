@@ -23,10 +23,10 @@
    "rests_on": ["F-009", "@lakeside"], "by": "assistant"},
   {"about": "P-001", "decision": "Cedar is to propose how it will cover the euro loan before the concept note goes in.",
    "reason": "The loan is asked in euros and all revenue is in shillings.",
-   "rests_on": ["F-007", "F-010"], "by": "officer", "covers": ["OBS_HEDGE_001"], "owner": "officer", "due": "2026-12-15"}
+   "rests_on": ["F-007", "F-010"], "by": "officer", "covers": ["OBS_HEDGE_003"], "owner": "officer", "due": "2026-12-15"}
  ],
  "questions": [
   {"asked_of": "CFO of Cedar Foods", "text": "Please send the supply contracts with the three cooperatives.",
-   "about": "P-001", "asked": "2026-11-12", "via": "@call", "checks": ["OBS_INPUT_009"]}
+   "about": "P-001", "asked": "2026-11-12", "via": "@call", "checks": ["OBS_INPUT_MIT_001"]}
  ]
 }

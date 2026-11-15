@@ -88,8 +88,8 @@ checks:
     best: [internal_memo]
     stated: [officer_note, call]
   ask_whom: lender
-  note: This is about the lender's own products and limits. Whether the lender is the right source of the money is asked
-    under impact and additionality.
+  note: This is about the lender's own products and limits. For the country limit, ask whoever keeps the limits and record
+    the date. Whether the lender is the right source of the money is asked under impact and additionality.
 - id: OBS_USE_001
   question: Is the use of the money set out item by item, each with an amount, so that every item can later be checked against
     an invoice, a contract or a payment?
@@ -143,10 +143,35 @@ checks:
   ask: Could you show us the full cost of the plan and where each part of the money comes from? Which of these sources are
     signed or already paid in, and which are still being discussed?
   if_unknown: A plan that is only partly funded can stop half way, with the lender's money already spent.
-  note: Committed means signed or paid in. A source that is still being negotiated is not committed.
+  note: Committed means signed or paid in. A source that is still being negotiated is not committed. Equity the sponsor
+    intends to put in, or a loan still in another lender's approval process, is not committed. Say how much is still open
+    and who is expected to provide it.
   leads_to:
   - {indicator: CAS_COMPLETION_SUPPORT_001, is: false, reason: A gap in the funding has to be closed by someone who is bound
       to close it}
+  - {indicator: CAS_CONDITIONS_001, is: false, reason: Funding that is not yet committed is usually made a condition of
+      the first drawdown}
+- id: OBS_USE_004
+  question: Is at least about a third of the cost of the plan paid in cash by the owners or from the business's own retained
+    cash, before the lender's money or in step with it, and not in kind, by revaluing assets or with borrowed money?
+  answer: yes_no
+  assumption: The owners carry a share of the plan in cash and stand to lose it first
+  disproved_by: 'no'
+  due_by: concept
+  when:
+  - {check: OBS_CAPEX_PLAN_001, is: true}
+  - {check: OBS_LIFECYCLE_001, is: greenfield}
+  look_in: [03.01.a, 04.01.a, 01.02.a]
+  evidence:
+    best: [audited_annual_report, facility_agreement, jv_agreement]
+    supporting: [investment_plan, financial_model, bank_statement, shareholder_resolution]
+    stated: [business_plan, correspondence, call, officer_note]
+  ask: How much of the cost of the plan do the owners pay themselves, in cash? When is that money paid in, before our loan
+    is drawn or alongside it, and where does it come from?
+  note: A third is a guide. An institution can set its own share.
+  leads_to:
+  - {indicator: CAS_SOURCE_OF_FUNDS_001, reason: 'Where the owners'' money comes from, and whether it is theirs, is examined
+      there'}
 - id: OBS_USE_MIT_001
   question: Is everything that is paid out owed to a lender that is neither a shareholder nor a related party, on a loan
     that was being paid as agreed (no missed payment, waiver or rescheduling in the last twelve months)?

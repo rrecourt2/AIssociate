@@ -68,23 +68,8 @@ checks:
     would show it.
   note: Record the date of the extract. Standing can lapse between diligence and signing, so a fresh extract is usual before
     the documents are signed.
-- id: OBS_LEGAL_005
-  question: What has to be done to restore the party's good standing?
-  answer: choice
-  options: [file_annual_returns, pay_fees, resolve_dispute, reinstatement_required, unknown]
-  many: true
-  why: The answer says how long the gap takes to close, and whether it can be left as a condition precedent or has to be
-    closed before approval.
-  when:
-  - {check: OBS_LEGAL_002, is: false}
-  look_in: [02.01.c, 08.01.a]
-  evidence:
-    best: [legal_opinion, regulatory_document, registry_extract]
-    supporting: [internal_memo, company_record]
-    stated: [correspondence, call, officer_note]
-  ask: What is outstanding with the registry (returns, fees, something else), and by when will it be put right?
   leads_to:
-  - {indicator: CAS_CONDITIONS_001, reason: A lapse that is not cured by approval has to become a condition precedent}
+  - {indicator: CAS_CONDITIONS_001, is: false, reason: A lapse that is not cured by approval has to become a condition precedent}
 - id: OBS_LEGAL_003
   question: Do the party's constitutional documents give it the power to do its part in this deal (to borrow, to guarantee
     another party's debt, or to give security)?

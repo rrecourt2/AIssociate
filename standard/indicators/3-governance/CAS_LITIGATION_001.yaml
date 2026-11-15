@@ -77,10 +77,10 @@ checks:
   note: Set the lawyers' letter to the auditor beside the note on provisions and contingent liabilities. A case the lawyers
     call likely to be lost, with no provision, means that profit and equity are overstated by that amount.
 - id: OBS_LIT_004
-  question: Is a regulator, a tax authority, a competition authority or a prosecutor investigating the party, or has one
-    given notice that it will?
+  question: Is a regulator, a competition authority or a prosecutor investigating the party, or has one given notice that
+    it will?
   answer: yes_no
-  assumption: No authority has an inquiry open that could end in a penalty, a tax bill or the loss of a licence
+  assumption: No authority has an inquiry open that could end in a penalty or the loss of a licence
   disproved_by: 'yes'
   due_by: concept
   look_in: [07.01.a, 08.01.a, 03.01.a]
@@ -88,30 +88,13 @@ checks:
     best: [regulatory_document, legal_opinion, audited_annual_report]
     supporting: [board_minutes, company_certificate, company_record]
     stated: [correspondence, call, officer_note]
-  ask: 'Is any authority looking into your company at the moment: the tax office, a regulator, the competition authority,
-    a prosecutor? A routine inspection with no findings does not count.'
-  note: This check does not hang on OBS_LIT_001. A tax audit that every company of this size gets is routine until it ends
-    in an assessment.
+  ask: 'Is any authority looking into your company at the moment: a regulator, the competition authority, a prosecutor?
+    A routine inspection with no findings does not count.'
+  note: This check does not hang on OBS_LIT_001. Tax audits and tax disputes are asked under OBS_TAX_005.
   leads_to:
   - {indicator: CAS_KYC_AML_001, is: true, reason: 'An inquiry into fraud, bribery or money laundering is also a matter
       of integrity'}
   - {indicator: CAS_REGULATORY_001, is: true, reason: An inquiry by a regulator can put a licence at risk}
-- id: OBS_LIT_005
-  question: In the last five years, has a regulator, a tax authority or another public body fined the party, ordered it
-    to pay or to stop an activity, or suspended a licence or a permit?
-  answer: yes_no
-  assumption: No public body has fined the party, stopped an activity or suspended a licence in the last five years
-  disproved_by: 'yes'
-  applies_to: [borrower, repayment_source]
-  look_in: [07.01.a, 03.01.a, 08.01.a]
-  evidence:
-    best: [regulatory_document, audited_annual_report, legal_opinion]
-    supporting: [board_minutes, company_record, company_certificate]
-    stated: [correspondence, call, officer_note]
-  ask: In the last five years, has any authority fined you, ordered you to pay or to stop something, or suspended a licence
-    or a permit?
-  note: Five years is a guide. One small fine is an incident. Several from the same authority are a pattern, and the next
-    step is often a suspension. A penalty for fraud, bribery or money laundering also goes under OBS_KYC_003.
 - id: OBS_LIT_007
   question: Does a search of the court and insolvency registers, a credit report or the lawyers' letter to the auditor show
     a case, a judgment or an attachment against the party that it had not mentioned?

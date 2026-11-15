@@ -80,7 +80,8 @@ checks:
   note: 'Common practice sets the threshold at a quarter of the shares or votes. Many lenders set it lower, and lower still
     where the risk is higher: use the lender''s own. Where no one is above it, identify the person who in fact controls
     the party, or failing that its most senior manager. For a party that is a natural person, the question is whether that
-    person''s own identity has been checked.'
+    person''s own identity has been checked. Use extracts no more than about twelve months old. A holder or a holding that
+    differs from what the party declared, or a transfer agreed but not registered, is a no.'
 - id: OBS_BO_005
   question: Is any step in the chain between the party and its ultimate owners held through a nominee, a trustee, a foundation
     or bearer shares?

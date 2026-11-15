@@ -1,9 +1,13 @@
 id: CAS_FX_001
 title: Currency risk
 pillar: liquidity
-claim: A move in the exchange rate, in either direction, would not stop the party from servicing its debt.
+claim: A fall in the currency the party earns, against the currencies it owes and buys in, would not stop it from servicing
+  its debt.
 due_by: diligence
 applies_to: [borrower, repayment_source]
+applies_when:
+- {check: OBS_SECTOR_001, is: corporate}
+- {check: OBS_SECTOR_001, is: project}
 matters_more_when:
 - {check: OBS_VALUE_CHAIN_001, is: primary_producer, reason: Primary producers often sell at prices set in a foreign currency
     and pay their costs in local currency}
@@ -18,8 +22,8 @@ checks:
 - id: OBS_FX_001
   question: Does the party earn any of its revenue in a foreign currency, or at prices that are set in one?
   answer: yes_no
-  why: Opens the revenue side. A "no" is not the end of it. OBS_FX_008, OBS_FX_CAPEX_001 and OBS_FX_TRANSLATION_001 are
-    asked whatever the answer, and the currency note in the audited accounts shows whether the answer is right.
+  why: Opens the revenue side. A "no" is not the end of it. OBS_FX_008 and OBS_FX_CAPEX_001 are asked whatever the answer,
+    and the currency note in the audited accounts shows whether the answer is right.
   due_by: screening
   look_in: [03.01.a, 03.01.b]
   evidence:
@@ -48,13 +52,7 @@ checks:
   question: What share of the party's revenue is earned in a foreign currency, or at prices set in one?
   answer: number
   unit: percent
-  assumption: A rise in the local currency would reduce only a small part of the party's revenue
-  flag_when: above 20
-  why: Revenue in a foreign currency buys less against local costs when the local currency rises, or when local inflation
-    runs ahead of the exchange rate. Above about a fifth of revenue, a move of a fifth in the rate shifts total revenue
-    by 4 per cent or more, a large part of a normal operating margin. The figure is a guide carried over from earlier practice,
-    and an institution can set its own. The same revenue is a cover for costs and debt in that currency, which OBS_HEDGE_004
-    asks about.
+  why: The share says how much of the revenue can cover costs and debt in that currency.
   due_by: concept
   when:
   - {check: OBS_FX_001, is: true}
@@ -115,9 +113,34 @@ checks:
     stated: [correspondence, call, officer_note]
   ask: Is any of your borrowing in a different currency from the income you repay it with? For example a loan in dollars
     or euros repaid from sales in local currency.
+  note: Go by the currency the cash is paid in. A price set in or linked to another currency but paid in local currency
+    is a protection, not a match. OBS_FX_PASSTHROUGH_001 asks about it.
   leads_to:
   - {indicator: CAS_COUNTRY_RISK_001, is: true, reason: Debt owed in a foreign currency also has to be converted and transferred
       abroad}
+  - {indicator: CAS_TERM_SHEET_001, is: true, reason: The currency of the loan is a term that can still be changed}
+- id: OBS_FX_009
+  question: If the currency in which the party earns its cash flow fell against the currency of its debt by as much as in
+    its worst twelve months of the last ten years, and the party raised its prices no faster than it did then, would its
+    cash flow still cover the service of all its debt, the proposed loan included?
+  answer: yes_no
+  assumption: The party can service its debt after a fall of its earning currency as deep as the worst of the last ten years
+  disproved_by: 'no'
+  why: A mismatch says only that a fall in the currency raises the debt service in the party's own money. The test is whether
+    the cash flow carries a fall that has already happened once.
+  when:
+  - {check: OBS_FX_008, is: true}
+  look_in: [03.02.b, 03.01.a]
+  evidence:
+    best: [internal_memo, consultant_report]
+    supporting: [financial_model, audited_annual_report, public_source]
+    stated: [call, officer_note]
+  ask_whom: lender
+  if_unknown: Nobody knows how far the currency can fall before a payment is missed.
+  note: Take the fall from published exchange rates and name the twelve months. Take the party's prices and volumes in those
+    months from its own accounts where it was already trading. If no such case has been run, the check stays open.
+  leads_to:
+  - {indicator: CAS_DEBT_SERVICE_001, is: false, reason: The cash flow does not carry the debt once the currency has fallen}
 - id: OBS_FX_CAPEX_001
   question: Is any committed capital expenditure, or other large purchase commitment, priced in a currency other than that
     of the money set aside to pay for it?
@@ -132,41 +155,28 @@ checks:
   ask: Are any of your equipment orders, building contracts or other large purchases priced in a foreign currency? In which
     currency is the money that will pay for them?
   if_unknown: A fall in the currency between the order and the payment would leave the investment plan short of funds.
-- id: OBS_FX_TRANSLATION_001
-  question: Does more than about a fifth of the party's assets, liabilities or profit sit in subsidiaries or balances that
-    are kept in a currency other than its reporting currency?
-  answer: yes_no
-  assumption: Only a small part of the party's balance sheet and profit is translated from another currency
-  disproved_by: 'yes'
-  why: Translation moves reported equity, leverage and profit without any cash moving. That can breach a covenant on net
-    worth or leverage.
-  look_in: [03.01.a, 03.01.b]
-  evidence:
-    best: [audited_annual_report]
-    supporting: [management_accounts, organizational_chart]
-    stated: [correspondence, call, officer_note]
-  ask: Do you have subsidiaries, assets or liabilities that are kept in another currency and translated into your reporting
-    currency? Roughly what share of the group do they make up?
-  note: About a fifth is a guide. What counts is whether a currency move could breach a covenant by translation alone.
 - id: OBS_FX_PASSTHROUGH_001
-  question: When a fall in the local currency raises its input costs, can the party raise its selling prices to recover
-    the rise within one quarter?
+  question: When the local currency falls, can the party raise its selling prices within one quarter to recover the rise
+    in its input costs and in its debt service (for example because its prices are set in or linked to the foreign currency)?
   answer: choice
   options: [full_passthrough, partial, administered_prices, none]
   mitigant: true
-  assumption: The party recovers a currency-driven rise in its input costs through its selling prices within one quarter
+  assumption: The party recovers a currency-driven rise in its input costs and its debt service through its selling prices
+    within one quarter
   flag_when: is not full_passthrough
-  why: Only a full recovery within a quarter keeps the margin whole. With a partial one, or with prices set by the state,
-    the party carries the rest itself.
+  why: Only a full recovery within a quarter keeps the margin and the cover of debt service whole. With a partial one, or
+    with prices set by the state, the party carries the rest itself.
   when:
   - {check: OBS_FX_INPUT_001, against: true}
+  - {check: OBS_FX_008, against: true}
   look_in: [03.01.a, 06.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report, offtake_agreement, material_contract]
     supporting: [management_accounts, company_record]
     stated: [management_presentation, correspondence, call, officer_note]
-  ask: When a weaker currency raises your input costs, can you raise your selling prices to match within a quarter, fully
-    or in part? Or are your prices set or capped by the state?
+  ask: When a weaker currency raises your input costs and the cost of your foreign-currency debt, can you raise your selling
+    prices to match within a quarter, fully or in part? Are your prices set in or linked to a foreign currency, or are they
+    set or capped by the state?
   note: Look at what happened to the gross margin in the last year in which the currency fell sharply. That is better evidence
     than a price clause that has never been used.
 - id: OBS_HEDGE_004
@@ -177,7 +187,6 @@ checks:
   assumption: Receipts and payments in the same currency offset each other, so that only a small net amount is exposed
   disproved_by: 'no'
   when:
-  - {check: OBS_FX_002, against: true}
   - {check: OBS_FX_INPUT_001, against: true}
   - {check: OBS_FX_008, against: true}
   - {check: OBS_FX_CAPEX_001, against: true}
@@ -201,19 +210,18 @@ checks:
   why: When half or less is hedged, at least half of any currency move still reaches the cash flow. Treasury policies commonly
     hedge between half and all of the committed exposure of the coming year. An institution can set its own point.
   when:
-  - {check: OBS_FX_002, against: true}
   - {check: OBS_FX_INPUT_001, against: true}
   - {check: OBS_FX_008, against: true}
   - {check: OBS_FX_CAPEX_001, against: true}
-  look_in: [04.03.a, 03.01.a]
+  look_in: [04.03.a, 03.01.a, 02.05.a]
   evidence:
     best: [hedge_document, audited_annual_report]
-    supporting: [management_accounts, company_record]
+    supporting: [management_accounts, company_record, corporate_governance_policy]
     stated: [correspondence, call, officer_note]
   ask: What part of your foreign-currency exposure for the next twelve months is hedged today, and with which contracts?
     Please share the confirmations or the bank's hedge report.
   note: Count only contracts that are signed. Where there are none, the answer is 0. The party's own figure needs the bank's
-    confirmations behind it.
+    confirmations behind it. A board-approved hedging policy shows that the cover will be kept up.
 - id: OBS_HEDGE_TENOR_001
   question: 'Do the hedging contracts run for as long as the exposure they cover: for a loan in a foreign currency, to its
     final maturity?'
@@ -222,7 +230,6 @@ checks:
   assumption: The hedges run for as long as the exposure they cover
   disproved_by: 'no'
   when:
-  - {check: OBS_FX_002, against: true}
   - {check: OBS_FX_INPUT_001, against: true}
   - {check: OBS_FX_008, against: true}
   - {check: OBS_FX_CAPEX_001, against: true}
@@ -241,7 +248,6 @@ checks:
   assumption: The hedges are with a supervised bank outside the group, under a signed agreement
   disproved_by: 'no'
   when:
-  - {check: OBS_FX_002, against: true}
   - {check: OBS_FX_INPUT_001, against: true}
   - {check: OBS_FX_008, against: true}
   - {check: OBS_FX_CAPEX_001, against: true}
@@ -252,23 +258,3 @@ checks:
     stated: [correspondence, call, officer_note]
   note: Record the bank's rating where it has one. A hedge with a weak bank fails when the currency moves most. Where there
     are no hedging contracts, the answer is no.
-- id: OBS_HEDGE_001
-  question: Has the party's board approved a written policy that says which foreign-currency exposures are hedged, up to
-    what share, for how long and with which instruments?
-  answer: yes_no
-  mitigant: true
-  assumption: The party hedges its currency exposure under a written policy approved by its board
-  disproved_by: 'no'
-  when:
-  - {check: OBS_FX_002, against: true}
-  - {check: OBS_FX_INPUT_001, against: true}
-  - {check: OBS_FX_008, against: true}
-  - {check: OBS_FX_CAPEX_001, against: true}
-  look_in: [02.05.a, 03.01.a, 02.02.a]
-  evidence:
-    best: [corporate_governance_policy, audited_annual_report]
-    supporting: [board_minutes, company_record]
-    stated: [correspondence, call, officer_note, management_presentation]
-  ask: Do you have a written policy for managing currency risk, approved by your board? Please share it.
-  note: A policy shows that hedging is done by rule and will be kept up. It does not show how much is hedged today, which
-    OBS_HEDGE_003 asks.

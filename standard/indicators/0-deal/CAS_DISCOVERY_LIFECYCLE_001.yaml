@@ -52,33 +52,7 @@ checks:
   ask: Do you plan to build, expand or replace on a scale that needs outside money, or that the growth in your plan depends
     on?
   note: This covers a new plant, a large expansion and a major overhaul. The routine replacement of worn equipment is not
-    meant.
-- id: OBS_LIFECYCLE_002
-  question: For how many full financial years does the business have audited accounts?
-  answer: number
-  unit: years
-  why: The length of the audited record is how much of the repayment story someone independent has checked.
-  look_in: [03.01.a]
-  evidence:
-    best: [audited_annual_report]
-    supporting: [registry_extract]
-    stated: [correspondence, call, officer_note]
-  ask: Since which year have the accounts of the business been audited, and by whom?
-  note: Count the accounts of the business that repays the loan. A new vehicle with a long-standing sponsor has none of
-    its own, and the answer is 0.
-- id: OBS_LIFECYCLE_CONFIRM_001
-  question: Is construction, installation or a major refurbishment under way at the business today?
-  answer: yes_no
-  why: Checks the stage against what is happening on the ground. A business where building is under way is not established,
-    whatever it is called.
-  calls_for:
-  - {is: true, kind: project}
-  look_in: [06.02.a, 05.01.a, 03.01.b]
-  evidence:
-    best: [epc_contract, technical_feasibility]
-    supporting: [management_accounts, board_minutes, company_record]
-    stated: [public_source, call, officer_note]
-  note: A site visit answers this best. Record what was seen, and when, in a note by the officer.
+    meant. A site visit answers best whether building is under way. Record what was seen, and when.
 - id: OBS_LIFECYCLE_CONFIRM_002
   question: Do the projections show the loan repaid by the business as it is today (current_state), by today's business
     with the plan on top while today's business alone would still cover debt service (blended), or only by the business

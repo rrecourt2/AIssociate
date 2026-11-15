@@ -36,22 +36,6 @@ checks:
   ask: How much cash do you have in the bank today that you could use to pay a bill tomorrow? Please leave out anything
     that is pledged to a lender or held for someone else.
   note: Say which date and which currency. For a group, say which companies hold the cash.
-- id: OBS_LIQ_002
-  question: What is the party's current ratio (current assets divided by current liabilities) at its latest balance sheet
-    date?
-  answer: number
-  unit: ratio
-  why: A first reading of what turns into cash within a year against what is due within a year. It counts stock and receivables
-    as if they were cash, and it is taken on a single day, so it opens the topic and settles nothing. OBS_LIQ_007 is the
-    test.
-  due_by: concept
-  applies_to: [borrower, repayment_source]
-  look_in: [03.01.a, 03.01.b]
-  evidence:
-    best: [audited_annual_report]
-    supporting: [management_accounts, interim_financial_statements]
-    stated: [call, officer_note]
-  note: Say which date the figure is for. Where borrowing is seasonal, give the figure at the seasonal peak as well.
 - id: OBS_LIQ_007
   question: Does a month-by-month cash forecast for the next twelve months show the party paying everything that falls due
     (debt repayments and interest, taxes, wages, suppliers, committed capital spending and declared dividends) in every
@@ -126,41 +110,6 @@ checks:
   leads_to:
   - {indicator: CAS_DEBT_001, is: true, reason: A party that ran short of cash has often asked its lenders for more time
       as well}
-- id: OBS_LIQ_005
-  question: How many days does the party take, on average, to pay its suppliers (trade payables divided by the cost of sales,
-    times 365)?
-  answer: number
-  unit: days
-  why: The figure is read against the credit terms the suppliers give and against earlier years. Payable days that run beyond
-    the terms, or that lengthen from year to year, mean that suppliers are financing the party without having agreed to.
-    They can stop delivering.
-  applies_to: [borrower, repayment_source]
-  look_in: [03.01.a, 03.01.b]
-  evidence:
-    best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
-    stated: [call, officer_note]
-  ask: How long do you take to pay your suppliers, and what terms do they give you? An ageing list of your payables would
-    answer this.
-  note: Record the suppliers' usual terms beside the figure. The ageing list of payables shows what is overdue.
-- id: OBS_LIQ_009
-  question: If the whole guaranteed amount were called today, would the guarantor's free cash and undrawn committed credit
-    lines cover both the call and its own debt repayments, interest and taxes of the next twelve months?
-  answer: yes_no
-  assumption: The guarantor can pay a call in cash and still pay what it owes itself
-  disproved_by: 'no'
-  applies_to: [guarantor]
-  look_in: [03.01.a, 03.01.b, 04.03.a]
-  evidence:
-    best: [audited_annual_report, bank_statement, facility_agreement]
-    supporting: [management_accounts, debt_schedule, internal_memo]
-    stated: [correspondence, call, officer_note]
-  note: Assets that would first have to be sold do not count here. The guarantor's capacity asks about them. Where the guarantor
-    has given other guarantees, count what could be called under them at the same moment. For a guarantor who is a person,
-    take bank and custody statements, not a statement of net worth.
-  leads_to:
-  - {indicator: CAS_GUARANTOR_CAPACITY_001, is: false, reason: 'A guarantor without the cash must sell assets or borrow
-      to pay, and that indicator asks whether it could'}
 - id: OBS_LIQ_MIT_001
   question: 'Is the shortfall covered by money that is promised in writing and has not been counted: a signed undertaking
     by an owner to pay in cash, or a standby line signed with a bank?'

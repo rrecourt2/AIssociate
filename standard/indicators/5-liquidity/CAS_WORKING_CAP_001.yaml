@@ -35,7 +35,8 @@ checks:
   ask: How long does it take from the day you pay for your inputs to the day your customers pay you? If the figure is not
     to hand, we can work it out from your stock, receivables and payables.
   note: Where the monthly figures allow it, work the cycle out at the seasonal peak as well as at the year-end, and say
-    which date each figure is for.
+    which date each figure is for. Give days of stock, receivables and payables separately, and set payable days against
+    the suppliers' terms.
 - id: OBS_WC_002
   question: Do the party's customers pay, on average, within the credit terms the party gives them (days of receivables
     no longer than those terms)?
@@ -127,35 +128,17 @@ checks:
   ask: Do you pay suppliers or farmers in advance? How much is outstanding today, and how much of it was paid more than
     a season ago?
   note: Ask for the advances by recipient and by date paid. Record the amount that is overdue and set it against the party's
-    equity. An advance that is rolled into the next season has not come back.
+    equity. An advance that is rolled into the next season has not come back. For an agribusiness, look at each of the last
+    three seasons. Unrecovered advances above about a tenth of those given are a pattern.
   leads_to:
   - {indicator: CAS_SUPPLIER_LINK_001, is: true, reason: A supplier that holds the party's money and has not delivered is
       a credit risk of its own}
-- id: OBS_WC_004
-  question: Over the last three financial years, has the cash tied up in stock and receivables, less trade payables, grown
-    faster than the party's sales?
-  answer: yes_no
-  assumption: Working capital has grown no faster than sales
-  disproved_by: 'yes'
-  why: When working capital outgrows sales, customers are paying later, stock is not selling, or sales are booked that are
-    not real. Each of them uses cash that the profit and loss account does not show.
-  due_by: concept
-  look_in: [03.01.a, 03.01.b]
-  evidence:
-    best: [audited_annual_report]
-    supporting: [management_accounts, company_record]
-    stated: [call, officer_note]
-  if_unknown: Without three years of balance sheets the trend cannot be read, and one year's figure says little.
-  note: Compare working capital as days of sales at the start and at the end of the three years. Where a business was bought
-    or sold in that time, compare like with like and say so.
-  leads_to:
-  - {indicator: CAS_CHANGES_001, is: true, reason: Working capital that outgrows sales is a change that needs a cause}
 - id: OBS_WC_008
-  question: Is the party's highest working-capital need of the year financed in full by its own cash and by committed credit
-    lines that run until after the stock and receivables they finance have turned into cash?
+  question: Do the credit lines that finance the party's seasonal stock and receivables fall due, or come up for the bank's
+    review, before that stock and those receivables have turned into cash?
   answer: yes_no
-  assumption: The peak of working capital is financed by money that stays for the whole season
-  disproved_by: 'no'
+  assumption: The lines that finance the season stay in place until its stock and receivables have turned into cash
+  disproved_by: 'yes'
   look_in: [04.01.b, 04.03.a, 03.01.b]
   evidence:
     best: [facility_agreement]
@@ -164,5 +147,5 @@ checks:
   ask: In which month do you need the most money for stock and receivables, and how much? Which credit lines pay for it,
     and when does each of them fall due?
   note: Take the peak from the monthly figures of the last two years, not from the year-end balance sheet. A line that falls
-    due, or comes up for the bank's review, in the middle of the season is a no. Liquidity asks whether a line is committed
-    (OBS_LIQ_003).
+    due, or comes up for the bank's review, in the middle of the season is a yes. A party that finances its season from
+    its own cash alone is a no. Liquidity asks whether a line is committed (OBS_LIQ_003).

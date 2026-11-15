@@ -72,10 +72,10 @@ checks:
     supporting: [term_sheet]
     stated: [correspondence, call, officer_note]
 - id: OBS_GUARANTEE_POWER_001
-  question: Does the guarantor have the power to give this guarantee, and has it been approved as its own rules and the
-    law require (corporate benefit, board or shareholder approval, exchange-control or regulatory consent)?
+  question: Does the guarantor receive a benefit of its own from the loan it guarantees, or has counsel confirmed that the
+    guarantee cannot be set aside for lack of benefit to the guarantor or as financial assistance?
   answer: yes_no
-  assumption: The guarantee is validly given
+  assumption: The guarantee cannot be set aside for lack of benefit to the guarantor
   disproved_by: 'no'
   due_by: legal
   look_in: [08.01.a, 02.02.a, 02.01.b]
@@ -83,7 +83,8 @@ checks:
     best: [legal_opinion]
     supporting: [board_resolution, shareholder_resolution, memorandum_and_articles]
     stated: [correspondence, call, officer_note]
-  if_unknown: A guarantee given without power or approval can be set aside when it is called.
+  if_unknown: A guarantee that brings its giver no benefit may be challenged when it is called.
+  note: Power and approvals are asked under Legal standing and Authorisation.
 - id: OBS_GUARANTEE_ENFORCE_001
   question: Could the lender enforce a claim under the guarantee where the guarantor's assets are, and collect within about
     two years?

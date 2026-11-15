@@ -2,7 +2,7 @@ id: CAS_KYC_AML_001
 title: Integrity record
 pillar: governance
 claim: Nothing in the record of the party or of the people who own and run it points to fraud, corruption or money laundering,
-  and the party has its own controls against them.
+  and the party has its own rules against bribery.
 due_by: diligence
 applies_to: [borrower, repayment_source, guarantor, sponsor, shareholder, controller]
 matters_more_when:
@@ -30,8 +30,8 @@ checks:
     you for fraud, bribery, money laundering, tax evasion or a breach of sanctions? Please include matters that were settled.
   if_unknown: A record that has not been disclosed and cannot be checked is not a clean record.
   note: 'Ten years is a guide: an older matter that is still talked about counts. A settlement without admission counts.
-    A criminal case against a person goes under OBS_KYC_008. Other fines and orders go under OBS_LIT_005. If the search
-    finds nothing, record what was searched, where and when.'
+    A criminal case against a person goes under OBS_KYC_008. If the search finds nothing, record what was searched, where
+    and when.'
 - id: OBS_KYC_008
   question: Has any director or senior manager of the party, or the party itself where it is a person, been convicted of
     fraud, bribery, money laundering or another crime of dishonesty, or is any of them charged with one or under criminal
@@ -82,21 +82,23 @@ checks:
   note: Record who made the allegation, when, and what became of it. One report in a source with a known grudge weighs less
     than several that do not depend on each other, but it is still recorded. A penalty or a conviction goes under OBS_KYC_003
     or OBS_KYC_008. If the search finds nothing, record what was searched, where and when.
-- id: OBS_KYC_001
-  question: Is a named person or unit at the party in charge of compliance with the law on bribery, money laundering and
-    sanctions, with a direct line to the board or to the owners?
+- id: OBS_KYC_009
+  question: Does the party have a written code of conduct or policy against bribery, approved by its board or its owners,
+    with a named person who answers for it and a way for staff to report a breach without going through their own manager?
   answer: yes_no
-  assumption: Someone at the party answers for compliance and can reach the board without going through management
+  assumption: The party has written rules against bribery, someone who answers for them and a way to report a breach
   disproved_by: 'no'
   applies_to: [borrower, repayment_source]
-  look_in: [02.05.a, 02.03.a, 03.01.e]
+  look_in: [02.05.a, 02.02.a, 03.01.e]
   evidence:
-    best: [audit_management_letter, regulatory_document, board_resolution]
-    supporting: [organizational_chart, corporate_governance_policy, company_record]
+    best: [corporate_governance_policy, board_resolution, audit_management_letter]
+    supporting: [board_minutes, organizational_chart, company_record]
     stated: [correspondence, call, officer_note]
-  ask: Who in your company is responsible for compliance, and to whom does that person report?
-  note: In a small business this can be one senior person beside other duties. What counts is that the person is named and
-    does not report to the people whose payments are checked.
+  ask: Do you have a written code of conduct or a policy against bribery? Who answers for it, and how can a member of staff
+    report a breach?
+  note: All three parts are needed for a yes. In a small business the person can be an owner or a senior manager beside
+    other duties, and the way to report can be a named director or an outside address. What counts is that a report can
+    reach someone other than the manager it concerns.
 - id: OBS_KYC_004
   question: Does the party have a written policy against money laundering, approved by its board or its owners, that says
     how it identifies whom it deals with, what it does about a suspicious payment and who is told?
@@ -104,6 +106,9 @@ checks:
   assumption: The party has written rules against money laundering that its board or owners have approved
   disproved_by: 'no'
   applies_to: [borrower, repayment_source]
+  when:
+  - {check: OBS_SECTOR_001, is: financial_institution}
+  - {check: OBS_SECTOR_003, is: true}
   look_in: [02.05.a, 02.02.a]
   evidence:
     best: [corporate_governance_policy, regulatory_document]
@@ -118,15 +123,17 @@ checks:
   assumption: The party knows whom it deals with and can show it
   disproved_by: 'no'
   applies_to: [borrower, repayment_source]
+  when:
+  - {check: OBS_SECTOR_001, is: financial_institution}
+  - {check: OBS_SECTOR_003, is: true}
   look_in: [03.01.e, 10.03.a, 02.05.a]
   evidence:
     best: [audit_management_letter, regulatory_document]
     supporting: [company_record, corporate_governance_policy]
     stated: [correspondence, call, officer_note]
   ask: Before you take on a new customer, agent or large supplier, what do you check about them, and where is that kept?
-  note: For a financial institution this is the identification of customers that its regulator requires. For other businesses
-    look at agents and intermediaries, and at customers who pay in cash or from someone else's account. Ask to see the file
-    of one recent counterparty.
+  note: For a financial institution this is the identification of customers that its regulator requires. Ask to see the
+    file of one recent counterparty.
 - id: OBS_KYC_005
   question: 'How far has the matter been dealt with: closed by the authority or by an independent inquiry, those responsible
     removed, and the weakness behind it put right?'

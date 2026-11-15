@@ -33,26 +33,6 @@ checks:
   note: The resolution has to fit this transaction (the lender, the amount, the documents). A general approval "to raise
     finance", or one for another amount, is not this resolution. For a party without a board (a natural person, a public
     body), ask for whatever approval takes its place and say what it is.
-- id: OBS_AUTH_005
-  question: What still has to happen before the party's approval of the transaction is in place?
-  answer: choice
-  options: [board_meeting_required, shareholder_approval_required, amendment_to_articles_required, regulatory_approval_required,
-    already_scheduled, unknown]
-  many: true
-  why: The answer says how long the approval will take and what belongs among the conditions precedent.
-  due_by: diligence
-  when:
-  - {check: OBS_AUTH_001, is: false}
-  - {check: OBS_AUTH_004, against: true}
-  - {check: OBS_AUTH_008, against: true}
-  - {check: OBS_AUTH_007, against: true}
-  look_in: [02.01.b, 08.01.a]
-  evidence:
-    best: [legal_opinion, memorandum_and_articles]
-    supporting: [board_minutes, internal_memo]
-    stated: [correspondence, call, officer_note]
-  ask: Which approvals are still to come (the board, the shareholders, a change to the articles, an authority), and is a
-    date set for each?
 - id: OBS_AUTH_004
   question: Do the party's articles, as they stand today, allow its directors to commit it to this transaction at this amount,
     without exceeding any cap on borrowing, guarantees or security?
@@ -106,19 +86,6 @@ checks:
     before the first drawing.
   note: An answer of not_required should rest on the advice of counsel in the party's country. This check is about approvals
     for the financing itself. Licences to run the business are looked at under licences and regulation.
-- id: OBS_AUTH_003
-  question: Do the party's own rules limit who may sign for it and up to what amount (signing limits, joint signatures,
-    a list of authorised signatories)?
-  answer: yes_no
-  why: Says which rules the signatures have to be checked against. OBS_AUTH_006 is the test.
-  due_by: diligence
-  look_in: [02.01.b, 02.05.a, 02.02.a]
-  evidence:
-    best: [memorandum_and_articles, board_resolution, registry_extract]
-    supporting: [corporate_governance_policy, company_certificate]
-    stated: [correspondence, call, officer_note]
-  ask: Who may sign for the company, alone or together, and up to what amount? Is this written in the articles, a board
-    resolution or a delegation of authority?
 - id: OBS_AUTH_006
   question: Are the persons who sign the documents authorised to bind the party for this amount, by the board resolution
     or a power of attorney, and within any signing limit?
@@ -131,8 +98,8 @@ checks:
     supporting: [memorandum_and_articles, corporate_governance_policy, company_certificate]
     stated: [correspondence, call, officer_note]
   note: Match the names and the signatures on the documents to the resolution or the power of attorney, and to the specimen
-    signatures. Check that a power of attorney is still in force and covers this transaction. This check does not hang on
-    OBS_AUTH_003.
+    signatures. Check that a power of attorney is still in force and covers this transaction. Ask for the party's signing
+    rules (limits, joint signatures, list of signatories) and check against them.
 - id: OBS_AUTH_002
   question: Has counsel given a legal opinion, on which the lender may rely, that the party has taken every corporate action
     needed to authorise the documents and that they are validly signed?

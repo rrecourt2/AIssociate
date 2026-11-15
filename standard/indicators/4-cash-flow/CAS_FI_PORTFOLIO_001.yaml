@@ -60,9 +60,9 @@ checks:
   assumption: Few loans are kept out of the bad-loan figure by restructuring them
   flag_when: above 5
   why: Loans restructured because the borrower could not pay are the first place where bad loans hide. They are counted
-    as performing and carry little provision. Banking supervisors treat a bank as having a bad-loan problem when five percent
-    of its loans are non-performing (the European Banking Authority's guidelines on non-performing exposures apply from
-    that level). Where the restructured loans alone reach that size, the reported ratio says little. Five percent is a guide.
+    as performing and carry little provision. The European Banking Authority's guidelines ask banks in the European Union
+    whose non-performing loans reach five percent of their loans to adopt a plan to reduce them. Other supervisors use other
+    levels. Where the restructured loans alone reach that size, the reported ratio says little. Five percent is a guide.
     An institution can set its own figure.
   look_in: [03.01.a, 07.01.a, 10.03.a]
   evidence:
@@ -75,8 +75,8 @@ checks:
   note: Include loans repaid with a new loan from the institution, loans on which unpaid interest was added to the balance,
     and loans given a grace period after they fell into arrears. Record the figure for each of the last three years.
 - id: OBS_FIP_002
-  question: Do the institution's loan-loss provisions, together with collateral at an independent valuation, cover its non-performing
-    loans in full?
+  question: Do the institution's loan-loss provisions alone cover at least about half of its non-performing loans, and do
+    provisions together with collateral at its forced-sale value cover them in full?
   answer: yes_no
   assumption: The loss in the non-performing loans is provided for
   disproved_by: 'no'
@@ -89,7 +89,8 @@ checks:
     valued, and by whom?
   note: Count only collateral that the institution holds under a registered charge and that an independent valuer has valued
     within the last two years. Record the coverage ratio (provisions as a percentage of non-performing loans) as well. Where
-    the supervisor or the auditor has asked for more provisions, the answer is no.
+    the supervisor or the auditor has asked for more provisions, the answer is no. Half is a guide. An institution can set
+    its own figure.
   leads_to:
   - {indicator: CAS_FI_CAPITAL_001, is: false, reason: What is not provided for comes out of capital}
 - id: OBS_FIP_005
@@ -155,3 +156,24 @@ checks:
   note: Ten exposures and the whole of capital are a guide. Count loans, guarantees and undrawn commitments. Record the
     largest single exposure as a share of capital, and whether it is within the limit the regulator sets for one borrower.
     Ask how the institution decides which borrowers are connected.
+- id: OBS_FIP_009
+  question: Are more than about half of the institution's loans in foreign currency owed by borrowers who do not earn that
+    currency?
+  answer: yes_no
+  assumption: The institution lends foreign currency mainly to borrowers who earn it
+  disproved_by: 'yes'
+  why: A borrower who earns local currency and owes foreign currency owes more after a devaluation and earns the same. The
+    institution's own currency position can be matched while its borrowers carry the mismatch, and their losses come back
+    to it as bad loans.
+  look_in: [03.01.a, 07.01.a, 10.03.a]
+  evidence:
+    best: [audited_annual_report, regulatory_document]
+    supporting: [company_record, management_accounts, credit_rating_report]
+    stated: [call, officer_note]
+  ask: What share of your loan book is in foreign currency? How much of that is lent to borrowers who earn that currency,
+    such as exporters, and how do you establish it?
+  if_unknown: An institution that does not know which of its borrowers earn the currency they borrow in cannot say what
+    a devaluation would do to its loan book.
+  note: Half is a guide. Record the share of the whole loan book that is in foreign currency. A borrower earns the currency
+    where its sales are paid in it. Loans in local currency whose amount follows the exchange rate count as foreign currency.
+    Where the institution lends no foreign currency, answer no and say so.

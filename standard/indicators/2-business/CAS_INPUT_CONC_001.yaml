@@ -23,7 +23,8 @@ checks:
   question: Is there one input (a feedstock, a fuel, a utility, a component or goods for resale) that the party cannot produce
     or trade without, or one supplier that provides about a fifth or more of what it buys?
   answer: yes_no
-  why: 'Opens the topic. A no is not the end of it: OBS_INPUT_002 is read from the cost breakdown whatever the answer here.'
+  why: 'Opens the topic. A no is not the end of it: OBS_INPUT_002 and OBS_INPUT_010 are read from the accounts whatever
+    the answer here.'
   due_by: screening
   calls_for:
   - is: true
@@ -46,11 +47,9 @@ checks:
   question: What share of the party's cost of sales does its largest single bought-in input take?
   answer: number
   unit: percent
-  assumption: The party's costs are spread over several inputs, so that the price of one does not decide its margin
-  flag_when: above 30
-  why: 'When one input takes about a third of the cost of sales, a rise of a fifth in its price adds some six percent to
-    that cost, which is more than the operating margin of many processors and traders. Thirty percent is a guide: set it
-    against the party''s own margin.'
+  why: The share says how much of the margin a rise in the price of that one input can take. A processor, a miller, a dairy
+    or a trader spends most of its cost of sales on one input, and that is sound as long as it can pass a rise on. OBS_INPUT_010
+    tests whether it has.
   due_by: concept
   look_in: [03.01.a, 03.01.b]
   evidence:
@@ -58,9 +57,28 @@ checks:
     supporting: [management_accounts, company_record, financial_model]
     stated: [correspondence, call, officer_note]
   ask: Which single input costs you the most, and roughly what share of your cost of sales is it?
-  note: 'This check does not hang on OBS_INPUT_001, so that the topic cannot close on one answer. Take the figure from the
-    breakdown of the cost of sales, not from what the party says. Where the figure is above the reference point and OBS_INPUT_001
-    was answered no, look at that answer again: this input is then the critical input.'
+  note: 'Take the figure from the breakdown of the cost of sales, not from what the party says. Where one input takes about
+    a third of the cost of sales or more and OBS_INPUT_001 was answered no, look at that answer again: this input is then
+    the critical input. A third is a guide.'
+- id: OBS_INPUT_010
+  question: In any of the last five financial years in which the price of the party's largest input rose by about a tenth
+    or more, did its gross margin fall by about a fifth of its level or more (for example from 20 percent to 16)?
+  answer: yes_no
+  assumption: The party has passed on rises in the price of its largest input, so that its margin held
+  disproved_by: 'yes'
+  why: What matters is not how large the input is in the costs but whether the gap between the selling price and the price
+    of the input holds when the input costs more.
+  look_in: [03.01.a, 03.01.b]
+  evidence:
+    best: [audited_annual_report]
+    supporting: [management_accounts, company_record, public_source]
+    stated: [correspondence, call, officer_note]
+  ask: In which of the last five years did the price of your main input rise the most? What was your gross margin in that
+    year and in the year before?
+  note: A tenth and a fifth are guides. This check does not hang on OBS_INPUT_001, so that the topic cannot close on one
+    answer. Take the price of the input from the party's purchase records or from a published price, and the margin from
+    the accounts. Where the price did not rise by about a tenth in any of the five years, the record shows nothing either
+    way. Leave the check open and say so.
 - id: OBS_INPUT_003
   question: How many suppliers could deliver the critical input in the volume the party needs?
   answer: choice
@@ -119,24 +137,6 @@ checks:
     cuts.
   note: The party has a reason to understate this. Compare its answer with production volumes against capacity, and with
     what the supplier or the press reported. If the search finds nothing, record what was searched, where and when.
-- id: OBS_INPUT_009
-  question: Is the supply of the critical input contracted until the final repayment date of the proposed loan?
-  answer: yes_no
-  assumption: The supply of the critical input is contracted for the life of the loan
-  disproved_by: 'no'
-  when:
-  - {check: OBS_INPUT_003, is: single_source}
-  - {check: OBS_INPUT_003, is: dual_source}
-  look_in: [06.04.a]
-  evidence:
-    best: [supply_agreement]
-    supporting: [material_contract, company_record]
-    stated: [correspondence, call, officer_note]
-  ask: Until what date is the supply of this input secured by contract? Can the supplier end the contract before then?
-  if_unknown: Without the end date of the contract, nobody can say whether the supply outlasts the loan.
-  note: 'Answer no where there is no contract, where it ends earlier, or where the supplier can end it without cause before
-    then. Record the end date. The check is asked only where one or two suppliers could deliver: an input bought freely
-    from many sellers needs no long contract.'
 - id: OBS_INPUT_007
   question: Is there a court case, a dispute with an authority or a regulatory proceeding, pending or threatened, that could
     change the price the party pays for the critical input or stop its supply?
@@ -157,30 +157,28 @@ checks:
   - {indicator: CAS_LITIGATION_001, is: true, reason: The amount at stake and the likely outcome are examined with the party's
       other disputes}
 - id: OBS_INPUT_MIT_001
-  question: What protects the supply of the critical input, or its price?
+  question: What limits the effect on the party of a rise in the price of the critical input?
   answer: choice
-  options: [price_fixed_by_contract, supplier_must_deliver_or_pay, own_storage, second_source, none]
+  options: [price_fixed_by_contract, price_passed_on_under_sales_contracts, hedged, none]
   many: true
   mitigant: true
-  assumption: A contract term, a stock or a second source protects the supply or the price of the critical input
+  assumption: A contract or a hedge limits what a rise in the price of the critical input costs the party
   flag_when: is none
-  why: With none of these, an interruption or a price rise reaches the party's production and margin at once and in full.
+  why: With none of these, a rise in the price of the input reaches the party's margin at once and in full.
   when:
-  - {check: OBS_INPUT_002, against: true}
-  - {check: OBS_INPUT_003, against: true}
+  - {check: OBS_INPUT_010, against: true}
   - {check: OBS_INPUT_004, against: true}
-  - {check: OBS_INPUT_005, against: true}
-  - {check: OBS_INPUT_009, against: true}
-  look_in: [06.04.a, 05.01.a]
+  look_in: [06.04.a, 06.01.a, 04.03.a]
   evidence:
-    best: [supply_agreement, technical_feasibility]
+    best: [supply_agreement, offtake_agreement, hedge_document]
     supporting: [company_record, material_contract]
     stated: [correspondence, call, officer_note]
-  ask: 'What protects this supply: a price fixed in the contract, a duty on the supplier to deliver or pay, storage that
-    you control, or a second source?'
-  note: Name only what is in a signed contract or can be seen on site, and say how many days of production the storage covers.
-    A price fixed in a signed contract counts, also where the supplier is a state body. A tariff that an authority can change
-    by its own decision does not.
+  ask: 'What limits the effect of a price rise on you: a price fixed in your supply contract, sales contracts that pass
+    the rise on to your customers, or a hedge?'
+  note: Name only what is in a signed contract or a hedge confirmation, and say until when it runs and what share of the
+    party's need it covers. A price fixed in a signed contract counts, also where the supplier is a state body. A tariff
+    that an authority can change by its own decision does not. What protects the supply itself is asked in OBS_INPUT_MIT_002
+    and on the link to the supplier.
 - id: OBS_INPUT_MIT_002
   question: Could the party keep producing within three months of losing the critical input, by switching to another input
     or to another plant?
@@ -189,11 +187,10 @@ checks:
   assumption: The party can keep producing without the critical input by switching within three months
   disproved_by: 'no'
   when:
-  - {check: OBS_INPUT_002, against: true}
+  - {check: OBS_INPUT_010, against: true}
   - {check: OBS_INPUT_003, against: true}
   - {check: OBS_INPUT_004, against: true}
   - {check: OBS_INPUT_005, against: true}
-  - {check: OBS_INPUT_009, against: true}
   look_in: [05.01.a]
   evidence:
     best: [technical_feasibility]
@@ -214,11 +211,10 @@ checks:
   why: 'Where less than half of the earnings comes from elsewhere, what is left when the input stops is unlikely to carry
     the party''s fixed costs and its debt service. Half is a guide: the real measure is whether the rest covers debt service.'
   when:
-  - {check: OBS_INPUT_002, against: true}
+  - {check: OBS_INPUT_010, against: true}
   - {check: OBS_INPUT_003, against: true}
   - {check: OBS_INPUT_004, against: true}
   - {check: OBS_INPUT_005, against: true}
-  - {check: OBS_INPUT_009, against: true}
   look_in: [03.01.a, 03.01.b]
   evidence:
     best: [audited_annual_report]

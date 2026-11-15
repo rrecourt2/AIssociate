@@ -36,22 +36,6 @@ checks:
   if_unknown: Until a contract is signed, the scope, the price and the completion date are estimates.
   note: A letter of intent, a preferred bidder or a contract still under negotiation is a no. The terms of the contract
     and the builder itself are examined on the link to the builder (CAS_BUILDER_OPERATOR_001).
-- id: OBS_ECON_002
-  question: Has the builder chosen for the project completed at least one project of the same technology and of about the
-    same size?
-  answer: yes_no
-  assumption: The builder has built a project like this one before
-  disproved_by: 'no'
-  due_by: concept
-  look_in: [05.01.a, 10.03.a]
-  evidence:
-    best: [technical_feasibility, consultant_report]
-    supporting: [company_record, public_source]
-    stated: [correspondence, call, officer_note, management_presentation]
-  ask: Which comparable projects has your builder completed? Please give the name, size, technology, country and year of
-    each, and a contact at the client.
-  note: The builder's own list of references is its own word until a client, a lender or an independent engineer confirms
-    it. "About the same size" is a guide. How that earlier work went is asked on the link to the builder (OBS_BUILDOP_001).
 - id: OBS_ECON_003
   question: Does the construction contract make handover depend on performance tests against stated figures (such as capacity,
     output or efficiency), with damages or a right to reject the works if the figures are not met?
@@ -68,9 +52,10 @@ checks:
   if_unknown: The project may have to accept and pay for a plant that does not perform as designed.
 - id: OBS_ECON_004
   question: Would the damages the builder must pay for delay, up to their cap, cover the interest and repayments that fall
-    due during a delay of six months?
+    due during a delay of six months and that the existing business could not pay from its own cash flow?
   answer: yes_no
-  assumption: Damages for delay cover the debt service that falls due while the project is late
+  assumption: Damages for delay cover the debt service that falls due while the project is late and that the existing business
+    cannot pay
   disproved_by: 'no'
   when:
   - {check: OBS_ECON_001, is: true}
@@ -79,8 +64,10 @@ checks:
     best: [epc_contract, technical_feasibility]
     supporting: [financial_model, internal_memo]
     stated: [correspondence, call, officer_note]
-  note: Six months is a guide. Use the delay the independent engineer thinks plausible where there is one. Record the daily
-    rate, the cap as a share of the contract price, and for how long after handover the builder must repair defects.
+  note: Six months is a guide. Use the delay the independent engineer thinks plausible where there is one. For a new project
+    with no existing business, the damages have to cover all the debt service of those months. For a line added to a running
+    business, take off what the existing business can pay, and say how much that is. Record the daily rate, the cap as a
+    share of the contract price, and for how long after handover the builder must repair defects.
 - id: OBS_ECON_005
   question: How does the construction budget compare with the cost incurred so far and an independent estimate of the cost
     to complete?
@@ -99,24 +86,6 @@ checks:
     latest report on cost to date and cost to complete.
   note: minor_overrun means the overrun fits within the contingency that is left. material_overrun means it does not. For
     a project that has not started, compare the budget with the independent engineer's or cost consultant's own estimate.
-- id: OBS_ECON_006
-  question: Do signed commitments (equity, other loans and grants) cover the whole budget, contingency included, so that
-    no part of the funding is still to be found when the lender first pays out?
-  answer: yes_no
-  assumption: All the money needed to finish the project is committed before the lender pays out
-  disproved_by: 'no'
-  look_in: [01.02.a, 04.01.b, 04.03.b]
-  evidence:
-    best: [facility_agreement, dfi_facility_document, jv_agreement, bank_statement]
-    supporting: [investment_plan, financial_model, board_resolution]
-    stated: [correspondence, call, officer_note, management_presentation]
-  ask: Please list every source of funds for the project, with the amount, who provides it, and whether it is signed, approved
-    or still under discussion.
-  note: Equity the sponsor intends to put in, or a loan still in another lender's approval process, is not committed. Say
-    how much is still open and who is expected to provide it.
-  leads_to:
-  - {indicator: CAS_CONDITIONS_001, is: false, reason: Funding that is not yet committed is usually made a condition of
-      the first drawdown}
 - id: OBS_ECON_007
   question: Is the first repayment of principal due at least six months after the date on which the project is expected
     to be complete?
@@ -139,10 +108,8 @@ checks:
   disproved_by: 'no'
   when:
   - {check: OBS_ECON_001, against: true}
-  - {check: OBS_ECON_002, against: true}
   - {check: OBS_ECON_004, against: true}
   - {check: OBS_ECON_005, against: true}
-  - {check: OBS_ECON_006, against: true}
   calls_for:
   - is: true
     link: [completion_support]

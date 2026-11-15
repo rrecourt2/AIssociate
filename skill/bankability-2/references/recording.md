@@ -82,7 +82,7 @@ Repayment does not always come from the borrower. When it rests on the cash flow
                 "rests_on": ["F-021"], "by": "officer", "covers": ["OBS_GUARANTEE_MIT_001"],
                 "owner": "officer", "due": "2027-01-31"}],
  "questions": [{"asked_of": "CFO of Cedar Foods", "text": "Please send the supply contracts.",
-                "about": "P-001", "asked": "2026-11-12", "via": "S-003", "checks": ["OBS_INPUT_006"]}]}
+                "about": "P-001", "asked": "2026-11-12", "via": "S-003", "checks": ["OBS_INPUT_MIT_001"]}]}
 ```
 
 A decision needs a `decision` and a `reason`, and should name the facts it rests on. A decision that `covers` checks is a gap with an agreed action: a condition, a covenant or a task. Give it an `owner` and a `due` date. It is also how you record that an answer calls for nothing more in the structure, and why. A question needs `asked_of` and `text`. When it is answered, change it: `{"id": "Q-001", "state": "answered", "answered_by": ["F-020"]}`.

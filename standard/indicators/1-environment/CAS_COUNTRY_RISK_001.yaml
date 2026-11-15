@@ -28,18 +28,6 @@ checks:
     stated: [management_presentation, correspondence, call, officer_note]
   ask: Where is the company registered, where are its main sites, and in which countries does it sell?
   if_unknown: Until the countries are named, none of the country checks can be answered.
-- id: OBS_COUNTRY_002
-  question: 'Do the lender''s own rules allow this exposure in each of those countries: no exclusion, and room under the
-    country limit for the amount asked?'
-  answer: yes_no
-  assumption: The lender's own rules allow this exposure in the country
-  disproved_by: 'no'
-  evidence:
-    best: [internal_memo]
-    stated: [call, officer_note]
-  ask_whom: lender
-  note: Ask whoever keeps the country limits, and record the date. A limit that is full today can have room by signing,
-    and the other way round.
 - id: OBS_COUNTRY_003
   question: Is the government of the country from which the loan is serviced in default on its foreign debt, restructuring
     it, or drawing emergency financing to meet its payments abroad?
@@ -101,10 +89,10 @@ checks:
   note: Where the loan must be registered or approved before it can be serviced abroad, answer for the position once that
     is done, and record the registration as a condition.
 - id: OBS_COUNTRY_005
-  question: Could a foreign lender obtain a judgment or an arbitral award against the borrower, have it recognised in the
-    country where the borrower and the security are, and enforce it there within about three years?
+  question: Could a foreign lender obtain a judgment or an arbitral award against the borrower on the loan, have it recognised
+    in the borrower's country and collect on it there within about three years?
   answer: yes_no
-  assumption: A foreign lender can enforce its loan and its security through the country's courts within about three years
+  assumption: A foreign lender can enforce its loan claim through the country's courts within about three years
   disproved_by: 'no'
   due_by: diligence
   look_in: [08.01.a]
