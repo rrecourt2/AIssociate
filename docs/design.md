@@ -175,7 +175,7 @@ Every page has the same parts:
 
 The tool lists the sources at the foot and writes the contents page.
 
-`check` reads the pages, and the Markdown drafts in `Internal/outputs`, paragraph by paragraph:
+`check` reads the pages, and the Markdown drafts directly in `Internal/outputs`, paragraph by paragraph. A draft that was sent or replaced is moved to a sub-folder and is then left alone:
 
 - It reports a citation of something that does not exist, a page with text and no citation, and a number that no record cited in the same paragraph holds.
 - It reports a citation of a fact that was replaced or is disputed, unless the sentence starts with a plain word that marks it: "Outdated:" or "Disputed:". New information is merged in. What it replaces stays visible only where that matters.

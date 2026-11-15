@@ -381,7 +381,8 @@ def problems(deal, memory):
     """What looks wrong on the pages and in the drafts: citations that lead nowhere, citations of a record that was
     replaced and is not marked so, and numbers that no record cited in the same paragraph holds."""
     found = []
-    drafts = {path: files.read(deal, path) for path in files.listing(deal, files.OUTPUTS) if path.endswith(".md")}
+    drafts = {path: files.read(deal, path) for path in files.listing(deal, files.OUTPUTS)  # not those in a sub-folder
+              if path.endswith(".md") and "/" not in path[len(files.OUTPUTS) + 1:]}
     for path, text in sorted({**all_pages(deal), **drafts}.items()):
         body = own_text(text)
         cited = list(dict.fromkeys(ID.findall(body)))

@@ -286,6 +286,8 @@ class Deal(unittest.TestCase):
         self.assertEqual(found("| | 2025 |\n|---|---|\n| Revenue | KES 4,060m [F-008] |\n"), [])
         # The drafts are read the same way.
         self.assertIn("Internal/outputs/fp.md", found("Revenue was KES 5,555m [F-008].\n", "Internal/outputs/fp.md")[0])
+        self.assertEqual(found("Revenue was KES 5,555m [F-008].\n", "Internal/outputs/fp.md"),  # a draft that went out is left alone
+                         found("Revenue was KES 6,666m [F-008].\n", "Internal/outputs/sent/fp-v1.md"))
 
     def test_few_pages_and_a_view_for_a_browser(self):
         wiki = os.path.join(self.deal, "Internal", "wiki")  # a page for the deal, the borrower and the project only
