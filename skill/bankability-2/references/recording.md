@@ -110,7 +110,7 @@ Record what would go into a table or a system field: names, amounts, dates, term
 | `said_by` | Who says so: `document`, `client`, `officer`, `third_party` or `inference`. Use `document` for the figures and terms in accounts, contracts, registers and the tables of a prospectus. Use `client` for what any party to the deal says about itself, its plans or its prospects: the borrower, its owners, a guarantor. That holds also when it says so in its own prospectus, report or website, or through the press. Use `third_party` for what a journalist, an analyst or an authority reports on their own account. Use `inference` for anything the document does not itself say: a conclusion, a figure you worked out, a borrower the note does not name. A favourable answer that only a `client` gave is marked as someone's own word. |
 | `answers` | The checks it answers, as a list: `[{"check": "OBS_REV_001", "value": true}]`. Yes or no is `true` or `false`, a number is a number, a choice is one of the check's options, or a list of them where the check allows several. `status` shows the answer each check takes. An answer counts for the subject the fact is about. Add `"for": "G-001"` if it is for another subject. An answer to a check that is asked about the deal counts for the deal. |
 | `fills` | The system fields it fills, such as `["CRM.country"]`. A field the institution's layer does not list is refused. |
-| `nothing_found` | `true` for a search that found nothing. Say in the statement what was looked for and where. |
+| `nothing_found` | `true` for a search that found nothing. Say in the statement what was looked for and where, and what the search could not cover, such as a scan that cannot be searched by word. Such a fact answers a check only where the search covered the record that would show the thing: a register, or an authority's list. |
 | `replaces` | The fact this one replaces: one earlier fact that was not replaced before. The old one stays, marked `outdated`. |
 | `state` | Set `disputed` on each fact that is contested, for example the two figures that two documents give for the same thing, and on a figure worked out from one of them. A fact that only reports the disagreement is true as it stands, and stays current. |
 
@@ -127,6 +127,7 @@ Record what would go into a table or a system field: names, amounts, dates, term
 - **A better source confirms or corrects a figure.** The audited statements give the revenue that the teaser gave in round numbers. Record the figure from the better source with `replaces`, so that the figure appears once and its answers rest on the better evidence.
 - **Withdraw an answer** by sending the fact with the answers that remain: `{"facts": [{"id": "F-012", "answers": []}]}`. The change is logged like any other. Do not record a new fact only to undo an old one.
 - **A fact was recorded about the wrong subject.** Send its `id` with the right `about`.
+- **A slip that changes no figure**, such as the ID of a fact that a statement names, is corrected in place: send the `id` with the new `statement`.
 - **A fact held figures at several dates.** `replaces` names one fact. Record the other dates as facts of their own.
 
 ## Subjects and links

@@ -142,7 +142,7 @@ Put the ID of the fact or the source in square brackets after the sentence it su
   Revenue was KES 4,060m in 2025 [F-008]. Outdated: the teaser gave about KES 4.1bn [F-005].
   ```
 
-  `check` leaves alone every citation after the word, up to the end of that paragraph, list item or table row. So put the marked sentence last, or give it a list item of its own. The word also works as the first word of a table row, and inside a bracket. Without the word, `check` reports the citation.
+  `check` leaves alone every citation after the word, up to the end of that paragraph, list item or table row. So put the marked sentence last, or give it a list item of its own. The word also works as the first word of a table row, and inside a bracket. Each word covers its own kind: `Outdated:` a fact that was replaced, `Disputed:` a fact that is disputed. Without the right word, `check` reports the citation.
 - **A balance at an earlier date is not outdated.** Both facts are current and both may be cited without a marker.
 - **Write nothing when a source adds nothing.**
 

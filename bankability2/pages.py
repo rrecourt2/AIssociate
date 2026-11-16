@@ -18,8 +18,9 @@ ID = re.compile(r"\b[A-Z]-\d{3,}\b")
 NUMBER = re.compile(r"\d[\d,.]*\d|\d")
 ROUND = str.maketrans("[]", "()")  # square brackets in a title would end the link that carries it
 STALE = ("outdated", "disputed", "replaced")  # the states of a record that something newer took the place of
-# One of those words and a colon, at the start of a paragraph, of a sentence or of a bracket. What follows may cite such a record.
-MARKED = re.compile(r"(?:^|[.!?|]\s+|\()[*_]*(?:" + "|".join(STALE) + r")[*_]*:", re.I)
+# One of those words and a colon, at the start of a paragraph, of a sentence or of a bracket. What follows may cite a
+# record in that state: "Disputed:" a disputed one, "Outdated:" or "Replaced:" one that something newer took the place of.
+MARKED = re.compile(r"(?:^|[.!?|]\s+|\()[*_]*(" + "|".join(STALE) + r")[*_]*:", re.I)
 SKELETON = """---
 title: {title}
 about: {about}
@@ -437,10 +438,11 @@ def problems(deal, memory):
                 found.append(f"{path}: links to {link}, which is not there")
         stale = {}
         for block in blocks(body):
-            marked, held = MARKED.search(block), ""
+            marks, held = list(MARKED.finditer(block)), ""
             for cite in ID.finditer(block):
                 entry = memory.get(table_of(memory, cite.group()), {}).get(cite.group(), {})
-                if entry.get("state") in STALE and not (marked and cite.start() > marked.start()):
+                word = [mark.group(1).lower() for mark in marks if mark.start() < cite.start()][-1:]  # the nearest before it
+                if entry.get("state") in STALE and not (word and (entry["state"] == "disputed") == (word[0] == "disputed")):
                     stale[cite.group()] = entry
                 source = memory["sources"].get(entry.get("source"), {})  # of a fact's source the title and the date count,
                 held += " ".join(f" {value}" for key, value in [*entry.items(), *source.items()]  # not its map of the document

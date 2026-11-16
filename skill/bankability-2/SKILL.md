@@ -18,7 +18,7 @@ A deal folder holds everything known about one deal. A small tool keeps its reco
     ├── sources/        calls, emails, notes, press articles, internal memos
     │   └── extracts/   text extracts made from the originals
     ├── record/         record.json, the record of the deal
-    ├── wiki/           the pages you write, the contents page index.md, and wiki.html for a browser
+    ├── wiki/           the pages you write, the contents page index.md, the list of sources sources.md, and wiki.html
     ├── standard/       the standard this deal uses
     └── outputs/        drafts of the scan, the CIP and the FP
 ```
@@ -71,8 +71,8 @@ Each command that writes ends with a line `Wrote:` and the files it wrote. If yo
 1. **Run `status` first, then `check`.** `status` tells you the structure, the stage, where the claims stand and what is open. `check` tells you what was already wrong before you changed anything. In a new deal, answer the checks about the deal first: they decide which other checks apply.
 2. **Read what is new** with your own tools: a document, a transcript, an email, or what the officer tells you.
 3. **Record it** with `add`. Record every source, the facts that would go into a table or a system field, and any party or link that matters for repayment. Say which checks a fact answers.
-4. **Run `pages`**, then write or update the pages the new material touches.
-5. **Run `check`** and repair what your work caused. Tell the officer what was there before and is not yours to repair.
+4. **Run `pages`**, then write or update the pages the new material touches. `pages` only fills in the tool's parts and writes the contents page, the sources page and the view, so run it after every change to the record, also when someone else writes the pages.
+5. **Run `check`** and repair what your work caused. Tell the officer what was there before and is not yours to repair. A quiet `check` does not mean that the pages agree with the record: it reads citations and numbers, not meaning. After the record changes, read the pages that describe what changed.
 6. **Tell the officer** what changed, and what you suggest next and why. What to show, and how, is your choice.
 
 ## Follow the deal, not the list
