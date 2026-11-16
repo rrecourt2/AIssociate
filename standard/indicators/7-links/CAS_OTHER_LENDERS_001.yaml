@@ -116,19 +116,6 @@ checks:
   leads_to:
   - {indicator: CAS_COVENANT_DESIGN_001, is: true, reason: The lender's covenants can be set so that they are breached no
       later than the other lender's}
-- id: OBS_LENDER_007
-  question: Does a default under the other loan give the lender the right to call its own loan at once (a cross-default
-    clause in the lender's agreement)?
-  answer: yes_no
-  assumption: When the other lender can call its loan, the lender can call its own
-  disproved_by: 'no'
-  look_in: [04.01.b, 04.01.a]
-  evidence:
-    best: [facility_agreement]
-    supporting: [term_sheet]
-    stated: [correspondence, call, officer_note]
-  note: A clause that gives the right only once the other lender has in fact called its loan (cross-acceleration) leaves
-    the lender one step behind. Answer no and say which clause it is.
 - id: OBS_LENDER_MIT_001
   question: Have the lenders agreed in writing that the other lender will not call its loan or enforce its security for
     a fixed period without the lender's consent (a standstill), and that the lender has a vote on enforcement?
@@ -141,7 +128,6 @@ checks:
   - {check: OBS_LENDER_002, against: true}
   - {check: OBS_LENDER_005, against: true}
   - {check: OBS_LENDER_006, against: true}
-  - {check: OBS_LENDER_007, against: true}
   look_in: [04.02.c, 04.01.a]
   evidence:
     best: [intercreditor_agreement]

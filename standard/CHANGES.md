@@ -2,7 +2,42 @@
 
 ## Version 4: a new framework
 
-Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room and the stages are unchanged from version 3. Version 4.0.1 is version 4.0.0 after two reviews. Version 4.1.0 is version 4.0.1 after its first trial on a real company, and version 4.1.1 is 4.1.0 after a second pass of that trial. The two come first here. The sections after them describe version 4 as it stood at 4.0.1.
+Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room and the stages are unchanged from version 3. Version 4.0.1 is version 4.0.0 after two reviews. Version 4.1.0 is version 4.0.1 after its first trial on a real company, version 4.1.1 is 4.1.0 after a second pass of that trial, and version 4.2.0 follows an assessment of which open checks of that deal are material. The three come first here, the latest on top. The sections after them describe version 4 as it stood at 4.0.1.
+
+### Version 4.2.0: a check waits for the answer that opens it
+
+**The assessment.** After the second pass the trial deal had 580 checks open or waiting. Three assessors, each working as a credit officer on a third of the pillars, judged every one of them: would it change a credit decision on this deal, and what would settle it?
+
+| Judgement | Checks |
+|---|---|
+| Material, and the record already decides it | 67 |
+| Material, needs the company | 96 |
+| Material, needs a third party: a screening, a registry, counsel, a consultant | 64 |
+| Material, needs the terms of the loan | 55 |
+| Conditional: a real question only if an earlier answer turns out a certain way | 180 |
+| Not material for this deal | 118 |
+
+So about half were material. A third were conditional, most of them mitigants that are asked only if a test goes against its claim. A fifth would not have changed a decision on this deal. The 67 that the record already decided were facts recorded without the check they answer.
+
+**What was not material, and what changed.**
+
+- **Checks on terms were open before there were terms.** The tests of the term sheet, the covenants and the conditions, 24 checks, are now asked once a term sheet is agreed (`OBS_TS_001`). The checks on security in law, the assignment of payments and the forced-sale value are asked once something is offered as security (`OBS_SECPKG_001`).
+- **A clause of the lender's own agreement was asked once for each other lender.** `OBS_LENDER_007` is dropped. `OBS_COV_011` asks the same once, of the facility.
+- **Every plant was examined as if repayment hung on it.** `OBS_ASSET_007` is new: does repayment depend on this asset, or is it security? The five tests on its condition, its upkeep and its remaining life are asked when the answer is yes. A contract and a customer already had a question of this kind.
+- **Three checks did not wait for their own opening question.** `OBS_OFFTAKER_004` now waits for `OBS_OFFTAKER_001`, `OBS_CONT_005` for `OBS_CONT_001`, and `OBS_OWN_007` for `OBS_OWN_006`.
+- **Forest and traceability were asked of a recycler.** `OBS_SUPPLYCHAIN_001`, `OBS_SUPPLYCHAIN_002` and `OBS_SUPPLYCHAIN_003` are asked of an agribusiness, or where `OBS_ES_003` has flagged the place or the source of the raw materials.
+- **Sources and uses were asked before a use was set out.** `OBS_USE_003` waits for `OBS_USE_001`.
+- **A company that runs its own plant was asked for its operator's contract.** The descriptions of `operates` and `builds` now say that they are for a party that works for the owner under a contract.
+
+One check is dropped and two are new: 551 checks, of which 119 questions, 365 tests and 67 mitigants.
+
+**Left as it was, on purpose.** `OBS_GROUP_010` is still asked of every owner tie, also where the lender relies on it in neither direction: an owner that needs the company's cash takes it whatever the lender relies on. The checks on other lenders are still asked of each lender link: the fix there is to give a link only to a lender that matters.
+
+**A deal that runs on 4.1.1.** The tool's `upgrade` command puts 4.2.0 into the deal folder. Then:
+
+- Answer `OBS_ASSET_007` for each asset. Until then the tests on the asset wait.
+- An answer to `OBS_LENDER_007` no longer counts. Answer `OBS_COV_011` once there are terms.
+- Checks on terms, covenants, conditions and security leave the list until `OBS_TS_001` and `OBS_SECPKG_001` are answered.
 
 ### Version 4.1.1: after the second pass of the trial
 
@@ -85,15 +120,15 @@ No check was dropped and no ID changed. Six checks are new.
 
 ### The numbers
 
-| | Version 3.0.1 | Version 4.0.1 | Version 4.1.0 |
-|---|---|---|---|
-| Indicators | 50 | 70 | 70 |
-| Checks | 267 | 544 | 550 |
-| of which questions, tests, mitigants | | 112, 365, 67 | 118, 365, 67 |
-| Checks due at screening, concept, due diligence, later | 76, 33, 158, 0 | 85, 148, 285, 26 | 88, 151, 285, 26 |
-| Reference points | 16 (11 on a number, 5 on a choice) | 51 (16 on a number, 35 on a choice), each with its reason | 51 |
-| Kinds of source | 79 | 79 | 82 |
-| Kinds of subject, kinds of link | 6, 19 | 6, 20 | 7, 21 |
+| | Version 3.0.1 | Version 4.0.1 | Version 4.1.0 | Version 4.2.0 |
+|---|---|---|---|---|
+| Indicators | 50 | 70 | 70 | 70 |
+| Checks | 267 | 544 | 550 | 551 |
+| of which questions, tests, mitigants | | 112, 365, 67 | 118, 365, 67 | 119, 365, 67 |
+| Checks due at screening, concept, due diligence, later | 76, 33, 158, 0 | 85, 148, 285, 26 | 88, 151, 285, 26 | 89, 151, 285, 26 |
+| Reference points | 16 (11 on a number, 5 on a choice) | 51 (16 on a number, 35 on a choice), each with its reason | 51 | 51 |
+| Kinds of source | 79 | 79 | 82 | 82 |
+| Kinds of subject, kinds of link | 6, 19 | 6, 20 | 7, 21 | 7, 21 |
 
 The rest of this section compares 4.0.1 with 3.0.1. 216 of the 267 checks keep their ID. Most were reworded. 328 checks are new. 49 of the 50 indicators keep their ID: `CAS_DISCOVERY_ESG_MANDATE_001` is gone and its checks are in `CAS_ES_SCREENING_001`. Titles changed.
 

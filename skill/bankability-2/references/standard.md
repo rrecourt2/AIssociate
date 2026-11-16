@@ -23,7 +23,7 @@ A check has one of three jobs:
 - A **test** has an assumption. One answer goes against it.
 - A **mitigant** is asked once a test has gone against the claim. It asks what limits the damage.
 
-For each claim, and each party or link it is made about, the tool says where it stands:
+For each claim, and each party or link it is made about, the tool says where it stands. Take "Currency risk", which has three tests. With none answered it is not tested. With one answered in the company's favour and two still open, it stands so far: nothing speaks against it, and it has not been looked at in full. With all three answered in its favour, it stands. As soon as one test goes against it, it is challenged.
 
 | The claim | Means |
 |---|---|
@@ -44,6 +44,7 @@ The standard is a backbone. It does not replace the analysis.
 - **Size.** A test asks about what matters for repayment. Where the thing exists but is too small to matter, give the favourable answer and say in the fact how small it is: "One supplier credit in euros, KES 4m, 0.3% of all debt." The sizes named in questions, such as "about a tenth", are guides.
 - **Answer a test as soon as it is decided.** Some tests speak of "this loan included" or "after this loan". If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known. An answer in favour waits for the terms: until the amount, the currency and the tenor are known, record today's figure as a fact and leave the test open.
 - **Read the open tests of a claim before you rely on it.** `show <deal> <indicator>` lists them. The record often decides one that nobody has answered yet.
+- **Not asked yet is not a no.** A test that asks whether something exists, such as a list of uses or a maintenance plan, is answered no when the company says there is none, or when the place that would hold it has been searched. While nobody has asked, it stays open.
 - **One case can decide a test against the claim. A favourable answer needs the whole.** If a test asks about five years and the documents cover three, a bad year among the three decides it. Three good years do not: record the figures, leave the test open and ask for the rest.
 - **Some questions ask for description**, not for a verdict: how the business earns its money (`OBS_BUSINESS_MODEL_001`), what is particular about it (`OBS_BUSINESS_MODEL_002`), what the project is (`OBS_FEAS_008`). Their answers are text and they feed the pages. Answer them early. Ask early as well what an owner owes and receives on its own account (`OBS_GROUP_011`, `OBS_GROUP_012`). `show <deal> <words>` finds the check that asks about something.
 
@@ -51,11 +52,12 @@ The standard is a backbone. It does not replace the analysis.
 
 A check is asked about the deal, about whoever holds a role, about a subject of a kind, or about a link.
 
-- **The loan under review.** A facility is a loan the lender is considering. The roles of borrower and guarantor, and the checks on a guarantee or on security, arise only from links that point at a facility. Debt that already exists is a `lends_to` link and brings the checks on another lender.
+- **The loan under review.** A facility is a loan the lender is considering. The roles of borrower and guarantor, and the checks on a guarantee or on security, arise only from links that point at a facility. Debt that already exists is a `lends_to` link and brings the checks on another lender. The checks on terms, covenants and conditions are asked once there is a term sheet (`OBS_TS_001`), and the checks on security in law once something is offered as security (`OBS_SECPKG_001`).
 - **The perimeter.** The business and its money are examined once, on the party or group whose cash repays the loan. Five pillars are asked of the perimeter: environment, business, cash flow and debt, liquidity and financial risks, and environmental, social and impact. Related parties and a guarantor's capacity are asked the same way. A company that is a member of a group that is asked the same check is not asked it again.
 - **The legal entity.** People and governance is asked of each company: its owners, its integrity, its board, its standing. A group is not asked these. Each company you recorded as a member of a group is asked them in the group's place, whether it borrows or not: the parent of a borrowing subsidiary as well.
 - **The tie between them.** Where the borrower is not the whole perimeter, the links between the companies are examined for whether the cash can reach the lender.
 - **A person** is asked only what fits a person.
+- **An asset** is examined when repayment depends on it or it is offered as security (`OBS_ASSET_007`). A contract and a customer have a question of the same kind (`OBS_CONT_001`, `OBS_OFFTAKER_001`).
 - **A project** is checked only when the loan finances it. It is asked what is its own: whether it can be built and pay, its impact assessment and permits, its land, its neighbours. What concerns the whole business stays with the perimeter.
 - **An owner.** `owns` gives its role, and brings the checks on the tie between owner and company, only where it points at a party or a group. Who owns a plant or a project is recorded the same way and brings no checks. `sponsors` is for whoever stands behind the borrower or the financed project, and always brings them.
 
@@ -80,8 +82,8 @@ A check answers by facts: put it in the fact's `answers`. In `status`, each open
 
 | State | Meaning |
 |---|---|
-| `open` | It can be answered now. |
-| `waiting` | An earlier check comes first, or the role is not yet held by anyone. |
+| `open` | It can be answered now. `status` says by which stage the open checks are ideally answered. |
+| `waiting` | An earlier check comes first, or the role is not yet held by anyone. `status` says how many are mitigants, which are asked only if a test goes against its claim. |
 | `not relevant` | An earlier answer made it so. |
 | `answered` | A fact answers it. `thin`: the evidence is weaker than is ideal at this stage. `old`: it is older than is ideal. |
 | `contested` | Two facts answer it differently, or the fact is disputed. |

@@ -64,7 +64,7 @@ More to look at: `show "Cedar Foods" claims` lists every claim by pillar, `show 
 
 ```text
 bankability2/    the tool: seven small Python files, standard library only, and the template of the view for a browser
-standard/        the standard: a framework, lists, a data-room structure and 550 checks under 70 claims, as data
+standard/        the standard: a framework, lists, a data-room structure and 551 checks under 70 claims, as data
 skill/           the instructions that tell an assistant how to work with the tool
 examples/        a made-up deal, and an invented example of an institution's layer
 tests/           three test files; one enforces the audit rules
@@ -84,7 +84,7 @@ The record holds what is known: exact, sourced and written only by the tool. The
 
 ## Kept simple
 
-The tool is about 1,900 lines of Python in seven files. These rules hold, and `tests/test_audit.py` fails if the code breaks one:
+The tool is about 1,970 lines of Python in seven files. These rules hold, and `tests/test_audit.py` fails if the code breaks one:
 
 - Python standard library only.
 - No network access, no starting of other programs, no `eval`, no reading of environment variables, no deleting.

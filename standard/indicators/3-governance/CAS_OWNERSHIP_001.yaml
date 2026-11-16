@@ -83,6 +83,8 @@ checks:
   assumption: The shareholders have not been in dispute with each other or with the party in the last five years
   disproved_by: 'yes'
   due_by: concept
+  when:
+  - {check: OBS_OWN_006, is: true}
   look_in: [08.01.a, 02.02.a, 02.06.d]
   evidence:
     best: [legal_opinion, audited_annual_report, adverse_media_screen]

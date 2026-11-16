@@ -2,7 +2,7 @@
 
 15 November 2026. This document describes Bankability 2 as it is built, and what is left for later. It gathers the decisions taken in the design interview of 13 and 14 November, and the owner's decisions after the first trial on 15 November.
 
-The tool has run on a made-up deal and, once, on the public documents of a real company. It has not been tried in Microsoft Copilot Cowork, and not on a live deal with an officer.
+The tool has run on a made-up deal and, in three rounds, on the public documents of a real company. It has not been tried in Microsoft Copilot Cowork, and not on a live deal with an officer.
 
 ## 1. What it is
 
@@ -44,11 +44,19 @@ The same tool runs in three places, on the same folder:
 
 | Where | How | When |
 |---|---|---|
-| Inside Copilot Cowork | Shipped inside the skill, run in Cowork's sandbox | First, once tested in the tenant |
+| Inside Copilot Cowork | Shipped inside the skill, run in the workspace of a task | First, once tested in the tenant |
 | On the laptop | Run from a terminal on the synced OneDrive folder | First. It also does the file work Cowork cannot do. |
 | Through Copilot Code | A local MCP shell around the same tool | Later, when access is granted |
 
 Cowork cannot call a program on the laptop. Microsoft requires an MCP server to be reachable over the internet, so there is no local server for Cowork.
+
+What Microsoft documents for Copilot Cowork in November 2026, none of it tested with this tool yet:
+
+- A custom skill is a folder with `SKILL.md` and up to 20 other files, 10 MB together. It sits in the user's OneDrive under `Documents/Cowork/skills`, or is uploaded as a zip with `SKILL.md` at its root, or comes inside a plugin that an administrator deploys. Files in `scripts` are run, not read. The packaged skill has 16 files and about 1 MB.
+- Each task runs in a workspace of its own, which starts empty and is removed when the task ends. Nothing carries over between tasks but the files in OneDrive or SharePoint, custom instructions and the instructions of a project.
+- What a task writes is saved to OneDrive. Replacing a file where it is, is documented only for Word, Excel and PowerPoint, and Cowork cannot delete. So "save each file back to its place" is the assumption to test first.
+- The model can be chosen. In tenants inside the EU Data Boundary the Claude models are off unless an administrator turns them on, so the skill must not depend on one model.
+- OneDrive and SharePoint show Markdown as formatted text. An HTML file is shown in Cowork's own preview, and in SharePoint it is often downloaded. `wiki.html` is therefore opened from the synced folder on the laptop.
 
 ## 4. The deal folder
 
@@ -153,18 +161,19 @@ Decisions and questions to the client are recorded as well. A question is record
 
 The standard gives the work its rigour. The wiki gives it depth: what the business is, how it works, how its parts relate, what is particular about it, and how its context shows in its figures. It is a wiki, not the financial proposal. It describes, objectively and in context. The FP concludes, and is condensed from it. The officer reads the FP, not the wiki, so there is no review duty. When the officer corrects something in a draft or in chat, the AI corrects the page and the fact behind it.
 
-Six shelves, two levels deep:
+Seven shelves, two levels deep:
 
 | Shelf | One page per |
 |---|---|
 | Deal | the deal, and each project, asset, facility or contract that needs one |
 | Parties | company, group or person that needs one |
 | People | group of people: the client's side, our side, other lenders and advisers |
+| Context | what surrounds the company: its history, its market and competitors, its products and how they are made, the country |
 | Topics | subject of analysis |
 | Terms | term under negotiation |
 | Work | piece of work, such as a consultant to hire or a site visit, and the working notes |
 
-- **Fewer and richer pages.** The tool creates a page for the deal, for each borrower, repayment source, guarantor and sponsor, and for each financed project. Every other subject has one line on the contents page. The AI writes a page for one of them only when there is something to say. A page may describe several subjects, such as the lenders: each is named at its top, links to that page and leaves the list of subjects without a page.
+- **A page for each subject a reader would look up.** The wiki holds the larger context, also where no check asks for it: a plant, a machine, a project, a product, the history of the company, its market, a customer that matters. A subject earns a page when two or more sources bear on it or other pages keep mentioning it. As a guide there are about as many pages as sources, or somewhat more. Not a page: a check, a single figure, a document retold, an account of what was done. The tool creates a page only for the deal, for each borrower, repayment source, guarantor and sponsor, and for each financed project. The first version had 36 pages that recited checks and read badly. The fault was what the pages were about, not how many there were.
 - **The contents page is the map.** It gives the first sentence of every page. An assistant reads the contents page and the page of the deal first, and opens another page only when the task needs it. A long wiki is then no burden.
 - **One page lists every source**: what it is, how far it was read, how many facts rest on it, and links to its original and its extract.
 - **A page describes before it lists.** What the thing is, how it works, how it relates to the rest, what is particular about it, how the context shows in the figures, and only then the assumptions and the open points. A project or an asset gets a real page: what, where, how big, by when, who pays, how far it has come.
@@ -181,7 +190,7 @@ The tool lists the sources at the foot and says where one was not read in full. 
 
 `check` reads the pages, and the Markdown drafts directly in `Internal/outputs`, paragraph by paragraph. A draft that was sent or replaced is moved to a sub-folder and is then left alone:
 
-- It reports a citation of something that does not exist, a link to a page that is not there, a page with text and no citation, and a number that no record cited in the same paragraph holds. The working notes say how to work and are not asked for citations.
+- It reports a citation of something that does not exist, a link to a page that is not there, a page that no other page links to, a page with text and no citation, and a number that no record cited in the same paragraph holds. The working notes say how to work and are not asked for citations.
 - It reports a citation of a fact that was replaced or is disputed, unless the sentence starts with a plain word that marks it: "Outdated:" or "Disputed:". New information is merged in. What it replaces stays visible only where that matters.
 - It does not judge whether a sentence says what its fact says.
 
@@ -224,7 +233,7 @@ The standard says what a deal folder holds and what must be known. It is data on
 | Structure | Holds | Size |
 |---|---|---|
 | Data room | Where each document belongs: an index, not folders on disk | 10 folders, 32 sub-folders, 64 slots |
-| Checks | What must be known, as claims in nine pillars | 9 pillars, 70 indicators, 550 checks |
+| Checks | What must be known, as claims in nine pillars | 9 pillars, 70 indicators, 551 checks |
 | Systems | What each of the bank's systems asks for | Private to the institution |
 
 ### 6.1 Claims and checks
@@ -294,6 +303,8 @@ The tool always outlines what to do and collect next. `status` lists every candi
 
 `status --for <ID>` keeps all of this to one subject or link. Each check in the list ends with its ID and the answer it takes.
 
+Open checks are the work of due diligence, and `status` says so in two lines: by which stage the open checks are ideally answered, and what the waiting ones wait for. Most of those are mitigants, which are asked only if a test goes against its claim. The standard makes a check wait wherever one answer opens it: the checks on terms wait for a term sheet, the checks on an asset for whether repayment depends on it.
+
 The AI chooses what to show and how.
 
 ## 8. What the tool does
@@ -302,7 +313,7 @@ The AI chooses what to show and how.
 |---|---|
 | `start` | Creates the deal folder and its empty record |
 | `status` | The structure, what changed, where the claims stand, and the candidates for the next list. For the whole deal, or for one subject or link. |
-| `add` | Records a set of changes: sources, facts, subjects, links, decisions, questions. All of it or none of it. It prints the ID of each new record, and a note for each answer that does not count where it was put. |
+| `add` | Records a set of changes: sources, facts, subjects, links, decisions, questions. All of it or none of it. It prints the ID of each new record, and a note for each answer that does not count where it was put. With `--try` it says what it would record and writes nothing. |
 | `show` | Looks things up: a record and what uses it, a check and what it rests on, an indicator, every claim by pillar, the facts that hold an ID or a word, the kinds of source, subject and link, the entry sheets, the log, or a search of the record and of the checks |
 | `pages` | Creates the few pages the graph calls for, fills in the generated parts of every page, and writes the contents page and the view for a browser |
 | `check` | Reports what looks wrong: a broken log, an unsound adjustment, files that are missing or changed, a record that still names a replaced fact, and problems on the pages and in the drafts |
@@ -345,7 +356,7 @@ These rules are checked by a test that fails when the code breaks one:
 - No network access, no starting of other programs, no `eval`, no reading of environment variables, no deleting.
 - One module touches the disk. It writes through three functions, and each refuses a path outside the deal folder.
 - No function longer than 100 lines.
-- The whole tool stays under 2,000 lines of Python, in at most seven files. It is about 1,900 lines now.
+- The whole tool stays under 2,000 lines of Python, in at most seven files. It is about 1,970 lines now.
 
 The view for a browser is one more file, `bankability2/wiki.html`: about 250 lines of HTML, CSS and plain JavaScript that load nothing from the network. A test checks that it names no address and no outside file.
 
@@ -364,7 +375,7 @@ Designed, and deliberately not built yet:
 7. **In the standard:** a module for funds, and modules for more sectors than banks, power and agribusiness.
 8. **Checking what a sentence says.** `check` matches citations and numbers. It does not judge whether a sentence says what its fact says.
 
-One thing comes before first use: a ten-minute test in the tenant of how Cowork saves and overwrites files, and whether a script shipped in a skill is found and run. If saving many files proves unreliable, the wiki pages move inside the record file and the Markdown files become views.
+One thing comes before first use: a half-hour test in the tenant, with the made-up deal. Upload the zip and see that it is accepted. Ask for the Python version and a listing of the skill's folder. Attach the deal folder and run `status`. Run `pages` and see where the files land, and whether a file can be replaced where it is. Open `wiki.html` from Cowork, from OneDrive and from the synced folder. Start a second task and see that it begins empty. If saving many files proves unreliable, the wiki pages move inside the record file and the Markdown files become views.
 
 ## 13. Not part of Bankability 2
 
@@ -374,7 +385,7 @@ One thing comes before first use: a ten-minute test in the tenant of how Cowork 
 
 ## 14. Open points
 
-1. A ten-minute test in the tenant of how Cowork saves files and runs a script.
+1. A half-hour test in the tenant of how Cowork runs a script from a skill and saves files.
 2. A review of the standard by someone who does credit work.
 3. Use on a live deal with an officer. Two trials on public documents have been run.
 4. Whether an institution lets client calls be transcribed. It decides how much of the record can come from calls.

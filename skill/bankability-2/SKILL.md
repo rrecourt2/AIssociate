@@ -32,7 +32,7 @@ The data room is an index, not a tree of folders. Each document has a slot in it
 | | Holds | Written by |
 |---|---|---|
 | **The record** | What is known: sources, facts, the structure, decisions and questions. Exact and sourced. | The tool only, from what you hand to `add`. |
-| **The wiki** | What is understood: what the business is, how it works and what is particular about it. It cites the record. | You. |
+| **The wiki** | What is understood, and the larger context: what the business is, how it works, its history, its market, and what is particular about it. It goes beyond what the checks ask. It cites the record. | You. |
 | **Preferences** | How to work. They go by what they are about. | See below. |
 
 - **About this deal.** "Write more about the projects." "The committee will ask about the owners." These stay in the deal folder, so that the next assistant inherits them. Write each into the working notes, `Internal/wiki/work/working-notes.md`, in the officer's words, with the date. Where the officer says something about the deal itself, such as "we might finance the second UHT line", that is a source and a fact as well: see [recording](references/recording.md).
@@ -51,7 +51,7 @@ The deal folder always comes right after the command, before anything else: `sho
 | Command | Use it to |
 |---|---|
 | `status <deal>` | See how much the record holds, the structure, what changed, where the claims stand and every candidate for what to do next. `--for <ID>` keeps to one subject or link. `--all` gives the full lists. |
-| `add <deal> changes.json` | Record what you learned. It prints the ID of each new record. See [recording](references/recording.md). |
+| `add <deal> changes.json` | Record what you learned. It prints the ID of each new record. With `--try` it says what the set would record and writes nothing. See [recording](references/recording.md). |
 | `show <deal> claims` | Every claim by pillar, one line each: where it stands and what that rests on. |
 | `show <deal> facts` | One line per fact that is current or disputed. Add IDs or words to get only the facts that hold one of them: the facts about a subject (`facts P-001`), from a source (`facts S-004`), in answer to a check (`facts OBS_REV_001`), named by ID (`facts F-012 F-015`) or with a word in them (`facts capacity`). A term is matched against the line as it is printed. An outdated fact shows only when it is named this way. |
 | `show <deal> kinds` | The kinds of source with the folder each is filed in, the kinds of subject, and the kinds of link with the role each gives. |
@@ -70,7 +70,7 @@ Each command that writes ends with a line `Wrote:` and the files it wrote. If yo
 
 1. **Run `status` first, then `check`.** `status` tells you the structure, the stage, where the claims stand and what is open. `check` tells you what was already wrong before you changed anything. In a new deal, answer the checks about the deal first: they decide which other checks apply.
 2. **Read what is new** with your own tools: a document, a transcript, an email, or what the officer tells you.
-3. **Record it** with `add`. Record every source, the facts that would go into a table or a system field, and any party or link that matters for repayment. Say which checks a fact answers.
+3. **Record it** with `add`. Record every source, the facts that would go into a table or a system field, and any party or link that matters for repayment. Say which checks a fact answers: look at the open checks of its subject with `status <deal> --for <ID>`. A fact that decides a check and does not say so leaves the claim emptier than the record supports.
 4. **Run `pages`**, then write or update the pages the new material touches. `pages` only fills in the tool's parts and writes the contents page, the sources page and the view, so run it after every change to the record, also when someone else writes the pages.
 5. **Run `check`** and repair what your work caused. Tell the officer what was there before and is not yours to repair. A quiet `check` does not mean that the pages agree with the record: it reads citations and numbers, not meaning. After the record changes, read the pages that describe what changed.
 6. **Tell the officer** what changed, and what you suggest next and why. What to show, and how, is your choice.
@@ -83,6 +83,8 @@ The standard is a backbone. It says where to look and it keeps the record honest
 - **Follow what the documents show.** When a document raises something no check asks about, record it and write about it. When a figure moves and nobody explains it, find the cause.
 - **Do not answer a check for its own sake.** A check that does not matter here stays open, or the officer has it switched off with a reason.
 - **Do not recite the list.** Tell the officer what the deal turns on, in a few points, each with its reason.
+- **Open checks are the work of due diligence.** Many are due at a later stage, and many wait for an earlier answer: `status` says how many of each. Do not present them as hundreds of gaps. Group them by what settles them: what the record already decides, what one request to the company would settle (`status` lists the documents that open checks look for), what one screening of all the names would settle, and what needs the terms of the loan.
+- **A check that does not matter for this deal** gets the answer that makes it fall away, or is switched off with the reason. It is not left to pile up.
 
 ## Rules
 
@@ -104,7 +106,14 @@ The standard is a backbone. It says where to look and it keeps the record honest
 
 ## When the deal folder is not on this machine
 
-In Copilot Cowork the deal folder lives in OneDrive and the tool runs on copies. Bring in `Internal/record/record.json`, the files in `Internal/standard`, `Client folder/manifest.json`, the whole `Internal/wiki` folder, and the Markdown drafts in `Internal/outputs` if `check` is to read them. Bring all of the wiki: `pages` writes an empty page for the deal, for each main party and for each financed project whose page is missing, and saving that back would overwrite the real page. Run the tool on that copy. Save every file named after `Wrote:` back to the same place in the deal folder. Filing documents with `file` needs the laptop.
+In Copilot Cowork the deal folder lives in OneDrive or SharePoint, and each task runs in a workspace of its own that is empty at the start and removed at the end. So every task begins by bringing the folder in, and ends by putting what changed back.
+
+- **Bring in** `Internal/record/record.json`, the files in `Internal/standard`, `Client folder/manifest.json`, the whole `Internal/wiki` folder, and the Markdown drafts in `Internal/outputs` if `check` is to read them. Bring all of the wiki: `pages` writes an empty page for the deal, for each main party and for each financed project whose page is missing, and saving that back would overwrite the real page.
+- **Run the tool on that copy.** Use `add --try` before a large change.
+- **Put back every file named after `Wrote:`**, to the same place in the deal folder. If your host saves what you wrote to a folder of its own and cannot replace a file where it is, say so to the officer and name the files to move: the record first.
+- **Tell the officer at the end** which revision the record is at. The next task starts from the folder, not from this conversation.
+
+Filing documents with `file` needs the laptop.
 
 ## More
 

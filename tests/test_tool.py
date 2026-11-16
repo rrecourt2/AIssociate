@@ -271,6 +271,8 @@ class Deal(unittest.TestCase):
         before = store.revision(self.memory())
         _, said = run("add", self.deal, os.path.join(EXAMPLE, "changes", "1-teaser.json"))
         self.assertIn("Already recorded", said)
+        _, said = run("add", self.deal, self.handed({"subjects": [{"kind": "party", "name": "A trial"}]}), "--try")
+        self.assertIn("A trial run: nothing was written. It would be recorded as revision", said)
         self.assertEqual(store.revision(self.memory()), before)
 
     def test_the_log_shows_a_change_made_outside_the_tool(self):
@@ -299,7 +301,10 @@ class Deal(unittest.TestCase):
             os.makedirs(os.path.dirname(os.path.join(deal, path)), exist_ok=True)
             with open(os.path.join(deal, path), "w", encoding="utf-8") as f:
                 f.write("---\ntitle: Revenue\nabout: CAS_REVENUE_001\n---\n\n## What we know\n\n" + text)
-            return pages.problems(deal, files.read_json(deal, files.MEMORY))
+            lone = "Internal/wiki/topics/revenue.md: no other page links to it"  # true of this page in every case below
+            said = pages.problems(deal, files.read_json(deal, files.MEMORY))
+            self.assertIn(lone, said)
+            return [line for line in said if line != lone]
 
         # A number must be in a record cited in its own paragraph: here the second one cites the fact on borrowings.
         self.assertEqual(found("Revenue was KES 4,060m in 2025 [F-008].\n\n- Borrowings were KES 4,060m [F-011].\n"), [

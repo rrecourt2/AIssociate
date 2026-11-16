@@ -48,11 +48,12 @@ link_types:
   role_from: lender
 - id: operates
   title: Operates
-  description: The party operates an asset or a project.
+  description: The party operates an asset or a project that belongs to someone else, under a contract. A company that
+    runs its own plant needs no such link.
   role_from: operator
 - id: builds
   title: Builds
-  description: The party builds an asset or a project.
+  description: The party builds an asset or a project for someone else, under a contract.
   role_from: contractor
 - id: party_to
   title: Is a party to

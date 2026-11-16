@@ -66,6 +66,14 @@ checks:
   assumption: The revenue that repays the loan can be assigned to the lender and collected in an account it controls
   disproved_by: 'no'
   due_by: concept
+  when:
+  - {check: OBS_SECPKG_001, is: real_estate}
+  - {check: OBS_SECPKG_001, is: equipment}
+  - {check: OBS_SECPKG_001, is: receivables}
+  - {check: OBS_SECPKG_001, is: inventory}
+  - {check: OBS_SECPKG_001, is: shares}
+  - {check: OBS_SECPKG_001, is: cash_deposits}
+  - {check: OBS_SECPKG_001, is: contract_rights}
   look_in: [06.01.a, 08.01.a, 04.01.a]
   evidence:
     best: [material_contract, offtake_agreement, legal_opinion]
@@ -130,6 +138,14 @@ checks:
   why: Below 100 percent a forced sale leaves part of the loan unpaid, and that part rests on a guarantee or on nothing.
     Many lenders ask for more than 100 percent, to allow for the cost and the time of a sale and for falling prices. An
     institution can set its own level.
+  when:
+  - {check: OBS_SECPKG_001, is: real_estate}
+  - {check: OBS_SECPKG_001, is: equipment}
+  - {check: OBS_SECPKG_001, is: receivables}
+  - {check: OBS_SECPKG_001, is: inventory}
+  - {check: OBS_SECPKG_001, is: shares}
+  - {check: OBS_SECPKG_001, is: cash_deposits}
+  - {check: OBS_SECPKG_001, is: contract_rights}
   look_in: [05.02.a, 05.01.a]
   evidence:
     best: [valuation_report]

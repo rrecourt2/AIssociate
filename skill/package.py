@@ -23,7 +23,7 @@ def main():
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with zipfile.ZipFile(OUT, "w", zipfile.ZIP_DEFLATED) as archive:
         for path, name in sorted(packed, key=lambda item: item[1]):
-            archive.write(path, "bankability-2/" + name.replace(os.sep, "/"))
+            archive.write(path, name.replace(os.sep, "/"))  # SKILL.md at the root of the archive, as Copilot Cowork asks
     print(f"{OUT}: {len(packed)} files")
 
 

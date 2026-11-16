@@ -59,6 +59,8 @@ checks:
   assumption: The contract runs until the loan is repaid
   disproved_by: 'yes'
   due_by: concept
+  when:
+  - {check: OBS_CONT_001, is: true}
   look_in: [06.01.a, 06.04.a, 06.05.a]
   evidence:
     best: [material_contract, offtake_agreement, supply_agreement]

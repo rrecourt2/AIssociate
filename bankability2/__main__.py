@@ -105,6 +105,13 @@ def status(args):
     if due:  # most open checks are work for a later stage
         print("Open, by the stage each is ideally answered by: "
               + ", ".join(f"{titles[stage]} {due.count(stage)}" for stage in std["stage_ids"] if stage in due) + ".")
+    waits = [row for row in rows if row["state"] == "waiting"]
+    if waits:  # a check that waits needs no work now
+        mitigants = sum(bool(std["checks"][row["check"]].get("mitigant")) for row in waits)
+        seats = sum(not std["checks"][row["check"]].get("mitigant") and not memory["subjects"].get(row["for"], {"name": 1}).get("name")
+                    for row in waits)
+        print(f"Waiting: {mitigants} mitigants, asked only if a test goes against its claim; {seats} for a party that is not "
+              f"yet named; {len(waits) - mitigants - seats} for an earlier answer.")
     print("\n## Where the claims stand\n")
     for pillar in std["pillars"]:
         counts = assess.view(found, std)[pillar["id"]]
@@ -159,8 +166,10 @@ def add(args):
     if entry is None:
         print("Already recorded: this set of changes was applied before.")
         return
-    files.write_json(args.deal, files.MEMORY, memory)
-    print(f"Recorded as revision {entry['n']}. Added: {', '.join(entry['added']) or 'nothing'}. "
+    if not args.dry:
+        files.write_json(args.deal, files.MEMORY, memory)
+    print(("A trial run: nothing was written. It would be recorded" if args.dry else "Recorded")
+          + f" as revision {entry['n']}. Added: {', '.join(entry['added']) or 'nothing'}. "
           f"Changed: {', '.join(entry['changed']) or 'nothing'}.")
     for name, rid in names.items():
         print(f"{name} -> {rid}")
@@ -462,7 +471,9 @@ def main(argv=None):
     sub.add_argument("--for", dest="about", metavar="ID", help="only what concerns this subject or link")
     sub.add_argument("--since", type=int, help="show changes after this revision")
     sub.add_argument("--json", action="store_true")
-    command("add", add, "record a set of changes").add_argument("changes", help="a JSON file, or - for standard input")
+    sub = command("add", add, "record a set of changes")
+    sub.add_argument("changes", help="a JSON file, or - for standard input")
+    sub.add_argument("--try", dest="dry", action="store_true", help="say what the set would record, and write nothing")
     command("show", show, "look something up").add_argument(
         "what", nargs="+", help="an ID, 'log', 'sheet', 'kinds', 'claims', 'facts', 'facts <IDs or words>', or words to search for")
     command("pages", refresh, "fill in the tool's parts of the wiki pages, and write the view for a browser")

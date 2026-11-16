@@ -46,6 +46,8 @@ checks:
   answer: yes_no
   assumption: Each repayment falls due after the cash that pays it has come in
   disproved_by: 'yes'
+  when:
+  - {check: OBS_TS_001, is: true}
   look_in: [04.01.a, 03.02.b, 03.01.b]
   evidence:
     best: [term_sheet, facility_agreement, technical_feasibility]
@@ -62,6 +64,8 @@ checks:
   assumption: The loan is repaid in full from cash flow by its final maturity, without a refinancing or a sale
   disproved_by: 'yes'
   due_by: concept
+  when:
+  - {check: OBS_TS_001, is: true}
   look_in: [04.01.a, 03.02.b]
   evidence:
     best: [term_sheet, facility_agreement]
@@ -78,6 +82,8 @@ checks:
   answer: yes_no
   why: Terms more generous than any precedent need a reason that belongs to this deal. Comparable means the same sector,
     the same country or region and the same kind of borrower.
+  when:
+  - {check: OBS_TS_001, is: true}
   look_in: [04.01.a, 04.03.b]
   evidence:
     best: [dfi_facility_document, facility_agreement]
@@ -92,6 +98,8 @@ checks:
   why: A price below the lender's own requirement means the risk is carried for less than it costs. This is the lender's
     judgement of its own loan, not a test of the borrower.
   due_by: approval
+  when:
+  - {check: OBS_TS_001, is: true}
   look_in: [04.01.a]
   evidence:
     best: [internal_memo]

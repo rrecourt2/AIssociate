@@ -122,8 +122,6 @@ checks:
   due_by: concept
   when:
   - {check: OBS_SECTOR_002, is: agribusiness}
-  - {check: OBS_VALUE_CHAIN_001, is: manufacturer}
-  - {check: OBS_VALUE_CHAIN_001, is: trader}
   - {check: OBS_ES_003, is: true}
   applies_to: [borrower, repayment_source]
   look_in: [10.03.a, 06.04.a]
@@ -142,6 +140,9 @@ checks:
   assumption: No natural forest or protected habitat was cleared after the lender's cut-off date for the party's land or
     for its main raw materials
   disproved_by: 'yes'
+  when:
+  - {check: OBS_SECTOR_002, is: agribusiness}
+  - {check: OBS_ES_003, is: true}
   applies_to: [borrower, repayment_source]
   look_in: [10.03.a, 07.02.a, 02.06.d]
   evidence:
@@ -159,6 +160,9 @@ checks:
   answer: yes_no
   assumption: No child labour or forced labour has been found among the party's main suppliers
   disproved_by: 'yes'
+  when:
+  - {check: OBS_SECTOR_002, is: agribusiness}
+  - {check: OBS_ES_003, is: true}
   applies_to: [borrower, repayment_source]
   look_in: [10.03.a, 02.06.d, 06.04.a]
   evidence:

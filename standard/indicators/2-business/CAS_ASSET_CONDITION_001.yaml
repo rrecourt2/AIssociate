@@ -35,6 +35,20 @@ checks:
   ask: Who holds the title to this asset? If it is leased or held under a concession, from whom, and until when?
   note: Title documents are filed with the security documents. Under a lease or a concession the owner is someone else,
     however long it runs.
+- id: OBS_ASSET_007
+  question: 'Does repayment depend on this asset: does it carry about a tenth or more of the output or the earnings that
+    repay the loan, or is it offered as security?'
+  answer: yes_no
+  why: An asset that carries little of the business and secures nothing is described and not examined. The checks on its
+    condition, its upkeep and its remaining life are asked of the assets that repayment or the security rests on.
+  due_by: screening
+  look_in: [04.02.b, 06.05.a, 05.02.a]
+  evidence:
+    best: [audited_annual_report, valuation_report, security_agreement]
+    supporting: [company_record, annual_report, prospectus, management_accounts]
+    stated: [correspondence, call, officer_note, management_presentation]
+  note: A tenth is a guide. Say in the reason what share of output or earnings the asset carries, and whether it is to
+    be security.
 - id: OBS_ASSET_001
   question: What condition is the asset in?
   answer: choice
@@ -44,6 +58,8 @@ checks:
   why: An asset in poor condition or at the end of its life needs repair or replacement that takes cash from debt service,
     and it can stop without warning.
   due_by: concept
+  when:
+  - {check: OBS_ASSET_007, is: true}
   look_in: [05.01.a, 05.02.a]
   evidence:
     best: [technical_feasibility, valuation_report]
@@ -61,6 +77,8 @@ checks:
   answer: yes_no
   assumption: Someone independent of the party has inspected the asset and reported on its condition
   disproved_by: 'no'
+  when:
+  - {check: OBS_ASSET_007, is: true}
   look_in: [05.01.a, 05.02.a]
   evidence:
     best: [technical_feasibility, valuation_report]
@@ -73,6 +91,8 @@ checks:
   answer: yes_no
   assumption: Maintenance of the asset is planned, and its cost is in the projections
   disproved_by: 'no'
+  when:
+  - {check: OBS_ASSET_007, is: true}
   look_in: [05.01.a, 06.03.a, 03.02.a]
   evidence:
     best: [technical_feasibility, om_agreement]
@@ -86,6 +106,8 @@ checks:
   answer: yes_no
   assumption: The maintenance that was due on the asset has been done
   disproved_by: 'yes'
+  when:
+  - {check: OBS_ASSET_007, is: true}
   look_in: [05.01.a, 05.02.a]
   evidence:
     best: [technical_feasibility, valuation_report]
@@ -100,6 +122,8 @@ checks:
   answer: yes_no
   assumption: The asset will last until the loan is repaid
   disproved_by: 'yes'
+  when:
+  - {check: OBS_ASSET_007, is: true}
   look_in: [05.01.a, 05.02.a]
   evidence:
     best: [technical_feasibility, valuation_report]

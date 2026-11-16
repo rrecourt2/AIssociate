@@ -10,7 +10,7 @@ from . import files
 from .assess import MAIN, VERDICTS, central, claims, holds_still, view
 from .store import DEAL, TABLES, live, table_of
 
-SHELVES = ("deal", "parties", "people", "topics", "terms", "work")
+SHELVES = ("deal", "parties", "people", "context", "topics", "terms", "work")
 BRIEF = SHELVES[2:]  # a page on one of these shelves gets one line that names what it is about
 BEGIN, END = "<!-- tool:begin {} -->", "<!-- tool:end -->"
 PART = BEGIN + "((?!<!-- tool:begin).)*?" + END  # a begin marker, its lines and its own end marker
@@ -356,7 +356,8 @@ def refresh(deal, memory, std, rows, held):
     where = {}  # the page of the deal and of each subject that has one, as a path from the wiki folder
     for first in (True, False):  # a page belongs to the first ID it names. The others it names are described on it too
         for path, text in sorted(pages.items()):
-            for rid in about(text)[:1] if first else about(text)[1:]:
+            owner = path[cut:].split("/")[0] not in BRIEF  # a page about people, context or a topic is nobody's own page
+            for rid in about(text)[:owner] if first else about(text)[owner:]:
                 where.setdefault(rid, path[cut:])
     created, changed = [], []
     wanted = [sid for sid, subject in memory["subjects"].items() if subject.get("name") and held.get(sid, set()) & MAIN]
@@ -421,11 +422,12 @@ def numbers(text):
 
 def problems(deal, memory):
     """What looks wrong on the pages and in the drafts: citations and links that lead nowhere, citations of a record that
-    was replaced and is not marked so, and numbers that no record cited in the same paragraph holds."""
-    found, there = [], set(files.listing(deal, files.WIKI))
+    was replaced and is not marked so, numbers that no record cited in the same paragraph holds, and a page that no
+    other page links to."""
+    found, there, pages, reached = [], set(files.listing(deal, files.WIKI)), all_pages(deal), set()
     drafts = {path: files.read(deal, path) for path in files.listing(deal, files.OUTPUTS)  # not those in a sub-folder
               if path.endswith(".md") and "/" not in path[len(files.OUTPUTS) + 1:]}
-    for path, text in sorted({**all_pages(deal), **drafts}.items()):
+    for path, text in sorted({**pages, **drafts}.items()):
         body = own_text(text)
         notes = path == f"{files.WIKI}/work/working-notes.md"  # they say how to work, and need not cite the record
         cited = list(dict.fromkeys(ID.findall(body)))
@@ -434,6 +436,7 @@ def problems(deal, memory):
             found.append(f"{path}: has text and cites nothing")
         for link in re.findall(r"\]\((?![a-z]+:)([^)#\s]+\.md)", body):  # a link to another page of the wiki
             target = files.beside(path, re.sub(r"%([0-9A-Fa-f]{2})", lambda code: chr(int(code.group(1), 16)), link))
+            reached |= {target} if path in pages and target != path else set()
             if target.startswith(files.WIKI + "/") and target not in there:
                 found.append(f"{path}: links to {link}, which is not there")
         stale = {}
@@ -455,4 +458,5 @@ def problems(deal, memory):
         found += [f"{path}: cites {rid}, which is {entry['state']}" + (f" (replaced by {entry['replaced_by']})" if entry.get(
             "replaced_by") else "") + f". Cite what took its place, or start the sentence with \"{entry['state'].capitalize()}:\""
             for rid, entry in stale.items()]
-    return found
+    return found + [f"{path}: no other page links to it" for path, text in sorted(pages.items())  # the deal page is the way in
+                    if path not in reached and about(text)[:1] != [DEAL] and not path.startswith(f"{files.WIKI}/work/")]

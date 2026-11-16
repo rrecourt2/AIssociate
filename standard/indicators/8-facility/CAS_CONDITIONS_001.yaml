@@ -5,6 +5,8 @@ claim: Everything left open at approval is written down as a condition, a covena
   when it falls due, before the money moves or by its date after.
 due_by: disbursement
 applies_to: [facility]
+applies_when:
+- {check: OBS_TS_001, is: true}
 matters_more_when:
 - {check: OBS_LIFECYCLE_001, is: greenfield, reason: 'The money is drawn in stages while the project is built, and each
     drawing has conditions of its own'}

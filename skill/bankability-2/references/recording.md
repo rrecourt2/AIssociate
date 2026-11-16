@@ -38,6 +38,8 @@ Recorded as revision 3. Added: S-002, F-008, P-003, R-003. Changed: F-005.
 
 Give every new record a `ref`, also a fact. The lines `@ref -> ID` tell you which ID to cite on a page. Do not work the IDs out by counting.
 
+`add <deal> changes.json --try` checks the set and prints the same lines, and writes nothing. Use it before a large change to the structure.
+
 Where an answer does not count, `add` adds a note and records it all the same:
 
 ```text
@@ -141,6 +143,9 @@ A subject is a party, a person, a facility, a contract, an asset, a project or a
 - A link that is your inference stays `proposed`. Say so in its `why`, and name the fact it rests on.
 - `owns` to an asset or a project says who owns it. It brings no checks: the checks on an owner are asked where the link points at a party or a group.
 - `sponsors` is for whoever stands behind the borrower or behind the project the loan pays for. Who is behind another project of the business is recorded with `owns`.
+- `operates` and `builds` are for a party that runs or builds something for its owner under a contract. A company that runs its own plant needs no such link. The supplier that builds a line the business depends on does.
+- An asset is examined when repayment depends on it: answer `OBS_ASSET_007` for each plant. The checks on its condition are then asked, or fall away.
+- Where the same people run two companies, record a fact about them once and let its answer count for both: one answer with `"for"` for each company.
 
 A new link brings the checks that fit the role, and the checks on the link itself. Run `status --for <ID>` to see them.
 
@@ -153,6 +158,8 @@ A new link brings the checks that fit the role, and the checks on the link itsel
   3. Look at the tie between the old and the new borrower. An owner whose company now borrows is asked what it owes and receives on its own account.
   4. `status` lists the answers that were recorded for the old borrower and that it is no longer asked. If it comes back in another role, as a guarantor for example, they count again. If it does not, withdraw them. The facts stay. Move an answer to the new borrower with `"for"` only where the fact is about the new borrower as well.
 - **A party gets another role.** Add or end the link. The record of the party stays one record.
+- **The borrower is open.** End the old `borrows` link and give the role to a party without a name. Where it will be one of the companies of the group, make it a `member_of` the group, so that the business is not examined a second time. Say in a decision which companies it could be, and which answers to put back once it is named.
+- **The purpose changes.** End the `finances` link when the loan no longer pays for that project, or add one when it does. Answer `OBS_REQUEST_001`, `OBS_REQUEST_003` and `OBS_USE_001` again. The project keeps its facts and its page.
 
 ### The loan under review
 

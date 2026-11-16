@@ -1,6 +1,6 @@
 {
  "name": "Bankability Standard",
- "version": "4.1.1",
+ "version": "4.2.0",
  "description": "A standard for investment due diligence built on claims that can be disproved. It says what a deal folder holds and what must be known.",
  "licence": "MIT",
  "stages": [
@@ -257,13 +257,13 @@
   {
    "id": "operates",
    "title": "Operates",
-   "description": "The party operates an asset or a project.",
+   "description": "The party operates an asset or a project that belongs to someone else, under a contract. A company that runs its own plant needs no such link.",
    "role_from": "operator"
   },
   {
    "id": "builds",
    "title": "Builds",
-   "description": "The party builds an asset or a project.",
+   "description": "The party builds an asset or a project for someone else, under a contract.",
    "role_from": "contractor"
   },
   {
@@ -2205,6 +2205,12 @@
      "assumption": "The whole plan is funded from committed sources, with room for overruns and for working capital",
      "disproved_by": "no",
      "due_by": "concept",
+     "when": [
+      {
+       "check": "OBS_USE_001",
+       "is": true
+      }
+     ],
      "look_in": [
       "01.02.a",
       "03.02.b",
@@ -5203,6 +5209,38 @@
      "note": "Title documents are filed with the security documents. Under a lease or a concession the owner is someone else, however long it runs."
     },
     {
+     "id": "OBS_ASSET_007",
+     "question": "Does repayment depend on this asset: does it carry about a tenth or more of the output or the earnings that repay the loan, or is it offered as security?",
+     "answer": "yes_no",
+     "why": "An asset that carries little of the business and secures nothing is described and not examined. The checks on its condition, its upkeep and its remaining life are asked of the assets that repayment or the security rests on.",
+     "due_by": "screening",
+     "look_in": [
+      "04.02.b",
+      "06.05.a",
+      "05.02.a"
+     ],
+     "evidence": {
+      "best": [
+       "audited_annual_report",
+       "valuation_report",
+       "security_agreement"
+      ],
+      "supporting": [
+       "company_record",
+       "annual_report",
+       "prospectus",
+       "management_accounts"
+      ],
+      "stated": [
+       "correspondence",
+       "call",
+       "officer_note",
+       "management_presentation"
+      ]
+     },
+     "note": "A tenth is a guide. Say in the reason what share of output or earnings the asset carries, and whether it is to be security."
+    },
+    {
      "id": "OBS_ASSET_001",
      "question": "What condition is the asset in?",
      "answer": "choice",
@@ -5217,6 +5255,12 @@
      "flag_when": "is poor or end_of_life",
      "why": "An asset in poor condition or at the end of its life needs repair or replacement that takes cash from debt service, and it can stop without warning.",
      "due_by": "concept",
+     "when": [
+      {
+       "check": "OBS_ASSET_007",
+       "is": true
+      }
+     ],
      "look_in": [
       "05.01.a",
       "05.02.a"
@@ -5246,6 +5290,12 @@
      "answer": "yes_no",
      "assumption": "Someone independent of the party has inspected the asset and reported on its condition",
      "disproved_by": "no",
+     "when": [
+      {
+       "check": "OBS_ASSET_007",
+       "is": true
+      }
+     ],
      "look_in": [
       "05.01.a",
       "05.02.a"
@@ -5274,6 +5324,12 @@
      "answer": "yes_no",
      "assumption": "Maintenance of the asset is planned, and its cost is in the projections",
      "disproved_by": "no",
+     "when": [
+      {
+       "check": "OBS_ASSET_007",
+       "is": true
+      }
+     ],
      "look_in": [
       "05.01.a",
       "06.03.a",
@@ -5304,6 +5360,12 @@
      "answer": "yes_no",
      "assumption": "The maintenance that was due on the asset has been done",
      "disproved_by": "yes",
+     "when": [
+      {
+       "check": "OBS_ASSET_007",
+       "is": true
+      }
+     ],
      "look_in": [
       "05.01.a",
       "05.02.a"
@@ -5333,6 +5395,12 @@
      "answer": "yes_no",
      "assumption": "The asset will last until the loan is repaid",
      "disproved_by": "yes",
+     "when": [
+      {
+       "check": "OBS_ASSET_007",
+       "is": true
+      }
+     ],
      "look_in": [
       "05.01.a",
       "05.02.a"
@@ -10073,6 +10141,12 @@
      "assumption": "The shareholders have not been in dispute with each other or with the party in the last five years",
      "disproved_by": "yes",
      "due_by": "concept",
+     "when": [
+      {
+       "check": "OBS_OWN_006",
+       "is": true
+      }
+     ],
      "look_in": [
       "08.01.a",
       "02.02.a",
@@ -17556,14 +17630,6 @@
        "is": "agribusiness"
       },
       {
-       "check": "OBS_VALUE_CHAIN_001",
-       "is": "manufacturer"
-      },
-      {
-       "check": "OBS_VALUE_CHAIN_001",
-       "is": "trader"
-      },
-      {
        "check": "OBS_ES_003",
        "is": true
       }
@@ -17599,6 +17665,16 @@
      "answer": "yes_no",
      "assumption": "No natural forest or protected habitat was cleared after the lender's cut-off date for the party's land or for its main raw materials",
      "disproved_by": "yes",
+     "when": [
+      {
+       "check": "OBS_SECTOR_002",
+       "is": "agribusiness"
+      },
+      {
+       "check": "OBS_ES_003",
+       "is": true
+      }
+     ],
      "applies_to": [
       "borrower",
       "repayment_source"
@@ -17634,6 +17710,16 @@
      "answer": "yes_no",
      "assumption": "No child labour or forced labour has been found among the party's main suppliers",
      "disproved_by": "yes",
+     "when": [
+      {
+       "check": "OBS_SECTOR_002",
+       "is": "agribusiness"
+      },
+      {
+       "check": "OBS_ES_003",
+       "is": true
+      }
+     ],
      "applies_to": [
       "borrower",
       "repayment_source"
@@ -18777,6 +18863,12 @@
      "assumption": "The contract runs until the loan is repaid",
      "disproved_by": "yes",
      "due_by": "concept",
+     "when": [
+      {
+       "check": "OBS_CONT_001",
+       "is": true
+      }
+     ],
      "look_in": [
       "06.01.a",
       "06.04.a",
@@ -20483,6 +20575,12 @@
      "assumption": "The customer pays on time",
      "disproved_by": "no",
      "due_by": "concept",
+     "when": [
+      {
+       "check": "OBS_OFFTAKER_001",
+       "is": true
+      }
+     ],
      "look_in": [
       "03.01.a",
       "03.01.b",
@@ -20910,31 +21008,6 @@
      ]
     },
     {
-     "id": "OBS_LENDER_007",
-     "question": "Does a default under the other loan give the lender the right to call its own loan at once (a cross-default clause in the lender's agreement)?",
-     "answer": "yes_no",
-     "assumption": "When the other lender can call its loan, the lender can call its own",
-     "disproved_by": "no",
-     "look_in": [
-      "04.01.b",
-      "04.01.a"
-     ],
-     "evidence": {
-      "best": [
-       "facility_agreement"
-      ],
-      "supporting": [
-       "term_sheet"
-      ],
-      "stated": [
-       "correspondence",
-       "call",
-       "officer_note"
-      ]
-     },
-     "note": "A clause that gives the right only once the other lender has in fact called its loan (cross-acceleration) leaves the lender one step behind. Answer no and say which clause it is."
-    },
-    {
      "id": "OBS_LENDER_MIT_001",
      "question": "Have the lenders agreed in writing that the other lender will not call its loan or enforce its security for a fixed period without the lender's consent (a standstill), and that the lender has a vote on enforcement?",
      "answer": "yes_no",
@@ -20956,10 +21029,6 @@
       },
       {
        "check": "OBS_LENDER_006",
-       "against": true
-      },
-      {
-       "check": "OBS_LENDER_007",
        "against": true
       }
      ],
@@ -22498,6 +22567,12 @@
    "applies_to": [
     "facility"
    ],
+   "applies_when": [
+    {
+     "check": "OBS_TS_001",
+     "is": true
+    }
+   ],
    "matters_more_when": [
     {
      "check": "OBS_LIFECYCLE_001",
@@ -22815,6 +22890,12 @@
    "applies_to": [
     "facility"
    ],
+   "applies_when": [
+    {
+     "check": "OBS_TS_001",
+     "is": true
+    }
+   ],
    "matters_more_when": [
     {
      "check": "OBS_COLLATERAL_001",
@@ -23118,6 +23199,31 @@
       ]
      },
      "note": "Read how control is defined. A sale of shares higher up the chain of ownership should count as a change of control too. A clause that only obliges the borrower to tell the lender of the change does not give this right."
+    },
+    {
+     "id": "OBS_COV_011",
+     "question": "Does a default under another loan of the borrower, or of a party that repayment relies on, give the lender the right to call its own loan at once (a cross-default clause)?",
+     "answer": "yes_no",
+     "assumption": "When another lender can call its loan, the lender can call its own",
+     "disproved_by": "no",
+     "look_in": [
+      "04.01.b",
+      "04.01.a"
+     ],
+     "evidence": {
+      "best": [
+       "facility_agreement"
+      ],
+      "supporting": [
+       "term_sheet"
+      ],
+      "stated": [
+       "correspondence",
+       "call",
+       "officer_note"
+      ]
+     },
+     "note": "A clause that gives the right only once the other lender has in fact called its loan (cross-acceleration) leaves the lender one step behind. Answer no and say which clause it is. This check takes the place of OBS_LENDER_007, which asked the same of each other loan in turn."
     },
     {
      "id": "OBS_COV_008",
@@ -23709,6 +23815,36 @@
    "applies_to": [
     "facility"
    ],
+   "applies_when": [
+    {
+     "check": "OBS_SECPKG_001",
+     "is": "real_estate"
+    },
+    {
+     "check": "OBS_SECPKG_001",
+     "is": "equipment"
+    },
+    {
+     "check": "OBS_SECPKG_001",
+     "is": "receivables"
+    },
+    {
+     "check": "OBS_SECPKG_001",
+     "is": "inventory"
+    },
+    {
+     "check": "OBS_SECPKG_001",
+     "is": "shares"
+    },
+    {
+     "check": "OBS_SECPKG_001",
+     "is": "cash_deposits"
+    },
+    {
+     "check": "OBS_SECPKG_001",
+     "is": "contract_rights"
+    }
+   ],
    "matters_more_when": [
     {
      "check": "OBS_INVESTOR_ROLE_001",
@@ -24113,6 +24249,36 @@
      "assumption": "The revenue that repays the loan can be assigned to the lender and collected in an account it controls",
      "disproved_by": "no",
      "due_by": "concept",
+     "when": [
+      {
+       "check": "OBS_SECPKG_001",
+       "is": "real_estate"
+      },
+      {
+       "check": "OBS_SECPKG_001",
+       "is": "equipment"
+      },
+      {
+       "check": "OBS_SECPKG_001",
+       "is": "receivables"
+      },
+      {
+       "check": "OBS_SECPKG_001",
+       "is": "inventory"
+      },
+      {
+       "check": "OBS_SECPKG_001",
+       "is": "shares"
+      },
+      {
+       "check": "OBS_SECPKG_001",
+       "is": "cash_deposits"
+      },
+      {
+       "check": "OBS_SECPKG_001",
+       "is": "contract_rights"
+      }
+     ],
      "look_in": [
       "06.01.a",
       "08.01.a",
@@ -24270,6 +24436,36 @@
      "assumption": "A forced sale of the security would repay what the lender is owed",
      "flag_when": "below 100",
      "why": "Below 100 percent a forced sale leaves part of the loan unpaid, and that part rests on a guarantee or on nothing. Many lenders ask for more than 100 percent, to allow for the cost and the time of a sale and for falling prices. An institution can set its own level.",
+     "when": [
+      {
+       "check": "OBS_SECPKG_001",
+       "is": "real_estate"
+      },
+      {
+       "check": "OBS_SECPKG_001",
+       "is": "equipment"
+      },
+      {
+       "check": "OBS_SECPKG_001",
+       "is": "receivables"
+      },
+      {
+       "check": "OBS_SECPKG_001",
+       "is": "inventory"
+      },
+      {
+       "check": "OBS_SECPKG_001",
+       "is": "shares"
+      },
+      {
+       "check": "OBS_SECPKG_001",
+       "is": "cash_deposits"
+      },
+      {
+       "check": "OBS_SECPKG_001",
+       "is": "contract_rights"
+      }
+     ],
      "look_in": [
       "05.02.a",
       "05.01.a"
@@ -24431,6 +24627,12 @@
      "answer": "yes_no",
      "assumption": "Each repayment falls due after the cash that pays it has come in",
      "disproved_by": "yes",
+     "when": [
+      {
+       "check": "OBS_TS_001",
+       "is": true
+      }
+     ],
      "look_in": [
       "04.01.a",
       "03.02.b",
@@ -24464,6 +24666,12 @@
      "assumption": "The loan is repaid in full from cash flow by its final maturity, without a refinancing or a sale",
      "disproved_by": "yes",
      "due_by": "concept",
+     "when": [
+      {
+       "check": "OBS_TS_001",
+       "is": true
+      }
+     ],
      "look_in": [
       "04.01.a",
       "03.02.b"
@@ -24499,6 +24707,12 @@
      "question": "Are the proposed tenor, grace period and repayment profile within what lenders have agreed for comparable loans in this sector and country?",
      "answer": "yes_no",
      "why": "Terms more generous than any precedent need a reason that belongs to this deal. Comparable means the same sector, the same country or region and the same kind of borrower.",
+     "when": [
+      {
+       "check": "OBS_TS_001",
+       "is": true
+      }
+     ],
      "look_in": [
       "04.01.a",
       "04.03.b"
@@ -24526,6 +24740,12 @@
      "answer": "yes_no",
      "why": "A price below the lender's own requirement means the risk is carried for less than it costs. This is the lender's judgement of its own loan, not a test of the borrower.",
      "due_by": "approval",
+     "when": [
+      {
+       "check": "OBS_TS_001",
+       "is": true
+      }
+     ],
      "look_in": [
       "04.01.a"
      ],

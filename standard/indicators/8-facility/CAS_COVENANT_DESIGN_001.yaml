@@ -5,6 +5,8 @@ claim: The covenants warn the lender while there is still time to act, give it t
   from leaving the borrower before it does.
 due_by: diligence
 applies_to: [facility]
+applies_when:
+- {check: OBS_TS_001, is: true}
 matters_more_when:
 - {check: OBS_COLLATERAL_001, is: unsecured, reason: Without security the covenants are the lender's only hold on the borrower}
 - {check: OBS_BORROWER_003, is: true, reason: 'In a group, cash and assets can move to members that the covenants do not
@@ -150,6 +152,20 @@ checks:
     stated: [correspondence, call, officer_note]
   note: Read how control is defined. A sale of shares higher up the chain of ownership should count as a change of control
     too. A clause that only obliges the borrower to tell the lender of the change does not give this right.
+- id: OBS_COV_011
+  question: Does a default under another loan of the borrower, or of a party that repayment relies on, give the lender the
+    right to call its own loan at once (a cross-default clause)?
+  answer: yes_no
+  assumption: When another lender can call its loan, the lender can call its own
+  disproved_by: 'no'
+  look_in: [04.01.b, 04.01.a]
+  evidence:
+    best: [facility_agreement]
+    supporting: [term_sheet]
+    stated: [correspondence, call, officer_note]
+  note: A clause that gives the right only once the other lender has in fact called its loan (cross-acceleration) leaves
+    the lender one step behind. Answer no and say which clause it is. This check takes the place of OBS_LENDER_007, which
+    asked the same of each other loan in turn.
 - id: OBS_COV_008
   question: Does the compliance certificate for the latest test date show every financial covenant within its limit?
   answer: yes_no

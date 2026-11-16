@@ -10,24 +10,35 @@ An assistant reads the contents page, `Internal/wiki/index.md`, and the page of 
 
 - **Every page starts with a lead that can stand alone.** The contents page prints the first sentence of each page. That line decides whether the page is opened.
 - **The contents page is the map.** The tool writes it on every `pages`. It also lists each subject that no page describes, in one line: its kind, its roles and its note. Beside it the tool writes `sources.md`: every source of the record, how far it was read, how many facts rest on it, and links to its original and its extract.
-- **A page may be long** when its subject needs it. Keep it workable: one subject per page, headings or bold lead-ins that name what follows, and each thing said once, on the page it belongs to. Link to it from elsewhere. A figure that sits on five pages has to be changed on five pages.
+- **A page is about one subject.** It may be long when the subject needs it. Keep it workable: headings or bold lead-ins that name what follows, and each thing said once, on the page it belongs to. Link to it from elsewhere. A figure that sits on five pages has to be changed on five pages.
 
 A person reads the same pages in a browser: `pages` writes `Internal/wiki/wiki.html`, one file that opens by double click. It lists the pages by shelf, searches them, follows the links between them, and shows the fact behind a citation when it is clicked: its value, its date, its source and the place in the source, with a link that opens the original at that page. A long part that the tool fills in is folded away under "From the record", so that your text comes first. The view also shows the sources and the index of the client's documents. Do not edit it: the tool writes it again each time. The pages themselves are plain Markdown with ordinary links, so the folder also opens in any Markdown reader, or as a vault in Obsidian.
 
 ## Which pages
 
+The wiki holds the larger context of the deal: what a reader would want to know about this company, also where no check asks for it. The financial proposal condenses. The wiki does not have to.
+
 | Folder | One page per |
 |---|---|
-| `deal` | the deal, and each project, asset, facility or contract that needs one |
+| `deal` | the deal, and each plant, line, project, facility or contract that has a name |
 | `parties` | company, group or person that needs one, or several that share a page, such as the lenders |
-| `people` | group of people: the client's side, our side, other lenders and advisers |
-| `topics` | subject of analysis that runs across parties, such as milk supply or currency |
+| `people` | group of people: the board and management, the owners, our side, other lenders and advisers |
+| `context` | what surrounds the company: its history, its market and competitors, its products and how they are made, the country and the rules it works under |
+| `topics` | subject of analysis that runs across parties, such as cash and working capital, or currency |
 | `terms` | term under negotiation |
 | `work` | piece of work, such as a consultant to hire or a site visit, and the working notes |
 
-`pages` creates an empty page for the deal, for each borrower, repayment source, guarantor and sponsor, and for each project the loan finances, once it has a name. Those you write.
+**A page for each subject a reader would look up.** One subject to a page: a plant, a machine, a project, a product, the history, the market, a customer that matters, the family that owns the company. A subject earns a page when two or more sources bear on it, or when other pages keep mentioning it. Write the page once and link to it from the others.
 
-**Fewer and richer.** Any other subject gets a page only when there is something to say that does not fit in its line on the contents page and on the page of the party it matters to. A customer that buys 31% of revenue under a contract with unusual terms may earn a page. A bank that is one of five lenders does not: the lenders share one page. To make a page, write a file in the right folder with the form below, then run `pages`.
+**How many.** There is no right number. As a guide, a wiki of this kind has about as many pages as the deal has sources, or somewhat more: thirty to forty for twenty-five sources, not fifteen. If a long document changed only the page of the deal, it has not been taken in.
+
+**Not a page:** a check, a claim or a list of checks; a single figure; a document retold from front to back; a subject with nothing to say beyond its line on the contents page; an account of what was done.
+
+**The history has a page of its own**, in `context`. How the company came to be what it is: its founding, each plant and line, each change of owner or of capital, each listing, with the date and the source of each. Where two sources differ, give both. Other pages link to it and do not repeat it.
+
+**Go beyond the company's own documents where you can.** The market, the competitors, the country and the technology are described by others: an industry association, a rating agency, a manufacturer of the machines. A page in `context` says who says so.
+
+`pages` creates an empty page for the deal, for each borrower, repayment source, guarantor and sponsor, and for each project the loan finances, once it has a name. Those you write. To make any other page, write a file in the right folder with the form below, then run `pages`. `check` reports a page that no other page links to.
 
 **One page for several subjects.** Name them all in `about`: `about: P-004, P-005, P-006` for a page on the three banks. Each then counts as described there. Its name links to that page from the other pages, and it leaves the list of subjects without a page. Name subjects only: a page that names a link or an indicator gets one line from the tool and no key values.
 
@@ -65,7 +76,7 @@ One to three plain sentences. The first one can stand alone.
 <!-- tool:end -->
 ```
 
-- **`about`** names what the page is about: a subject (`P-001`), a link (`R-004`), an indicator (`CAS_REVENUE_001`), `DEAL`, or several separated by commas. The first one decides whose page it is. `show <deal> claims` gives the ID of each indicator.
+- **`about`** names what the page is about: a subject (`P-001`), a link (`R-004`), an indicator (`CAS_REVENUE_001`), `DEAL`, or several separated by commas. The first one decides whose page it is. A page in `people`, `context`, `topics`, `terms` or `work` is nobody's own page: name there what it bears on, such as the company, the group or `DEAL`. `show <deal> claims` gives the ID of each indicator.
 - **Leave the three marked parts to the tool.** "At a glance" on the page of the deal shows the stage, the loan with the parties and the project at its centre, the claims by pillar and each claim that is challenged or contested. On the page of a subject it shows the roles, the links that have not ended, and the challenged claims, questions and decisions. On the shelves `people`, `topics`, `terms` and `work` it is one line that names what the page is about. "Sources" lists what the page cites, with a link to each document, and says where a source was not read in full. "Key values" is a table of the latest value under each label of the facts about the deal or the subject. The tool adds it at the end of the page once there is such a fact.
 - **You may move a marked part**, with its heading, below "Assumptions and open points". The tool fills it where it finds it. There is rarely a need: in the browser a long part is folded away wherever it stands.
 - **"At a glance" already lists the open questions and the decisions about a subject.** Cite a question on a page: `[Q-004]`. Do not keep a list of questions there.
@@ -118,7 +129,7 @@ This one is filler. Every sentence fits a hundred companies and none can be chec
 
 > Cedar Foods is a leading dairy processor with a strong market position and a diversified customer base. It has shown robust growth, which underlines its resilience. However, it faces challenges from volatile input prices and currency risk, which may weigh on profitability going forward.
 
-Filler is: praise, words about importance, what is true of every business of its kind, a figure put into words with no reason beside it, history that changes nothing, a list of everything a document holds, and a summary of what was just said.
+Filler is: praise, words about importance, what is true of every business of its kind, a figure put into words with no reason beside it, history retold away from its own page, a list of everything a document holds, and a summary of what was just said.
 
 ## Citing
 

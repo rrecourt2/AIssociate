@@ -15,7 +15,7 @@ The tool gives you the material: the claims, the facts and the pages. You write 
 
 - **A scan** says what the deal is and whether it fits. It may rest on what the client said. Say so.
 - **A CIP** describes the deal and lists the claims that still need testing. Take them from `show claims` (the claims that are not tested, or that rest on someone's own word), from "Assumptions and open points" on the pages, and from the checks that are open or thin.
-- **An FP** is driven by conclusions on risk. Go through the pillars. For each claim that matters: what the lender relies on, what tested it, what the evidence is and how strong, and for a claim that is challenged what mitigates it or which action is agreed. A claim that is challenged, contested or thinly supported is said to be so, in the words the tool uses: "Currency risk is challenged: the loan is in euros and all sales are in shillings [F-007, F-010]. No hedge is in place [D-002]."
+- **An FP** concludes. It holds what is material for the decision, and leaves the wider context to the wiki. Lead each part with the conclusion, then the two or three facts it rests on. It is driven by conclusions on risk. Go through the pillars. For each claim that matters: what the lender relies on, what tested it, what the evidence is and how strong, and for a claim that is challenged what mitigates it or which action is agreed. A claim that is challenged, contested or thinly supported is said to be so, in the words the tool uses: "Currency risk is challenged: the loan is in euros and all sales are in shillings [F-007, F-010]. No hedge is in place [D-002]."
 
 ## The nine pillars
 
@@ -59,7 +59,7 @@ If the amount, the currency, the tenor, the security or the borrower is not yet 
 
 ## Rules
 
-- **Condense.** The wiki holds the wider analysis. The document holds what the reader needs to decide.
+- **Condense.** The wiki holds the wider analysis and the context: history, market, how the plants work. The document holds what the reader needs to decide, and says in a line where the rest can be read.
 - **Take every number from a fact**, with its unit, its date and the company it belongs to, and cite the fact: `[F-008]`. Do not retype a number from what you remember.
 - **A figure you work out** from facts, such as a ratio, a sum or a change, is allowed when the facts it comes from are cited beside it. `check` knows only the numbers that the cited records hold, so it reports the new figure. For a figure the document leans on, record it as a fact marked `inference`, with the working in its statement, and cite that fact. See [recording](recording.md).
 - **Say who said what.** "The CFO said" is not "the accounts show".
