@@ -19,7 +19,7 @@ A person reads the same pages in a browser: `pages` writes `Internal/wiki/wiki.h
 | Folder | One page per |
 |---|---|
 | `deal` | the deal, and each project, asset, facility or contract that needs one |
-| `parties` | company, group or person that needs one |
+| `parties` | company, group or person that needs one, or several that share a page, such as the lenders |
 | `people` | group of people: the client's side, our side, other lenders and advisers |
 | `topics` | subject of analysis that runs across parties, such as milk supply or currency |
 | `terms` | term under negotiation |
@@ -31,7 +31,7 @@ A person reads the same pages in a browser: `pages` writes `Internal/wiki/wiki.h
 
 **One page for several subjects.** Name them all in `about`: `about: P-004, P-005, P-006` for a page on the three banks. Each then counts as described there. Its name links to that page from the other pages, and it leaves the list of subjects without a page. Name subjects only: a page that names a link or an indicator gets one line from the tool and no key values.
 
-**To merge or remove a page**, move what is worth keeping to the page that now describes the subject, add the subject's ID to that page's `about`, delete the old file, and run `pages` and `check`. `check` reports each link that still points at the page that is gone. `pages` writes a new empty page only for the deal, a main party or a financed project that no page names in `about`.
+**To merge or remove a page**, move what is worth keeping to the page that now describes the subject, add the subject's ID to that page's `about`, delete the old file, and run `pages` and `check`. `check` reports each link that still points at the page that is gone. `pages` writes a new empty page only for the deal, a main party or a financed project that no page names in `about`. To rename a page, write the new file, delete the old one and repoint the links that `check` reports.
 
 **Projects and assets get real pages.** What it is, where, how big, at what cost, by when, who pays for which part, how far it has come, and what it adds to the business: capacity, products, revenue, debt. The answer to `OBS_FEAS_008` is its start.
 
@@ -67,7 +67,8 @@ One to three plain sentences. The first one can stand alone.
 
 - **`about`** names what the page is about: a subject (`P-001`), a link (`R-004`), an indicator (`CAS_REVENUE_001`), `DEAL`, or several separated by commas. The first one decides whose page it is. `show <deal> claims` gives the ID of each indicator.
 - **Leave the three marked parts to the tool.** "At a glance" on the page of the deal shows the stage, the loan with the parties and the project at its centre, the claims by pillar and each claim that is challenged or contested. On the page of a subject it shows the roles, the links that have not ended, and the challenged claims, questions and decisions. On the shelves `people`, `topics`, `terms` and `work` it is one line that names what the page is about. "Sources" lists what the page cites, with a link to each document, and says where a source was not read in full. "Key values" is a table of the latest value under each label of the facts about the deal or the subject. The tool adds it at the end of the page once there is such a fact.
-- **You may move a marked part**, with its heading, to another place on the page. The tool fills it where it finds it. Keep your own text ahead of the tables.
+- **You may move a marked part**, with its heading, below "Assumptions and open points". The tool fills it where it finds it. There is rarely a need: in the browser a long part is folded away wherever it stands.
+- **"At a glance" already lists the open questions and the decisions about a subject.** Cite a question on a page: `[Q-004]`. Do not keep a list of questions there.
 - **`checked`** is for a person. Leave it empty.
 
 ## What to write, in this order
@@ -83,7 +84,7 @@ Parts 2 to 5 go under "What we know". Use `###` headings or short bold lead-ins.
 
 On the page of the deal, write the request, how the loan is to be repaid, and the structure in words: who borrows, where the cash is earned and how it reaches the lender. Link to the pages of the parties and the project.
 
-**The working notes** have their own page, `work/working-notes.md`, with `about: DEAL`. They say how to work on this deal: what the officer asked for, in their words and with the date, which page is the place for what, and what is left to do. They hold no analysis and no account of what was done: `show <deal> log` has that. `check` does not ask this one page for citations.
+**The working notes** have their own page, `work/working-notes.md`, with `about: DEAL`. They say how to work on this deal: what the officer asked for, in their words and with the date, which page is the place for what, and what is left to do. They hold no analysis and no account of what was done: `show <deal> log` has that. `check` does not ask this one page for citations. It still reports a citation of a replaced fact there.
 
 ```markdown
 - 12 November 2026, officer: "Write more about the second line. The committee will ask what it adds."

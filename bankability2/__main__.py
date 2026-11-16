@@ -86,6 +86,8 @@ def status(args):
         return
     deal, titles = memory["deal"], std["stage_titles"]
     print(f"# {deal['name']}: stage {titles[deal['stage']]}, revision {store.revision(memory)}, standard {deal['standard']}")
+    if scope is None:
+        print("\nThe record holds " + ", ".join(f"{len(memory[table])} {table}" for table in store.TABLES) + ".")
     if scope:
         print(f"\nOnly what concerns {pages.name_of(args.about, memory)} ({args.about}).")
     structure(memory, std, None if args.about == store.DEAL else scope)
@@ -221,14 +223,14 @@ def fact_lines(memory, terms):
     for fid, fact in memory["facts"].items():
         state = "" if fact["state"] == "current" else f" ({fact['state']})"
         value = f" {fact.get('label', 'Value')}: {fact.get('value')} {fact.get('unit', '')}".rstrip() + "."
-        answers = ", ".join(f"{answer['check']}: {pages.shown(answer['value'])}" for answer in fact.get("answers", []))
+        answers = ", ".join(f"{answer['check']}: {pages.shown(answer['value'])[:60]}" for answer in fact.get("answers", []))
         where = [fact["source"], fact.get("place"), fact.get("as_of") and f"as of {fact['as_of']}", fact.get("said_by"),
                  answers and f"answers {answers}"]
         line = (f"- {fid}{state} about {fact['about']}: {fact['statement']}{value if 'value' in fact else ''} "
                 f"({'; '.join(filter(None, where))})")
         named = any(re.search(rf"(?<!\w){re.escape(term)}(?!\w)", line, re.I) for term in terms)
-        if named or (not terms and fact["state"] != "outdated"):
-            lines.append(line)
+        if named or (not terms and fact["state"] != "outdated"):  # a long statement is cut: `show <ID>` has it in full
+            lines.append(line.replace(fact["statement"], fact["statement"][:300] + (" ..." if len(fact["statement"]) > 300 else "")))
     return lines
 
 
@@ -319,6 +321,12 @@ def check(args):
     found = store.verify(memory) + std["notes"] + file_problems(args.deal, memory) + pages.problems(args.deal, memory)
     found += [f"{did}: the decision names nothing it rests on" for did, decision in memory["decisions"].items()
               if not decision.get("rests_on")]
+    for table, keys in (("facts", ["statement"]), ("decisions", ["decision", "reason"]), ("links", ["why"]), ("subjects", ["note"])):
+        for rid, record in memory[table].items():  # a record that is still in use and names a fact that was replaced
+            text = " ".join(str(record.get(key, "")) for key in keys)
+            found += [f"{rid}: names {fid}, which is outdated (replaced by {fact.get('replaced_by')})"
+                      for fid, fact in memory["facts"].items() if fact["state"] == "outdated" and fact.get("replaced_by") != rid
+                      and record.get("state") not in ("outdated", "ended") and re.search(rf"\b{fid}\b", text)]
     print("\n".join(f"- {line}" for line in found) or "No problems found.")
 
 

@@ -144,10 +144,11 @@ class Deal(unittest.TestCase):
         deal = self.copy()
         answer = {"check": "OBS_FX_002", "value": 40}  # asked only when there is revenue in a foreign currency
         fact = {"ref": "hedge", "about": "P-001", "statement": "A fact with an answer nobody asked for.", "source": "S-003"}
-        worked = {"about": "P-001", "statement": "A figure worked out from (@hedge).", "source": "S-003"}
+        worked = {"about": "P-001", "statement": "A figure worked out from (@hedge) and F-005.", "source": "S-003"}
         _, said = run("add", deal, self.handed({"facts": [dict(fact, answers=[answer]), worked]}))
         self.assertIn("@hedge -> F-020", said)
-        self.assertEqual(files.read_json(deal, files.MEMORY)["facts"]["F-021"]["statement"], "A figure worked out from (F-020).")
+        self.assertEqual(files.read_json(deal, files.MEMORY)["facts"]["F-021"]["statement"], "A figure worked out from (F-020) and F-005.")
+        self.assertIn("- F-021: names F-005, which is outdated (replaced by F-008)", run("check", deal)[1])
         self.assertIn("Note: F-020 answers OBS_FX_002 for P-001, where that check is not relevant.", said)
         run("add", deal, self.handed({"facts": [{"id": "F-020", "answers": []}]}))
         memory = files.read_json(deal, files.MEMORY)
@@ -212,6 +213,10 @@ class Deal(unittest.TestCase):
         self.assertNotIn(("OBS_FIC_001", "P-001"), rows)  # checks for banks do not apply
         self.assertIn(("OBS_AGRI_001", "P-001"), rows)  # checks for agribusiness do, because discovery said so
         self.assertEqual(rows["OBS_HEDGE_003", "P-001"]["action"], "D-002")  # a gap with an agreed action
+        memory = self.memory()  # a fact of a later date answers, and does not contest the earlier one
+        memory["facts"]["F-900"] = dict(memory["facts"]["F-012"], as_of="2027-01-01", answers=[{"check": "OBS_COST_004", "value": False}])
+        later = self.rows(memory)["OBS_COST_004", "P-001"]
+        self.assertEqual((margin["value"], later["state"], later["value"]), (True, "answered", False))
         memory = self.memory()
         memory["facts"]["F-007"]["state"] = "outdated"  # without it no currency test goes against the claim
         self.assertEqual(self.rows(memory)["OBS_HEDGE_003", "P-001"]["state"], "waiting")

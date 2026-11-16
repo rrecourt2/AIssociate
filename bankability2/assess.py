@@ -126,7 +126,10 @@ def months_since(date, today):
 
 
 def answered_row(row, check, given, memory, std, today):
-    """Fill in what an answer rests on: its value, the strength of the evidence, its age and what it means."""
+    """Fill in what an answer rests on: its value, the strength of the evidence, its age and what it means. Where the
+    facts are of different dates, the latest answers: a balance at a later date does not contest an earlier one."""
+    latest = max(str(memory["facts"][fid].get("as_of", "")) for fid, _ in given)
+    given = [(fid, value) for fid, value in given if str(memory["facts"][fid].get("as_of", "")) == latest]
     facts = [memory["facts"][fid] for fid, _ in given]
     values = [value for _, value in given]
     row.update(facts=[fid for fid, _ in given], value=values[0])

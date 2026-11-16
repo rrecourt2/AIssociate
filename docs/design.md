@@ -115,7 +115,7 @@ Exact things: names, amounts, dates, terms, shares, commitments. If something wo
 
 - **Who said it.** A document, the client, the officer, a third party, or the AI's own inference.
 - **Replaced, not removed.** A fact that is replaced keeps its place, with the state `outdated` and a pointer to what replaced it. A fact can be marked `disputed`.
-- **A figure at a date is not replaced by a later one.** Both stay current, and the tool shows the latest.
+- **A figure at a date is not replaced by a later one.** Both stay current. The tool shows the latest, and the latest answers a check.
 - **A fact comes from a source.** A wiki page or a draft is the AI's own writing and is never evidence for a fact.
 - **A search that found nothing is a fact too**, marked as such.
 - **An answer can be withdrawn.** The change is logged like any other.
@@ -305,7 +305,7 @@ The AI chooses what to show and how.
 | `add` | Records a set of changes: sources, facts, subjects, links, decisions, questions. All of it or none of it. It prints the ID of each new record, and a note for each answer that does not count where it was put. |
 | `show` | Looks things up: a record and what uses it, a check and what it rests on, an indicator, every claim by pillar, the facts that hold an ID or a word, the kinds of source, subject and link, the entry sheets, the log, or a search of the record and of the checks |
 | `pages` | Creates the few pages the graph calls for, fills in the generated parts of every page, and writes the contents page and the view for a browser |
-| `check` | Reports what looks wrong: a broken log, an unsound adjustment, files that are missing or changed, and problems on the pages and in the drafts |
+| `check` | Reports what looks wrong: a broken log, an unsound adjustment, files that are missing or changed, a record that still names a replaced fact, and problems on the pages and in the drafts |
 | `adjust` | Applies a change to the deal's layer of the standard |
 | `file` | On the laptop only: moves documents into the client folder, lists them in the manifest and writes the index of the client folder |
 | `upgrade` | Puts the standard that comes with the tool into the deal folder, logs the change of version, and names the answers whose check is gone. It also moves the record of a folder made by an earlier version to its new place. |
@@ -362,8 +362,7 @@ Designed, and deliberately not built yet:
 5. **A command to move an adjustment up** to the institution's layer.
 6. **A local MCP shell** for Copilot Code.
 7. **In the standard:** a module for funds, and modules for more sectors than banks, power and agribusiness.
-8. **Pointing out what rests on a replaced fact.** A note on a subject, the reason of a decision or the reason of a link can quote a figure that was since replaced. Nothing reports that yet.
-9. **Checking what a sentence says.** `check` matches citations and numbers. It does not judge whether a sentence says what its fact says.
+8. **Checking what a sentence says.** `check` matches citations and numbers. It does not judge whether a sentence says what its fact says.
 
 One thing comes before first use: a ten-minute test in the tenant of how Cowork saves and overwrites files, and whether a script shipped in a skill is found and run. If saving many files proves unreliable, the wiki pages move inside the record file and the Markdown files become views.
 

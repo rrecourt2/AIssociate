@@ -21,7 +21,7 @@ You record by handing `add` one JSON object: a set of changes. The tool applies 
 ```
 
 - **A new record has no `id`.** The tool gives it one. Give it a `ref` to point at it from the same set: `"@ar"`.
-- **A record with an `id` is a change** to that record. Send only the fields that change. A field you send takes the place of the old one: a new `answers` list replaces the whole list.
+- **A record with an `id` is a change** to that record. Send only the fields that change. A field you send takes the place of the old one: a new `answers` list replaces the whole list, and so does a new `map`. Send `null` to clear a field, such as the `owner` of a decision or the `asked` date of a question.
 - **`op`** is any name for this set. A set with the same `op` is not applied twice. Use it.
 - **`base`** is optional: the revision you last saw. The tool refuses the set if the record has moved on.
 - **`deal`** changes the deal itself: `{"deal": {"stage": "concept"}}`.
@@ -94,7 +94,7 @@ The original document is the source. A text extract that you or someone else mad
 3. **Cite the place in the original.** `place` on a fact is the page, the note or the table of the original, not a line of the extract. When you make an extract, keep the page numbers of the original and copy its tables in full.
 4. **When the original comes later.** A source that was recorded from an extract alone is pointed at the original once that is filed: send the source's `id` with the new `where` and `extract`. The tool then takes the fingerprint of the original.
 
-Where the extract and the original differ, the original is right.
+Where the extract and the original differ, the original is right. Correct the extract, and say so in the `note` of the source.
 
 ## Facts
 
@@ -103,7 +103,7 @@ Record what would go into a table or a system field: names, amounts, dates, term
 | Field | Meaning |
 |---|---|
 | `about` | A subject, a link, or `DEAL`. A figure from consolidated accounts is about the group. A figure from a company's own accounts is about the company. |
-| `statement` | One plain sentence that can stand alone. |
+| `statement` | One plain sentence that can stand alone. `show <deal> facts` prints its first 300 characters, and `show <deal> <ID>` all of it. |
 | `label`, `value`, `unit` | Give a label to a value that belongs in a table, such as `Revenue`. Use the same label for the same figure at another date. |
 | `as_of` | The date the fact refers to: the balance sheet date, the end of the year. Not the date of the document. For a standing fact, the date of the source. |
 | `source`, `place` | Where it comes from, and the page, note or minute. Give the page as the PDF counts it, and the printed number in brackets where it differs: `p.24 (printed 22), note 16`. The browser view opens the original at that page. |
@@ -114,16 +114,16 @@ Record what would go into a table or a system field: names, amounts, dates, term
 | `replaces` | The fact this one replaces: one earlier fact that was not replaced before. The old one stays, marked `outdated`. |
 | `state` | Set `disputed` on each fact that is contested, for example the two figures that two documents give for the same thing, and on a figure worked out from one of them. A fact that only reports the disagreement is true as it stands, and stays current. |
 
-**From a table**, record each row you use with all its columns. A row with half its columns leads to a page that says "not stated" about something the document states.
+**From a table**, record each row you use as a fact of its own, with all its columns. A total that the table does not print is your inference. A row with half its columns leads to a page that says "not stated" about something the document states.
 
-**A figure you worked out** from other facts, such as a ratio or a sum, is a fact of its own. Mark it `inference`, show the working in the statement and name the facts it comes from: "Borrowings were 0.32 times revenue in 2025: KES 1,300m (F-011) over KES 4,060m (F-008)." A fact of the same set is named by its `ref`: write `(@rev)`, and the tool puts the ID in its place. A ref that the set does not define is left as written, so read the IDs that `add` prints.
+**A figure you worked out** from other facts, such as a ratio or a sum, is a fact of its own. Mark it `inference`, show the working in the statement and name the facts it comes from: "Borrowings were 0.32 times revenue in 2025: KES 1,300m (F-011) over KES 4,060m (F-008)." A fact of the same set is named by its `ref`: write `(@rev)`, and the tool puts the ID in its place. The same works in a `why`, a `reason` and a `decision`. A ref that the set does not define is left as written, so read the IDs that `add` prints. Marking a fact `inference` says that the reading is yours. How strong its evidence counts still goes by the kind of its source.
 
 **A reading of several facts is not a fact.** What the figures mean together goes on one page, and other pages link to it.
 
 ### Changing, replacing and withdrawing
 
-- **A fact was wrong, or a plan or a status has moved on.** Record the new fact with `replaces`. Carry over the answers the old fact gave, if they still hold: the answers of an outdated fact no longer count.
-- **A balance at a date is not replaced by a later one.** Debt at 30 June is still true once debt at 30 September is known. Record the new figure as a new fact with the same `label` and its own `as_of`. Both stay current, and the tool shows the latest among the key values of the page. The same goes for a year: 2025 does not replace 2024, and an unaudited quarter does not replace an audited year.
+- **A fact was wrong or left something out, or a plan or a status has moved on.** Record the new fact with `replaces`. Carry over the answers the old fact gave, if they still hold: the answers of an outdated fact no longer count.
+- **A balance at a date is not replaced by a later one.** Debt at 30 June is still true once debt at 30 September is known. Record the new figure as a new fact with the same `label` and its own `as_of`. Both stay current. The tool shows the latest among the key values of the page, and where both answer the same check, the later one answers. The same goes for a year: 2025 does not replace 2024, and an unaudited quarter does not replace an audited year.
 - **A better source confirms or corrects a figure.** The audited statements give the revenue that the teaser gave in round numbers. Record the figure from the better source with `replaces`, so that the figure appears once and its answers rest on the better evidence.
 - **Withdraw an answer** by sending the fact with the answers that remain: `{"facts": [{"id": "F-012", "answers": []}]}`. The change is logged like any other. Do not record a new fact only to undo an old one.
 - **A fact was recorded about the wrong subject.** Send its `id` with the right `about`.
@@ -137,6 +137,7 @@ A subject is a party, a person, a facility, a contract, an asset, a project or a
 - A link needs `from`, `type` and `to`. It starts as `proposed`. Set `state` to `confirmed` when a source confirms it, and to `ended` when it no longer holds.
 - Give a link its `why`: why it matters for repayment.
 - A mistake of your own is corrected in place: send the link's `id` with the right `type`, or with `"state": "ended"`.
+- A link that is your inference stays `proposed`. Say so in its `why`, and name the fact it rests on.
 - `owns` to an asset or a project says who owns it. It brings no checks: the checks on an owner are asked where the link points at a party or a group.
 - `sponsors` is for whoever stands behind the borrower or behind the project the loan pays for. Who is behind another project of the business is recorded with `owns`.
 
@@ -149,7 +150,7 @@ A new link brings the checks that fit the role, and the checks on the link itsel
   1. Answer the checks about the deal again that turn on who borrows: `status --for DEAL` lists them, and `show <deal> facts <check>` shows the answer each has now.
   2. Decide whether `relies_on` still points at the right party or group. The perimeter is where the cash is earned, whoever signs.
   3. Look at the tie between the old and the new borrower. An owner whose company now borrows is asked what it owes and receives on its own account.
-  4. `status` lists the answers that were recorded for the old borrower and that it is no longer asked. If it comes back in another role, as a guarantor for example, they count again. If it does not, withdraw them. The facts stay.
+  4. `status` lists the answers that were recorded for the old borrower and that it is no longer asked. If it comes back in another role, as a guarantor for example, they count again. If it does not, withdraw them. The facts stay. Move an answer to the new borrower with `"for"` only where the fact is about the new borrower as well.
 - **A party gets another role.** Add or end the link. The record of the party stays one record.
 
 ### The loan under review
@@ -206,7 +207,7 @@ Repayment does not always come from the borrower. Link the facility to the party
                 "about": "P-001", "asked": "2026-11-12", "via": "S-003", "checks": ["OBS_INPUT_MIT_001"]}]}
 ```
 
-**A decision** needs a `decision` and a `reason`, and should name what it rests on: facts, or a source such as the officer's note. A decision that `covers` checks takes them off the list of checks to answer.
+**A decision** needs a `decision` and a `reason`, and should name what it rests on: facts, or a source such as the officer's note. A decision that no longer holds is changed in place: send its `id` with the new text. The log keeps what it said before. A decision that `covers` checks takes them off the list of checks to answer.
 
 - With an `owner` and a `due` date it is a gap with an agreed action: a condition, a covenant or a task. `status` lists it as such.
 - Without them it settles the matter. That is how you record that an answer calls for nothing more in the structure, and why.

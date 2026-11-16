@@ -33,7 +33,7 @@ For each claim, and each party or link it is made about, the tool says where it 
 | is **challenged** | A test went against it. The tool lists the mitigants: each holds, fails or is not known. |
 | is **contested** | Two facts answer a test, or a question behind the claim, differently. |
 
-`status` shows the claims by pillar and lists those that are challenged, contested or to look at again. A claim made about several parties counts once, at its worst.
+`status` shows the claims by pillar and lists those that are challenged, contested or to look at again. A claim is to look at again when a source or an answer came in after its tests were answered and the standard says that such a thing bears on it. A claim made about several parties counts once, at its worst.
 
 Who says something matters. An answer that goes against a claim is believed whatever it rests on. A favourable answer that rests only on what a party said is marked as **someone's own word**, and a claim does not stand on that alone. Set `said_by` on every fact.
 

@@ -181,9 +181,10 @@ def linked(rid, memory, where, here):
 
 
 def described(sid, memory, std, held):
-    """The kind of a subject and the roles it holds."""
+    """The kind of a subject and the roles it holds, or that it has ended."""
     kind = next(kind for kind in std["subject_kinds"] if kind["id"] == memory["subjects"][sid]["kind"])
-    return ", ".join([kind["id"], *filter(None, [kind.get("shown_as")]), *sorted(held.get(sid, ()))]).replace("_", " ")
+    ended = ["ended"] if memory["subjects"][sid].get("state") == "ended" else []
+    return ", ".join([kind["id"], *filter(None, [kind.get("shown_as")]), *sorted(held.get(sid, ())), *ended]).replace("_", " ")
 
 
 def challenges(found, std, name):
