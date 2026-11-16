@@ -178,7 +178,7 @@ function card(id) {  // what the record holds under an ID: a fact with its value
     : v && typeof v === "object" ? Object.values(v).map(plain).join(": ")
     : typeof v === "number" && Math.abs(v) >= 10000 ? v.toLocaleString("en-GB") : String(v);  // a year stays as it is
   const named = v => esc(plain(v)).replace(ID, i => cite(i, table(i) === "subjects" ? " " + esc(data.subjects[i].name || "") : ""));
-  const page = /\bp(?:age|\.)\s*(\d+)/i.exec(record.place || "");  // a PDF opens at the page that the place names
+  const page = /\bpp?(?:ages?|\.)\s*(\d+)/i.exec(record.place || "");  // a PDF opens at the page that the place names
   const file = (path, at = "") => `<a href="../../${encoded(path)}${at}" target="_blank">${esc(path)}</a>`;  // from the wiki folder
   const main = ["statement", "title", "name", "decision", "text"].find(key => record[key]);
   for (const [key, value] of Object.entries(record)) {
