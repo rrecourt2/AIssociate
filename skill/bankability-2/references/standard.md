@@ -53,7 +53,7 @@ A check is asked about the deal, about whoever holds a role, about a subject of 
 
 - **The loan under review.** A facility is a loan the lender is considering. The roles of borrower and guarantor, and the checks on a guarantee or on security, arise only from links that point at a facility. Debt that already exists is a `lends_to` link and brings the checks on another lender.
 - **The perimeter.** The business and its money are examined once, on the party or group whose cash repays the loan. Five pillars are asked of the perimeter: environment, business, cash flow and debt, liquidity and financial risks, and environmental, social and impact. Related parties and a guarantor's capacity are asked the same way. A company that is a member of a group that is asked the same check is not asked it again.
-- **The legal entity.** People and governance is asked of each company: its owners, its integrity, its board, its standing. A group is not asked these.
+- **The legal entity.** People and governance is asked of each company: its owners, its integrity, its board, its standing. A group is not asked these. Each company you recorded as a member of the group is asked them in its place, whether it borrows or not: the parent of a borrowing subsidiary as well.
 - **The tie between them.** Where the borrower is not the whole perimeter, the links between the companies are examined for whether the cash can reach the lender.
 - **A person** is asked only what fits a person.
 - **A project** is checked only when the loan finances it. It is asked what is its own: whether it can be built and pay, its impact assessment and permits, its land, its neighbours. What concerns the whole business stays with the perimeter.

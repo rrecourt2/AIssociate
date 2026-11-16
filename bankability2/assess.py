@@ -44,17 +44,20 @@ def targets(ind, check, memory, std, held):
     """Whom or what a check is asked about: the deal, holders of a role, subjects of a kind, or links of a kind.
 
     The business and its money are examined once, on the perimeter: a member of a group that is asked the same check
-    is not asked. A group is not asked what is asked of a legal entity. A kind of subject may be asked only some indicators.
+    is not asked. A group is no legal entity: what is asked of one is asked of each of its members in its place. A kind
+    of subject may be asked only some indicators.
     """
     names = check.get("applies_to", ind["applies_to"])
     kind_of = {sid: subject["kind"] for sid, subject in live(memory).items()}
     only = {kind["id"]: kind["asked_only"] for kind in std["subject_kinds"] if "asked_only" in kind}
     asked_of = next((pillar.get("asked_of") for pillar in std["pillars"] if pillar["id"] == ind["pillar"]), None)
-    holders = {sid for sid, kind in kind_of.items()
-               if held.get(sid, set()) & set(names) and not (asked_of == "entity" and kind == "group")}
+    holders = {sid for sid in kind_of if held.get(sid, set()) & set(names)}
+    members = {link["from"] for link in memory["links"].values()
+               if link["type"] == "member_of" and link["state"] != "ended" and link["to"] in holders}
     if asked_of == "perimeter":
-        holders -= {link["from"] for link in memory["links"].values()
-                    if link["type"] == "member_of" and link["state"] != "ended" and link["to"] in holders}
+        holders -= members
+    elif asked_of == "entity":
+        holders = (holders | members & set(kind_of)) - {sid for sid in holders if kind_of[sid] == "group"}
     found = [DEAL] if "deal" in names else []
     found += [sid for sid, kind in kind_of.items()
               if (kind in names or sid in holders) and ind["id"] in only.get(kind, [ind["id"]])]

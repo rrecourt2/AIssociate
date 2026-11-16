@@ -14,7 +14,7 @@ Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). 
 
 - **An owner link brought checks wherever it pointed.** A company that owns its plant, and a promoter of a project the loan does not pay for, were each asked the nine tests of "Owner and group". `owns` and `sponsors` now carry `counts_for: [party, group]`: they give their role, and are asked their checks, only between parties. Who owns a plant or a project is still recorded with `owns`.
 - **A financed project was asked what is asked of a whole business.** Of its 29 open checks most repeated, in the same words, what the group was asked. Thirteen checks are now asked of parties only: `OBS_ENV_004`, `OBS_ENV_006` and `OBS_ENV_007`, `OBS_SUPPLYCHAIN_001` to `OBS_SUPPLYCHAIN_005`, and `OBS_SOC_001`, `OBS_SOC_003`, `OBS_SOC_004`, `OBS_SOC_005` and `OBS_SOC_006`. The project keeps what is its own: its impact assessment and permits, contamination and climate exposure of its site, its land, its neighbours and its guards.
-- **The control of the borrower's owner fell out of view** when a subsidiary became the borrower: a pledge over the parent's shares and a dilution of those who control it no longer counted against any claim. The notes of `OBS_OWN_008` and `OBS_OWN_009` now say to look up the chain of owners and to name the level at which the pledge or the change sits.
+- **The parent fell out of view when its subsidiary became the borrower.** People and governance was asked of a company only while it held a role of its own, so the listed parent of the group was no longer asked about its board, its controls or its shareholders, and a pledge over its shares counted against no claim. The tool now asks each member of the perimeter's group what is asked of a legal entity, in the group's place. For an owner outside the perimeter, the notes of `OBS_OWN_008` and `OBS_OWN_009` now say to look up the chain of owners and to name the level at which the pledge or the change sits.
 - **What an owner owes and receives on its own account** was asked only where the lender relies on cash coming up from the company. `OBS_GROUP_011` and `OBS_GROUP_012` are now asked whenever the lender relies on the tie in either direction: an owner's own debt comes before any support it can give.
 - **"Stands" was said too early.** A claim stood as soon as one test was answered in its favour, with others still open. The tool now says "stands so far" until every test of the claim is answered. [FRAMEWORK.md](FRAMEWORK.md) has the five places a claim can stand in.
 
@@ -25,6 +25,7 @@ No check was added or dropped and no ID changed.
 - An `owns` or `sponsors` link that points at an asset or a project gives no role any more. Nothing needs to be done.
 - An answer that was recorded for a financed project to one of the thirteen checks no longer counts there. The tool lists it.
 - A claim that stood with tests still open now stands so far.
+- A member of the perimeter's group that holds no role of its own is asked the checks on people and governance. Answers recorded for it count again.
 
 ### Version 4.1.0: after the first trial on a real company
 

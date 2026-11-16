@@ -124,6 +124,9 @@ class Deal(unittest.TestCase):
                  ("OBS_REV_004", "OBS_BOARD_001", "OBS_SANC_001", "OBS_BO_002", "OBS_GUARANTEE_KIND_001")}
         self.assertEqual(asked["OBS_REV_004"], {"G-001"})  # the business is examined once, on the group
         self.assertEqual(asked["OBS_BOARD_001"], {"P-001"})  # the board is that of the company, not of the group
+        memory["links"]["R-001"]["state"] = "ended"  # a member of the group is asked as a legal entity, borrower or not
+        self.assertIn(("OBS_BOARD_001", "P-001"), self.rows(memory))
+        memory["links"]["R-001"]["state"] = "confirmed"
         self.assertIn("N-001", asked["OBS_SANC_001"])  # a person is asked what fits a person
         self.assertNotIn("N-001", asked["OBS_BO_002"])  # and not who owns it
         self.assertEqual(asked["OBS_GUARANTEE_KIND_001"], {"R-002"})  # only the guarantee of the loan is examined
