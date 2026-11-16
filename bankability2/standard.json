@@ -1,6 +1,6 @@
 {
  "name": "Bankability Standard",
- "version": "4.2.1",
+ "version": "4.2.2",
  "description": "A standard for investment due diligence built on claims that can be disproved. It says what a deal folder holds and what must be known.",
  "licence": "MIT",
  "stages": [
@@ -5232,7 +5232,7 @@
        "management_presentation"
       ]
      },
-     "note": "A tenth is a guide. Say in the reason what share of output or earnings the asset carries, and whether it is to be security. Answer again when the security for the loan is settled."
+     "note": "A tenth is a guide. The earnings meant are what the asset itself brings in before financing costs, set against the same line of the whole business, not the profit its owner keeps after interest. Say in the fact what share of output or earnings the asset carries, and whether it is to be security. Answer again when the security for the loan is settled."
     },
     {
      "id": "OBS_ASSET_001",
@@ -8646,13 +8646,14 @@
        "officer_note"
       ]
      },
-     "ask": "Does your company have a board of directors that meets separately from the management team?"
+     "ask": "Does your company have a board of directors that meets separately from the management team?",
+     "note": "A company led by one office-holder and no body that meets, such as a sole director or a managing partner, has no board. Answer no, also where its owner's board takes its large decisions. OBS_BOARD_006 then asks who oversees it."
     },
     {
      "id": "OBS_BOARD_003",
-     "question": "Does the board have at least one member who is not an employee of the party, is not a shareholder nor a shareholder's relative or nominee, and does no other business with the party?",
+     "question": "Does the board have at least one member who is not an employee of the party, is not a significant shareholder nor the relative or nominee of one, and does no other business with the party?",
      "answer": "yes_no",
-     "assumption": "At least one member of the board is independent of management and of the shareholders",
+     "assumption": "At least one member of the board is independent of management and of the significant shareholders",
      "disproved_by": "no",
      "due_by": "concept",
      "when": [
@@ -8682,8 +8683,8 @@
        "officer_note"
       ]
      },
-     "ask": "Is any member of your board independent: not an employee, not a shareholder or related to one, and with no other business with the company?",
-     "note": "A director named by another lender or by a financial investor counts, if there is no other tie. Record how many members the board has and how many of them are executives."
+     "ask": "Is any member of your board independent: not an employee, not a significant shareholder or related to one, and with no other business with the company?",
+     "note": "Significant means a holding that gives a say: about a twentieth of the votes is a guide, or the line that the country's law or listing rules draw for an independent director, where that is lower. A director named by another lender, or by a financial investor that does not control the company, counts if there is no other tie. Record how many members the board has and how many of them are executives."
     },
     {
      "id": "OBS_BOARD_004",
@@ -8809,7 +8810,7 @@
       ]
      },
      "ask": "As there is no board, who reviews what management does, and how often?",
-     "note": "A body counts if it can refuse a proposal and has someone on it who does not report to the manager it oversees."
+     "note": "A body counts if it can refuse a proposal and has someone on it who does not report to the manager it oversees. Where it is the board of the parent, say so in the fact, and count how many of its members manage this party: if all of them do, it does not count. The parent is asked the tests of its board when it is recorded as a member of the group the loan relies on, so that governance is examined where the decisions are taken. Where it is not, say in the fact that the parent's board is not examined."
     }
    ]
   },

@@ -405,8 +405,11 @@ def refresh(deal, memory, std, rows, held):
     client = f"../../{files.CLIENT}/index.md"  # the index of the client folder, as a path from the wiki folder
     texts = {"index.md": "\n".join(index), "sources.md": sources, **{path[cut:]: text for path, text in sorted(pages.items())},
              client: documents(memory["deal"]["name"], listed, std)}
+    cited = set(ID.findall(" ".join(texts.values())))  # a record that was replaced or has ended goes in only where a page cites it
+    shown = {table: {rid: record for rid, record in memory[table].items()
+                     if rid in cited or record.get("state") not in ("outdated", "replaced", "ended")} for table in TABLES}
     data = {"name": memory["deal"]["name"], "revision": memory["log"][-1]["n"], "shelves": SHELVES, "pages": texts,
-            "documents": client, "where": where, **{table: memory[table] for table in TABLES}}
+            "documents": client, "where": where, **shown}
     filled = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")  # so that no text can end the script it sits in
     files.write(deal, f"{files.WIKI}/wiki.html", files.packaged("wiki.html").replace("{{DATA}}", filled))
     return created, changed, len(pages) - len(created) - len(changed)

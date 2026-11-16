@@ -105,7 +105,7 @@ Record what would go into a table or a system field: names, amounts, dates, term
 | Field | Meaning |
 |---|---|
 | `about` | A subject, a link, or `DEAL`. A figure from consolidated accounts is about the group. A figure from a company's own accounts is about the company. |
-| `statement` | One plain sentence that can stand alone. `show <deal> facts` prints its first 300 characters, and `show <deal> <ID>` all of it. |
+| `statement` | One plain sentence that can stand alone. `show <deal> facts` prints its first 300 characters in a list, and all of it for a fact named by its ID: `facts F-012 F-015`. |
 | `label`, `value`, `unit` | Give a label to a value that belongs in a table, such as `Revenue`. Use the same label for the same figure at another date. |
 | `as_of` | The date the fact refers to: the balance sheet date, the end of the year. Not the date of the document. For a standing fact, the date of the source. For an event, the date it happened: a year (`2015`) or a month (`2012-09`) will do where the day is not known. |
 | `source`, `place` | Where it comes from, and the page, note or minute. Give the page as the PDF counts it, and the printed number in brackets where it differs: `p.24 (printed 22), note 16`. The browser view opens the original at that page. |
@@ -131,6 +131,7 @@ Record what would go into a table or a system field: names, amounts, dates, term
 - **A fact was recorded about the wrong subject.** Send its `id` with the right `about`.
 - **A slip that changes no figure**, such as the ID of a fact that a statement names, is corrected in place: send the `id` with the new `statement`.
 - **A fact held figures at several dates.** `replaces` names one fact. Record the other dates as facts of their own.
+- **A source was withdrawn or reissued.** Record the new source with `replaces` and the ID of the old one. The old source stays, marked `replaced`, and `status` lists the facts that still rest on it. A page may cite it only after `Replaced:`.
 
 ## Subjects and links
 
@@ -182,7 +183,7 @@ Existing debt is never a facility. Record the lender as a party and link it to t
 - A guarantee or security for existing debt is a fact about that `lends_to` link. It is not a `guarantees` or `secures` link: those are for the loan under review.
 - For a bond, the lender is its holders: a party named "Holders of the 2025 bond".
 - Give a link to each lender that matters for ranking, security or refinancing. The others stay in a fact about total debt. Say in a decision which lenders got no link and why.
-- Where the documents do not say which company of a group owes a loan, link the lender to the group and say so in the `why`. One link for a lender is enough, unless its loans to two companies differ in security or ranking: each link brings the checks on another lender.
+- Where the documents do not say which company of a group owes a loan, link the lender to the group and say so in the `why`. One link for a lender is enough, unless its loans to two companies differ in security or ranking: each link brings the checks on another lender. Where one borrower is the parent and the other its subsidiary, their place in the group is a difference in ranking (see the note of `OBS_LENDER_001`): give each loan its link, or keep one link, answer for the worse of the two and say so in the `why`.
 - The link brings the checks on another lender: who ranks ahead, what it holds, what lets it call its loan.
 
 ### A person
@@ -218,6 +219,6 @@ Repayment does not always come from the borrower. Link the facility to the party
 **A decision** needs a `decision` and a `reason`, and should name what it rests on: facts, or a source such as the officer's note. A decision that no longer holds is changed in place: send its `id` with the new text. The log keeps what it said before. A decision that `covers` checks takes them off the list of checks to answer.
 
 - With an `owner` and a `due` date it is a gap with an agreed action: a condition, a covenant or a task. `status` lists it as such.
-- Without them it settles the matter. That is how you record that an answer calls for nothing more in the structure, and why.
+- Without them it settles the matter, for the subject it names in `about`. That is how you record that an answer calls for nothing more in the structure, and why. On a check that is not answered, it takes the check off for that subject: see [standard](standard.md).
 
 **A question** is recorded as soon as it is worth asking, so that every question lives in one place and a page can cite it. It needs `asked_of` and `text`. Without a date it is a draft, and `status` says "not sent yet". Give it the date it was `asked` only when it has gone out, with the source it went out `via` if there is one. Name the `checks` its answer would close: a question that names no check moves nothing when it is answered. When it is answered, change it: `{"id": "Q-001", "state": "answered", "answered_by": ["F-020"]}`. A question that will not be sent is `withdrawn`.

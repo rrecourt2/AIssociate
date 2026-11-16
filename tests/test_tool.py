@@ -13,7 +13,7 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 sys.path.insert(0, ROOT)
 
 from bankability2 import assess, files, pages, standard, store  # noqa: E402
-from bankability2.__main__ import main  # noqa: E402
+from bankability2.__main__ import fact_lines, main  # noqa: E402
 
 EXAMPLE = os.path.join(ROOT, "examples", "cedar-foods")
 
@@ -153,6 +153,8 @@ class Deal(unittest.TestCase):
         run("add", deal, self.handed({"facts": [{"id": "F-020", "answers": []}]}))
         memory = files.read_json(deal, files.MEMORY)
         self.assertEqual((memory["facts"]["F-020"]["answers"], memory["log"][-1]["changed"]), ([], {"F-020": {"answers": [answer]}}))
+        self.assertIn("Pages that cite a record this set changed, to read again: Internal/wiki/deal/deal.md",
+                      run("add", deal, self.handed({"facts": [{"id": "F-008", "place": "page 12"}]}))[1])
 
     def test_upgrade_brings_the_standard_of_the_tool(self):
         deal, newer = self.copy(), files.packaged_standard()
@@ -161,6 +163,7 @@ class Deal(unittest.TestCase):
         with mock.patch.object(files, "packaged_standard", return_value=newer):
             _, said = run("upgrade", deal)
         self.assertIn("- F-012: OBS_COST_004", said)  # the answer stays in the fact and no longer counts
+        self.assertIn("Checks that are gone: OBS_COST_001 (CAS_COST_001)", said)  # and what the new standard changed is listed
         memory = files.read_json(deal, files.MEMORY)
         self.assertEqual((memory["deal"]["standard"], memory["log"][-1]["changed"]), ("9.9.9", {"DEAL": {"standard": before}}))
         self.assertEqual(store.verify(memory), [])
@@ -178,6 +181,9 @@ class Deal(unittest.TestCase):
                          "within 45 days. (S-003; as of 2026-11-12; client; answers OBS_OFFTAKER_004: yes)")
         self.assertIn("- F-005 (outdated) about", run("show", self.deal, "facts", "F-005", "S-002")[1])  # named, so it shows
         self.assertNotIn("F-005", run("show", self.deal, "facts")[1])
+        long = {"facts": {"F-1": {"state": "current", "about": "P-001", "statement": "x" * 400, "source": "S-001"}}}
+        self.assertIn("x" * 300 + " ...", fact_lines(long, ["P-001"])[0])  # a long statement is cut in a list
+        self.assertIn("x" * 400, fact_lines(long, ["F-1"])[0])  # and given in full when the fact is named
         self.assertIn("- OBS_GROUP_011:", run("show", self.deal, "own account")[1])  # a search also finds a check
         self.assertIn("The deal folder comes right after the command", run("show", "facts", self.deal)[1])
         kinds = run("show", self.deal, "kinds")[1]
@@ -213,6 +219,11 @@ class Deal(unittest.TestCase):
         self.assertNotIn(("OBS_FIC_001", "P-001"), rows)  # checks for banks do not apply
         self.assertIn(("OBS_AGRI_001", "P-001"), rows)  # checks for agribusiness do, because discovery said so
         self.assertEqual(rows["OBS_HEDGE_003", "P-001"]["action"], "D-002")  # a gap with an agreed action
+        memory = self.memory()  # a decision without an owner or a date settles a check, only for the subject it is about
+        memory["decisions"]["D-900"] = {"decision": "Not examined.", "reason": "It carries little.", "covers": ["OBS_REV_004"]}
+        self.assertEqual(self.rows(memory)["OBS_REV_004", "P-001"], rows["OBS_REV_004", "P-001"])  # about the deal: no effect here
+        memory["decisions"]["D-900"]["about"] = "P-001"
+        self.assertEqual(self.rows(memory)["OBS_REV_004", "P-001"]["state"], "off")
         memory = self.memory()  # a fact of a later date answers, and does not contest the earlier one
         memory["facts"]["F-900"] = dict(memory["facts"]["F-012"], as_of="2027-01-01", answers=[{"check": "OBS_COST_004", "value": False}])
         later = self.rows(memory)["OBS_COST_004", "P-001"]
@@ -238,6 +249,10 @@ class Deal(unittest.TestCase):
         memory["facts"]["F-009"]["state"] = "disputed"  # two documents disagree on a question behind the claim
         later = {(claim["indicator"], claim["for"]): claim for claim in assess.claims(assess.assess(memory, std), memory, std)}
         self.assertEqual(later["CAS_OFFTAKER_CREDIT_001", "R-003"]["stands"], "contested")
+        for flags, stands in (([], "stands"), (["thin"], "stands so far")):  # it stands when no test is left to strengthen
+            every = [dict(row, state="answered", against=False, flags=flags, own_word=False, evidence="best")
+                     for row in rows if row["for"] == "R-003"]
+            self.assertEqual({c["indicator"]: c["stands"] for c in assess.claims(every, memory, std)}["CAS_OFFTAKER_CREDIT_001"], stands)
         wanted = {(call["check"], call["wanted"]) for call in assess.called_for(rows, memory, std)}
         self.assertEqual(wanted, {("OBS_INPUT_001", "a link of kind supplies_to"), ("OBS_DEBT_001", "a link of kind lends_to")})
         memory["subjects"]["J-001"]["kind"] = "asset"  # without a project, the spending plan calls for one
@@ -356,6 +371,7 @@ class Deal(unittest.TestCase):
                       data["pages"]["sources.md"])
         self.assertEqual((data["facts"]["F-008"]["value"], data["sources"]["S-002"]["where"]),
                          (4060, "Client folder/Cedar Foods annual report 2025 extract.md"))
+        self.assertNotIn("F-005", data["facts"])  # a fact that was replaced is in the view only where a page cites it
 
     def test_a_page_can_describe_several_subjects(self):
         deal = self.copy()

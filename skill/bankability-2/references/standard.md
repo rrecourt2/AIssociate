@@ -23,13 +23,13 @@ A check has one of three jobs:
 - A **test** has an assumption. One answer goes against it.
 - A **mitigant** is asked once a test has gone against the claim. It asks what limits the damage.
 
-For each claim, and each party or link it is made about, the tool says where it stands. Take "Currency risk", which has three tests. With none answered it is not tested. With one answered in the company's favour and two still open, it stands so far: nothing speaks against it, and it has not been looked at in full. With all three answered in its favour, it stands. As soon as one test goes against it, it is challenged.
+For each claim, and each party or link it is made about, the tool says where it stands. Take "Currency risk". With no test answered it is not tested. While nothing speaks against it and something is still to be done, it stands so far: a test is not answered yet, or an answer rests on the company's word, or on evidence that is weak or out of date. Once every test is answered in its favour and no answer needs more, it stands. As soon as one test goes against it, it is challenged.
 
 | The claim | Means |
 |---|---|
 | is **not tested** | No test is answered, or the answers rest only on someone's own word. |
-| **stands so far** | Some tests are answered, none goes against it, and at least one rests on more than someone's word. Other tests are still open, or wait for an earlier answer. |
-| **stands** | Every test is answered, none goes against it, and at least one rests on more than someone's word. |
+| **stands so far** | Nothing speaks against it, and work is left: a test is not answered yet, or an answer rests on someone's own word, or on evidence that the check does not list as supporting or best, or that is weak (`thin`) or out of date (`old`) for this stage. `show claims` says how many answers are to strengthen. |
+| **stands** | Every test is answered in its favour, on evidence the check lists as supporting or best, and no answer needs more. |
 | is **challenged** | A test went against it. The tool lists the mitigants: each holds, fails or is not known. |
 | is **contested** | Two facts answer a test, or a question behind the claim, differently. |
 
@@ -68,7 +68,7 @@ See [recording](recording.md) for how to record each of these.
 The checks of the first pillar are about the deal: what is asked for, how the loan is repaid, who is in it and what kind of business it is. Answer them first. Many other checks wait for them: `status` says how many.
 
 - The kind of credit (`OBS_SECTOR_001`) and the sector (`OBS_SECTOR_002`) decide which checks apply. Both go by where the profit comes from: a business that trades more than it makes, and earns most of its profit from what it makes, is a manufacturer. If one party is of another kind than the rest of the deal, record the answer for that party with `"for"`.
-- Some answers call for structure: a party, a link, an asset, a project or a contract. `status` lists these under "Structure still open". Add what is missing, and the link brings its own checks. If nothing needs to be added, record a decision that `covers` the check, with the reason and without an owner or a date.
+- Some answers call for structure: a party, a link, an asset, a project or a contract. `status` lists these under "Structure still open". Add what is missing, and the link brings its own checks. If nothing needs to be added, record a decision that `covers` the check, with the reason and without an owner or a date. Name in `about` the subject whose answer it is: such a decision speaks of that subject only, or of the deal if it names none.
 
 ## Checks
 
@@ -87,7 +87,7 @@ A check answers by facts: put it in the fact's `answers`. In `status`, each open
 | `not relevant` | An earlier answer made it so. |
 | `answered` | A fact answers it. `thin`: the evidence is weaker than is ideal at this stage. `old`: it is older than is ideal. |
 | `contested` | Two facts answer it differently, or the fact is disputed. |
-| `parked`, `off` | Switched off for now, or for this deal. |
+| `parked`, `off` | Switched off for now, or for this deal, or settled for this one subject by a decision. |
 
 For a test the tool also says whether the answer goes against the assumption. A reference point such as "above 20" is the standard's own, with its reason in `why`. It can be changed with `adjust`.
 
@@ -107,9 +107,13 @@ The kind you give a source therefore decides two things: the folder it is filed 
 
 `show <check>` prints the kinds that the check lists under `evidence`. A kind it does not list shows as `unlisted` and counts as the weakest.
 
-## A gap with an agreed action
+## A gap with an agreed action, and a check settled for one subject
 
 A check can stay open with an agreed action: a condition, a covenant or a task with an owner and a date. Record a decision that `covers` the check and names the `owner` and the `due` date. See [recording](recording.md). The check then leaves the list of checks to answer and appears under "Gaps with an agreed action".
+
+A check can also be settled for one subject and stay asked of the others: one lender's ranking that cannot matter here, the papers of a customer that is too small to count. Record a decision that `covers` the check, with the reason and what it rests on, and without an owner or a date. Name in `about` the subject or the link the check is asked of, as `show <check>` prints it: for a check on an owner's tie that is the `owns` link, not the owner. The check then shows as `off` there. Do this on the officer's word, as for a switch-off. `adjust` switches a check off for the whole deal, and a check the institution has locked cannot be settled this way.
+
+A check that opens others is answered, not settled: for a plant that carries little, answer `OBS_ASSET_007` no, and the checks on its condition fall away.
 
 ## Stages
 
@@ -146,7 +150,7 @@ An adjustment that should hold for every deal belongs in the institution's layer
 
 ## A newer standard, or an older folder
 
-`upgrade` puts the standard that comes with the tool into the deal folder and records the change of version in the log. It prints the recorded answers that name a check which no longer exists: they stay in the facts and no longer count. Look at each and answer the check that took its place.
+`upgrade` puts the standard that comes with the tool into the deal folder and records the change of version in the log. It prints the recorded answers that name a check which no longer exists: they stay in the facts and no longer count. It also lists the checks that are new, that are gone and that changed, each with its indicator. A check counts as changed when its own text or its indicator's claim, conditions or roles changed. For each answer that no longer counts, look at the new checks of the same indicator. Where the fact decides one, add that answer to the fact. Where none fits, take the old answer off: send the fact's `id` with its `answers` without it. Then read the changed checks that are already answered, because an answer may no longer fit its question.
 
 A folder made by an earlier version of the tool keeps its record in `Internal/memory/memory.json`. Every command then says so and names the remedy. `upgrade` moves the record to `Internal/record/record.json`. The documents of such a folder stay in the folders they were filed in, and the record still finds them. Only documents filed from then on go flat into `Client folder`.
 

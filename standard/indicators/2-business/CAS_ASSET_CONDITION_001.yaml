@@ -47,8 +47,10 @@ checks:
     best: [audited_annual_report, valuation_report, security_agreement]
     supporting: [company_record, annual_report, prospectus, management_accounts]
     stated: [correspondence, call, officer_note, management_presentation]
-  note: A tenth is a guide. Say in the reason what share of output or earnings the asset carries, and whether it is to
-    be security. Answer again when the security for the loan is settled.
+  note: A tenth is a guide. The earnings meant are what the asset itself brings in before financing costs, set against
+    the same line of the whole business, not the profit its owner keeps after interest. Say in the fact what share
+    of output or earnings the asset carries, and whether it is to be security. Answer again when the security for
+    the loan is settled.
 - id: OBS_ASSET_001
   question: What condition is the asset in?
   answer: choice

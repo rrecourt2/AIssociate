@@ -162,6 +162,7 @@ def assess(memory, std, today=None):
     rows, states = [], {}
     actions = {(cid, decision.get("about", DEAL)): did for did, decision in memory["decisions"].items()
                for cid in decision.get("covers", [])}
+    agreed = {did for did, decision in memory["decisions"].items() if decision.get("owner") or decision.get("due")}  # actions
 
     def parked(off, check, target):
         """A "not now" lasts until the stage changes or a check it follows gets a new answer."""
@@ -198,7 +199,8 @@ def assess(memory, std, today=None):
         after = check.get("after", [])
         conds = [decided(cond, check, target) for cond in check.get("when", [])]
         applies = [holds(cond, target, found, std) for cond in ind.get("applies_when", [])]
-        action = actions.get((cid, target)) or actions.get((cid, DEAL))
+        own, wide = actions.get((cid, target)), actions.get((cid, DEAL))
+        action = own or (wide if wide in agreed else None)  # an agreed action about the deal covers every subject
         if action:
             row["action"] = action  # a decision that covers this check: an agreed action, or the reason nothing is needed
         follows_dead_end = any(state(dep, target) == "not relevant" for dep in after
@@ -212,6 +214,8 @@ def assess(memory, std, today=None):
                 row["not_relevant"] = True  # an answer to a check that is not relevant here: `add` says so
         elif dead:
             row["state"] = "not relevant"
+        elif own and own not in agreed and not (check.get("locked") or ind.get("locked")):  # settled here by a decision
+            row.update(state="off", reason=memory["decisions"][own]["reason"])
         elif (any(not (found.get((dep, target)) or found.get((dep, DEAL))) for dep in after) or unnamed
               or (conds and True not in conds) or (applies and True not in applies)):
             row["state"] = "waiting"  # for an earlier answer, for a condition, or for the seat to be filled
@@ -239,7 +243,7 @@ def claims(rows, memory, std):
         if row["state"] in ("off", "not relevant") or not (test or row["state"] == "contested"):
             continue
         claim = found.setdefault((row["indicator"], row["for"]), {
-            "indicator": row["indicator"], "for": row["for"], "asked": 0, "tests": 0, "own_word": 0, "thin": 0, "against": [],
+            "indicator": row["indicator"], "for": row["for"], "asked": 0, "tests": 0, "firm": 0, "own_word": 0, "against": [],
             "contested": [], "mitigants": {}, "actions": [], "look_again": [], "seen": 0})
         answered = row["state"] == "answered"
         claim["seen"] = max([claim["seen"], *(memory["facts"][fid]["rev"] for fid in row.get("facts", []))])
@@ -256,11 +260,12 @@ def claims(rows, memory, std):
         elif answered:
             claim["tests"] += 1
             claim["own_word"] += bool(row.get("own_word"))
-            claim["thin"] += "thin" in row["flags"]
+            listed = "evidence" not in check or row.get("evidence") in TIERS[1:]  # what the check lists as supporting or best
+            claim["firm"] += listed and not (row.get("own_word") or row["flags"])  # an answer that leaves nothing to strengthen
     for claim in found.values():
         claim["stands"] = ("challenged" if claim["against"] else "contested" if claim["contested"]
                            else "not tested" if claim["tests"] <= claim["own_word"]
-                           else "stands" if claim["tests"] == claim["asked"] else "stands so far")  # some tests are open
+                           else "stands" if claim["firm"] == claim["asked"] else "stands so far")  # work is left on a test
         for item in std["by_id"][claim["indicator"]].get("look_again_when", []) if claim["seen"] else []:
             if "new_source" in item:
                 later = any(source["kind"] == item["new_source"] and source["rev"] > claim["seen"]
@@ -272,7 +277,7 @@ def claims(rows, memory, std):
                             for fid, value in facts)
             if later:
                 claim["look_again"].append(item["reason"])
-    return list(found.values())
+    return [claim for claim in found.values() if claim["asked"] or claim["contested"]]  # with every test off, no claim is made
 
 
 def stray(memory, std, rows, facts=None):

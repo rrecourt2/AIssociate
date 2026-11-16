@@ -2,7 +2,22 @@
 
 ## Version 4: a new framework
 
-Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room and the stages are unchanged from version 3. Version 4.0.1 is version 4.0.0 after two reviews. Version 4.1.0 is version 4.0.1 after its first trial on a real company, version 4.1.1 is 4.1.0 after a second pass of that trial, version 4.2.0 follows an assessment of which open checks of that deal are material, and version 4.2.1 is 4.2.0 after a review. The four come first here, the latest on top. The sections after them describe version 4 as it stood at 4.0.1.
+Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room and the stages are unchanged from version 3. Version 4.0.1 is version 4.0.0 after two reviews. Version 4.1.0 is version 4.0.1 after its first trial on a real company, version 4.1.1 is 4.1.0 after a second pass of that trial, version 4.2.0 follows an assessment of which open checks of that deal are material, version 4.2.1 is 4.2.0 after a review, and version 4.2.2 adds notes from the third round of the trial. The five come first here, the latest on top. The sections after them describe version 4 as it stood at 4.0.1.
+
+### Version 4.2.2: notes from the third round of the trial
+
+In the third round an assistant was asked where the decisions of a subsidiary are taken, and another acted on a credit colleague's review of the open checks. The documents showed a company with no board of its own, whose large decisions were resolved by the board of its parent. The standard already examines such a company at the parent: `OBS_BOARD_001` is answered no, `OBS_BOARD_006` asks who oversees in the board's place, and the parent is asked the board checks as a company of the group. The changes say this plainly and settle two readings on which a colleague and an assistant differed.
+
+- **A company led by one office-holder has no board.** The note of `OBS_BOARD_001` says so, also where the owner's board takes its large decisions.
+- **The board of the parent in the board's place.** The note of `OBS_BOARD_006` asks the fact to say so, and to count how many members of that board manage the party: if all of them do, the body does not count. The parent's board is tested where the parent is asked these checks, which is when it is recorded as a member of the group the loan relies on.
+- **Independent of the significant shareholders.** `OBS_BOARD_003` said "not a shareholder nor a shareholder's relative". Read to the letter, that ruled out a director whose relative had a very small holding, while the claim speaks of the main shareholder. The question, its assumption and its wording for the company now say "significant shareholder". The note gives a guide for what is significant, and says that a director named by a financial investor that does not control the company counts.
+- **Which earnings make an asset matter.** `OBS_ASSET_007` asks whether an asset carries about a tenth of the earnings that repay the loan. One reader took the plant's own contribution and another its owner's profit after interest, and they got opposite answers. The note says the first is meant, set against the same line of the whole business.
+
+No check is added or dropped: 551 checks as before.
+
+**Open, for a practitioner to confirm.** Whether a body that oversees a subsidiary should count when most, and not all, of its members are that subsidiary's own managers: today the fact says so and nothing tests it. And whether `OBS_BOARD_007`, which asks if the board ever turned a proposal down, should be a test of the claim and not a question: a company overseen by its parent's board is asked one test of its own.
+
+**A deal that runs on 4.2.1.** `upgrade` lists the four checks as changed. Read the answer to `OBS_BOARD_003` again where a director's small holding decided it, and the answer to `OBS_ASSET_007` where the owner's profit after interest was the measure. Version 0.5.2 of the tool comes with this version of the standard, and two things read differently with it. A claim stands only when every test is answered on evidence the check lists as supporting or best, with nothing thin, old or on someone's own word, so a claim that stood may now stand so far. And a decision without an owner or a date speaks only of the subject it names in `about`: on an open check it takes the check off for that subject.
 
 ### Version 4.2.1: after a review of 4.2.0
 

@@ -2,7 +2,7 @@
 
 The standard says what a deal folder holds and what must be known about a deal. It is data only: lists, a data-room structure and checks. No meaning lives in code.
 
-Version 4.2.1 holds 70 indicators with 551 checks in nine pillars, a data room of 10 folders with 64 slots, and 82 kinds of source.
+Version 4.2.2 holds 70 indicators with 551 checks in nine pillars, a data room of 10 folders with 64 slots, and 82 kinds of source.
 
 - [FRAMEWORK.md](FRAMEWORK.md) explains how the standard is organised, and why. Read it first.
 - [CHANGES.md](CHANGES.md) lists what changed: after two trials on a real company, and from the first Bankability's standard.
@@ -112,7 +112,7 @@ This also writes one Markdown page per indicator and per data-room folder, an in
 
 Edit the YAML and build. Give a new check or indicator a new ID. An ID is never used again, and a check whose meaning changes gets a new one. Raise the version in `standard.yaml`.
 
-A deal folder holds a copy of the standard it started with. The tool's `upgrade` command puts the newer standard into it and names the recorded answers whose check is gone.
+A deal folder holds a copy of the standard it started with. The tool's `upgrade` command puts the newer standard into it, names the recorded answers whose check is gone, and lists the checks that are new, gone or changed.
 
 An institution or a deal does not edit these files. It adjusts the standard in its own layer, which the tool applies on top: it can add checks, change a reference point, and switch a check off with a reason.
 

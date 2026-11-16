@@ -92,8 +92,8 @@ From the answers the tool works out where each claim stands, for each party or l
 | The claim | Means |
 |---|---|
 | is **not tested** | No test is answered, or the answers rest only on someone's own word |
-| **stands so far** | Some tests are answered and none goes against it. Other tests are still open, or wait for an earlier answer. The tool says how many |
-| **stands** | Every test is answered and none goes against it. The tool says on what evidence |
+| **stands so far** | Some tests are answered and none goes against it. Work is left: a test is open or waits for an earlier answer, or an answer rests on someone's own word or on evidence that is thin or old for the stage. The tool says how many |
+| **stands** | Every test is answered and none goes against it, and no answer is left to strengthen. The tool says on what evidence |
 | is **challenged** | A test went against it. The tool says which, and whether a mitigant is known, holds or fails |
 | is **contested** | Two facts answer the same test, or a question behind the claim, differently |
 
@@ -143,7 +143,7 @@ A check that is not yet due is not a gap.
 
 A test is answered as soon as it is decided, whatever the terms of the loan turn out to be. Debt that is above the reference point before the new loan has already decided the test on leverage.
 
-A check can end in a third way besides answered and open: **a gap with an agreed action**, an owner and a date. That is how an action plan, a condition or a covenant is recorded. An open check with an agreed action is acceptable at approval.
+A check can end in a third way besides answered and open: **a gap with an agreed action**, an owner and a date. That is how an action plan, a condition or a covenant is recorded. An open check with an agreed action is acceptable at approval. And in a fourth: **settled for one subject** by a decision that gives the reason and names no owner and no date. The check is then off for that subject and still asked of the others.
 
 ## 10. Change
 

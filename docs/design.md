@@ -1,6 +1,6 @@
 # Bankability 2: design
 
-15 November 2026. This document describes Bankability 2 as it is built, and what is left for later. It gathers the decisions taken in the design interview of 13 and 14 November, and the owner's decisions after the first trial on 15 November.
+16 November 2026. This document describes Bankability 2 as it is built, and what is left for later. It gathers the decisions taken in the design interview of 13 and 14 November, and the owner's decisions after the three rounds of the trial on 15 and 16 November.
 
 The tool has run on a made-up deal and, in three rounds, on the public documents of a real company. It has not been tried in Microsoft Copilot Cowork, and not on a live deal with an officer.
 
@@ -246,7 +246,7 @@ The standard says what a deal folder holds and what must be known. It is data on
 - **Nine pillars**: the deal; environment; business; people and governance; cash flow and debt; liquidity and financial risks; environmental, social and impact; links; the facility.
 - **Claims first.** People and assistants work from the 70 claims. The checks are the detail behind a claim.
 - **Falsification is the backbone.** An indicator is one claim: what the lender relies on, in a sentence that can turn out false. A check is a question, a test or a mitigant. A test states its own assumption and which answer goes against it. A mitigant is asked once a test has gone against the claim.
-- **The tool says where each claim stands**, for each party or link it is made about: not tested, stands so far (some tests answered, none against, others open or waiting), stands (every test answered), challenged (with each mitigant holding, failing or not known) or contested (two facts disagree on a test, or on a question behind the claim). There are no scores and no weights.
+- **The tool says where each claim stands**, for each party or link it is made about: not tested, stands so far (some tests answered, none against, and work left: a test open or waiting, or an answer on someone's own word or on evidence that is thin or old), stands (every test answered and nothing left to strengthen), challenged (with each mitigant holding, failing or not known) or contested (two facts disagree on a test, or on a question behind the claim). There are no scores and no weights.
 - **Checks apply by role and by link.** A role is the end of a link, so the checks follow the role when a party changes. A guarantor is asked whether it can pay and must pay, not how it runs a factory. A link that exists brings its own checks: a guarantee, an owner, a key customer, a key supplier, another lender.
 - **Discovery opens what applies and calls for structure.** The kind of credit and the sector decide which checks apply. Until they are answered, those checks wait. Some answers mean a party or a link must exist. The tool says so until it is added, or until a decision says why not.
 - **Who speaks matters.** An answer that goes against a claim is believed whatever it rests on. A favourable answer that rests only on what a party said is marked as someone's own word, and a claim does not stand on that alone.
@@ -255,6 +255,7 @@ The standard says what a deal folder holds and what must be known. It is data on
 - **Size and judgement.** A test asks about what matters for repayment. Where the thing exists but is too small to matter, the answer is the favourable one and the fact says how small. A test is answered as soon as it is decided, whatever the terms of the loan turn out to be.
 - **Rigour and depth.** The standard gives rigour. A few open questions ask for description: how the business earns its money, what is particular about it, what the project is. Their answers feed the wiki, which gives the understanding.
 - **A gap with an agreed action.** A check can stay open with a condition, a covenant or a task, an owner and a date. That is a decision that covers the check.
+- **A check settled for one subject.** A decision that covers a check for one party, asset or link, with its reason and without an owner or a date, takes the check off there and leaves it asked of the others.
 - **A claim is looked at again** when a source of a kind that bears on it arrives, or an answer elsewhere changes.
 - **Looking for disproof is recorded**, also when nothing is found.
 
@@ -319,7 +320,7 @@ The AI chooses what to show and how.
 | `check` | Reports what looks wrong: a broken log, an unsound adjustment, files that are missing or changed, a record that still names a replaced fact, and problems on the pages and in the drafts |
 | `adjust` | Applies a change to the deal's layer of the standard |
 | `file` | On the laptop only: moves documents into the client folder, lists them in the manifest and writes the index of the client folder |
-| `upgrade` | Puts the standard that comes with the tool into the deal folder, logs the change of version, and names the answers whose check is gone. It also moves the record of a folder made by an earlier version to its new place. |
+| `upgrade` | Puts the standard that comes with the tool into the deal folder, logs the change of version, names the answers whose check is gone, and lists the checks that are new, gone or changed. It also moves the record of a folder made by an earlier version to its new place. |
 | `doctor` | Reports the environment it runs in |
 
 Every change adds an entry to a log. Each entry carries a fingerprint of the entry before it and of the record after the change, so that a change made outside the tool shows.
