@@ -41,14 +41,14 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 2rem 0; } .wide { ove
 table { border-collapse: collapse; font: 0.85rem/1.45 var(--plain); font-variant-numeric: tabular-nums; }
 th, td { padding: 0.4rem 0.9rem 0.4rem 0; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
 th { color: var(--soft); font-weight: 600; }
-.tool { padding: 0.9rem 1.1rem 0.2rem; background: var(--tint); border-radius: 8px; font-size: 0.94rem; }
-.tool:empty { display: none; }
-.tool::before { content: "From the record"; display: block; margin-bottom: 0.5rem; color: var(--soft);
-  font: 600 0.7rem var(--plain); letter-spacing: 0.08em; text-transform: uppercase; }
+.tool { padding: 0.6rem 1.1rem; background: var(--tint); border-radius: 8px; font-size: 0.94rem; }
+.tool summary { color: var(--soft); font: 600 0.7rem var(--plain); letter-spacing: 0.08em; text-transform: uppercase;
+  cursor: pointer; }
+.tool[open] summary { margin-bottom: 0.6rem; }
 .cites { color: var(--soft); font: 0.78em var(--plain); white-space: nowrap; }
 a.cite { color: inherit; cursor: pointer; white-space: nowrap; text-decoration: underline dotted; }
 a.cite:hover { color: var(--mark); }
-#card { width: 21rem; padding: 1.75rem 1.25rem; border-left: 1px solid var(--line); }
+#card { width: 21rem; padding: 1.75rem 1.25rem; border-left: 1px solid var(--line); overflow-wrap: anywhere; }
 #card h2 { margin: 0 0 0.75rem; font: 600 1rem var(--plain); } #card h2 small { color: var(--soft); font-weight: 400; }
 #card p { font: 1rem/1.5 var(--text); } #card dd { margin: 0; overflow-wrap: anywhere; }
 #card dt { margin-top: 0.7rem; color: var(--soft); font-size: 0.75rem; }
@@ -85,7 +85,7 @@ for (const [path, raw] of Object.entries(data.pages)) {
   const top = /^---\n([\s\S]*?)\n---\n?/.exec(raw), text = top ? raw.slice(top[0].length) : raw;
   const title = (top && /^title:[ \t]*(\S.*)$/m.exec(top[1]) || /^#\s+(.+)$/m.exec(text) || [0, path])[1];
   const about = top && /^about:[ \t]*([^,\s]+)/m.exec(top[1]);
-  const shelf = path === "index.md" || path === data.documents ? "" : path.includes("/") ? path.split("/")[0] : "other";
+  const shelf = ["index.md", "sources.md", data.documents].includes(path) ? "" : path.includes("/") ? path.split("/")[0] : "other";
   pages[path] = {title, text, shelf};
   if (about && !pageOf[about[1]]) pageOf[about[1]] = path;
 }
@@ -150,7 +150,8 @@ function render(text) {  // the Markdown the pages use, block by block
     const line = lines[at], head = /^(#{1,6})\s+(.*)$/.exec(line);
     if (!line.trim()) at++;
     else if (/^<!--.*-->\s*$/.test(line)) {  // the tool's markers frame its part of the page. Other comments stay hidden
-      out.push(/tool:begin/.test(line) ? '<div class="tool">' : /tool:end/.test(line) ? "</div>" : "");
+      out.push(/tool:begin/.test(line) ? '<details class="tool"><summary>From the record</summary>'
+        : /tool:end/.test(line) ? "</details>" : "");
       at++;
     } else if (head) {
       out.push(`<h${head[1].length}>${inline(head[2])}</h${head[1].length}>`);
@@ -174,9 +175,11 @@ function render(text) {  // the Markdown the pages use, block by block
 function card(id) {  // what the record holds under an ID: a fact with its value, its date, its source and the place in it
   const record = data[table(id)][id], lines = [];
   const plain = v => v === true ? "yes" : v === false ? "no" : Array.isArray(v) ? v.map(plain).join("; ")
-    : v && typeof v === "object" ? Object.values(v).map(plain).join(": ") : String(v);
+    : v && typeof v === "object" ? Object.values(v).map(plain).join(": ")
+    : typeof v === "number" && Math.abs(v) >= 10000 ? v.toLocaleString("en-GB") : String(v);  // a year stays as it is
   const named = v => esc(plain(v)).replace(ID, i => cite(i, table(i) === "subjects" ? " " + esc(data.subjects[i].name || "") : ""));
-  const file = path => `<a href="../../${encoded(path)}" target="_blank">${esc(path)}</a>`;  // from the wiki folder to the deal folder
+  const page = /\bp(?:age|\.)\s*(\d+)/i.exec(record.place || "");  // a PDF opens at the page that the place names
+  const file = (path, at = "") => `<a href="../../${encoded(path)}${at}" target="_blank">${esc(path)}</a>`;  // from the wiki folder
   const main = ["statement", "title", "name", "decision", "text"].find(key => record[key]);
   for (const [key, value] of Object.entries(record)) {
     if (["rev", "fingerprint", "label", "unit", main].includes(key) || value == null || value === "" || value === "current") continue;
@@ -184,7 +187,8 @@ function card(id) {  // what the record holds under an ID: a fact with its value
     if (key === "value") html = esc(record.label ? record.label + ": " : "") + html + " " + esc(record.unit || "");
     const source = key === "source" && data.sources[value];
     if (source) html += [" " + esc(source.title) + (source.date ? ", " + esc(source.date) : ""),
-      ...[source.where, source.extract].filter(Boolean).map(file)].join("<br>");
+      source.where && file(source.where, page ? "#page=" + page[1] : ""), source.extract && file(source.extract)]
+      .filter(Boolean).join("<br>");
     lines.push(`<dt>${esc(key[0].toUpperCase() + key.slice(1).replace(/_/g, " "))}</dt><dd>${html}</dd>`);
   }
   el("card").innerHTML = `<button aria-label="Close">&times;</button><h2>${id} <small>${TABLES[table(id)]}</small></h2>` +
@@ -197,27 +201,36 @@ const plain = text => text.replace(/<!--.*?-->/g, " ").replace(/\]\([^)]*\)/g, "
   .replace(/\s+/g, " ");  // the words of a page without its Markdown, for the search
 
 function menu() {  // the pages by shelf, or the pages that hold the words searched for
-  const words = el("search").value.trim().toLowerCase();
+  const words = el("search").value.toLowerCase().split(/\s+/).filter(Boolean);  // a page must hold each of them
   const entry = (path, name) => {
-    const text = plain(pages[path].text), hit = words ? text.toLowerCase().indexOf(words) : -1;
+    const text = plain(pages[path].text), hit = words.length ? text.toLowerCase().indexOf(words[0]) : -1;
     const near = hit < 0 ? "" : "<span>" + esc(text.slice(Math.max(0, hit - 30), hit)) + "<mark>" +
-      esc(text.substr(hit, words.length)) + "</mark>" + esc(text.substr(hit + words.length, 50)) + "</span>";
+      esc(text.substr(hit, words[0].length)) + "</mark>" + esc(text.substr(hit + words[0].length, 50)) + "</span>";
     return `<a href="#${encoded(path)}"${path === here ? ' class="here"' : ""}>${esc(name || pages[path].title)}${near}</a>`;
   };
-  const shown = Object.keys(pages).filter(path => (pages[path].title + "\n" + plain(pages[path].text)).toLowerCase().includes(words));
+  const shown = Object.keys(pages).filter(path => {
+    const text = (pages[path].title + "\n" + plain(pages[path].text)).toLowerCase();
+    return words.every(word => text.includes(word));
+  });
   const shelf = name => {
     const paths = shown.filter(path => pages[path].shelf === name);
     return paths.length ? `<h2>${esc(name)}</h2>` + paths.map(path => entry(path)).join("") : "";
   };
   const shelves = [...new Set([...data.shelves, ...shown.map(path => pages[path].shelf)])].filter(Boolean);
-  el("menu").innerHTML = words ? shown.map(path => entry(path)).join("") || "<p>No page holds these words.</p>"
-    : entry("index.md", "Contents") + entry(data.documents, "Documents") + shelves.map(shelf).join("");
+  el("menu").innerHTML = words.length ? shown.map(path => entry(path)).join("") || "<p>No page holds these words.</p>"
+    : entry("index.md", "Contents") + entry("sources.md", "Sources") + entry(data.documents, "Documents") +
+      shelves.map(shelf).join("");
 }
 
 function show() {  // open the page that the address names, or the contents page
   const asked = decode(location.hash.slice(1));
   here = pages[asked] ? asked : "index.md";
   el("page").innerHTML = render(pages[here].text);
+  for (const part of el("page").querySelectorAll(".tool")) {  // an empty part goes, a short one stays open
+    if (part.children.length < 2) part.remove();
+    else part.open = part.querySelectorAll("li, tr").length <= 3;
+  }
+  el("card").hidden = true;
   document.title = `${pages[here].title} | ${data.name}`;
   menu();
   window.scrollTo(0, 0);

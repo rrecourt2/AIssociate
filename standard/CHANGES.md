@@ -2,7 +2,29 @@
 
 ## Version 4: a new framework
 
-Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room and the stages are unchanged from version 3. Version 4.0.1 is version 4.0.0 after two reviews. Version 4.1.0 is version 4.0.1 after its first trial on a real company. That trial comes first here. The sections after it describe version 4 as it stood at 4.0.1.
+Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room and the stages are unchanged from version 3. Version 4.0.1 is version 4.0.0 after two reviews. Version 4.1.0 is version 4.0.1 after its first trial on a real company, and version 4.1.1 is 4.1.0 after a second pass of that trial. The two come first here. The sections after them describe version 4 as it stood at 4.0.1.
+
+### Version 4.1.1: after the second pass of the trial
+
+**The second pass.** The deal folder of the first trial was upgraded to 4.1.0 and worked on again by assistants that had only the skill and the tool. They brought the record in line with the new standard, took in nine more documents and a new purpose for the loan, reworked the wiki and drafted the proposal again. A reviewer compared the two passes and read sampled facts against the original documents.
+
+**What held.** Open checks fell from 630 to 357. Eight claims were challenged, against fourteen, and the reviewer judged each of the eight justified. The three overstated challenges of the first pass were gone. 43 of 44 sampled facts matched their documents, and 12 of 12 figures stood in the originals at the place the fact gives.
+
+**What did not, and what changed.**
+
+- **An owner link brought checks wherever it pointed.** A company that owns its plant, and a promoter of a project the loan does not pay for, were each asked the nine tests of "Owner and group". `owns` and `sponsors` now carry `counts_for: [party, group]`: they give their role, and are asked their checks, only between parties. Who owns a plant or a project is still recorded with `owns`.
+- **A financed project was asked what is asked of a whole business.** Of its 29 open checks most repeated, in the same words, what the group was asked. Thirteen checks are now asked of parties only: `OBS_ENV_004`, `OBS_ENV_006` and `OBS_ENV_007`, `OBS_SUPPLYCHAIN_001` to `OBS_SUPPLYCHAIN_005`, and `OBS_SOC_001`, `OBS_SOC_003`, `OBS_SOC_004`, `OBS_SOC_005` and `OBS_SOC_006`. The project keeps what is its own: its impact assessment and permits, contamination and climate exposure of its site, its land, its neighbours and its guards.
+- **The control of the borrower's owner fell out of view** when a subsidiary became the borrower: a pledge over the parent's shares and a dilution of those who control it no longer counted against any claim. The notes of `OBS_OWN_008` and `OBS_OWN_009` now say to look up the chain of owners and to name the level at which the pledge or the change sits.
+- **What an owner owes and receives on its own account** was asked only where the lender relies on cash coming up from the company. `OBS_GROUP_011` and `OBS_GROUP_012` are now asked whenever the lender relies on the tie in either direction: an owner's own debt comes before any support it can give.
+- **"Stands" was said too early.** A claim stood as soon as one test was answered in its favour, with others still open. The tool now says "stands so far" until every test of the claim is answered. [FRAMEWORK.md](FRAMEWORK.md) has the five places a claim can stand in.
+
+No check was added or dropped and no ID changed.
+
+**A deal that runs on 4.1.0.** The tool's `upgrade` command puts 4.1.1 into the deal folder. Then look at these:
+
+- An `owns` or `sponsors` link that points at an asset or a project gives no role any more. Nothing needs to be done.
+- An answer that was recorded for a financed project to one of the thirteen checks no longer counts there. The tool lists it.
+- A claim that stood with tests still open now stands so far.
 
 ### Version 4.1.0: after the first trial on a real company
 

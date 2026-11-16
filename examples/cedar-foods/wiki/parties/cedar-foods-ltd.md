@@ -38,6 +38,11 @@ Cedar Foods Ltd is a dairy processor in Nakuru, Kenya, and the borrower of the p
 - **Unknown:** who the Kenyan lenders are and what security they hold [F-011].
 - **Unknown:** which company guarantees the loan [F-006].
 
+## Key values
+
+<!-- tool:begin values -->
+<!-- tool:end -->
+
 ## Sources
 
 <!-- tool:begin sources -->

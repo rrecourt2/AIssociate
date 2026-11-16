@@ -125,6 +125,7 @@ checks:
   - {check: OBS_VALUE_CHAIN_001, is: manufacturer}
   - {check: OBS_VALUE_CHAIN_001, is: trader}
   - {check: OBS_ES_003, is: true}
+  applies_to: [borrower, repayment_source]
   look_in: [10.03.a, 06.04.a]
   evidence:
     best: [consultant_report]
@@ -141,6 +142,7 @@ checks:
   assumption: No natural forest or protected habitat was cleared after the lender's cut-off date for the party's land or
     for its main raw materials
   disproved_by: 'yes'
+  applies_to: [borrower, repayment_source]
   look_in: [10.03.a, 07.02.a, 02.06.d]
   evidence:
     best: [consultant_report, esia_report, adverse_media_screen]
@@ -157,6 +159,7 @@ checks:
   answer: yes_no
   assumption: No child labour or forced labour has been found among the party's main suppliers
   disproved_by: 'yes'
+  applies_to: [borrower, repayment_source]
   look_in: [10.03.a, 02.06.d, 06.04.a]
   evidence:
     best: [consultant_report, adverse_media_screen, regulatory_document]
@@ -179,6 +182,7 @@ checks:
   when:
   - {check: OBS_SUPPLYCHAIN_002, against: true}
   - {check: OBS_SUPPLYCHAIN_003, against: true}
+  applies_to: [borrower, repayment_source]
   look_in: [10.03.a, 06.04.a]
   evidence:
     best: [consultant_report, public_source]
@@ -197,6 +201,7 @@ checks:
   when:
   - {check: OBS_SUPPLYCHAIN_002, against: true}
   - {check: OBS_SUPPLYCHAIN_003, against: true}
+  applies_to: [borrower, repayment_source]
   look_in: [10.03.a, 06.04.a, 07.02.b]
   evidence:
     best: [consultant_report]

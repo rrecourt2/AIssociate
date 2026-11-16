@@ -128,6 +128,12 @@ class Deal(unittest.TestCase):
         self.assertNotIn("N-001", asked["OBS_BO_002"])  # and not who owns it
         self.assertEqual(asked["OBS_GUARANTEE_KIND_001"], {"R-002"})  # only the guarantee of the loan is examined
         self.assertIn("F-008 answers OBS_REV_001 for P-001, which is not asked that check", assess.stray(memory, std, rows.values()))
+        memory["subjects"]["A-001"] = {"kind": "asset", "name": "Nakuru plant"}
+        memory["links"]["R-200"] = {"from": "P-001", "type": "owns", "to": "A-001", "state": "confirmed"}
+        self.assertNotIn("shareholder", assess.roles(memory, std)["P-001"])  # owning a plant makes nobody a shareholder
+        memory["subjects"]["N-001"]["state"] = "ended"  # a subject that has ended holds no role and is asked nothing
+        self.assertNotIn("N-001", assess.roles(memory, std))
+        self.assertNotIn("N-001", {target for _, target in self.rows(memory)})
         std["link_types"][0]["counts_for"], std["subject_kinds"][0]["asked_only"] = ["loan"], ["CAS_NOTHING_001"]
         self.assertEqual(len(standard.problems(std)), 2)  # the build refuses a kind or an indicator that does not exist
 
@@ -135,8 +141,10 @@ class Deal(unittest.TestCase):
         deal = self.copy()
         answer = {"check": "OBS_FX_002", "value": 40}  # asked only when there is revenue in a foreign currency
         fact = {"ref": "hedge", "about": "P-001", "statement": "A fact with an answer nobody asked for.", "source": "S-003"}
-        _, said = run("add", deal, self.handed({"facts": [dict(fact, answers=[answer])]}))
+        worked = {"about": "P-001", "statement": "A figure worked out from (@hedge).", "source": "S-003"}
+        _, said = run("add", deal, self.handed({"facts": [dict(fact, answers=[answer]), worked]}))
         self.assertIn("@hedge -> F-020", said)
+        self.assertEqual(files.read_json(deal, files.MEMORY)["facts"]["F-021"]["statement"], "A figure worked out from (F-020).")
         self.assertIn("Note: F-020 answers OBS_FX_002 for P-001, where that check is not relevant.", said)
         run("add", deal, self.handed({"facts": [{"id": "F-020", "answers": []}]}))
         memory = files.read_json(deal, files.MEMORY)
@@ -164,6 +172,10 @@ class Deal(unittest.TestCase):
         self.assertIn("answers on someone's own word 1 [CAS_OFFTAKER_CREDIT_001]", claims)
         self.assertEqual(run("show", self.deal, "facts", "R-003")[1].strip(), "- F-014 about R-003: The CFO said Bluegate pays "
                          "within 45 days. (S-003; as of 2026-11-12; client; answers OBS_OFFTAKER_004: yes)")
+        self.assertIn("- F-005 (outdated) about", run("show", self.deal, "facts", "F-005", "S-002")[1])  # named, so it shows
+        self.assertNotIn("F-005", run("show", self.deal, "facts")[1])
+        self.assertIn("- OBS_GROUP_011:", run("show", self.deal, "own account")[1])  # a search also finds a check
+        self.assertIn("The deal folder comes right after the command", run("show", "facts", self.deal)[1])
         kinds = run("show", self.deal, "kinds")[1]
         self.assertIn("- call: Call or meeting. Folder: Internal/sources", kinds)
         self.assertIn("Gives the role guarantor to its 'from' end. It counts only when it points at a facility.", kinds)
@@ -212,6 +224,9 @@ class Deal(unittest.TestCase):
         self.assertEqual(currency["mitigants"]["OBS_HEDGE_003"], "not known")
         self.assertEqual(found["CAS_OFFTAKER_CREDIT_001", "R-003"]["stands"], "not tested")  # it rests on the seller's word
         self.assertEqual(assess.view(found.values(), std)["liquidity"][0], 1)  # one challenged claim in that pillar
+        memory["facts"]["F-014"].update(source="S-002", said_by="document")  # borne out by a document, with other tests open
+        later = {(claim["indicator"], claim["for"]): claim for claim in assess.claims(assess.assess(memory, std), memory, std)}
+        self.assertEqual(later["CAS_OFFTAKER_CREDIT_001", "R-003"]["stands"], "stands so far")
         wanted = {(call["check"], call["wanted"]) for call in assess.called_for(rows, memory, std)}
         self.assertEqual(wanted, {("OBS_INPUT_001", "a link of kind supplies_to"), ("OBS_DEBT_001", "a link of kind lends_to")})
         memory["subjects"]["J-001"]["kind"] = "asset"  # without a project, the spending plan calls for one
@@ -284,6 +299,10 @@ class Deal(unittest.TestCase):
         self.assertIn("cites F-005, which is outdated (replaced by F-008)", found("Revenue was about KES 4.1bn in 2025 [F-005].\n")[0])
         # The head row of a table names the columns and is not read. A figure cites in its own row.
         self.assertEqual(found("| | 2025 |\n|---|---|\n| Revenue | KES 4,060m [F-008] |\n"), [])
+        # A link to a page that is not there is reported. Working notes say how to work, and need not cite.
+        self.assertIn("links to ../deal/plant.md, which is not there", found("See [the plant](../deal/plant.md) [F-008].\n")[0])
+        self.assertEqual(found("Revenue was KES 4,060m in 2025 [F-008].\n"), [])
+        self.assertEqual(found("The officer asked on 12/11/2026 for 150 words on the plant.\n", "Internal/wiki/work/notes.md"), [])
         # The drafts are read the same way.
         self.assertIn("Internal/outputs/fp.md", found("Revenue was KES 5,555m [F-008].\n", "Internal/outputs/fp.md")[0])
         self.assertEqual(found("Revenue was KES 5,555m [F-008].\n", "Internal/outputs/fp.md"),  # a draft that went out is left alone
@@ -297,8 +316,8 @@ class Deal(unittest.TestCase):
         self.assertIn("- [Cedar Foods Ltd](parties/cedar-foods-ltd.md): Cedar Foods Ltd is a dairy processor in Nakuru, Kenya, "
                       "and the borrower of the proposed EUR 12m loan. (", contents)
         self.assertIn("- P-003 Bluegate Supermarkets: party, customer", contents)
-        self.assertEqual(pages.lead("# Blue\n\nBlue Co. Ltd sells milk under Decree No. 12 [F-001]. It is small.\n"),
-                         "Blue Co. Ltd sells milk under Decree No. 12.")  # not cut at an abbreviation
+        self.assertEqual(pages.lead("# Blue\n\nBlue Co. Ltd sells milk under Decree No. 12 in Thika Town [F-001]. It is small.\n"),
+                         "Blue Co. Ltd sells milk under Decree No. 12 in Thika Town.")  # cut at the sentence, not at an abbreviation
         glance = files.read(self.deal, "Internal/wiki/deal/deal.md")
         self.assertIn("- P-001 [Cedar Foods Ltd](../parties/cedar-foods-ltd.md): party, borrower. Borrows EUR 12m senior loan "
                       "(R-001); sells to Bluegate Supermarkets (R-003).", glance)
@@ -311,11 +330,23 @@ class Deal(unittest.TestCase):
         with open(os.path.join(ROOT, "pyproject.toml"), encoding="utf-8") as f:
             self.assertIn('"wiki.html"', f.read())  # an installed copy of the tool needs the template too
         data = json.loads(view.split('<script id="data" type="application/json">')[1].split("</script>")[0])
-        self.assertEqual(sorted(data["pages"]),  # every page, the contents page and the index of the documents
+        self.assertEqual(sorted(data["pages"]),  # every page, the contents page, the sources and the index of the documents
                          ["../../Client folder/index.md", "deal/deal.md", "deal/second-uht-line.md", "index.md",
-                          "parties/cedar-foods-ltd.md"])
+                          "parties/cedar-foods-ltd.md", "sources.md"])
+        self.assertIn("- S-002 Annual report 2025: audited_annual_report, 2026-03-28, read: part, 4 facts. [Original](",
+                      data["pages"]["sources.md"])
         self.assertEqual((data["facts"]["F-008"]["value"], data["sources"]["S-002"]["where"]),
                          (4060, "Client folder/Cedar Foods annual report 2025 extract.md"))
+
+    def test_a_page_can_describe_several_subjects(self):
+        deal = self.copy()
+        os.makedirs(os.path.join(deal, "Internal", "wiki", "topics"))
+        with open(os.path.join(deal, "Internal", "wiki", "topics", "customers.md"), "w", encoding="utf-8") as f:
+            f.write("---\ntitle: Customers\nabout: CAS_REVENUE_001, P-003\n---\n\nBluegate buys 31% of revenue [F-009].\n")
+        run("pages", deal)
+        self.assertNotIn("- P-003 Bluegate", files.read(deal, "Internal/wiki/index.md"))  # no longer without a page
+        self.assertIn("sells to [Bluegate Supermarkets](../topics/customers.md)",
+                      files.read(deal, "Internal/wiki/parties/cedar-foods-ltd.md"))
 
     def test_the_entry_sheet_shows_values_and_gaps(self):
         sheet = "\n".join(assess.sheet(self.memory(), standard.effective(self.deal)))

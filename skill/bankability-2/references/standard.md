@@ -4,7 +4,7 @@ The standard says what a deal folder holds and what must be known. It gives the 
 
 ## Work from the claims
 
-The standard is built on 70 claims. An indicator is one claim: what the lender relies on, in a sentence that can turn out false. The checks behind it try to disprove it. The claims sit in nine pillars: the deal, then each party from its surroundings to its money, then the links, then the facility.
+The standard holds 70 claims. An indicator is one claim: what the lender relies on, in a sentence that can turn out false. The checks behind it try to disprove it. The claims sit in nine pillars: the deal, then each party from its surroundings to its money, then the links, then the facility.
 
 Start from the claims, not from the checks.
 
@@ -28,7 +28,8 @@ For each claim, and each party or link it is made about, the tool says where it 
 | The claim | Means |
 |---|---|
 | is **not tested** | No test is answered, or the answers rest only on someone's own word. |
-| **stands** | Tests are answered, none goes against it, and at least one rests on more than someone's word. |
+| **stands so far** | Some tests are answered, none goes against it, and at least one rests on more than someone's word. Other tests are still open. |
+| **stands** | Every test is answered, none goes against it, and at least one rests on more than someone's word. |
 | is **challenged** | A test went against it. The tool lists the mitigants: each holds, fails or is not known. |
 | is **contested** | Two facts answer a test differently. |
 
@@ -41,9 +42,10 @@ Who says something matters. An answer that goes against a claim is believed what
 The standard is a backbone. It does not replace the analysis.
 
 - **Size.** A test asks about what matters for repayment. Where the thing exists but is too small to matter, give the favourable answer and say in the fact how small it is: "One supplier credit in euros, KES 4m, 0.3% of all debt." The sizes named in questions, such as "about a tenth", are guides.
-- **Answer a test as soon as it is decided.** Some tests speak of "this loan included" or "after this loan". If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known.
+- **Answer a test as soon as it is decided.** Some tests speak of "this loan included" or "after this loan". If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known. An answer in favour waits for the terms: until the amount, the currency and the tenor are known, record today's figure as a fact and leave the test open.
+- **Read the open tests of a claim before you rely on it.** `show <deal> <indicator>` lists them. The record often decides one that nobody has answered yet.
 - **One case can decide a test against the claim. A favourable answer needs the whole.** If a test asks about five years and the documents cover three, a bad year among the three decides it. Three good years do not: record the figures, leave the test open and ask for the rest.
-- **Some questions ask for description**, not for a verdict: how the business earns its money (`OBS_BUSINESS_MODEL_001`), what is particular about it (`OBS_BUSINESS_MODEL_002`), what the project is (`OBS_FEAS_008`). Their answers are text and they feed the pages. Answer them early.
+- **Some questions ask for description**, not for a verdict: how the business earns its money (`OBS_BUSINESS_MODEL_001`), what is particular about it (`OBS_BUSINESS_MODEL_002`), what the project is (`OBS_FEAS_008`), and what an owner owes and receives on its own account (`OBS_GROUP_011`, `OBS_GROUP_012`). Their answers feed the pages. Answer them early. `show <deal> <words>` finds the check that asks about something.
 
 ## Who is asked what
 
@@ -54,7 +56,8 @@ A check is asked about the deal, about whoever holds a role, about a subject of 
 - **The legal entity.** People and governance is asked of each company: its owners, its integrity, its board, its standing. A group is not asked these.
 - **The tie between them.** Where the borrower is not the whole perimeter, the links between the companies are examined for whether the cash can reach the lender.
 - **A person** is asked only what fits a person.
-- **A project** is checked only when the loan finances it.
+- **A project** is checked only when the loan finances it. It is asked what is its own: whether it can be built and pay, its impact assessment and permits, its land, its neighbours. What concerns the whole business stays with the perimeter.
+- **An owner.** `owns` and `sponsors` give their role, and bring the checks on the tie between owner and company, only between parties. Who owns a plant or a project is recorded the same way and brings no checks.
 
 See [recording](recording.md) for how to record each of these.
 
@@ -63,7 +66,7 @@ See [recording](recording.md) for how to record each of these.
 The checks of the first pillar are about the deal: what is asked for, how the loan is repaid, who is in it and what kind of business it is. Answer them first. Many other checks wait for them: `status` says how many.
 
 - The kind of credit (`OBS_SECTOR_001`) and the sector (`OBS_SECTOR_002`) decide which checks apply. Both go by where the profit comes from: a business that trades more than it makes, and earns most of its profit from what it makes, is a manufacturer. If one party is of another kind than the rest of the deal, record the answer for that party with `"for"`.
-- Some answers call for structure: a party, a link, an asset, a project or a contract. `status` lists these under "Structure still open". Add what is missing, and the link brings its own checks. If nothing needs to be added, record a decision that `covers` the check, with the reason.
+- Some answers call for structure: a party, a link, an asset, a project or a contract. `status` lists these under "Structure still open". Add what is missing, and the link brings its own checks. If nothing needs to be added, record a decision that `covers` the check, with the reason and without an owner or a date.
 
 ## Checks
 
@@ -104,7 +107,7 @@ The kind you give a source therefore decides two things: the folder it is filed 
 
 ## A gap with an agreed action
 
-A check can stay open with an agreed action: a condition, a covenant or a task with an owner and a date. Record a decision that `covers` the check. See [recording](recording.md). The check then leaves the list of checks to answer and appears under "Gaps with an agreed action".
+A check can stay open with an agreed action: a condition, a covenant or a task with an owner and a date. Record a decision that `covers` the check and names the `owner` and the `due` date. See [recording](recording.md). The check then leaves the list of checks to answer and appears under "Gaps with an agreed action".
 
 ## Stages
 

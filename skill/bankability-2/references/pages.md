@@ -9,10 +9,10 @@ Write it so that you, or another assistant who has never seen this deal, can pic
 An assistant reads the contents page, `Internal/wiki/index.md`, and the page of the deal first. It opens another page only when the task needs it. So:
 
 - **Every page starts with a lead that can stand alone.** The contents page prints the first sentence of each page and its length in words. That line decides whether the page is opened.
-- **The contents page is the map.** The tool writes it on every `pages`. It also lists each subject that has no page, in one line: its kind, its roles and its note.
+- **The contents page is the map.** The tool writes it on every `pages`. It also lists each subject that no page describes, in one line: its kind, its roles and its note. Beside it the tool writes `sources.md`: every source of the record, how far it was read, how many facts rest on it, and links to its original and its extract.
 - **A page may be long** when its subject needs it. Keep it workable: one subject per page, headings or bold lead-ins that name what follows, and each thing said once, on the page it belongs to. Link to it from elsewhere. A figure that sits on five pages has to be changed on five pages.
 
-A person reads the same pages in a browser: `pages` writes `Internal/wiki/wiki.html`, one file that opens by double click. It lists the pages by shelf, searches them, follows the links between them, and shows the fact behind a citation when it is clicked: its value, its date, its source and the place in the source. It also shows the index of the client's documents. Do not edit it: the tool writes it again each time. The pages themselves are plain Markdown with ordinary links, so the folder also opens in any Markdown reader, or as a vault in Obsidian.
+A person reads the same pages in a browser: `pages` writes `Internal/wiki/wiki.html`, one file that opens by double click. It lists the pages by shelf, searches them, follows the links between them, and shows the fact behind a citation when it is clicked: its value, its date, its source and the place in the source, with a link that opens the original at that page. The tool's parts of a page are folded away under "From the record", so that your text comes first. The view also shows the sources and the index of the client's documents. Do not edit it: the tool writes it again each time. The pages themselves are plain Markdown with ordinary links, so the folder also opens in any Markdown reader, or as a vault in Obsidian.
 
 ## Which pages
 
@@ -27,7 +27,11 @@ A person reads the same pages in a browser: `pages` writes `Internal/wiki/wiki.h
 
 `pages` creates an empty page for the deal, for each borrower, repayment source, guarantor and sponsor, and for each project the loan finances, once it has a name. Those you write.
 
-**Fewer and richer.** Any other subject gets a page only when there is something to say that does not fit in its line on the contents page and on the page of the party it matters to. A customer that buys 31% of revenue under a contract with unusual terms may earn a page. A bank that is one of five lenders does not. To make a page, write a file in the right folder with the form below, then run `pages`.
+**Fewer and richer.** Any other subject gets a page only when there is something to say that does not fit in its line on the contents page and on the page of the party it matters to. A customer that buys 31% of revenue under a contract with unusual terms may earn a page. A bank that is one of five lenders does not: the lenders share one page. To make a page, write a file in the right folder with the form below, then run `pages`.
+
+**One page for several subjects.** Name them all in `about`: `about: R-005, P-004, P-005, P-006` for a page on existing borrowings and the three banks. Each then counts as described there. Its name links to that page from the other pages, and it leaves the list of subjects without a page.
+
+**To merge or remove a page**, move what is worth keeping to the page that now describes the subject, add the subject's ID to that page's `about`, delete the old file, and run `pages` and `check`. `check` reports each link that still points at the page that is gone. `pages` writes a new empty page only for the deal, a main party or a financed project that no page names in `about`.
 
 **Projects and assets get real pages.** What it is, where, how big, at what cost, by when, who pays for which part, how far it has come, and what it adds to the business: capacity, products, revenue, debt. The answer to `OBS_FEAS_008` is its start.
 
@@ -55,14 +59,20 @@ One to three plain sentences. The first one can stand alone.
 
 ## Assumptions and open points
 
+## Key values
+
+<!-- tool:begin values -->
+<!-- tool:end -->
+
 ## Sources
 
 <!-- tool:begin sources -->
 <!-- tool:end -->
 ```
 
-- **`about`** names what the page is about: a subject (`P-001`), a link (`R-004`), an indicator (`CAS_REVENUE_001`), `DEAL`, or several separated by commas. The first one decides whose page it is: the tool links that name to this page wherever it appears. `show claims` gives the ID of each indicator.
-- **Leave the two marked parts to the tool.** "At a glance" on the page of the deal shows the stage, the structure, the claims by pillar and each claim that is challenged or contested. On the page of a subject it shows the roles, the links, the key values and the challenged claims, questions and decisions. On the shelves `people`, `topics`, `terms` and `work` it is one line that names what the page is about. "Sources" lists what the page cites, with a link to each document.
+- **`about`** names what the page is about: a subject (`P-001`), a link (`R-004`), an indicator (`CAS_REVENUE_001`), `DEAL`, or several separated by commas. The first one decides whose page it is. `show <deal> claims` gives the ID of each indicator.
+- **Leave the three marked parts to the tool.** "At a glance" on the page of the deal shows the stage, the loan with the parties and the project at its centre, the claims by pillar and each claim that is challenged or contested. On the page of a subject it shows the roles, the links that have not ended, and the challenged claims, questions and decisions. On the shelves `people`, `topics`, `terms` and `work` it is one line that names what the page is about. "Key values" is a table of the latest value under each label of the subject's facts. A page that has none gets no such part. "Sources" lists what the page cites, with a link to each document, and says where a source was not read in full.
+- **You may move a marked part**, with its heading, to another place on the page. The tool fills it where it finds it. Keep your own text ahead of the tables.
 - **`checked`** is for a person. Leave it empty.
 
 ## What to write, in this order
@@ -76,7 +86,15 @@ One to three plain sentences. The first one can stand alone.
 
 Parts 2 to 5 go under "What we know". Use `###` headings or short bold lead-ins.
 
-On the page of the deal, write the request, how the loan is to be repaid, and the structure in words: who borrows, where the cash is earned and how it reaches the lender. Link to the pages of the parties and the project. Keep the working notes on their own page.
+On the page of the deal, write the request, how the loan is to be repaid, and the structure in words: who borrows, where the cash is earned and how it reaches the lender. Link to the pages of the parties and the project.
+
+**The working notes** have their own page, `work/working-notes.md`, with `about: DEAL`. They say how to work on this deal: what the officer asked for, in their words and with the date, which page is the place for what, and what is left to do. They hold no analysis. `check` does not ask them for citations.
+
+```markdown
+- 12 November 2026, officer: "Write more about the second line. The committee will ask what it adds."
+- The supply contracts belong on the page of Cedar Foods Ltd, not on a page of their own.
+- Left to do: the page of the guarantor, once it is named.
+```
 
 ## The details that show understanding
 
@@ -112,10 +130,10 @@ Put the ID of the fact or the source in square brackets after the sentence it su
 
 `check` reads the pages paragraph by paragraph. A paragraph, a list item and a table row each count as one. It reports:
 
-- **A number that no record cited in the same paragraph holds.** Whole numbers below 10 are let through. Write a figure the way its fact gives it: KES 4,060m, not KES 4.06bn.
+- **A number that no record cited in the same paragraph holds.** Whole numbers below 10 are let through. Every other number counts: an amount, a percentage, a year, the day of a date, the number of a note. It is held when a cited record carries it: a fact in its statement, its value, its date or its place, a source in its title or its date. So cite a fact as of the date you name, write a period the way the fact does, and write a figure the way its fact gives it: KES 4,060m, not KES 4.06bn.
 - **In a table, each row is read on its own.** Give a figure its citation in its own row: `| Revenue | KES 4,060m | KES 3,480m | [F-008] [F-019] |`. The head row is not read, so a year or a unit there needs no citation.
 - **Only the record counts.** A number that is in a document and in no fact is reported even where you cite the source. Record the fact first, then cite it. A figure you worked out is a fact too: see [recording](recording.md).
-- **A citation that leads nowhere**, and a page with text and no citation at all.
+- **A citation that leads nowhere**, a link to a page that is not there, and a page with text and no citation at all.
 - **A citation of a fact that was replaced or is disputed**, unless it is marked as below.
 
 ## When something changes
@@ -128,7 +146,7 @@ Put the ID of the fact or the source in square brackets after the sentence it su
   Revenue was KES 4,060m in 2025 [F-008]. Outdated: the teaser gave about KES 4.1bn [F-005].
   ```
 
-  `check` leaves alone every citation after the word, up to the end of that paragraph, list item or table row. So put the marked sentence last, or give it a list item of its own. Without the word, `check` reports the citation.
+  `check` leaves alone every citation after the word, up to the end of that paragraph, list item or table row. So put the marked sentence last, or give it a list item of its own. The word also works as the first word of a table row, and inside a bracket. Without the word, `check` reports the citation.
 - **A balance at an earlier date is not outdated.** Both facts are current and both may be cited without a marker.
 - **Write nothing when a source adds nothing.**
 
@@ -141,6 +159,7 @@ Put the ID of the fact or the source in square brackets after the sentence it su
 5. Use "is" and "has".
 6. Give every number its unit, its date and the company it belongs to.
 7. Mark what you inferred.
-8. Link the first mention of another subject to its page, with an ordinary relative link: `[Cedar Foods Ltd](../parties/cedar-foods-ltd.md)`. Name a file you create in lower case with hyphens, as the tool does.
+8. Write "not stated" or "not known" only for what you looked for in the original and did not find. Record that search as a fact with `nothing_found`, and cite it.
+9. Link the first mention of another subject to its page, with an ordinary relative link: `[Cedar Foods Ltd](../parties/cedar-foods-ltd.md)`. Name a file you create in lower case with hyphens, as the tool does.
 
 On the people pages, record what people said, asked for and decided, with the source. No judgements of character. Name the party they belong to in `about`.

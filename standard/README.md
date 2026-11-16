@@ -2,10 +2,10 @@
 
 The standard says what a deal folder holds and what must be known about a deal. It is data only: lists, a data-room structure and checks. No meaning lives in code.
 
-Version 4.1.0 holds 70 indicators with 550 checks in nine pillars, a data room of 10 folders with 64 slots, and 82 kinds of source.
+Version 4.1.1 holds 70 indicators with 550 checks in nine pillars, a data room of 10 folders with 64 slots, and 82 kinds of source.
 
 - [FRAMEWORK.md](FRAMEWORK.md) explains how the standard is organised, and why. Read it first.
-- [CHANGES.md](CHANGES.md) lists what changed: after the first trial on a real company, and from the first Bankability's standard.
+- [CHANGES.md](CHANGES.md) lists what changed: after two trials on a real company, and from the first Bankability's standard.
 
 ## The files
 
@@ -35,7 +35,7 @@ A few fields in the lists decide who is asked what. The tool only applies them.
 | | `asked_only` | The only indicators a subject of this kind is asked. Set for `person`. |
 | | `shown_as` | Words the tool adds when it shows such a subject. A facility is shown as the loan under review. |
 | `link-types.yaml` | `role_from`, `role_to` | The role the link gives to the subject at that end. |
-| | `counts_for` | The kinds of subject the link must point at to give its role and to be asked its checks. `borrows`, `guarantees`, `supports` and `secures` count for a facility only. |
+| | `counts_for` | The kinds of subject the link must point at to give its role and to be asked its checks. `borrows`, `guarantees`, `supports` and `secures` count for a facility only. `owns` and `sponsors` count for a party or a group. |
 | `source-kinds.yaml` | `slot` | The slot of the data room where such a document belongs. A kind without a slot is internal. |
 
 The data room is an index. A deal folder keeps every document of the client in one folder, and lists them by these folders and slots.

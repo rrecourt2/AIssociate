@@ -6,10 +6,9 @@ It is made for a development finance institution and for an investment officer w
 
 ## Where it stands
 
-Built on 14 November 2026, and repaired on 15 November after a first trial.
+Built on 14 November 2026, and repaired on 15 and 16 November after two passes of a trial.
 
-- **Tried once on a real company**, from its public documents only, by assistants that had nothing but the skill and the tool. The record they built was accurate, and each assistant could pick the deal up where the last had stopped. The trial also showed that the tool asked too much, and asked some of it of the wrong subjects. What it showed and what changed is in [standard/CHANGES.md](standard/CHANGES.md). The trial itself is private and not in this repository.
-- **The repaired version has not been tried again yet.**
+- **Tried twice on a real company**, from its public documents only, by assistants that had nothing but the skill and the tool. The record they built was accurate, and each assistant could pick the deal up where the last had stopped. The first pass showed that the tool asked too much, and asked some of it of the wrong subjects. The second pass, with the repaired tool, asked about half as much, kept the original documents beside their extracts and gave a wiki that describes the business before it measures it. What each pass showed and what changed is in [standard/CHANGES.md](standard/CHANGES.md). The trial itself is private and not in this repository.
 - **Not yet tried in Microsoft Copilot Cowork.** How Cowork saves files and runs a script from a skill has to be tested in the tenant first.
 - **Not yet used on a live deal with an officer.**
 - **The standard was rebuilt on a new framework** (version 4): it starts from how the loan is repaid, keeps the deal, each party, the links and the facility apart, and puts every check under a claim that can turn out false. See [standard/FRAMEWORK.md](standard/FRAMEWORK.md).
@@ -59,7 +58,7 @@ The deal is invented. The steps under `examples/cedar-foods/changes` are what an
 - **`pages`** creates three pages for an assistant to write: the deal, the borrower and the project the loan pays for. The line after it copies in the pages an assistant wrote for this deal, from `examples/cedar-foods/wiki`. `pages` then fills in the parts that the tool keeps and writes `Cedar Foods/Internal/wiki/wiki.html`. Open that file in a browser to read the wiki, the documents and the facts behind each citation.
 - **`check`** finds nothing wrong.
 
-More to look at: `show "Cedar Foods" claims` lists every claim by pillar, `show "Cedar Foods" facts` every fact, and `show "Cedar Foods" kinds` the kinds of source, subject and link.
+More to look at: `show "Cedar Foods" claims` lists every claim by pillar, `show "Cedar Foods" facts` every fact, `show "Cedar Foods" facts S-002` the facts from one source, and `show "Cedar Foods" kinds` the kinds of source, subject and link.
 
 ## The parts
 
@@ -85,7 +84,7 @@ The record holds what is known: exact, sourced and written only by the tool. The
 
 ## Kept simple
 
-The tool is about 1,800 lines of Python in seven files. These rules hold, and `tests/test_audit.py` fails if the code breaks one:
+The tool is about 1,900 lines of Python in seven files. These rules hold, and `tests/test_audit.py` fails if the code breaks one:
 
 - Python standard library only.
 - No network access, no starting of other programs, no `eval`, no reading of environment variables, no deleting.

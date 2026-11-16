@@ -2,6 +2,7 @@
 import argparse
 import datetime
 import json
+import re
 import sys
 
 from . import __version__, assess, files, pages, standard, store
@@ -13,7 +14,8 @@ def load(deal):
     if memory is None and files.read(deal, files.OLD_MEMORY) is not None:
         raise Refused(f"{deal} keeps its record where an earlier version of the tool put it. Move it with: upgrade <folder>")
     if memory is None:
-        raise Refused(f"{deal} holds no deal. Start one with: start <folder> --name <name>")
+        raise Refused(f"{deal} holds no deal. The deal folder comes right after the command, as in: show <folder> facts. "
+                      "To start a deal there: start <folder> --name <name>")
     return memory, standard.effective(deal)
 
 
@@ -51,16 +53,20 @@ def structure(memory, std, scope=None):
     held = assess.roles(memory, std)
     shown_as = {kind["id"]: f", {kind['shown_as']}" for kind in std["subject_kinds"] if "shown_as" in kind}
     print("\n## Structure")
-    for sid, subject in memory["subjects"].items():
+    ended = [rid for table in ("subjects", "links") for rid, entry in memory[table].items() if entry.get("state") == "ended"]
+    for sid, subject in store.live(memory).items():
         if scope is None or sid in scope:
             print(f"- {sid} {subject.get('name') or 'not yet named'}: {subject['kind']}{shown_as.get(subject['kind'], '')}"
                   + "".join(f", {role}" for role in sorted(held.get(sid, ()))))
     for lid, link in memory["links"].items():
-        if scope is None or lid in scope:
-            idle = link["state"] != "ended" and not assess.counts(link, memory, std)
+        if (scope is None or lid in scope) and lid not in ended:
             towards = " or ".join(standard.find(std, "link:" + link["type"]).get("counts_for", []))
+            why = "one of its ends has ended" if {link["from"], link["to"]} & set(ended) else f"it does not point at a {towards}"
             print(f"- {lid} {pages.name_of(lid, memory)} ({link['state']}"
-                  + (f"; it gives no role and no checks, because it does not point at a {towards}" if idle else "") + ")")
+                  + ("" if assess.counts(link, memory, std) else f"; it gives no role and no checks, because {why}") + ")")
+    past = [rid for rid in ended if scope is None or rid in scope]
+    if past:
+        print(f"- Ended, and kept in the record: {', '.join(past)}")
 
 
 def status(args):
@@ -114,8 +120,8 @@ def status(args):
     group("Gaps with an agreed action", todo["actions"], limit)
     if scope is None:
         group("Documents not in the folder", [f"{doc['slot']} {doc['title']}: {doc['why']}" for doc in todo["documents"]], limit)
-    group("Questions without an answer", [f"{q['id']} to {q['asked_of']}, asked {q.get('asked', 'no date')}: {q['text']}"
-                                         for q in todo["questions"]], limit)
+    group("Questions without an answer", [f"{q['id']} to {q['asked_of']}, " + (f"asked {q['asked']}" if q.get("asked") else
+                                          "not sent yet") + f": {q['text']}" for q in todo["questions"]], limit)
     group("Facts that rest on a replaced source", todo["replaced"], limit)
     if scope is None:
         group("System fields without a value", todo["fields"], limit)
@@ -208,17 +214,21 @@ def show_claims(memory, std, rows):
             print()
 
 
-def fact_lines(memory, about):
-    """One line per current fact: all of them, or only those about one subject, one link or the deal."""
+def fact_lines(memory, terms):
+    """One line per fact that is current or disputed. With IDs or words: every fact whose line holds one of them, such as
+    the facts about a subject, from a source or in answer to a check, a fact named by its ID, or the facts with a word."""
     lines = []
     for fid, fact in memory["facts"].items():
-        if fact["state"] == "current" and about in (None, fact["about"]):
-            value = f" {fact.get('label', 'Value')}: {fact.get('value')} {fact.get('unit', '')}".rstrip() + "."
-            answers = ", ".join(f"{answer['check']}: {pages.shown(answer['value'])}" for answer in fact.get("answers", []))
-            where = [fact["source"], fact.get("place"), fact.get("as_of") and f"as of {fact['as_of']}", fact.get("said_by"),
-                     answers and f"answers {answers}"]
-            lines.append(f"- {fid} about {fact['about']}: {fact['statement']}{value if 'value' in fact else ''} "
-                         f"({'; '.join(filter(None, where))})")
+        state = "" if fact["state"] == "current" else f" ({fact['state']})"
+        value = f" {fact.get('label', 'Value')}: {fact.get('value')} {fact.get('unit', '')}".rstrip() + "."
+        answers = ", ".join(f"{answer['check']}: {pages.shown(answer['value'])}" for answer in fact.get("answers", []))
+        where = [fact["source"], fact.get("place"), fact.get("as_of") and f"as of {fact['as_of']}", fact.get("said_by"),
+                 answers and f"answers {answers}"]
+        line = (f"- {fid}{state} about {fact['about']}: {fact['statement']}{value if 'value' in fact else ''} "
+                f"({'; '.join(filter(None, where))})")
+        named = any(re.search(rf"(?<!\w){re.escape(term)}(?!\w)", line, re.I) for term in terms)
+        if named or (not terms and fact["state"] != "outdated"):
+            lines.append(line)
     return lines
 
 
@@ -226,6 +236,8 @@ def show(args):
     memory, std = load(args.deal)
     what, rows = " ".join(args.what), assess.assess(memory, std)
     if what == "log":
+        if len(memory["log"]) > 30:
+            print(f"The last 30 of {len(memory['log'])} entries.")
         for entry in memory["log"][-30:]:
             print(f"{entry['n']}. {entry['at']} {entry['by']}: {entry['note']} "
                   f"added {entry['added']} changed {list(entry['changed'])}")
@@ -235,8 +247,11 @@ def show(args):
         show_kinds(std)
     elif what == "claims":
         show_claims(memory, std, rows)
-    elif args.what[0] == "facts" and len(args.what) <= 2:
-        print("\n".join(fact_lines(memory, args.what[1] if len(args.what) == 2 else None)) or "Nothing found.")
+    elif args.what[0] == "facts":
+        print("\n".join(fact_lines(memory, args.what[1:])) or "Nothing found.")
+        outdated = sum(fact["state"] == "outdated" for fact in memory["facts"].values())
+        if outdated and len(args.what) == 1:
+            print(f"\n{outdated} outdated facts are not listed. Name one, or a word it holds, to see it.")
     elif what in std["checks"] or what in std["by_id"]:
         entry = std["checks"].get(what) or std["by_id"][what]
         print(json.dumps({key: value for key, value in entry.items() if key != "checks"}, indent=1, ensure_ascii=False))
@@ -257,6 +272,8 @@ def show(args):
     else:
         hits = [f"- {rid}: {summary(record)}" for table in store.TABLES for rid, record in memory[table].items()
                 if what.lower() in json.dumps(record, ensure_ascii=False).lower()]
+        hits += [f"- {cid}: {check['question']}" for cid, check in std["checks"].items()  # and the checks of the standard
+                 if what.lower() in json.dumps(check, ensure_ascii=False).lower()]
         print("\n".join(hits) or "Nothing found.")
 
 
@@ -300,7 +317,7 @@ def file_problems(deal, memory):
 def check(args):
     memory, std = load(args.deal)
     found = store.verify(memory) + std["notes"] + file_problems(args.deal, memory) + pages.problems(args.deal, memory)
-    found += [f"{did}: the decision names no fact it rests on" for did, decision in memory["decisions"].items()
+    found += [f"{did}: the decision names nothing it rests on" for did, decision in memory["decisions"].items()
               if not decision.get("rests_on")]
     print("\n".join(f"- {line}" for line in found) or "No problems found.")
 
@@ -435,7 +452,7 @@ def main(argv=None):
     sub.add_argument("--json", action="store_true")
     command("add", add, "record a set of changes").add_argument("changes", help="a JSON file, or - for standard input")
     command("show", show, "look something up").add_argument(
-        "what", nargs="+", help="an ID, 'log', 'sheet', 'kinds', 'claims', 'facts', 'facts <ID>', or words to search for")
+        "what", nargs="+", help="an ID, 'log', 'sheet', 'kinds', 'claims', 'facts', 'facts <IDs or words>', or words to search for")
     command("pages", refresh, "fill in the tool's parts of the wiki pages, and write the view for a browser")
     command("check", check, "report what looks wrong")
     command("adjust", adjust, "adjust the standard for this deal").add_argument("adjustment", help="a JSON file, or -")

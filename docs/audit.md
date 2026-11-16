@@ -1,10 +1,10 @@
 # Audit note
 
-For whoever reviews Bankability 2 before it is used inside an institution. Version 0.3.0, 15 November 2026.
+For whoever reviews Bankability 2 before it is used inside an institution. Version 0.4.0, 16 November 2026.
 
 ## What the tool is
 
-A command-line program of about 1,800 lines of Python in seven files, in the folder `bankability2`. It uses the Python standard library only. It has no installer, no service, no background process and no configuration file. Beside the code the folder holds two files of data: the standard, and the template of the view for a browser.
+A command-line program of about 1,900 lines of Python in seven files, in the folder `bankability2`. It uses the Python standard library only. It has no installer, no service, no background process and no configuration file. Beside the code the folder holds two files of data: the standard, and the template of the view for a browser.
 
 It is run by a person or by an AI assistant, one command at a time, on one deal folder. Each command reads files in that folder, computes, prints text, and in some cases writes files in that folder. Then it ends.
 
@@ -27,7 +27,7 @@ All access to the disk is in one module, `files.py`, of about 120 lines. It chan
 
 ## The view for a browser
 
-The `pages` command writes `Internal/wiki/wiki.html`, so that a person can read the wiki in a browser. It is one HTML file that loads nothing from the network: no script, style, font or picture from elsewhere. Its template, `bankability2/wiki.html`, is about 240 lines of HTML, CSS and plain JavaScript. Python only puts the data into it: the pages, the index of the documents and the record, as JSON in which every `<` is escaped so that no text can end the script it sits in.
+The `pages` command writes `Internal/wiki/wiki.html`, so that a person can read the wiki in a browser. It is one HTML file that loads nothing from the network: no script, style, font or picture from elsewhere. Its template, `bankability2/wiki.html`, is about 250 lines of HTML, CSS and plain JavaScript. Python only puts the data into it: the pages, the index of the documents and the record, as JSON in which every `<` is escaped so that no text can end the script it sits in.
 
 The script runs in the reader's browser, not in the tool. It renders the pages as text, and it escapes what it takes from the pages and the record before it shows it. A link to a document opens that file from the deal folder. The audit rules below read the Python only. A test checks that the template names no address and no outside file.
 

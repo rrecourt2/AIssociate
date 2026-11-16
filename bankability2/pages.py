@@ -1,18 +1,17 @@
 """The wiki: pages the assistant writes, with the parts the tool fills in, and the same pages as one file for a browser.
 
-A page names what it is about at the top. The tool owns the text between its two pairs of
-markers, "At a glance" and "Sources", and never touches the rest.
+A page names what it is about at the top. The tool owns the text between its pairs of markers:
+"At a glance", "Key values" and "Sources". It never touches the rest.
 """
 import json
 import re
 
 from . import files
-from .assess import VERDICTS, claims, view
-from .store import DEAL, TABLES, table_of
+from .assess import MAIN, VERDICTS, central, claims, view
+from .store import DEAL, TABLES, live, table_of
 
 SHELVES = ("deal", "parties", "people", "topics", "terms", "work")
 BRIEF = SHELVES[2:]  # a page on one of these shelves gets one line that names what it is about
-PAGE_FOR = {"borrower", "repayment_source", "guarantor", "sponsor", "financed_project"}  # the roles that get a page
 BEGIN, END = "<!-- tool:begin {} -->", "<!-- tool:end -->"
 PART = BEGIN + "((?!<!-- tool:begin).)*?" + END  # a begin marker, its lines and its own end marker
 ID = re.compile(r"\b[A-Z]-\d{3,}\b")
@@ -20,7 +19,7 @@ NUMBER = re.compile(r"\d[\d,.]*\d|\d")
 ROUND = str.maketrans("[]", "()")  # square brackets in a title would end the link that carries it
 STALE = ("outdated", "disputed", "replaced")  # the states of a record that something newer took the place of
 # One of those words and a colon, at the start of a paragraph or of a sentence. What follows it may cite such a record.
-MARKED = re.compile(r"(?:^|[.!?|]\s+)[*_]*(?:" + "|".join(STALE) + r")[*_]*:", re.I)
+MARKED = re.compile(r"(?:^|[.!?|]\s+)[*_(]*(?:" + "|".join(STALE) + r")[*_]*:", re.I)
 SKELETON = """---
 title: {title}
 about: {about}
@@ -43,6 +42,11 @@ checked:
 ## Assumptions and open points
 
 
+## Key values
+
+<!-- tool:begin values -->
+<!-- tool:end -->
+
 ## Sources
 
 <!-- tool:begin sources -->
@@ -55,7 +59,7 @@ def front(text):
     if not text.startswith("---\n") or "\n---" not in text[4:]:
         return {}
     head = text[4:text.index("\n---", 4)]
-    return {key.strip(): value.strip() for key, _, value in (line.partition(":") for line in head.splitlines())}
+    return {key.strip(): value.strip().strip("\"'") for key, _, value in (line.partition(":") for line in head.splitlines())}
 
 
 def own_text(text):
@@ -66,13 +70,13 @@ def own_text(text):
     return re.sub(r"^#.*$", "", text, flags=re.M)
 
 
-def fill(text, name, lines):
-    """Put lines between a pair of markers. A page without the markers gets them at the end."""
+def fill(text, name, lines, heading=""):
+    """Put lines between a pair of markers. A page without the markers gets them at the end, under the heading."""
     body = "\n".join([BEGIN.format(name), *lines, END])
     found = re.search(PART.format(name), text, flags=re.S)
     if found:
         return text[:found.start()] + body + text[found.end():]
-    return text.rstrip() + "\n\n" + body + "\n"
+    return text.rstrip() + "\n\n" + heading + body + "\n"
 
 
 def blocks(text):
@@ -94,8 +98,8 @@ def lead(text):
     """The first sentence the assistant wrote on a page, or a note that the page is not written yet."""
     words = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", next(iter(blocks(own_text(text))), ""))  # a link becomes its words
     words = re.sub(r"\s*\[[^\]]*\]", "", words)  # leave the citations out
-    for stop in re.finditer(r"[.!?](?=\s)", words):
-        if not re.search(r"\b[A-Z][a-z]{0,3}$|\.[a-z]$", words[:stop.start()]):  # not an abbreviation: Co., No., e.g.
+    for stop in re.finditer(r"[.!?](?=\s+[A-Z\"'(\[*_]|\s*$)", words):  # a capital letter starts the next sentence
+        if not re.search(r"\b[A-Z][a-z]?$|\.[a-z]$", words[:stop.start()]):  # not an initial or an abbreviation: J., Co., e.g.
             return words[:stop.end()]
     return words or "*not written yet*"
 
@@ -217,23 +221,32 @@ def about_line(ids, found, memory, std, name):
     return [f"- **About:** {'; '.join(named)}."] if named else []
 
 
+def brief(ids, memory, here):
+    """Whether a page gets one line that names what it is about and no more: by its shelf, or because it is not about subjects."""
+    return here.split("/")[0] in BRIEF or not all(rid == DEAL or rid in memory["subjects"] for rid in ids)
+
+
 def glance(ids, memory, std, rows, held, where, here):
     """What the record holds on what a page is about, kept short. Names link to their pages. The page of the deal gets
-    the structure and the claims, the page of a subject its links, key values, questions and decisions, any other one line."""
+    the subjects at its centre and the claims, the page of a subject its links, questions and decisions, any other one
+    line. Links and subjects that have ended are left out: `show` has them."""
     def name(rid):
         return linked(rid, memory, where, here)
 
     found, lines = claims(rows, memory, std), []
-    if here.split("/")[0] in BRIEF or not all(rid == DEAL or rid in memory["subjects"] for rid in ids):
+    if brief(ids, memory, here):
         return about_line(ids, found, memory, std, name)
     for rid in ids:
-        near = [(lid, link) for lid, link in memory["links"].items() if rid in (DEAL, link["from"], link["to"])]
+        near = [(lid, link) for lid, link in memory["links"].items()
+                if rid in (DEAL, link["from"], link["to"]) and link["state"] != "ended"]
         mine = [claim for claim in found if rid == DEAL or claim["for"] in (rid, *(lid for lid, _ in near))]
         if rid == DEAL:
             deal = memory["deal"]
             lines.append(f"- **Stage:** {std['stage_titles'][deal['stage']]}. **Standard:** {deal['standard']}. "
                          f"**Revision:** {memory['log'][-1]['n']}.")
-            for sid, subject in memory["subjects"].items():  # the structure: each subject once, with the links that start at it
+            for sid, subject in live(memory).items():  # the loan and the main roles, each with the links that start there
+                if not central(sid, memory, held):
+                    continue
                 does = "; ".join(f"{link['type'].replace('_', ' ')} {name_of(link['to'], memory)} ({lid}"
                                  + ("" if link["state"] == "confirmed" else f", {link['state']}") + ")"
                                  for lid, link in near if link["from"] == sid)
@@ -242,16 +255,8 @@ def glance(ids, memory, std, rows, held, where, here):
         else:
             lines.append(f"- **{rid}:** {described(rid, memory, std, held)}")
             lines += [f"- {lid}: {name(lid)} ({link['state']})" for lid, link in near]
-        latest = {}
-        for fid, fact in memory["facts"].items():
-            if (rid != DEAL and fact["about"] == rid and fact["state"] == "current" and fact.get("label")
-                    and str(fact.get("as_of", "")) >= str(latest.get(fact["label"], (None, {}))[1].get("as_of", ""))):
-                latest[fact["label"]] = (fid, fact)
-        if latest:
-            lines += ["", "| Key value | Value | As of | Fact |", "|---|---|---|---|"]
-            lines += [f"| {label} | {fact.get('value', '')} {fact.get('unit', '')}".rstrip()
-                      + f" | {fact.get('as_of', '')} | {fid} |" for label, (fid, fact) in latest.items()]
         if rid == DEAL:
+            lines.append(f"- Every other subject is on the [contents page]({'../' * here.count('/')}index.md).")
             lines += ["", "| Pillar | " + " | ".join(verdict.capitalize() for verdict in VERDICTS) + " |",
                       "|---|" + "---|" * len(VERDICTS)]
             lines += [f"| {pillar['title']} | " + " | ".join(map(str, view(found, std)[pillar["id"]])) + " |"
@@ -267,6 +272,20 @@ def glance(ids, memory, std, rows, held, where, here):
     return lines
 
 
+def key_values(ids, memory, here):
+    """The latest value under each label of the facts about what a page is about, as a table under its own heading."""
+    rows = []
+    for rid in [] if brief(ids, memory, here) else ids:
+        latest, whose = {}, f" ({name_of(rid, memory)})" if len(ids) > 1 else ""
+        for fid, fact in memory["facts"].items():
+            if (fact["about"] == rid and fact["state"] == "current" and fact.get("label")
+                    and str(fact.get("as_of", "")) >= str(latest.get(fact["label"], (None, {}))[1].get("as_of", ""))):
+                latest[fact["label"]] = (fid, fact)
+        rows += [f"| {label}{whose} | {fact.get('value', '')} {fact.get('unit', '')}".rstrip()
+                 + f" | {fact.get('as_of', '')} | {fid} |" for label, (fid, fact) in latest.items()]
+    return ["| Key value | Value | As of | Fact |", "|---|---|---|---|", *rows] if rows else []
+
+
 def cited_sources(text, memory, here):
     """The sources a page cites, directly or through the facts it cites, each with a link from the page to its document."""
     lines, seen = [], set()
@@ -277,12 +296,29 @@ def cited_sources(text, memory, here):
             source = memory["sources"][sid]
             up = "../" * (here.count("/") + files.WIKI.count("/") + 1)  # from the page to the deal folder
             where = f", [{source['where']}]({up}{encoded(source['where'])})" if source.get("where") else ""
-            lines.append(f"- {sid} {source['title']}: {source['kind']}, {source.get('date', 'no date')}{where}")
+            read = f", read: {source['read']}" if source.get("read") not in (None, "full") else ""  # what was not read in full
+            lines.append(f"- {sid} {source['title']}: {source['kind']}, {source.get('date', 'no date')}{read}{where}")
     return lines
 
 
+def source_lines(memory):
+    """Every source of the record on one page: what it is, how far it was read, how many facts rest on it, and links
+    from the wiki folder to its original and its extract."""
+    lines = [f"# {memory['deal']['name']}: sources", "", "Every source of the record, with the number of facts taken "
+             "from it and links to the original and to its extract.", ""]
+    for sid, source in memory["sources"].items():
+        facts = sum(fact["source"] == sid for fact in memory["facts"].values())
+        notes = [source["kind"], source.get("date", "no date"), source.get("read") and f"read: {source['read']}",
+                 source["state"] != "current" and source["state"], f"{facts} facts"]
+        held = "".join(f" [{name}](../../{encoded(source[key])})" for key, name in (("where", "Original"), ("extract", "Extract"))
+                       if source.get(key))
+        lines.append(f"- {sid} {source['title']}: {', '.join(filter(None, notes))}.{held}")
+    return lines + [""]
+
+
 def all_pages(deal):
-    paths = [path for path in files.listing(deal, files.WIKI) if path.endswith(".md") and not path.endswith("/index.md")]
+    paths = [path for path in files.listing(deal, files.WIKI)
+             if path.endswith(".md") and path[len(files.WIKI) + 1:] not in ("index.md", "sources.md")]
     return {path: files.read(deal, path) for path in paths}
 
 
@@ -319,11 +355,12 @@ def refresh(deal, memory, std, rows, held):
     the browser view. Returns the pages it created, the other pages it changed and the number it left as they were."""
     pages, cut = all_pages(deal), len(files.WIKI) + 1
     where = {}  # the page of the deal and of each subject that has one, as a path from the wiki folder
-    for path, text in sorted(pages.items()):
-        for rid in about(text)[:1]:
-            where.setdefault(rid, path[cut:])
+    for first in (True, False):  # a page belongs to the first ID it names. The others it names are described on it too
+        for path, text in sorted(pages.items()):
+            for rid in about(text)[:1] if first else about(text)[1:]:
+                where.setdefault(rid, path[cut:])
     created, changed = [], []
-    wanted = [sid for sid, subject in memory["subjects"].items() if subject.get("name") and held.get(sid, set()) & PAGE_FOR]
+    wanted = [sid for sid, subject in memory["subjects"].items() if subject.get("name") and held.get(sid, set()) & MAIN]
     for rid in [DEAL, *wanted]:
         if rid not in where:
             kind = "deal" if rid == DEAL else memory["subjects"][rid]["kind"]
@@ -338,6 +375,9 @@ def refresh(deal, memory, std, rows, held):
     contents = {shelf: [] for shelf in SHELVES}
     for path, text in sorted(pages.items()):
         new = fill(text, "glance", glance(about(text), memory, std, rows, held, where, path[cut:]))
+        values = key_values(about(text), memory, path[cut:])
+        if values or BEGIN.format("values") in new:  # a page that has no key values gets no part for them
+            new = fill(new, "values", values, "## Key values\n\n")
         new = fill(new, "sources", cited_sources(text, memory, path[cut:]))
         if new != text or path in created:
             files.write(deal, path, new)
@@ -346,20 +386,22 @@ def refresh(deal, memory, std, rows, held):
         pages[path], title = new, front(text).get("title") or path[cut:]
         contents.setdefault(path[cut:].split("/")[0], []).append(
             f"- [{title}]({encoded(path[cut:])}): {lead(text)} ({len(own_text(text).split())} words)")
-    index = [f"# {memory['deal']['name']}: contents", ""]
+    index = [f"# {memory['deal']['name']}: contents", "", "[Sources](sources.md) lists every source of the record. "
+             f"[Documents](../../{encoded(files.CLIENT)}/index.md) lists what the client shared.", ""]
     for shelf, lines in contents.items():
         if lines:
             index += [f"## {shelf.capitalize()}", "", *lines, ""]
     others = [f"- {sid} {subject.get('name') or 'not yet named'}: {described(sid, memory, std, held)}"
               + (f". {subject['note']}" if subject.get("note") else "")
-              for sid, subject in memory["subjects"].items() if sid not in where]
+              for sid, subject in live(memory).items() if sid not in where]
     if others:
         index += ["## Subjects without a page", "", *others, ""]
     files.write(deal, f"{files.WIKI}/index.md", "\n".join(index))
+    files.write(deal, f"{files.WIKI}/sources.md", "\n".join(source_lines(memory)))
     listed = files.read_json(deal, files.MANIFEST, {"documents": []})["documents"]
     client = f"../../{files.CLIENT}/index.md"  # the index of the client folder, as a path from the wiki folder
-    texts = {"index.md": "\n".join(index), **{path[cut:]: text for path, text in sorted(pages.items())},
-             client: documents(memory["deal"]["name"], listed, std)}
+    texts = {"index.md": "\n".join(index), "sources.md": "\n".join(source_lines(memory)),
+             **{path[cut:]: text for path, text in sorted(pages.items())}, client: documents(memory["deal"]["name"], listed, std)}
     data = {"name": memory["deal"]["name"], "revision": memory["log"][-1]["n"], "shelves": SHELVES, "pages": texts,
             "documents": client, **{table: memory[table] for table in TABLES}}
     filled = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")  # so that no text can end the script it sits in
@@ -378,17 +420,22 @@ def numbers(text):
 
 
 def problems(deal, memory):
-    """What looks wrong on the pages and in the drafts: citations that lead nowhere, citations of a record that was
-    replaced and is not marked so, and numbers that no record cited in the same paragraph holds."""
-    found = []
+    """What looks wrong on the pages and in the drafts: citations and links that lead nowhere, citations of a record that
+    was replaced and is not marked so, and numbers that no record cited in the same paragraph holds."""
+    found, there = [], set(files.listing(deal, files.WIKI))
     drafts = {path: files.read(deal, path) for path in files.listing(deal, files.OUTPUTS)  # not those in a sub-folder
               if path.endswith(".md") and "/" not in path[len(files.OUTPUTS) + 1:]}
     for path, text in sorted({**all_pages(deal), **drafts}.items()):
         body = own_text(text)
+        notes = path.startswith(f"{files.WIKI}/work/")  # working notes say how to work. They need not cite the record
         cited = list(dict.fromkeys(ID.findall(body)))
         found += [f"{path}: cites {rid}, which does not exist" for rid in cited if not table_of(memory, rid)]
-        if len(ID.sub("", body).split()) > 40 and not any(table_of(memory, rid) for rid in cited):
+        if len(ID.sub("", body).split()) > 40 and not notes and not any(table_of(memory, rid) for rid in cited):
             found.append(f"{path}: has text and cites nothing")
+        for link in re.findall(r"\]\((?![a-z]+:)([^)#\s]+\.md)", body):  # a link to another page of the wiki
+            target = files.beside(path, re.sub(r"%([0-9A-Fa-f]{2})", lambda code: chr(int(code.group(1), 16)), link))
+            if target.startswith(files.WIKI + "/") and target not in there:
+                found.append(f"{path}: links to {link}, which is not there")
         stale = {}
         for block in blocks(body):
             marked, held = MARKED.search(block), ""
@@ -401,7 +448,7 @@ def problems(deal, memory):
                                  if key not in ("fingerprint", "rev") and (key != "map" or "map" in entry))
             written = re.sub(r"\]\([^)]*\)|\b[A-Z]+_\w+", " ", ID.sub("", block))  # no IDs of records or checks, no link targets
             loose = sorted(n for n in numbers(written) - numbers(held) if n >= 10 or n != int(n))
-            if loose:
+            if loose and not notes:
                 found.append(f"{path}: \"{' '.join(block.split()[:6])} ...\" has {', '.join(f'{n:g}' for n in loose[:8])}, "
                              f"which no record cited in that paragraph holds")
         found += [f"{path}: cites {rid}, which is {entry['state']}" + (f" (replaced by {entry['replaced_by']})" if entry.get(

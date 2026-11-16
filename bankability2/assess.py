@@ -5,15 +5,22 @@ Everything here is worked out from the record and the standard on every run. Non
 import datetime
 
 from .standard import FLAG, TIERS, slots_of
-from .store import DEAL, as_list
+from .store import DEAL, as_list, live
 
-VERDICTS = ("challenged", "contested", "not tested", "stands")  # worst first
+VERDICTS = ("challenged", "contested", "not tested", "stands so far", "stands")  # worst first
+MAIN = {"borrower", "repayment_source", "guarantor", "sponsor", "financed_project"}  # the roles at the centre of a deal
+
+
+def holds_still(link, memory):
+    """Whether a link is still part of the structure: neither it nor a subject at its ends has ended."""
+    ends = (memory["subjects"][link["from"]], memory["subjects"][link["to"]])
+    return link["state"] != "ended" and not any(end.get("state") == "ended" for end in ends)
 
 
 def counts(link, memory, std):
-    """Whether a link gives its role and is asked its checks: it has not ended, and it points at a kind it counts for."""
+    """Whether a link gives its role and is asked its checks: it still holds, and it points at a kind it counts for."""
     allowed = next(kind for kind in std["link_types"] if kind["id"] == link["type"]).get("counts_for")
-    return link["state"] != "ended" and (allowed is None or memory["subjects"][link["to"]]["kind"] in allowed)
+    return holds_still(link, memory) and (allowed is None or memory["subjects"][link["to"]]["kind"] in allowed)
 
 
 def roles(memory, std):
@@ -28,6 +35,11 @@ def roles(memory, std):
     return held
 
 
+def central(sid, memory, held):
+    """Whether a subject is at the centre of the deal: the loan under review, or the holder of a main role."""
+    return memory["subjects"][sid]["kind"] == "facility" or bool(held.get(sid, set()) & MAIN)
+
+
 def targets(ind, check, memory, std, held):
     """Whom or what a check is asked about: the deal, holders of a role, subjects of a kind, or links of a kind.
 
@@ -35,7 +47,7 @@ def targets(ind, check, memory, std, held):
     is not asked. A group is not asked what is asked of a legal entity. A kind of subject may be asked only some indicators.
     """
     names = check.get("applies_to", ind["applies_to"])
-    kind_of = {sid: subject["kind"] for sid, subject in memory["subjects"].items()}
+    kind_of = {sid: subject["kind"] for sid, subject in live(memory).items()}
     only = {kind["id"]: kind["asked_only"] for kind in std["subject_kinds"] if "asked_only" in kind}
     asked_of = next((pillar.get("asked_of") for pillar in std["pillars"] if pillar["id"] == ind["pillar"]), None)
     holders = {sid for sid, kind in kind_of.items()
@@ -235,7 +247,8 @@ def claims(rows, memory, std):
             claim["thin"] += "thin" in row["flags"]
     for claim in found.values():
         claim["stands"] = ("challenged" if claim["against"] else "contested" if claim["contested"]
-                           else "stands" if claim["tests"] > claim["own_word"] else "not tested")
+                           else "not tested" if claim["tests"] <= claim["own_word"]
+                           else "stands" if claim["tests"] == claim["asked"] else "stands so far")  # some tests are open
         for item in std["by_id"][claim["indicator"]].get("look_again_when", []) if claim["seen"] else []:
             if "new_source" in item:
                 later = any(source["kind"] == item["new_source"] and source["rev"] > claim["seen"]
@@ -254,11 +267,14 @@ def stray(memory, std, rows, facts=None):
     """Answers, in all facts or in the ones named, to a check that is not asked about that subject or link, or is
     not relevant there. An answer for one party to a check about the deal is discovery for that party, and is left alone."""
     by_key = {(row["check"], row["for"]): row for row in rows}
+    ended = set(memory["subjects"]) - set(live(memory))  # what was answered about a subject that has ended is history
     found = []
     for fid in memory["facts"] if facts is None else facts:
         fact = memory["facts"].get(fid, {})
         for answer in fact.get("answers", []) if fact.get("state") != "outdated" else []:
             about = whom(answer, fact, std)
+            if about in ended:
+                continue
             row = by_key.get((answer["check"], about), {} if (answer["check"], DEAL) in by_key else None)
             if row is None or row.get("not_relevant"):
                 found.append(f"{fid} answers {answer['check']} for {about}, " + (
@@ -290,9 +306,9 @@ def called_for(rows, memory, std):
             link = memory["links"].get(row["for"])
             ends = {link["from"], link["to"]} if link else {row["for"]}
             sides = [call["end"]] if "end" in call and not link else ["from", "to"]  # the end the subject must be
-            kinds = {sid: subject["kind"] for sid, subject in memory["subjects"].items()}
+            kinds = {sid: subject["kind"] for sid, subject in live(memory).items()}
             there = (call["kind"] in kinds.values() if "kind" in call
-                     else any(other["type"] in call["link"] and counts(other, memory, std)
+                     else any(other["type"] in call["link"] and holds_still(other, memory)  # also one that gives no role
                               and (row["for"] == DEAL or ends & {other[side] for side in sides}
                                    or ("end" not in call and kinds.get(other["to"]) == "facility"))  # support for the loan
                               for other in memory["links"].values()))
@@ -320,7 +336,16 @@ def next_list(memory, std, rows, in_folder=(), scope=None):
             unlocks[earlier] = unlocks.get(earlier, 0) + 1
     work = [dict(row, unlocks=unlocks.get(row["check"], 0) if row["state"] == "open" else 0) for row in rows
             if (row["state"] in ("open", "contested") and "action" not in row) or (row["state"] == "answered" and row["flags"])]
-    work.sort(key=lambda row: (order[row["due_by"]], -row["unlocks"]))
+    held = roles(memory, std)
+
+    def near(rid):
+        """How close to the loan: the deal, then the loan and the holders of a main role, then the rest. A link comes
+        after the nearer of its ends."""
+        if rid in memory["links"]:
+            return 1 + min(near(memory["links"][rid][end]) for end in ("from", "to"))
+        return 0 if rid == DEAL else 1 if central(rid, memory, held) else 2
+
+    work.sort(key=lambda row: (order[row["due_by"]], near(row["for"]), -row["unlocks"]))
 
     slot_of = {kind["id"]: kind.get("slot") for kind in std["source_kinds"]}
     filed = {slot_of[source["kind"]] for source in memory["sources"].values() if source["state"] == "current"} | set(in_folder)
@@ -340,7 +365,7 @@ def next_list(memory, std, rows, in_folder=(), scope=None):
     return {
         "stray": stray(memory, std, rows) if scope is None else [],
         "structure": [f"{sid}: {subject['kind']} not yet named. {subject.get('note', '')}".strip()
-                      for sid, subject in kept("subjects") if not subject.get("name")]
+                      for sid, subject in kept("subjects") if not subject.get("name") and subject.get("state") != "ended"]
                      + [f"{lid}: {link['from']} {link['type']} {link['to']} is proposed, not confirmed"
                         for lid, link in kept("links") if link["state"] == "proposed"]
                      + [f"{memory['subjects'].get(call['for'], {}).get('name') or call['for'].replace(DEAL, 'The deal')}: "
@@ -348,7 +373,8 @@ def next_list(memory, std, rows, in_folder=(), scope=None):
                         for call in called_for(rows, memory, std)],
         "actions": [f"{did}: {decision['decision']} (owner: {decision.get('owner', 'not named')}; due: "
                     f"{decision.get('due', 'no date')}; covers {', '.join(decision['covers'])})"
-                    for did, decision in kept("decisions") if decision.get("covers")],
+                    for did, decision in kept("decisions")  # without an owner or a date it is settled, not an action
+                    if decision.get("covers") and (decision.get("owner") or decision.get("due"))],
         "documents": documents,
         "checks": work,
         "questions": [dict(question, id=qid) for qid, question in kept("questions") if question["state"] == "open"],

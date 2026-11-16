@@ -6,9 +6,10 @@ The tool gives you the material: the claims, the facts and the pages. You write 
 
 ## Before you draft
 
-1. Run `status`, `show claims` and `check`. Repair what `check` reports until it says "No problems found."
-2. Read the contents page and the page of the deal, then the pages the document covers.
-3. Look up the facts you will lean on with `show facts <ID>` for each main subject.
+1. Run `status`, `show <deal> claims` and `check`. Repair what `check` reports until it says "No problems found."
+2. For each claim the document leans on, read its open tests with `show <deal> <indicator>`, and answer those that the record already decides.
+3. Read the contents page and the page of the deal, then the pages the document covers.
+4. Look up the facts you will lean on with `show <deal> facts <ID>` for each main subject.
 
 ## What each document is
 
@@ -63,5 +64,6 @@ If the amount, the currency, the tenor, the security or the borrower is not yet 
 - **A figure you work out** from facts, such as a ratio, a sum or a change, is allowed when the facts it comes from are cited beside it. `check` knows only the numbers that the cited records hold, so it reports the new figure. For a figure the document leans on, record it as a fact marked `inference`, with the working in its statement, and cite that fact. See [recording](recording.md).
 - **Say who said what.** "The CFO said" is not "the accounts show".
 - **State what is not known.**
-- **Save the draft as Markdown in `Internal/outputs`.** `check` reads the Markdown files there the same way as the pages: paragraph by paragraph, every number against the records cited beside it. Put the title, the date and the version in top lines between two `---`, as on a page: `check` does not read those. Make the Word file from the draft with your own tools once `check` is clean. Take the citations out of the final version only if the officer asks. Move a draft that was sent, or that a newer version replaced, to a sub-folder such as `Internal/outputs/sent`. It says what was said then, and `check` reads only the drafts directly in `Internal/outputs`.
+- **Do not quote the tool's counts** of claims or checks. They change with the next answer, and no fact holds them. Name the claims that matter and say where each stands.
+- **Save the draft as Markdown in `Internal/outputs`**, named for the document, the borrower and the version: `FP Cedar Foods v2 draft.md`. `check` reads the Markdown files there the same way as the pages: paragraph by paragraph, every number against the records cited beside it. Put the title, the date and the version in top lines between two `---`, as on a page: `check` does not read those. Make the Word file from the draft with your own tools once `check` is clean. Take the citations out of the final version only if the officer asks. Move a draft that was sent, or that a newer version replaced, to a sub-folder such as `Internal/outputs/sent`. It says what was said then, and `check` reads only the drafts directly in `Internal/outputs`.
 - **When the officer corrects the draft**, correct the fact and the page as well.

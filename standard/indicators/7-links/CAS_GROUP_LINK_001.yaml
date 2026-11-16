@@ -22,7 +22,7 @@ checks:
   answer: choice
   options: [support_from_owner, cash_from_owned, both, neither]
   why: Most ties in a chain of owners carry nothing that the lender counts on. Then the answer is neither, and only OBS_GROUP_010
-    is still asked about the tie.
+    is still asked about the tie. Any other answer also asks what the owner owes and receives on its own account.
   due_by: screening
   look_in: [03.02.b, 02.03.a]
   evidence:
@@ -38,10 +38,11 @@ checks:
     balance sheet date?
   answer: number
   unit: currency
-  why: This is the debt that the cash coming up from the company has to help service. The consolidated accounts do not show
-    it, because they add the company's debt to the owner's.
+  why: This is the debt that the cash coming up from the company has to help service, and that the owner pays before it
+    can support the company. The consolidated accounts do not show it, because they add the company's debt to the owner's.
   due_by: concept
   when:
+  - {check: OBS_GROUP_001, is: support_from_owner}
   - {check: OBS_GROUP_001, is: cash_from_owned}
   - {check: OBS_GROUP_001, is: both}
   look_in: [03.01.a, 04.03.a]
@@ -61,6 +62,7 @@ checks:
     what comes up is enough.
   due_by: concept
   when:
+  - {check: OBS_GROUP_001, is: support_from_owner}
   - {check: OBS_GROUP_001, is: cash_from_owned}
   - {check: OBS_GROUP_001, is: both}
   look_in: [03.01.a, 03.01.b]

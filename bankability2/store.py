@@ -5,6 +5,7 @@ Nothing is deleted. A record that is replaced stays, marked as replaced.
 import datetime
 import hashlib
 import json
+import re
 
 from .files import Refused
 from .standard import EXPECTS, fits
@@ -16,17 +17,18 @@ TABLES = {
     "facts": ("F", ("about", "statement", "source"),
               ("label", "value", "unit", "as_of", "place", "said_by", "nothing_found", "answers", "fills",
                "state", "replaced_by", "note")),
-    "subjects": (None, ("kind",), ("name", "note")),  # the prefix comes from the kind of subject
+    "subjects": (None, ("kind",), ("name", "note", "state")),  # the prefix comes from the kind of subject
     "links": ("R", ("from", "type", "to"), ("state", "why", "source", "note")),
     "decisions": ("D", ("decision", "reason"), ("about", "rests_on", "by", "covers", "owner", "due")),
     "questions": ("Q", ("asked_of", "text"), ("about", "checks", "asked", "via", "state", "answered_by")),
 }
 # Fields that hold IDs, and the tables those IDs may come from.
 REFERS = {"source": ("sources",), "via": ("sources",), "about": ("subjects", "links"), "from": ("subjects",),
-          "to": ("subjects",), "rests_on": ("facts",), "answered_by": ("facts", "sources"),
+          "to": ("subjects",), "rests_on": ("facts", "sources"), "answered_by": ("facts", "sources"),
           "replaced_by": ("facts", "sources")}
 STATES = {"sources": ("current", "replaced"), "facts": ("current", "outdated", "disputed"),
-          "links": ("proposed", "confirmed", "ended"), "questions": ("open", "answered", "withdrawn")}
+          "subjects": ("current", "ended"), "links": ("proposed", "confirmed", "ended"),
+          "questions": ("open", "answered", "withdrawn")}
 SAID_BY = ("document", "client", "officer", "third_party", "inference")
 DEAL = "DEAL"  # stands for the deal as a whole wherever a subject is expected
 
@@ -80,6 +82,11 @@ def note_outside_change(memory):
     """Log that the record no longer matches its last entry, before a new entry hides it."""
     if not memory["log"] or memory["log"][-1]["state"] != state_of(memory):
         record(memory, "tool", "The record was changed outside the tool before this entry")
+
+
+def live(memory):
+    """The subjects that have not ended. An ended subject keeps its records and is asked nothing."""
+    return {sid: subject for sid, subject in memory["subjects"].items() if subject.get("state") != "ended"}
 
 
 def table_of(memory, rid):
@@ -141,6 +148,9 @@ def place(memory, change, std, errors):
         for answer in as_list(fields.get("answers")):
             if isinstance(answer, dict) and "for" in answer:
                 answer["for"] = swap(answer["for"])
+        for key, value in fields.items():  # a statement or a reason may name another record of the same set
+            if isinstance(value, str) and key not in REFERS:
+                fields[key] = re.sub(r"(?<![\w.])@[\w-]+", lambda found: names.get(found.group(), found.group()), value)
     return placed, names
 
 

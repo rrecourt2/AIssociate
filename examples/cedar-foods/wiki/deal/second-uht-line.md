@@ -30,6 +30,11 @@ The second UHT line is the project that the proposed loan pays for: a second pro
 - **Unknown:** what Cedar pays its own share from, beside borrowings of KES 1,300m [F-011].
 - **Unknown:** the permits, the works in the hall, and who installs the line.
 
+## Key values
+
+<!-- tool:begin values -->
+<!-- tool:end -->
+
 ## Sources
 
 <!-- tool:begin sources -->

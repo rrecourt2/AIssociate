@@ -24,6 +24,7 @@ checks:
   assumption: The party meets the labour law on contracts, pay, hours, minimum age, social security and the freedom to organise
   disproved_by: 'no'
   due_by: concept
+  applies_to: [borrower, repayment_source]
   look_in: [07.01.a, 10.03.a, 02.05.a]
   evidence:
     best: [regulatory_document, consultant_report]
@@ -40,6 +41,7 @@ checks:
   assumption: No worker has died or been permanently disabled at the party's sites in the last three years
   disproved_by: 'yes'
   due_by: concept
+  applies_to: [borrower, repayment_source]
   look_in: [07.01.a, 10.03.a, 08.03.b]
   evidence:
     best: [regulatory_document, consultant_report, insurance_broker_report]
@@ -58,6 +60,7 @@ checks:
   assumption: Workers who are not permanent staff get the same pay and protection for the same work, pay no fee for the
     job and keep their own papers
   disproved_by: 'yes'
+  applies_to: [borrower, repayment_source]
   look_in: [10.03.a, 07.02.a]
   evidence:
     best: [consultant_report, regulatory_document, esia_report]
@@ -74,6 +77,7 @@ checks:
   answer: yes_no
   assumption: The party has had three years without a collective labour dispute and without a sanction from the labour authority
   disproved_by: 'yes'
+  applies_to: [borrower, repayment_source]
   look_in: [07.01.a, 08.01.a, 02.06.d]
   evidence:
     best: [regulatory_document, legal_opinion, adverse_media_screen]
@@ -126,6 +130,7 @@ checks:
   answer: yes_no
   assumption: Workers and neighbours have a channel for complaints that they know of, and complaints are logged and answered
   disproved_by: 'no'
+  applies_to: [borrower, repayment_source]
   look_in: [07.02.e, 10.03.a]
   evidence:
     best: [consultant_report, esia_report]

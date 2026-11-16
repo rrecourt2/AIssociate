@@ -106,6 +106,11 @@ def listing(deal, relative):
     return sorted(found)
 
 
+def beside(path, link):
+    """Where a relative link in a file leads, as a path from the deal folder."""
+    return os.path.normpath(os.path.join(os.path.dirname(path), link)).replace(os.sep, "/")
+
+
 def packaged(name):
     """The text of a file that ships with the tool."""
     with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), name), encoding="utf-8") as f:

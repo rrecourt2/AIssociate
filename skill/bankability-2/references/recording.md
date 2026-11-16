@@ -44,7 +44,7 @@ Where an answer does not count, `add` adds a note and records it all the same:
 Note: F-020 answers OBS_DS_005 for P-001, which is not asked that check. The answer is recorded all the same.
 ```
 
-The check is not asked about that subject, or it is not relevant there. Look at the check with `show`, then move the answer with `"for"` or withdraw it. `status` keeps listing such answers until you do.
+The check is not asked about that subject, or it is not relevant there. Look at the check with `show`, then move the answer with `"for"` or withdraw it. `status` keeps listing such answers until you do. Withdrawing an answer leaves the fact as it is.
 
 ## Sources
 
@@ -57,11 +57,19 @@ One per document, call, email or note. `title` and `kind` are required.
 | `extract` | The path of a text extract made from the original, if there is one. |
 | `date` | The date of the document or the call. |
 | `about` | The subjects it is about. |
-| `read` | `full`, `part` or `none`. |
+| `read` | `full`, `part` or `none`. `extract` when you read the extract and not the original. The pages that cite the source say so. |
 | `map` | Where things are: `at` (page, note, minute), `topic`, `gist`. Add entries for the parts you may need again. |
 | `sent_by` | Who it came from. |
+| `note` | Anything else. For what the officer said in conversation: their words. |
 
 **The kind decides two things:** the folder the document is filed in, and how strong its evidence counts. Choose the kind for what the document is. An annual report that is not itself audited is `annual_report`, not `audited_annual_report`. A prospectus is `prospectus`. A newspaper article is `press_article`, and other public information is `public_source`. See [standard](standard.md).
+
+**What the officer tells you in conversation** about the deal is a source too. It needs no file. Put the officer's words in `note`, and mark the facts you take from it `said_by: officer`:
+
+```json
+{"sources": [{"ref": "steer", "title": "Officer, in conversation", "kind": "officer_note", "date": "2026-11-12",
+              "note": "We might finance the second UHT line."}]}
+```
 
 ## Filing documents
 
@@ -83,7 +91,7 @@ The original document is the source. A text extract that you or someone else mad
 
 1. **File the original.** `where` is always the original, and the fingerprint is the original's.
 2. **Attach the extract.** Name it under `"extract"` in the filing: the tool moves it to `Internal/sources/extracts/`. Give that path as `extract` on the source.
-3. **Cite the place in the original.** `place` on a fact is the page, the note or the table of the original, not a line of the extract. Keep the page numbers of the original in the extract when you make one.
+3. **Cite the place in the original.** `place` on a fact is the page, the note or the table of the original, not a line of the extract. When you make an extract, keep the page numbers of the original and copy its tables in full. A table cut down to a sentence is where errors start.
 4. **When the original comes later.** A source that was recorded from an extract alone is pointed at the original once that is filed: send the source's `id` with the new `where` and `extract`. The tool then takes the fingerprint of the original.
 
 Where the extract and the original differ, the original is right.
@@ -98,15 +106,17 @@ Record what would go into a table or a system field: names, amounts, dates, term
 | `statement` | One plain sentence that can stand alone. |
 | `label`, `value`, `unit` | Give a label to a value that belongs in a table, such as `Revenue`. Use the same label for the same figure at another date. |
 | `as_of` | The date the fact refers to: the balance sheet date, the end of the year. Not the date of the document. For a standing fact, the date of the source. |
-| `source`, `place` | Where it comes from, and the page, note or minute. |
-| `said_by` | Who says so: `document`, `client`, `officer`, `third_party` or `inference`. Use `client` for what any party to the deal says about itself: the borrower, its owners, a guarantor. Use `inference` for anything the document does not itself say: a conclusion, a figure you worked out, a borrower the note does not name. A favourable answer that only a `client` gave is marked as someone's own word. |
+| `source`, `place` | Where it comes from, and the page, note or minute. Give the page as the PDF counts it, and the printed number in brackets where it differs: `p.24 (printed 22), note 16`. The browser view opens the original at that page. |
+| `said_by` | Who says so: `document`, `client`, `officer`, `third_party` or `inference`. Use `document` for the figures and terms in accounts, contracts, registers and the tables of a prospectus. Use `client` for what any party to the deal says about itself, its plans or its prospects: the borrower, its owners, a guarantor. That holds also when it says so in its own prospectus, report or website, or through the press. Use `third_party` for what a journalist, an analyst or an authority reports on their own account. Use `inference` for anything the document does not itself say: a conclusion, a figure you worked out, a borrower the note does not name. A favourable answer that only a `client` gave is marked as someone's own word. |
 | `answers` | The checks it answers, as a list: `[{"check": "OBS_REV_001", "value": true}]`. Yes or no is `true` or `false`, a number is a number, a choice is one of the check's options, or a list of them where the check allows several. `status` shows the answer each check takes. An answer counts for the subject the fact is about. Add `"for": "G-001"` if it is for another subject. An answer to a check that is asked about the deal counts for the deal. |
 | `fills` | The system fields it fills, such as `["CRM.country"]`. A field the institution's layer does not list is refused. |
 | `nothing_found` | `true` for a search that found nothing. Say in the statement what was looked for and where. |
-| `replaces` | The fact this one replaces: an earlier fact that was not replaced before. The old one stays, marked `outdated`. |
-| `state` | Set `disputed` when the fact is contested, for example when two documents give the same thing differently. |
+| `replaces` | The fact this one replaces: one earlier fact that was not replaced before. The old one stays, marked `outdated`. |
+| `state` | Set `disputed` on each fact that is contested, for example the two figures that two documents give for the same thing, and on a figure worked out from one of them. A fact that only reports the disagreement is true as it stands, and stays current. |
 
-**A figure you worked out** from other facts, such as a ratio or a sum, is a fact of its own. Mark it `inference`, show the working in the statement and name the facts it comes from: "Borrowings were 0.32 times revenue in 2025: KES 1,300m (F-011) over KES 4,060m (F-008)."
+**From a table**, record each row you use with all its columns. A row with half its columns leads to a page that says "not stated" about something the document states.
+
+**A figure you worked out** from other facts, such as a ratio or a sum, is a fact of its own. Mark it `inference`, show the working in the statement and name the facts it comes from: "Borrowings were 0.32 times revenue in 2025: KES 1,300m (F-011) over KES 4,060m (F-008)." A fact of the same set is named by its `ref`: write `(@rev)`, and the tool puts the ID in its place.
 
 ### Changing, replacing and withdrawing
 
@@ -114,6 +124,8 @@ Record what would go into a table or a system field: names, amounts, dates, term
 - **A balance at a date is not replaced by a later one.** Debt at 30 June is still true once debt at 30 September is known. Record the new figure as a new fact with the same `label` and its own `as_of`. Both stay current, and the tool shows the latest among the key values of the page. The same goes for a year: 2025 does not replace 2024, and an unaudited quarter does not replace an audited year.
 - **A better source confirms or corrects a figure.** The audited statements give the revenue that the teaser gave in round numbers. Record the figure from the better source with `replaces`, so that the figure appears once and its answers rest on the better evidence.
 - **Withdraw an answer** by sending the fact with the answers that remain: `{"facts": [{"id": "F-012", "answers": []}]}`. The change is logged like any other. Do not record a new fact only to undo an old one.
+- **A fact was recorded about the wrong subject.** Send its `id` with the right `about`.
+- **A fact held figures at several dates.** `replaces` names one fact. Record the other dates as facts of their own.
 
 ## Subjects and links
 
@@ -123,8 +135,19 @@ A subject is a party, a person, a facility, a contract, an asset, a project or a
 - A link needs `from`, `type` and `to`. It starts as `proposed`. Set `state` to `confirmed` when a source confirms it, and to `ended` when it no longer holds.
 - Give a link its `why`: why it matters for repayment.
 - A mistake of your own is corrected in place: send the link's `id` with the right `type`, or with `"state": "ended"`.
+- `owns` from a party to an asset or a project says who owns it. It brings no checks: the checks on an owner are asked where a party owns a party or a group.
 
 A new link brings the checks that fit the role, and the checks on the link itself. Run `status --for <ID>` to see them.
+
+### When the structure changes
+
+- **A subject drops out.** A contract is cancelled, an asset is sold, a project is shelved, or a subject stood for something that is now recorded another way. End it: `{"subjects": [{"id": "C-002", "state": "ended"}]}`. It keeps its facts and its place in the log. It is asked nothing, its links stop counting, and the pages leave it out.
+- **The borrower changes.** Record the new `borrows` link and end the old one. Then:
+  1. Answer the checks about the deal again that turn on who borrows: `status --for DEAL` lists them, and `show <deal> facts <check>` shows the answer each has now.
+  2. Decide whether `relies_on` still points at the right party or group. The perimeter is where the cash is earned, whoever signs.
+  3. Look at the tie between the old and the new borrower. An owner whose company now borrows is asked what it owes and receives on its own account.
+  4. `status` lists the answers that were recorded for the old borrower and that it is no longer asked. If it comes back in another role, as a guarantor for example, they count again. If it does not, withdraw them. The facts stay.
+- **A party gets another role.** Add or end the link. The record of the party stays one record.
 
 ### The loan under review
 
@@ -147,6 +170,7 @@ Existing debt is never a facility. Record the lender as a party and link it to t
 - A guarantee or security for existing debt is a fact about that `lends_to` link. It is not a `guarantees` or `secures` link: those are for the loan under review.
 - For a bond, the lender is its holders: a party named "Holders of the 2025 bond".
 - Give a link to each lender that matters for ranking, security or refinancing. The others stay in a fact about total debt. Say in a decision which lenders got no link and why.
+- Where the documents do not say which company of a group owes a loan, link the lender to the group and say so in the `why`.
 - The link brings the checks on another lender: who ranks ahead, what it holds, what lets it call its loan.
 
 ### A person
@@ -179,6 +203,9 @@ Repayment does not always come from the borrower. Link the facility to the party
                 "about": "P-001", "asked": "2026-11-12", "via": "S-003", "checks": ["OBS_INPUT_MIT_001"]}]}
 ```
 
-**A decision** needs a `decision` and a `reason`, and should name the facts it rests on. A decision that `covers` checks is a gap with an agreed action: a condition, a covenant or a task. Give it an `owner` and a `due` date. It is also how you record that an answer calls for nothing more in the structure, and why. A working preference of the officer for this deal is a decision too, with `"by": "officer"`.
+**A decision** needs a `decision` and a `reason`, and should name what it rests on: facts, or a source such as the officer's note. A decision that `covers` checks takes them off the list of checks to answer.
 
-**A question** is recorded when it is sent, not when you think of it. Until then it is a suggestion to the officer or an open point on a page. It needs `asked_of` and `text`. Give it the date it was `asked`, the source it went out `via` if there is one, and the `checks` its answer would close: a question that names no check moves nothing when it is answered. When it is answered, change it: `{"id": "Q-001", "state": "answered", "answered_by": ["F-020"]}`.
+- With an `owner` and a `due` date it is a gap with an agreed action: a condition, a covenant or a task. `status` lists it as such.
+- Without them it settles the matter. That is how you record that an answer calls for nothing more in the structure, and why.
+
+**A question** is recorded as soon as it is worth asking, so that every question lives in one place and a page can cite it. It needs `asked_of` and `text`. Without a date it is a draft, and `status` says "not sent yet". Give it the date it was `asked` only when it has gone out, with the source it went out `via` if there is one. Name the `checks` its answer would close: a question that names no check moves nothing when it is answered. When it is answered, change it: `{"id": "Q-001", "state": "answered", "answered_by": ["F-020"]}`. A question that will not be sent is `withdrawn`.

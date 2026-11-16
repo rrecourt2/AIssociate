@@ -64,6 +64,7 @@ checks:
     grounds
   disproved_by: 'yes'
   due_by: concept
+  applies_to: [borrower, repayment_source]
   look_in: [07.01.a, 10.03.a, 02.06.d]
   evidence:
     best: [regulatory_document, consultant_report, adverse_media_screen]
@@ -99,6 +100,7 @@ checks:
   answer: yes_no
   assumption: A named person and a written system manage the party's environmental and social risks
   disproved_by: 'no'
+  applies_to: [borrower, repayment_source]
   look_in: [07.02.b, 10.03.a]
   evidence:
     best: [consultant_report]
@@ -132,6 +134,7 @@ checks:
   answer: yes_no
   why: A lender that reports the emissions it finances needs the figure, and a party that measures them can show what the
     loan changes. To have to report emissions is not a fault.
+  applies_to: [borrower, repayment_source]
   look_in: [10.03.a, 03.01.a]
   evidence:
     best: [consultant_report, audited_annual_report]

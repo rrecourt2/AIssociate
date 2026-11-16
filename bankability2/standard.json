@@ -1,6 +1,6 @@
 {
  "name": "Bankability Standard",
- "version": "4.1.0",
+ "version": "4.1.1",
  "description": "A standard for investment due diligence built on claims that can be disproved. It says what a deal folder holds and what must be known.",
  "licence": "MIT",
  "stages": [
@@ -212,14 +212,22 @@
   {
    "id": "sponsors",
    "title": "Sponsors",
-   "description": "The party stands behind another party or a project as its main shareholder or promoter.",
-   "role_from": "sponsor"
+   "description": "The party stands behind another party as its main shareholder or promoter. The promoter of a project is linked to the company that carries the project. Like `owns`, it gives its role, and is asked the checks on an owner, only where it points at a party or a group.",
+   "role_from": "sponsor",
+   "counts_for": [
+    "party",
+    "group"
+   ]
   },
   {
    "id": "owns",
    "title": "Owns",
-   "description": "The party owns shares in another party, or owns an asset or a project.",
-   "role_from": "shareholder"
+   "description": "The party owns shares in another party, or owns an asset or a project. It makes its holder a shareholder, and is asked the checks on an owner, only where it points at a party or a group.",
+   "role_from": "shareholder",
+   "counts_for": [
+    "party",
+    "group"
+   ]
   },
   {
    "id": "controls",
@@ -10131,7 +10139,7 @@
       ]
      },
      "ask": "Has any shareholder pledged its shares in the company, or given someone an option over them?",
-     "note": "Whoever enforces a pledge over the shares can end up as the owner, and the lender has no say in it. If the search finds nothing, record what was searched, where and when.",
+     "note": "Whoever enforces a pledge over the shares can end up as the owner, and the lender has no say in it. Where one company owns the party, look up the chain as well. A pledge over the owner's own shares changes who controls the party just the same, so the answer is yes, and the reason says at which level the pledge sits. If the search finds nothing, record what was searched, where and when.",
      "leads_to": [
       {
        "indicator": "CAS_SOURCE_OF_FUNDS_001",
@@ -10170,6 +10178,7 @@
       ]
      },
      "ask": "Do the owners plan to sell, to bring in a new investor, to list the company or to hand over to the next generation during the life of the loan?",
+     "note": "Where one company owns the party, look up the chain to the people or the listed company at the top. A share issue that dilutes those who control the owner counts, and the reason says at which level the change sits.",
      "leads_to": [
       {
        "indicator": "CAS_COVENANT_DESIGN_001",
@@ -16463,6 +16472,10 @@
      "assumption": "The party's operations have run for three years without a reportable incident and without a sanction on environmental grounds",
      "disproved_by": "yes",
      "due_by": "concept",
+     "applies_to": [
+      "borrower",
+      "repayment_source"
+     ],
      "look_in": [
       "07.01.a",
       "10.03.a",
@@ -16534,6 +16547,10 @@
      "answer": "yes_no",
      "assumption": "A named person and a written system manage the party's environmental and social risks",
      "disproved_by": "no",
+     "applies_to": [
+      "borrower",
+      "repayment_source"
+     ],
      "look_in": [
       "07.02.b",
       "10.03.a"
@@ -16599,6 +16616,10 @@
      "question": "Does the party measure its greenhouse gas emissions every year, at least those from its own operations and from the energy it buys?",
      "answer": "yes_no",
      "why": "A lender that reports the emissions it finances needs the figure, and a party that measures them can show what the loan changes. To have to report emissions is not a fault.",
+     "applies_to": [
+      "borrower",
+      "repayment_source"
+     ],
      "look_in": [
       "10.03.a",
       "03.01.a"
@@ -17550,6 +17571,10 @@
        "is": true
       }
      ],
+     "applies_to": [
+      "borrower",
+      "repayment_source"
+     ],
      "look_in": [
       "10.03.a",
       "06.04.a"
@@ -17577,6 +17602,10 @@
      "answer": "yes_no",
      "assumption": "No natural forest or protected habitat was cleared after the lender's cut-off date for the party's land or for its main raw materials",
      "disproved_by": "yes",
+     "applies_to": [
+      "borrower",
+      "repayment_source"
+     ],
      "look_in": [
       "10.03.a",
       "07.02.a",
@@ -17608,6 +17637,10 @@
      "answer": "yes_no",
      "assumption": "No child labour or forced labour has been found among the party's main suppliers",
      "disproved_by": "yes",
+     "applies_to": [
+      "borrower",
+      "repayment_source"
+     ],
      "look_in": [
       "10.03.a",
       "02.06.d",
@@ -17652,6 +17685,10 @@
        "against": true
       }
      ],
+     "applies_to": [
+      "borrower",
+      "repayment_source"
+     ],
      "look_in": [
       "10.03.a",
       "06.04.a"
@@ -17690,6 +17727,10 @@
        "check": "OBS_SUPPLYCHAIN_003",
        "against": true
       }
+     ],
+     "applies_to": [
+      "borrower",
+      "repayment_source"
      ],
      "look_in": [
       "10.03.a",
@@ -17761,6 +17802,10 @@
      "assumption": "The party meets the labour law on contracts, pay, hours, minimum age, social security and the freedom to organise",
      "disproved_by": "no",
      "due_by": "concept",
+     "applies_to": [
+      "borrower",
+      "repayment_source"
+     ],
      "look_in": [
       "07.01.a",
       "10.03.a",
@@ -17791,6 +17836,10 @@
      "assumption": "No worker has died or been permanently disabled at the party's sites in the last three years",
      "disproved_by": "yes",
      "due_by": "concept",
+     "applies_to": [
+      "borrower",
+      "repayment_source"
+     ],
      "look_in": [
       "07.01.a",
       "10.03.a",
@@ -17821,6 +17870,10 @@
      "answer": "yes_no",
      "assumption": "Workers who are not permanent staff get the same pay and protection for the same work, pay no fee for the job and keep their own papers",
      "disproved_by": "yes",
+     "applies_to": [
+      "borrower",
+      "repayment_source"
+     ],
      "look_in": [
       "10.03.a",
       "07.02.a"
@@ -17851,6 +17904,10 @@
      "answer": "yes_no",
      "assumption": "The party has had three years without a collective labour dispute and without a sanction from the labour authority",
      "disproved_by": "yes",
+     "applies_to": [
+      "borrower",
+      "repayment_source"
+     ],
      "look_in": [
       "07.01.a",
       "08.01.a",
@@ -17958,6 +18015,10 @@
      "answer": "yes_no",
      "assumption": "Workers and neighbours have a channel for complaints that they know of, and complaints are logged and answered",
      "disproved_by": "no",
+     "applies_to": [
+      "borrower",
+      "repayment_source"
+     ],
      "look_in": [
       "07.02.e",
       "10.03.a"
@@ -18976,7 +19037,7 @@
       "both",
       "neither"
      ],
-     "why": "Most ties in a chain of owners carry nothing that the lender counts on. Then the answer is neither, and only OBS_GROUP_010 is still asked about the tie.",
+     "why": "Most ties in a chain of owners carry nothing that the lender counts on. Then the answer is neither, and only OBS_GROUP_010 is still asked about the tie. Any other answer also asks what the owner owes and receives on its own account.",
      "due_by": "screening",
      "look_in": [
       "03.02.b",
@@ -19005,9 +19066,13 @@
      "question": "How much debt does the owner owe on its own account (loans, bonds and leases in its own name), at the latest balance sheet date?",
      "answer": "number",
      "unit": "currency",
-     "why": "This is the debt that the cash coming up from the company has to help service. The consolidated accounts do not show it, because they add the company's debt to the owner's.",
+     "why": "This is the debt that the cash coming up from the company has to help service, and that the owner pays before it can support the company. The consolidated accounts do not show it, because they add the company's debt to the owner's.",
      "due_by": "concept",
      "when": [
+      {
+       "check": "OBS_GROUP_001",
+       "is": "support_from_owner"
+      },
       {
        "check": "OBS_GROUP_001",
        "is": "cash_from_owned"
@@ -19048,6 +19113,10 @@
      "why": "Set against what the owner owes, this shows how much of the owner's debt service the company carries, and whether what comes up is enough.",
      "due_by": "concept",
      "when": [
+      {
+       "check": "OBS_GROUP_001",
+       "is": "support_from_owner"
+      },
       {
        "check": "OBS_GROUP_001",
        "is": "cash_from_owned"

@@ -29,6 +29,11 @@ Cedar Foods Ltd, a dairy processor in Nakuru, Kenya, asks for a senior loan of E
 - **The guarantee comes from a company that can pay.** Nothing supports this yet. The guarantor is not named [F-006].
 - **Agreed:** Cedar proposes how it will cover the euro loan before the concept note goes in [D-002].
 
+## Key values
+
+<!-- tool:begin values -->
+<!-- tool:end -->
+
 ## Sources
 
 <!-- tool:begin sources -->

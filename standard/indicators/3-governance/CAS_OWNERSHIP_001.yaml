@@ -105,8 +105,10 @@ checks:
     supporting: [security_agreement, shareholder_agreement, company_certificate]
     stated: [correspondence, call, officer_note]
   ask: Has any shareholder pledged its shares in the company, or given someone an option over them?
-  note: Whoever enforces a pledge over the shares can end up as the owner, and the lender has no say in it. If the search
-    finds nothing, record what was searched, where and when.
+  note: Whoever enforces a pledge over the shares can end up as the owner, and the lender has no say in it. Where one
+    company owns the party, look up the chain as well. A pledge over the owner's own shares changes who controls the party
+    just the same, so the answer is yes, and the reason says at which level the pledge sits. If the search finds nothing,
+    record what was searched, where and when.
   leads_to:
   - {indicator: CAS_SOURCE_OF_FUNDS_001, is: true, reason: A pledge over the shares often means that the owner borrowed
       to pay for them}
@@ -124,6 +126,8 @@ checks:
     stated: [correspondence, call, officer_note, management_presentation, business_plan]
   ask: Do the owners plan to sell, to bring in a new investor, to list the company or to hand over to the next generation
     during the life of the loan?
+  note: Where one company owns the party, look up the chain to the people or the listed company at the top. A share issue
+    that dilutes those who control the owner counts, and the reason says at which level the change sits.
   leads_to:
   - {indicator: CAS_COVENANT_DESIGN_001, is: true, reason: The terms have to give the lender the right to leave when control
       changes}

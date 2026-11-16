@@ -119,6 +119,7 @@ Exact things: names, amounts, dates, terms, shares, commitments. If something wo
 - **A fact comes from a source.** A wiki page or a draft is the AI's own writing and is never evidence for a fact.
 - **A search that found nothing is a fact too**, marked as such.
 - **An answer can be withdrawn.** The change is logged like any other.
+- **Looked up by need.** `show facts` takes IDs or words and lists only the facts that hold one of them: the facts about a subject, from a source or in answer to a check. An assistant never has to print them all.
 
 ### 5.3 The graph: how the deal is structured
 
@@ -136,6 +137,8 @@ Who the borrower is, who guarantees, which customers, suppliers and related part
 - **A party is stable and its role is a link.** Whoever `borrows` is the borrower. When the borrower changes, the facts stay with the company they are about, and the checks for "the borrower" follow the link to the new one.
 - **A facility is the loan under review.** The roles that belong to the loan, and the checks on a guarantee or on security, arise only from links that point at a facility. The standard says for each kind of link which kinds of subject it counts for.
 - **Debt that already exists is a link, not a facility.** The lender `lends_to` the company, and the terms, the security and the guarantors of that debt are facts about the link.
+- **An owner link counts between parties.** `owns` and `sponsors` give their role, and bring the checks on the tie, where they point at a party or a group. Who owns a plant or a project is recorded the same way and brings no checks.
+- **A subject can end.** A contract that was cancelled or a project that was shelved keeps its facts and its place in the log. It is asked nothing, and its links stop counting.
 - **A person is not a company.** A natural person is a kind of subject of its own and is asked only what fits a person.
 - **Repayment may rest on someone other than the borrower.** A facility `relies_on` the party or group whose cash flow repays it: the perimeter. The business and its money are examined once, on the perimeter. A company inside it is examined as a legal entity: its owners, its integrity, its board, its standing.
 - **Checks on a project follow the financing.** A facility `finances` a project or an asset. Other projects are described and not checked.
@@ -144,7 +147,7 @@ Who the borrower is, who guarantees, which customers, suppliers and related part
 - **A link carries its reason:** why this party matters for repayment. What is left out is a decision, with a reason that points to facts.
 - **The AI states the structure once**, mentions it again when it changes, and asks only when it cannot decide.
 
-Decisions and questions to the client are recorded as well. A question is recorded when it is sent, with the checks its answer would close.
+Decisions and questions to the client are recorded as well. A question is recorded as soon as it is worth asking, with the checks its answer would close. It is a draft until it has the date it was sent.
 
 ### 5.4 The wiki: what is understood
 
@@ -161,23 +164,25 @@ Six shelves, two levels deep:
 | Terms | term under negotiation |
 | Work | piece of work, such as a consultant to hire or a site visit, and the working notes |
 
-- **Fewer and richer pages.** The tool creates a page for the deal, for each borrower, repayment source, guarantor and sponsor, and for each financed project. Every other subject has one line on the contents page. The AI writes a page for one of them only when there is something to say.
+- **Fewer and richer pages.** The tool creates a page for the deal, for each borrower, repayment source, guarantor and sponsor, and for each financed project. Every other subject has one line on the contents page. The AI writes a page for one of them only when there is something to say. A page may describe several subjects, such as the lenders: each is named at its top, links to that page and leaves the list of subjects without a page.
 - **The contents page is the map.** It gives the first sentence and the length of every page. An assistant reads the contents page and the page of the deal first, and opens another page only when the task needs it. A long wiki is then no burden.
+- **One page lists every source**: what it is, how far it was read, how many facts rest on it, and links to its original and its extract.
 - **A page describes before it lists.** What the thing is, how it works, how it relates to the rest, what is particular about it, how the context shows in the figures, and only then the assumptions and the open points. A project or an asset gets a real page: what, where, how big, by when, who pays, how far it has come.
 - **A few details that show understanding**, each specific to this business, each tied to a figure, each with a source. No filler.
 
 Every page has the same parts:
 
 1. **What it is.** One to three plain sentences. The first can stand alone, and is the page's line on the contents page.
-2. **At a glance.** Filled in by the tool, and kept short. The page of the deal: the stage, the structure, the claims by pillar and one line per claim that is challenged or contested. The page of a subject: its roles, links and key values, and its challenged claims, questions and decisions. Any other page: one line that names what it is about. Names link to their pages.
+2. **At a glance.** Filled in by the tool, and kept short. The page of the deal: the stage, the loan with the parties and the project at its centre, the claims by pillar and one line per claim that is challenged or contested. The page of a subject: its roles, its links that have not ended, and its challenged claims, questions and decisions. Any other page: one line that names what it is about. Names link to their pages.
 3. **What we know.** The description, with the ID of the fact or source each sentence rests on.
 4. **Assumptions and open points.** Each assumption with what it rests on. Then what is unknown, and what was looked for and not found.
+5. **Key values.** Filled in by the tool, below the text: the latest value under each label of the subject's facts.
 
-The tool lists the sources at the foot and writes the contents page.
+The tool lists the sources at the foot, says where one was not read in full, and writes the contents page. The AI may move a part the tool fills in. The text comes first.
 
 `check` reads the pages, and the Markdown drafts directly in `Internal/outputs`, paragraph by paragraph. A draft that was sent or replaced is moved to a sub-folder and is then left alone:
 
-- It reports a citation of something that does not exist, a page with text and no citation, and a number that no record cited in the same paragraph holds.
+- It reports a citation of something that does not exist, a link to a page that is not there, a page with text and no citation, and a number that no record cited in the same paragraph holds. The working notes say how to work and are not asked for citations.
 - It reports a citation of a fact that was replaced or is disputed, unless the sentence starts with a plain word that marks it: "Outdated:" or "Disputed:". New information is merged in. What it replaces stays visible only where that matters.
 - It does not judge whether a sentence says what its fact says.
 
@@ -197,7 +202,7 @@ Writing rules, taken from Wikipedia's list of signs of AI writing:
 5. Use "is" and "has".
 6. Give every number its unit, its date and the company it belongs to.
 
-**Reading it.** The pages are plain Markdown with ordinary relative links, so the folder opens in any Markdown reader, or as a vault in Obsidian. `pages` also writes `Internal/wiki/wiki.html`: the whole wiki in one file for a browser, with a list of pages by shelf, a search box, links that open in the same view, the index of the client's documents, and citations that show the fact, its value, its date, its source and the place in the source when clicked. It loads nothing from the network and opens by double click from a synced folder. Its template is one file of HTML, CSS and plain JavaScript. Python only fills in the data.
+**Reading it.** The pages are plain Markdown with ordinary relative links, so the folder opens in any Markdown reader, or as a vault in Obsidian. `pages` also writes `Internal/wiki/wiki.html`: the whole wiki in one file for a browser, with a list of pages by shelf, a search box, links that open in the same view, the sources, the index of the client's documents, and citations that show the fact, its value, its date, its source and the place in the source when clicked, with a link that opens the original at that page. The parts the tool fills in are folded away, so that the text comes first. It loads nothing from the network and opens by double click from a synced folder. Its template is one file of HTML, CSS and plain JavaScript. Python only fills in the data.
 
 ### 5.5 Preferences
 
@@ -205,7 +210,7 @@ A preference goes by what it is about.
 
 | About | Example | Home |
 |---|---|---|
-| This deal | "We focus on the second UHT line." "The committee will ask about the owners." | The deal folder: a decision, or one page of working notes on the Work shelf. The next assistant inherits it. |
+| This deal | "Write more about the projects." "The committee will ask about the owners." | The deal folder: one page of working notes on the Work shelf, in the officer's words and with the date. The next assistant inherits it. What the officer says about the deal itself is a source and a fact as well. |
 | The institution | Its template, its house style, its own checks | The institution's layer |
 | The officer | How they like answers | The assistant's own memory, if its host gives it one |
 
@@ -233,7 +238,7 @@ The standard says what a deal folder holds and what must be known. It is data on
 - **Nine pillars**: the deal; environment; business; people and governance; cash flow and debt; liquidity and financial risks; environmental, social and impact; links; the facility.
 - **Claims first.** People and assistants work from the 70 claims. The checks are the detail behind a claim.
 - **Falsification is the backbone.** An indicator is one claim: what the lender relies on, in a sentence that can turn out false. A check is a question, a test or a mitigant. A test states its own assumption and which answer goes against it. A mitigant is asked once a test has gone against the claim.
-- **The tool says where each claim stands**, for each party or link it is made about: not tested, stands, challenged (with each mitigant holding, failing or not known) or contested. There are no scores and no weights.
+- **The tool says where each claim stands**, for each party or link it is made about: not tested, stands so far (some tests answered, none against, others open), stands (every test answered), challenged (with each mitigant holding, failing or not known) or contested. There are no scores and no weights.
 - **Checks apply by role and by link.** A role is the end of a link, so the checks follow the role when a party changes. A guarantor is asked whether it can pay and must pay, not how it runs a factory. A link that exists brings its own checks: a guarantee, an owner, a key customer, a key supplier, another lender.
 - **Discovery opens what applies and calls for structure.** The kind of credit and the sector decide which checks apply. Until they are answered, those checks wait. Some answers mean a party or a link must exist. The tool says so until it is added, or until a decision says why not.
 - **Who speaks matters.** An answer that goes against a claim is believed whatever it rests on. A favourable answer that rests only on what a party said is marked as someone's own word, and a claim does not stand on that alone.
@@ -281,9 +286,9 @@ The tool always outlines what to do and collect next. `status` lists every candi
 - claims that are challenged, contested or to look at again;
 - structure that is still open: a role nobody holds yet, a link that is proposed and not confirmed, a party or link that an answer calls for and that is not there;
 - documents the data-room structure always expects, or that open checks look for, and that the folder lacks;
-- checks that are open, contested, or answered on evidence that is thin or old, each with the stage it is ideally answered by and how many checks wait on it;
-- gaps with an agreed action;
-- questions that were asked and are not answered;
+- checks that are open, contested, or answered on evidence that is thin or old, each with the stage it is ideally answered by and how many checks wait on it. Within a stage they come in order of closeness to the loan: the deal, then the loan and the parties and project at its centre, then their links, then the rest;
+- gaps with an agreed action: a decision that covers a check and names an owner or a date;
+- questions without an answer, sent or not yet sent;
 - facts that rest on a source that was replaced;
 - system fields without a value;
 - answers to a check that is not asked about that subject, or is not relevant there.
@@ -299,7 +304,7 @@ The AI chooses what to show and how.
 | `start` | Creates the deal folder and its empty record |
 | `status` | The structure, what changed, where the claims stand, and the candidates for the next list. For the whole deal, or for one subject or link. |
 | `add` | Records a set of changes: sources, facts, subjects, links, decisions, questions. All of it or none of it. It prints the ID of each new record, and a note for each answer that does not count where it was put. |
-| `show` | Looks things up: a record and what uses it, a check and what it rests on, an indicator, every claim by pillar, the facts about a subject, the kinds of source, subject and link, the entry sheets, the log, or a search |
+| `show` | Looks things up: a record and what uses it, a check and what it rests on, an indicator, every claim by pillar, the facts that hold an ID or a word, the kinds of source, subject and link, the entry sheets, the log, or a search of the record and of the checks |
 | `pages` | Creates the few pages the graph calls for, fills in the generated parts of every page, and writes the contents page and the view for a browser |
 | `check` | Reports what looks wrong: a broken log, an unsound adjustment, files that are missing or changed, and problems on the pages and in the drafts |
 | `adjust` | Applies a change to the deal's layer of the standard |
@@ -341,9 +346,9 @@ These rules are checked by a test that fails when the code breaks one:
 - No network access, no starting of other programs, no `eval`, no reading of environment variables, no deleting.
 - One module touches the disk. It writes through three functions, and each refuses a path outside the deal folder.
 - No function longer than 100 lines.
-- The whole tool stays under 2,000 lines of Python, in at most seven files. It is about 1,800 lines now.
+- The whole tool stays under 2,000 lines of Python, in at most seven files. It is about 1,900 lines now.
 
-The view for a browser is one more file, `bankability2/wiki.html`: about 240 lines of HTML, CSS and plain JavaScript that load nothing from the network. A test checks that it names no address and no outside file.
+The view for a browser is one more file, `bankability2/wiki.html`: about 250 lines of HTML, CSS and plain JavaScript that load nothing from the network. A test checks that it names no address and no outside file.
 
 [audit.md](audit.md) says what the tool does, what it can touch and how to verify a release.
 
@@ -373,7 +378,7 @@ One thing comes before first use: a ten-minute test in the tenant of how Cowork 
 
 1. A ten-minute test in the tenant of how Cowork saves files and runs a script.
 2. A review of the standard by someone who does credit work.
-3. A second trial with the repaired tool, and then use on a live deal with an officer.
+3. Use on a live deal with an officer. Two trials on public documents have been run.
 4. Whether an institution lets client calls be transcribed. It decides how much of the record can come from calls.
 5. The fields of an institution's systems. They are written inside its own tenant and stay there.
 6. Whether an institution lets its assistants keep a memory of their own, and how it is scoped.
