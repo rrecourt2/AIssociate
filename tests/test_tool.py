@@ -315,6 +315,7 @@ class Deal(unittest.TestCase):
         self.assertIn("cites F-005, which is outdated (replaced by F-008)", found("Revenue was about KES 4.1bn in 2025 [F-005].\n")[0])
         self.assertEqual(len(found("Revenue was KES 4,060m in 2025 [F-008]. Disputed: the teaser gave KES 4.1bn [F-005].\n")), 1)  # the wrong word
         self.assertEqual(found("Revenue was KES 4,060m [F-008]. Disputed: another figure. Outdated: the teaser gave KES 4.1bn [F-005].\n"), [])
+        self.assertEqual(found("**Earlier.** Outdated: the teaser gave about KES 4.1bn [F-005].\n"), [])  # after a lead-in in bold
         # The head row of a table names the columns and is not read. A figure cites in its own row.
         self.assertEqual(found("| | 2025 |\n|---|---|\n| Revenue | KES 4,060m [F-008] |\n"), [])
         # A link to a page that is not there is reported. Working notes say how to work, and need not cite.

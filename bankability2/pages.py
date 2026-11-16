@@ -20,7 +20,7 @@ ROUND = str.maketrans("[]", "()")  # square brackets in a title would end the li
 STALE = ("outdated", "disputed", "replaced")  # the states of a record that something newer took the place of
 # One of those words and a colon, at the start of a paragraph, of a sentence or of a bracket. What follows may cite a
 # record in that state: "Disputed:" a disputed one, "Outdated:" or "Replaced:" one that something newer took the place of.
-MARKED = re.compile(r"(?:^|[.!?|]\s+|\()[*_]*(" + "|".join(STALE) + r")[*_]*:", re.I)
+MARKED = re.compile(r"(?:^|[.!?|][*_]*\s+|\()[*_]*(" + "|".join(STALE) + r")[*_]*:", re.I)
 SKELETON = """---
 title: {title}
 about: {about}
