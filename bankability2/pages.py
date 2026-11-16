@@ -7,7 +7,7 @@ import json
 import re
 
 from . import files
-from .assess import MAIN, VERDICTS, central, claims, view
+from .assess import MAIN, VERDICTS, central, claims, holds_still, view
 from .store import DEAL, TABLES, live, table_of
 
 SHELVES = ("deal", "parties", "people", "topics", "terms", "work")
@@ -18,8 +18,8 @@ ID = re.compile(r"\b[A-Z]-\d{3,}\b")
 NUMBER = re.compile(r"\d[\d,.]*\d|\d")
 ROUND = str.maketrans("[]", "()")  # square brackets in a title would end the link that carries it
 STALE = ("outdated", "disputed", "replaced")  # the states of a record that something newer took the place of
-# One of those words and a colon, at the start of a paragraph or of a sentence. What follows it may cite such a record.
-MARKED = re.compile(r"(?:^|[.!?|]\s+)[*_(]*(?:" + "|".join(STALE) + r")[*_]*:", re.I)
+# One of those words and a colon, at the start of a paragraph, of a sentence or of a bracket. What follows may cite such a record.
+MARKED = re.compile(r"(?:^|[.!?|]\s+|\()[*_]*(?:" + "|".join(STALE) + r")[*_]*:", re.I)
 SKELETON = """---
 title: {title}
 about: {about}
@@ -41,11 +41,6 @@ checked:
 
 ## Assumptions and open points
 
-
-## Key values
-
-<!-- tool:begin values -->
-<!-- tool:end -->
 
 ## Sources
 
@@ -124,6 +119,8 @@ def shown(value):
     """An answer as a person reads it."""
     if isinstance(value, bool):
         return "yes" if value else "no"
+    if isinstance(value, (int, float)) and abs(value) >= 10000:
+        return f"{value:,}"  # a large number is read more easily with separators. A year stays as it is
     return ", ".join(map(str, value)) if isinstance(value, list) else str(value)
 
 
@@ -132,7 +129,7 @@ def check_lines(rows, memory, std):
     lines = ["| Check | For | State | Answer | Assumption | Rests on |", "|---|---|---|---|---|---|"]
     for row in rows:
         check = std["checks"][row["check"]]
-        state = ", ".join([row["state"], *row["flags"]]) + (f", action {row['action']}" if "action" in row else "")
+        state = ", ".join([row["state"], *row["flags"]]) + (f", decision {row['action']}" if "action" in row else "")
         tested = ("Mitigant: " if check.get("mitigant") else "") + check.get("assumption", "")
         if "against" in row:
             tested += " (**the answer goes against it**)" if row["against"] else (
@@ -161,7 +158,7 @@ def claim_lines(found, memory, std):
             if unknown:
                 parts.append(f"Mitigants not known yet: {', '.join(unknown)}.")
             if claim["actions"]:
-                parts.append(f"Agreed action: {', '.join(claim['actions'])}.")
+                parts.append(f"Decision: {', '.join(claim['actions'])}.")
             lines.append(" ".join(parts))
         elif claim["stands"] == "contested":
             lines.append(f"- **Contested:** {about}. Facts disagree on {', '.join(claim['contested'])}.")
@@ -190,7 +187,7 @@ def described(sid, memory, std, held):
 
 
 def challenges(found, std, name):
-    """One line per claim that is challenged or contested: the tests against it, its mitigants and any agreed action."""
+    """One line per claim that is challenged or contested: the tests against it, its mitigants and any decision on it."""
     lines = []
     for claim in found:
         about = f"{std['by_id'][claim['indicator']]['title']} ({name(claim['for'])})"
@@ -201,7 +198,7 @@ def challenges(found, std, name):
             if states:
                 parts.append("Mitigants: " + ", ".join(f"{states.count(state)} {state}" for state in dict.fromkeys(states)))
             if claim["actions"]:
-                parts.append(f"Agreed action: {', '.join(claim['actions'])}")
+                parts.append(f"Decision: {', '.join(claim['actions'])}")
             lines.append(f"- **Challenged:** {about}. {'. '.join(parts)}.")
         elif claim["stands"] == "contested":
             lines.append(f"- **Contested:** {about}. Facts disagree on {', '.join(claim['contested'])}.")
@@ -238,7 +235,7 @@ def glance(ids, memory, std, rows, held, where, here):
         return about_line(ids, found, memory, std, name)
     for rid in ids:
         near = [(lid, link) for lid, link in memory["links"].items()
-                if rid in (DEAL, link["from"], link["to"]) and link["state"] != "ended"]
+                if rid in (DEAL, link["from"], link["to"]) and holds_still(link, memory)]
         mine = [claim for claim in found if rid == DEAL or claim["for"] in (rid, *(lid for lid, _ in near))]
         if rid == DEAL:
             deal = memory["deal"]
@@ -273,7 +270,7 @@ def glance(ids, memory, std, rows, held, where, here):
 
 
 def key_values(ids, memory, here):
-    """The latest value under each label of the facts about what a page is about, as a table under its own heading."""
+    """The latest value under each label of the facts about the deal or the subjects of a page, as a table."""
     rows = []
     for rid in [] if brief(ids, memory, here) else ids:
         latest, whose = {}, f" ({name_of(rid, memory)})" if len(ids) > 1 else ""
@@ -281,7 +278,7 @@ def key_values(ids, memory, here):
             if (fact["about"] == rid and fact["state"] == "current" and fact.get("label")
                     and str(fact.get("as_of", "")) >= str(latest.get(fact["label"], (None, {}))[1].get("as_of", ""))):
                 latest[fact["label"]] = (fid, fact)
-        rows += [f"| {label}{whose} | {fact.get('value', '')} {fact.get('unit', '')}".rstrip()
+        rows += [f"| {label}{whose} | {shown(fact.get('value', ''))} {fact.get('unit', '')}".rstrip()
                  + f" | {fact.get('as_of', '')} | {fid} |" for label, (fid, fact) in latest.items()]
     return ["| Key value | Value | As of | Fact |", "|---|---|---|---|", *rows] if rows else []
 
@@ -309,7 +306,7 @@ def source_lines(memory):
     for sid, source in memory["sources"].items():
         facts = sum(fact["source"] == sid for fact in memory["facts"].values())
         notes = [source["kind"], source.get("date", "no date"), source.get("read") and f"read: {source['read']}",
-                 source["state"] != "current" and source["state"], f"{facts} facts"]
+                 source["state"] != "current" and source["state"], f"facts: {facts}"]
         held = "".join(f" [{name}](../../{encoded(source[key])})" for key, name in (("where", "Original"), ("extract", "Extract"))
                        if source.get(key))
         lines.append(f"- {sid} {source['title']}: {', '.join(filter(None, notes))}.{held}")
@@ -396,14 +393,15 @@ def refresh(deal, memory, std, rows, held):
               for sid, subject in live(memory).items() if sid not in where]
     if others:
         index += ["## Subjects without a page", "", *others, ""]
+    sources = "\n".join(source_lines(memory))
     files.write(deal, f"{files.WIKI}/index.md", "\n".join(index))
-    files.write(deal, f"{files.WIKI}/sources.md", "\n".join(source_lines(memory)))
+    files.write(deal, f"{files.WIKI}/sources.md", sources)
     listed = files.read_json(deal, files.MANIFEST, {"documents": []})["documents"]
     client = f"../../{files.CLIENT}/index.md"  # the index of the client folder, as a path from the wiki folder
-    texts = {"index.md": "\n".join(index), "sources.md": "\n".join(source_lines(memory)),
-             **{path[cut:]: text for path, text in sorted(pages.items())}, client: documents(memory["deal"]["name"], listed, std)}
+    texts = {"index.md": "\n".join(index), "sources.md": sources, **{path[cut:]: text for path, text in sorted(pages.items())},
+             client: documents(memory["deal"]["name"], listed, std)}
     data = {"name": memory["deal"]["name"], "revision": memory["log"][-1]["n"], "shelves": SHELVES, "pages": texts,
-            "documents": client, **{table: memory[table] for table in TABLES}}
+            "documents": client, "where": where, **{table: memory[table] for table in TABLES}}
     filled = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")  # so that no text can end the script it sits in
     files.write(deal, f"{files.WIKI}/wiki.html", files.packaged("wiki.html").replace("{{DATA}}", filled))
     return created, changed, len(pages) - len(created) - len(changed)
@@ -427,7 +425,7 @@ def problems(deal, memory):
               if path.endswith(".md") and "/" not in path[len(files.OUTPUTS) + 1:]}
     for path, text in sorted({**all_pages(deal), **drafts}.items()):
         body = own_text(text)
-        notes = path.startswith(f"{files.WIKI}/work/")  # working notes say how to work. They need not cite the record
+        notes = path == f"{files.WIKI}/work/working-notes.md"  # they say how to work, and need not cite the record
         cited = list(dict.fromkeys(ID.findall(body)))
         found += [f"{path}: cites {rid}, which does not exist" for rid in cited if not table_of(memory, rid)]
         if len(ID.sub("", body).split()) > 40 and not notes and not any(table_of(memory, rid) for rid in cited):

@@ -230,6 +230,9 @@ class Deal(unittest.TestCase):
         memory["facts"]["F-014"].update(source="S-002", said_by="document")  # borne out by a document, with other tests open
         later = {(claim["indicator"], claim["for"]): claim for claim in assess.claims(assess.assess(memory, std), memory, std)}
         self.assertEqual(later["CAS_OFFTAKER_CREDIT_001", "R-003"]["stands"], "stands so far")
+        memory["facts"]["F-009"]["state"] = "disputed"  # two documents disagree on a question behind the claim
+        later = {(claim["indicator"], claim["for"]): claim for claim in assess.claims(assess.assess(memory, std), memory, std)}
+        self.assertEqual(later["CAS_OFFTAKER_CREDIT_001", "R-003"]["stands"], "contested")
         wanted = {(call["check"], call["wanted"]) for call in assess.called_for(rows, memory, std)}
         self.assertEqual(wanted, {("OBS_INPUT_001", "a link of kind supplies_to"), ("OBS_DEBT_001", "a link of kind lends_to")})
         memory["subjects"]["J-001"]["kind"] = "asset"  # without a project, the spending plan calls for one
@@ -305,7 +308,7 @@ class Deal(unittest.TestCase):
         # A link to a page that is not there is reported. Working notes say how to work, and need not cite.
         self.assertIn("links to ../deal/plant.md, which is not there", found("See [the plant](../deal/plant.md) [F-008].\n")[0])
         self.assertEqual(found("Revenue was KES 4,060m in 2025 [F-008].\n"), [])
-        self.assertEqual(found("The officer asked on 12/11/2026 for 150 words on the plant.\n", "Internal/wiki/work/notes.md"), [])
+        self.assertEqual(found("The officer asked on 12/11/2026 for 150 words on the plant.\n", "Internal/wiki/work/working-notes.md"), [])
         # The drafts are read the same way.
         self.assertIn("Internal/outputs/fp.md", found("Revenue was KES 5,555m [F-008].\n", "Internal/outputs/fp.md")[0])
         self.assertEqual(found("Revenue was KES 5,555m [F-008].\n", "Internal/outputs/fp.md"),  # a draft that went out is left alone
@@ -326,7 +329,7 @@ class Deal(unittest.TestCase):
                       "(R-001); sells to Bluegate Supermarkets (R-003).", glance)
         self.assertIn("**Challenged:** Currency risk ([Cedar Foods Ltd](../parties/cedar-foods-ltd.md)). The answers go against: "
                       "No more than a small part", glance)
-        self.assertIn("(OBS_FX_008). Mitigants: 5 not known. Agreed action: D-002.", glance)
+        self.assertIn("(OBS_FX_008). Mitigants: 5 not known. Decision: D-002.", glance)
         template, view = files.packaged("wiki.html"), files.read(self.deal, "Internal/wiki/wiki.html")
         loads = [mark for mark in ("://", "<link", " src=", "@import", "url(") if mark in template]
         self.assertEqual(loads, [])  # it loads nothing: no script, style, font or picture from elsewhere
@@ -336,7 +339,7 @@ class Deal(unittest.TestCase):
         self.assertEqual(sorted(data["pages"]),  # every page, the contents page, the sources and the index of the documents
                          ["../../Client folder/index.md", "deal/deal.md", "deal/second-uht-line.md", "index.md",
                           "parties/cedar-foods-ltd.md", "sources.md"])
-        self.assertIn("- S-002 Annual report 2025: audited_annual_report, 2026-03-28, read: part, 4 facts. [Original](",
+        self.assertIn("- S-002 Annual report 2025: audited_annual_report, 2026-03-28, read: part, facts: 4. [Original](",
                       data["pages"]["sources.md"])
         self.assertEqual((data["facts"]["F-008"]["value"], data["sources"]["S-002"]["where"]),
                          (4060, "Client folder/Cedar Foods annual report 2025 extract.md"))

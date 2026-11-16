@@ -141,6 +141,7 @@ checks:
     supporting: [company_record, regulatory_document, annual_report, prospectus]
     stated: [correspondence, call, officer_note]
   ask: Do you measure your greenhouse gas emissions? If so, please share the latest figures and say who calculated them.
+  note: Record also the yearly emissions expected of what the loan pays for, where they have been estimated.
 - id: OBS_ENV_008
   question: Has the party agreed with the lender a written action plan that deals with every environmental gap found, with
     a responsible person, a budget and a date for each action?

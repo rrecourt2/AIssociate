@@ -53,10 +53,10 @@ The deal folder always comes right after the command, before anything else: `sho
 | `status <deal>` | See the structure, what changed, where the claims stand and every candidate for what to do next. `--for <ID>` keeps to one subject or link. `--all` gives the full lists. |
 | `add <deal> changes.json` | Record what you learned. It prints the ID of each new record. See [recording](references/recording.md). |
 | `show <deal> claims` | Every claim by pillar, one line each: where it stands and what that rests on. |
-| `show <deal> facts` | One line per fact that is current or disputed. Add IDs or words to get only the facts that hold one of them: the facts about a subject (`facts P-001`), from a source (`facts S-004`), in answer to a check (`facts OBS_REV_001`), named by ID (`facts F-012 F-015`) or with a word in them (`facts capacity`). An outdated fact shows only when it is named this way. |
+| `show <deal> facts` | One line per fact that is current or disputed. Add IDs or words to get only the facts that hold one of them: the facts about a subject (`facts P-001`), from a source (`facts S-004`), in answer to a check (`facts OBS_REV_001`), named by ID (`facts F-012 F-015`) or with a word in them (`facts capacity`). A term is matched against the line as it is printed. An outdated fact shows only when it is named this way. |
 | `show <deal> kinds` | The kinds of source with the folder each is filed in, the kinds of subject, and the kinds of link with the role each gives. |
 | `show <deal> <ID>` | A record and what uses it, or a check or an indicator in full. |
-| `show <deal> <words>` | A search of the record and of the checks of the standard: `show <deal> own account` finds the check that asks about it. `show <deal> sheet` prints the entry sheets for the bank's systems. `show <deal> log` prints the history. |
+| `show <deal> <words>` | A search of the record, and of the questions of the checks: `show <deal> own account` finds the check that asks about it. `show <deal> sheet` prints the entry sheets for the bank's systems. `show <deal> log` prints the history. |
 | `pages <deal>` | Create the pages the structure calls for, fill in the tool's parts of every page, and write the contents page and `wiki.html`. See [pages](references/pages.md). |
 | `check <deal>` | See what looks wrong on the pages and in the drafts: citations and links that lead nowhere, numbers no cited fact holds, changed files. |
 | `adjust <deal> adjustment.json` | Change the standard for this deal. See [standard](references/standard.md). |

@@ -91,7 +91,7 @@ The original document is the source. A text extract that you or someone else mad
 
 1. **File the original.** `where` is always the original, and the fingerprint is the original's.
 2. **Attach the extract.** Name it under `"extract"` in the filing: the tool moves it to `Internal/sources/extracts/`. Give that path as `extract` on the source.
-3. **Cite the place in the original.** `place` on a fact is the page, the note or the table of the original, not a line of the extract. When you make an extract, keep the page numbers of the original and copy its tables in full. A table cut down to a sentence is where errors start.
+3. **Cite the place in the original.** `place` on a fact is the page, the note or the table of the original, not a line of the extract. When you make an extract, keep the page numbers of the original and copy its tables in full.
 4. **When the original comes later.** A source that was recorded from an extract alone is pointed at the original once that is filed: send the source's `id` with the new `where` and `extract`. The tool then takes the fingerprint of the original.
 
 Where the extract and the original differ, the original is right.
@@ -116,7 +116,9 @@ Record what would go into a table or a system field: names, amounts, dates, term
 
 **From a table**, record each row you use with all its columns. A row with half its columns leads to a page that says "not stated" about something the document states.
 
-**A figure you worked out** from other facts, such as a ratio or a sum, is a fact of its own. Mark it `inference`, show the working in the statement and name the facts it comes from: "Borrowings were 0.32 times revenue in 2025: KES 1,300m (F-011) over KES 4,060m (F-008)." A fact of the same set is named by its `ref`: write `(@rev)`, and the tool puts the ID in its place.
+**A figure you worked out** from other facts, such as a ratio or a sum, is a fact of its own. Mark it `inference`, show the working in the statement and name the facts it comes from: "Borrowings were 0.32 times revenue in 2025: KES 1,300m (F-011) over KES 4,060m (F-008)." A fact of the same set is named by its `ref`: write `(@rev)`, and the tool puts the ID in its place. A ref that the set does not define is left as written, so read the IDs that `add` prints.
+
+**A reading of several facts is not a fact.** What the figures mean together goes on one page, and other pages link to it.
 
 ### Changing, replacing and withdrawing
 
@@ -135,7 +137,8 @@ A subject is a party, a person, a facility, a contract, an asset, a project or a
 - A link needs `from`, `type` and `to`. It starts as `proposed`. Set `state` to `confirmed` when a source confirms it, and to `ended` when it no longer holds.
 - Give a link its `why`: why it matters for repayment.
 - A mistake of your own is corrected in place: send the link's `id` with the right `type`, or with `"state": "ended"`.
-- `owns` from a party to an asset or a project says who owns it. It brings no checks: the checks on an owner are asked where a party owns a party or a group.
+- `owns` to an asset or a project says who owns it. It brings no checks: the checks on an owner are asked where the link points at a party or a group.
+- `sponsors` is for whoever stands behind the borrower or behind the project the loan pays for. Who is behind another project of the business is recorded with `owns`.
 
 A new link brings the checks that fit the role, and the checks on the link itself. Run `status --for <ID>` to see them.
 
@@ -170,7 +173,7 @@ Existing debt is never a facility. Record the lender as a party and link it to t
 - A guarantee or security for existing debt is a fact about that `lends_to` link. It is not a `guarantees` or `secures` link: those are for the loan under review.
 - For a bond, the lender is its holders: a party named "Holders of the 2025 bond".
 - Give a link to each lender that matters for ranking, security or refinancing. The others stay in a fact about total debt. Say in a decision which lenders got no link and why.
-- Where the documents do not say which company of a group owes a loan, link the lender to the group and say so in the `why`.
+- Where the documents do not say which company of a group owes a loan, link the lender to the group and say so in the `why`. One link for a lender is enough, unless its loans to two companies differ in security or ranking: each link brings the checks on another lender.
 - The link brings the checks on another lender: who ranks ahead, what it holds, what lets it call its loan.
 
 ### A person

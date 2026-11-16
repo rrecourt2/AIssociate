@@ -137,7 +137,7 @@ Who the borrower is, who guarantees, which customers, suppliers and related part
 - **A party is stable and its role is a link.** Whoever `borrows` is the borrower. When the borrower changes, the facts stay with the company they are about, and the checks for "the borrower" follow the link to the new one.
 - **A facility is the loan under review.** The roles that belong to the loan, and the checks on a guarantee or on security, arise only from links that point at a facility. The standard says for each kind of link which kinds of subject it counts for.
 - **Debt that already exists is a link, not a facility.** The lender `lends_to` the company, and the terms, the security and the guarantors of that debt are facts about the link.
-- **An owner link counts between parties.** `owns` and `sponsors` give their role, and bring the checks on the tie, where they point at a party or a group. Who owns a plant or a project is recorded the same way and brings no checks.
+- **An owner link counts where it points at a party or a group.** `owns` then gives its role and brings the checks on the tie. Who owns a plant or a project is recorded the same way and brings no checks.
 - **A subject can end.** A contract that was cancelled or a project that was shelved keeps its facts and its place in the log. It is asked nothing, and its links stop counting.
 - **A person is not a company.** A natural person is a kind of subject of its own and is asked only what fits a person.
 - **Repayment may rest on someone other than the borrower.** A facility `relies_on` the party or group whose cash flow repays it: the perimeter. The business and its money are examined once, on the perimeter. A company inside it is examined as a legal entity: its owners, its integrity, its board, its standing.
@@ -176,9 +176,8 @@ Every page has the same parts:
 2. **At a glance.** Filled in by the tool, and kept short. The page of the deal: the stage, the loan with the parties and the project at its centre, the claims by pillar and one line per claim that is challenged or contested. The page of a subject: its roles, its links that have not ended, and its challenged claims, questions and decisions. Any other page: one line that names what it is about. Names link to their pages.
 3. **What we know.** The description, with the ID of the fact or source each sentence rests on.
 4. **Assumptions and open points.** Each assumption with what it rests on. Then what is unknown, and what was looked for and not found.
-5. **Key values.** Filled in by the tool, below the text: the latest value under each label of the subject's facts.
 
-The tool lists the sources at the foot, says where one was not read in full, and writes the contents page. The AI may move a part the tool fills in. The text comes first.
+The tool lists the sources at the foot and says where one was not read in full. Below them it adds the key values, once the deal or the subject has a fact with a label: the latest value under each label. It also writes the contents page. The AI may move a part the tool fills in. The text comes first.
 
 `check` reads the pages, and the Markdown drafts directly in `Internal/outputs`, paragraph by paragraph. A draft that was sent or replaced is moved to a sub-folder and is then left alone:
 
@@ -202,7 +201,7 @@ Writing rules, taken from Wikipedia's list of signs of AI writing:
 5. Use "is" and "has".
 6. Give every number its unit, its date and the company it belongs to.
 
-**Reading it.** The pages are plain Markdown with ordinary relative links, so the folder opens in any Markdown reader, or as a vault in Obsidian. `pages` also writes `Internal/wiki/wiki.html`: the whole wiki in one file for a browser, with a list of pages by shelf, a search box, links that open in the same view, the sources, the index of the client's documents, and citations that show the fact, its value, its date, its source and the place in the source when clicked, with a link that opens the original at that page. The parts the tool fills in are folded away, so that the text comes first. It loads nothing from the network and opens by double click from a synced folder. Its template is one file of HTML, CSS and plain JavaScript. Python only fills in the data.
+**Reading it.** The pages are plain Markdown with ordinary relative links, so the folder opens in any Markdown reader, or as a vault in Obsidian. `pages` also writes `Internal/wiki/wiki.html`: the whole wiki in one file for a browser, with a list of pages by shelf, a search box, links that open in the same view, the sources, the index of the client's documents, and citations that show the fact, its value, its date, its source and the place in the source when clicked, with a link that opens the original at that page. A long part that the tool fills in is folded away, so that the text comes first. It loads nothing from the network and opens by double click from a synced folder. Its template is one file of HTML, CSS and plain JavaScript. Python only fills in the data.
 
 ### 5.5 Preferences
 
@@ -238,7 +237,7 @@ The standard says what a deal folder holds and what must be known. It is data on
 - **Nine pillars**: the deal; environment; business; people and governance; cash flow and debt; liquidity and financial risks; environmental, social and impact; links; the facility.
 - **Claims first.** People and assistants work from the 70 claims. The checks are the detail behind a claim.
 - **Falsification is the backbone.** An indicator is one claim: what the lender relies on, in a sentence that can turn out false. A check is a question, a test or a mitigant. A test states its own assumption and which answer goes against it. A mitigant is asked once a test has gone against the claim.
-- **The tool says where each claim stands**, for each party or link it is made about: not tested, stands so far (some tests answered, none against, others open), stands (every test answered), challenged (with each mitigant holding, failing or not known) or contested. There are no scores and no weights.
+- **The tool says where each claim stands**, for each party or link it is made about: not tested, stands so far (some tests answered, none against, others open or waiting), stands (every test answered), challenged (with each mitigant holding, failing or not known) or contested (two facts disagree on a test, or on a question behind the claim). There are no scores and no weights.
 - **Checks apply by role and by link.** A role is the end of a link, so the checks follow the role when a party changes. A guarantor is asked whether it can pay and must pay, not how it runs a factory. A link that exists brings its own checks: a guarantee, an owner, a key customer, a key supplier, another lender.
 - **Discovery opens what applies and calls for structure.** The kind of credit and the sector decide which checks apply. Until they are answered, those checks wait. Some answers mean a party or a link must exist. The tool says so until it is added, or until a decision says why not.
 - **Who speaks matters.** An answer that goes against a claim is believed whatever it rests on. A favourable answer that rests only on what a party said is marked as someone's own word, and a claim does not stand on that alone.

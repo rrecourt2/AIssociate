@@ -169,7 +169,8 @@ checks:
     or by anyone else? How do you check for it, and how far down the chain?
   if_unknown: In a sector known for child or forced labour, the absence of findings shows only that nobody has looked.
   note: Where the supply comes from a setting flagged in OBS_ES_003 and nobody has looked, the answer is not no. It is not
-    known. If the search finds nothing, record what was searched, where and when.
+    known. Count the suppliers of the equipment the loan pays for. If the search finds nothing, record what was searched,
+    where and when.
 - id: OBS_SUPPLYCHAIN_004
   question: Are the raw materials concerned covered by a certification scheme that sets rules on forest clearing and on
     child and forced labour, with a certificate that is in force and an audit by an accredited third party in the last twelve

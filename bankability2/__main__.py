@@ -207,7 +207,7 @@ def show_claims(memory, std, rows):
                      claim["contested"] and f"facts disagree on {', '.join(claim['contested'])}",
                      claim["own_word"] and f"answers on someone's own word {claim['own_word']}",
                      states and "mitigants " + ", ".join(f"{states.count(state)} {state}" for state in dict.fromkeys(states)),
-                     claim["actions"] and f"agreed action {', '.join(claim['actions'])}"]
+                     claim["actions"] and f"decision {', '.join(claim['actions'])}"]
             print(f"- {std['by_id'][claim['indicator']]['title']} ({pages.name_of(claim['for'], memory)}): "
                   f"{'; '.join(filter(None, parts))} [{claim['indicator']}]")
         if mine:
@@ -251,7 +251,7 @@ def show(args):
         print("\n".join(fact_lines(memory, args.what[1:])) or "Nothing found.")
         outdated = sum(fact["state"] == "outdated" for fact in memory["facts"].values())
         if outdated and len(args.what) == 1:
-            print(f"\n{outdated} outdated facts are not listed. Name one, or a word it holds, to see it.")
+            print(f"\nOutdated facts not listed: {outdated}. Name one, or a word it holds, to see it.")
     elif what in std["checks"] or what in std["by_id"]:
         entry = std["checks"].get(what) or std["by_id"][what]
         print(json.dumps({key: value for key, value in entry.items() if key != "checks"}, indent=1, ensure_ascii=False))
@@ -273,7 +273,7 @@ def show(args):
         hits = [f"- {rid}: {summary(record)}" for table in store.TABLES for rid, record in memory[table].items()
                 if what.lower() in json.dumps(record, ensure_ascii=False).lower()]
         hits += [f"- {cid}: {check['question']}" for cid, check in std["checks"].items()  # and the checks of the standard
-                 if what.lower() in json.dumps(check, ensure_ascii=False).lower()]
+                 if what.lower() in f"{check['question']} {check.get('assumption', '')}".lower()]
         print("\n".join(hits) or "Nothing found.")
 
 
@@ -288,7 +288,7 @@ def refresh(args):
         print(f"Created {counted(len(created))} for you to write: {', '.join(created)}.")
     if changed or same:
         print(f"Updated the tool's parts of {counted(len(changed))}. {counted(same)} needed no change.")
-    print(f"Wrote the contents page, and the view for a browser: {files.WIKI}/wiki.html.")
+    print(f"Wrote the contents page, the sources page and the view for a browser: {files.WIKI}/wiki.html.")
 
 
 def file_problems(deal, memory):

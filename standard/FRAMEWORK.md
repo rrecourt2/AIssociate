@@ -92,10 +92,10 @@ From the answers the tool works out where each claim stands, for each party or l
 | The claim | Means |
 |---|---|
 | is **not tested** | No test is answered, or the answers rest only on someone's own word |
-| **stands so far** | Some tests are answered and none goes against it. Other tests are still open. The tool says how many |
+| **stands so far** | Some tests are answered and none goes against it. Other tests are still open, or wait for an earlier answer. The tool says how many |
 | **stands** | Every test is answered and none goes against it. The tool says on what evidence |
 | is **challenged** | A test went against it. The tool says which, and whether a mitigant is known, holds or fails |
-| is **contested** | Two facts answer the same test differently |
+| is **contested** | Two facts answer the same test, or a question behind the claim, differently |
 
 No topic closes on one answer. A company with no foreign-currency revenue can still be exposed through its costs, its debt or its suppliers. Each independent way a risk can enter is tested before the claim is left alone.
 

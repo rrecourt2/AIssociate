@@ -58,7 +58,7 @@ The deal is invented. The steps under `examples/cedar-foods/changes` are what an
 - **`pages`** creates three pages for an assistant to write: the deal, the borrower and the project the loan pays for. The line after it copies in the pages an assistant wrote for this deal, from `examples/cedar-foods/wiki`. `pages` then fills in the parts that the tool keeps and writes `Cedar Foods/Internal/wiki/wiki.html`. Open that file in a browser to read the wiki, the documents and the facts behind each citation.
 - **`check`** finds nothing wrong.
 
-More to look at: `show "Cedar Foods" claims` lists every claim by pillar, `show "Cedar Foods" facts` every fact, `show "Cedar Foods" facts S-002` the facts from one source, and `show "Cedar Foods" kinds` the kinds of source, subject and link.
+More to look at: `show "Cedar Foods" claims` lists every claim by pillar, `show "Cedar Foods" facts` every current fact, `show "Cedar Foods" facts S-002` the facts from one source, and `show "Cedar Foods" kinds` the kinds of source, subject and link.
 
 ## The parts
 

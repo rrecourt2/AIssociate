@@ -212,12 +212,8 @@
   {
    "id": "sponsors",
    "title": "Sponsors",
-   "description": "The party stands behind another party as its main shareholder or promoter. The promoter of a project is linked to the company that carries the project. Like `owns`, it gives its role, and is asked the checks on an owner, only where it points at a party or a group.",
-   "role_from": "sponsor",
-   "counts_for": [
-    "party",
-    "group"
-   ]
+   "description": "The party stands behind the borrower, or behind the project the loan pays for, as its main shareholder or promoter. Who is behind another project of the business is recorded with `owns`.",
+   "role_from": "sponsor"
   },
   {
    "id": "owns",
@@ -10139,7 +10135,7 @@
       ]
      },
      "ask": "Has any shareholder pledged its shares in the company, or given someone an option over them?",
-     "note": "Whoever enforces a pledge over the shares can end up as the owner, and the lender has no say in it. Where one company owns the party and is not itself asked this check, look up the chain as well. A pledge over the owner's own shares changes who controls the party just the same, so the answer is yes, and the reason says at which level the pledge sits. If the search finds nothing, record what was searched, where and when.",
+     "note": "Whoever enforces a pledge over the shares can end up as the owner, and the lender has no say in it. A pledge counts when its enforcement, alone or with a change that is already planned, could move control or a blocking stake. A smaller one is a no, and the reason gives its size. Where one company owns the party and is not itself asked this check, look up the chain as well. Record a pledge over the owner's own shares in the reason, and answer OBS_OWN_009 on whether its enforcement would change who controls the party. If the search finds nothing, record what was searched, where and when.",
      "leads_to": [
       {
        "indicator": "CAS_SOURCE_OF_FUNDS_001",
@@ -10178,7 +10174,7 @@
       ]
      },
      "ask": "Do the owners plan to sell, to bring in a new investor, to list the company or to hand over to the next generation during the life of the loan?",
-     "note": "Where one company owns the party and is not itself asked this check, look up the chain to the people or the listed company at the top. A share issue that dilutes those who control the owner counts, and the reason says at which level the change sits.",
+     "note": "Where one company owns the party and is not itself asked this check, look up the chain to the people or the listed company at the top. A share issue, or the enforcement of a pledge, that would take control from those who control the owner counts, and the reason says at which level the change sits.",
      "leads_to": [
       {
        "indicator": "CAS_COVENANT_DESIGN_001",
@@ -16641,7 +16637,8 @@
        "officer_note"
       ]
      },
-     "ask": "Do you measure your greenhouse gas emissions? If so, please share the latest figures and say who calculated them."
+     "ask": "Do you measure your greenhouse gas emissions? If so, please share the latest figures and say who calculated them.",
+     "note": "Record also the yearly emissions expected of what the loan pays for, where they have been estimated."
     },
     {
      "id": "OBS_ENV_008",
@@ -17666,7 +17663,7 @@
      },
      "ask": "Has child labour or forced labour ever been found at one of your suppliers, by you, by an auditor, by a customer or by anyone else? How do you check for it, and how far down the chain?",
      "if_unknown": "In a sector known for child or forced labour, the absence of findings shows only that nobody has looked.",
-     "note": "Where the supply comes from a setting flagged in OBS_ES_003 and nobody has looked, the answer is not no. It is not known. If the search finds nothing, record what was searched, where and when."
+     "note": "Where the supply comes from a setting flagged in OBS_ES_003 and nobody has looked, the answer is not no. It is not known. Count the suppliers of the equipment the loan pays for. If the search finds nothing, record what was searched, where and when."
     },
     {
      "id": "OBS_SUPPLYCHAIN_004",
@@ -17827,7 +17824,7 @@
       ]
      },
      "ask": "Does every worker have a written contract? Do you pay at least the minimum wage, overtime, and social security contributions in full? When did the labour inspector last visit, and what did the report say?",
-     "note": "Count the workers of labour contractors who do the party's regular work. A labour inspection report or an independent labour audit is best evidence. The party's own personnel policy shows what it intends, not what it does."
+     "note": "Count the workers of labour contractors who do the party's regular work, and the workers who build what the loan pays for, the builder's included. A labour inspection report or an independent labour audit is best evidence. The party's own personnel policy shows what it intends, not what it does."
     },
     {
      "id": "OBS_SOC_005",
@@ -17862,7 +17859,7 @@
       ]
      },
      "ask": "In the last three years, has anyone died or been permanently injured at work on your sites, including contractors' workers? What happened, and what did you change afterwards?",
-     "note": "Count contractors' workers and drivers on the party's business. A party that says yes is believed. A party that says no is believed once its accident register, the authority or the insurer bears it out. A site that is not yet built has no record. Say so instead of answering no."
+     "note": "Count contractors' workers and drivers on the party's business, and the workers who build what the loan pays for. A party that says yes is believed. A party that says no is believed once its accident register, the authority or the insurer bears it out. A site that is not yet built has no record. Say so instead of answering no."
     },
     {
      "id": "OBS_SOC_006",
@@ -17896,7 +17893,7 @@
       ]
      },
      "ask": "How many seasonal, agency, contract or migrant workers do you use at the busiest time of the year? Who recruits them, who pays them, and where do they live? Do they pay anything to get the job?",
-     "note": "Where the party uses no such workers, answer no and say so. Fees paid for a job and papers held by someone else are signs of forced labour under IFC Performance Standard 2. Look at the contract with the labour contractor and, where workers are housed, at the housing."
+     "note": "Where the party uses no such workers, answer no and say so. Count the workers who build what the loan pays for, the builder's included. Fees paid for a job and papers held by someone else are signs of forced labour under IFC Performance Standard 2. Look at the contract with the labour contractor and, where workers are housed, at the housing."
     },
     {
      "id": "OBS_SOC_004",
@@ -19037,7 +19034,7 @@
       "both",
       "neither"
      ],
-     "why": "Most ties in a chain of owners carry nothing that the lender counts on. Then the answer is neither, and only OBS_GROUP_010 is still asked about the tie. Any other answer also asks what the owner owes and receives on its own account.",
+     "why": "Most ties in a chain of owners carry nothing that the lender counts on. Then the answer is neither, and only OBS_GROUP_010 is still asked about the tie. Any other answer also asks what the owner owes on its own account.",
      "due_by": "screening",
      "look_in": [
       "03.02.b",
@@ -19113,10 +19110,6 @@
      "why": "Set against what the owner owes, this shows how much of the owner's debt service the company carries, and whether what comes up is enough.",
      "due_by": "concept",
      "when": [
-      {
-       "check": "OBS_GROUP_001",
-       "is": "support_from_owner"
-      },
       {
        "check": "OBS_GROUP_001",
        "is": "cash_from_owned"

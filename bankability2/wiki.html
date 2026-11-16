@@ -80,14 +80,12 @@ const table = id => Object.keys(TABLES).find(name => data[name][id]);
 const cite = (id, more = "") => table(id) ? `<a class="cite" tabindex="0" data-id="${id}">${id}${more}</a>` : id;
 
 // The pages: for each path from the wiki folder, its title, its text without the top lines, and its shelf.
-const pages = {}, pageOf = {};
+const pages = {};
 for (const [path, raw] of Object.entries(data.pages)) {
   const top = /^---\n([\s\S]*?)\n---\n?/.exec(raw), text = top ? raw.slice(top[0].length) : raw;
-  const title = (top && /^title:[ \t]*(\S.*)$/m.exec(top[1]) || /^#\s+(.+)$/m.exec(text) || [0, path])[1];
-  const about = top && /^about:[ \t]*([^,\s]+)/m.exec(top[1]);
+  const title = (top && /^title:[ \t]*["']?(.*?\S)["']?[ \t]*$/m.exec(top[1]) || /^#\s+(.+)$/m.exec(text) || [0, path])[1];
   const shelf = ["index.md", "sources.md", data.documents].includes(path) ? "" : path.includes("/") ? path.split("/")[0] : "other";
   pages[path] = {title, text, shelf};
-  if (about && !pageOf[about[1]]) pageOf[about[1]] = path;
 }
 let here = "index.md";  // the page that is open
 
@@ -192,26 +190,24 @@ function card(id) {  // what the record holds under an ID: a fact with its value
     lines.push(`<dt>${esc(key[0].toUpperCase() + key.slice(1).replace(/_/g, " "))}</dt><dd>${html}</dd>`);
   }
   el("card").innerHTML = `<button aria-label="Close">&times;</button><h2>${id} <small>${TABLES[table(id)]}</small></h2>` +
-    (main ? `<p>${named(record[main])}</p>` : "") + (pageOf[id] ? `<a href="#${encoded(pageOf[id])}">Open its page</a>` : "") +
+    (main ? `<p>${named(record[main])}</p>` : "") + (data.where[id] ? `<a href="#${encoded(data.where[id])}">Open its page</a>` : "") +
     `<dl>${lines.join("")}</dl>`;
   el("card").hidden = false;
 }
 
-const plain = text => text.replace(/<!--.*?-->/g, " ").replace(/\]\([^)]*\)/g, "]").replace(/[*_#|`>\[\]]+/g, " ")
+const bare = text => text.replace(/<!--.*?-->/g, " ").replace(/\]\([^)]*\)/g, "]").replace(/[*_#|`>\[\]]+/g, " ")
   .replace(/\s+/g, " ");  // the words of a page without its Markdown, for the search
+const starts = word => new RegExp("(?<![\\p{L}\\p{N}])" + word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "iu");  // at the start of a word
 
 function menu() {  // the pages by shelf, or the pages that hold the words searched for
-  const words = el("search").value.toLowerCase().split(/\s+/).filter(Boolean);  // a page must hold each of them
+  const words = el("search").value.split(/\s+/).filter(Boolean);  // a page must hold each of them, at the start of a word
   const entry = (path, name) => {
-    const text = plain(pages[path].text), hit = words.length ? text.toLowerCase().indexOf(words[0]) : -1;
+    const text = bare(pages[path].text), hit = words.length ? text.search(starts(words[0])) : -1;
     const near = hit < 0 ? "" : "<span>" + esc(text.slice(Math.max(0, hit - 30), hit)) + "<mark>" +
       esc(text.substr(hit, words[0].length)) + "</mark>" + esc(text.substr(hit + words[0].length, 50)) + "</span>";
     return `<a href="#${encoded(path)}"${path === here ? ' class="here"' : ""}>${esc(name || pages[path].title)}${near}</a>`;
   };
-  const shown = Object.keys(pages).filter(path => {
-    const text = (pages[path].title + "\n" + plain(pages[path].text)).toLowerCase();
-    return words.every(word => text.includes(word));
-  });
+  const shown = Object.keys(pages).filter(path => words.every(word => starts(word).test(pages[path].title + "\n" + bare(pages[path].text))));
   const shelf = name => {
     const paths = shown.filter(path => pages[path].shelf === name);
     return paths.length ? `<h2>${esc(name)}</h2>` + paths.map(path => entry(path)).join("") : "";

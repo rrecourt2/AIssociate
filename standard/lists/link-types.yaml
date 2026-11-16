@@ -17,11 +17,9 @@ link_types:
   counts_for: [facility]
 - id: sponsors
   title: Sponsors
-  description: The party stands behind another party as its main shareholder or promoter. The promoter of a project is
-    linked to the company that carries the project. Like `owns`, it gives its role, and is asked the checks on an owner,
-    only where it points at a party or a group.
+  description: The party stands behind the borrower, or behind the project the loan pays for, as its main shareholder
+    or promoter. Who is behind another project of the business is recorded with `owns`.
   role_from: sponsor
-  counts_for: [party, group]
 - id: owns
   title: Owns
   description: The party owns shares in another party, or owns an asset or a project. It makes its holder a shareholder,

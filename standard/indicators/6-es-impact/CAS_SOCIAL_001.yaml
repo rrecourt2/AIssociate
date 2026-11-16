@@ -32,8 +32,8 @@ checks:
     stated: [correspondence, call, officer_note]
   ask: Does every worker have a written contract? Do you pay at least the minimum wage, overtime, and social security contributions
     in full? When did the labour inspector last visit, and what did the report say?
-  note: Count the workers of labour contractors who do the party's regular work. A labour inspection report or an independent
-    labour audit is best evidence. The party's own personnel policy shows what it intends, not what it does.
+  note: Count the workers of labour contractors who do the party's regular work, and the workers who build what the
+    loan pays for, the builder's included. A labour inspection report or an independent labour audit is best evidence. The party's own personnel policy shows what it intends, not what it does.
 - id: OBS_SOC_005
   question: In the last three years, has a worker of the party, or of a contractor on its sites, died or been permanently
     disabled in an accident at work?
@@ -49,7 +49,8 @@ checks:
     stated: [correspondence, call, officer_note]
   ask: In the last three years, has anyone died or been permanently injured at work on your sites, including contractors'
     workers? What happened, and what did you change afterwards?
-  note: Count contractors' workers and drivers on the party's business. A party that says yes is believed. A party that
+  note: Count contractors' workers and drivers on the party's business, and the workers who build what the loan pays
+    for. A party that says yes is believed. A party that
     says no is believed once its accident register, the authority or the insurer bears it out. A site that is not yet built
     has no record. Say so instead of answering no.
 - id: OBS_SOC_006
@@ -68,7 +69,8 @@ checks:
     stated: [correspondence, call, officer_note]
   ask: How many seasonal, agency, contract or migrant workers do you use at the busiest time of the year? Who recruits them,
     who pays them, and where do they live? Do they pay anything to get the job?
-  note: Where the party uses no such workers, answer no and say so. Fees paid for a job and papers held by someone else
+  note: Where the party uses no such workers, answer no and say so. Count the workers who build what the loan pays for,
+    the builder's included. Fees paid for a job and papers held by someone else
     are signs of forced labour under IFC Performance Standard 2. Look at the contract with the labour contractor and, where
     workers are housed, at the housing.
 - id: OBS_SOC_004

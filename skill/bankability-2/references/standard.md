@@ -11,7 +11,7 @@ Start from the claims, not from the checks.
 - **`show claims`** lists every claim by pillar, one line each:
 
   ```text
-  - Currency risk (Cedar Foods Ltd): challenged; tests answered 1 of 4; against OBS_FX_008; mitigants 5 not known; agreed action D-002 [CAS_FX_001]
+  - Currency risk (Cedar Foods Ltd): challenged; tests answered 1 of 4; against OBS_FX_008; mitigants 5 not known; decision D-002 [CAS_FX_001]
   ```
 
 - **`status --for <ID>`** shows only what concerns one subject or link: its claims, its open checks, its questions. For a subject it includes the links that touch it. `status --for DEAL` keeps to the checks about the deal.
@@ -28,10 +28,10 @@ For each claim, and each party or link it is made about, the tool says where it 
 | The claim | Means |
 |---|---|
 | is **not tested** | No test is answered, or the answers rest only on someone's own word. |
-| **stands so far** | Some tests are answered, none goes against it, and at least one rests on more than someone's word. Other tests are still open. |
+| **stands so far** | Some tests are answered, none goes against it, and at least one rests on more than someone's word. Other tests are still open, or wait for an earlier answer. |
 | **stands** | Every test is answered, none goes against it, and at least one rests on more than someone's word. |
 | is **challenged** | A test went against it. The tool lists the mitigants: each holds, fails or is not known. |
-| is **contested** | Two facts answer a test differently. |
+| is **contested** | Two facts answer a test, or a question behind the claim, differently. |
 
 `status` shows the claims by pillar and lists those that are challenged, contested or to look at again. A claim made about several parties counts once, at its worst.
 
@@ -45,7 +45,7 @@ The standard is a backbone. It does not replace the analysis.
 - **Answer a test as soon as it is decided.** Some tests speak of "this loan included" or "after this loan". If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known. An answer in favour waits for the terms: until the amount, the currency and the tenor are known, record today's figure as a fact and leave the test open.
 - **Read the open tests of a claim before you rely on it.** `show <deal> <indicator>` lists them. The record often decides one that nobody has answered yet.
 - **One case can decide a test against the claim. A favourable answer needs the whole.** If a test asks about five years and the documents cover three, a bad year among the three decides it. Three good years do not: record the figures, leave the test open and ask for the rest.
-- **Some questions ask for description**, not for a verdict: how the business earns its money (`OBS_BUSINESS_MODEL_001`), what is particular about it (`OBS_BUSINESS_MODEL_002`), what the project is (`OBS_FEAS_008`), and what an owner owes and receives on its own account (`OBS_GROUP_011`, `OBS_GROUP_012`). Their answers feed the pages. Answer them early. `show <deal> <words>` finds the check that asks about something.
+- **Some questions ask for description**, not for a verdict: how the business earns its money (`OBS_BUSINESS_MODEL_001`), what is particular about it (`OBS_BUSINESS_MODEL_002`), what the project is (`OBS_FEAS_008`). Their answers are text and they feed the pages. Answer them early. Ask early as well what an owner owes and receives on its own account (`OBS_GROUP_011`, `OBS_GROUP_012`). `show <deal> <words>` finds the check that asks about something.
 
 ## Who is asked what
 
@@ -53,11 +53,11 @@ A check is asked about the deal, about whoever holds a role, about a subject of 
 
 - **The loan under review.** A facility is a loan the lender is considering. The roles of borrower and guarantor, and the checks on a guarantee or on security, arise only from links that point at a facility. Debt that already exists is a `lends_to` link and brings the checks on another lender.
 - **The perimeter.** The business and its money are examined once, on the party or group whose cash repays the loan. Five pillars are asked of the perimeter: environment, business, cash flow and debt, liquidity and financial risks, and environmental, social and impact. Related parties and a guarantor's capacity are asked the same way. A company that is a member of a group that is asked the same check is not asked it again.
-- **The legal entity.** People and governance is asked of each company: its owners, its integrity, its board, its standing. A group is not asked these. Each company you recorded as a member of the group is asked them in its place, whether it borrows or not: the parent of a borrowing subsidiary as well.
+- **The legal entity.** People and governance is asked of each company: its owners, its integrity, its board, its standing. A group is not asked these. Each company you recorded as a member of a group is asked them in the group's place, whether it borrows or not: the parent of a borrowing subsidiary as well.
 - **The tie between them.** Where the borrower is not the whole perimeter, the links between the companies are examined for whether the cash can reach the lender.
 - **A person** is asked only what fits a person.
 - **A project** is checked only when the loan finances it. It is asked what is its own: whether it can be built and pay, its impact assessment and permits, its land, its neighbours. What concerns the whole business stays with the perimeter.
-- **An owner.** `owns` and `sponsors` give their role, and bring the checks on the tie between owner and company, only between parties. Who owns a plant or a project is recorded the same way and brings no checks.
+- **An owner.** `owns` gives its role, and brings the checks on the tie between owner and company, only where it points at a party or a group. Who owns a plant or a project is recorded the same way and brings no checks. `sponsors` is for whoever stands behind the borrower or the financed project, and always brings them.
 
 See [recording](recording.md) for how to record each of these.
 
