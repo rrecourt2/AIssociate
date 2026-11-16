@@ -384,7 +384,7 @@ def refresh(deal, memory, std, rows, held):
                 changed.append(path)
         pages[path], title = new, front(text).get("title") or path[cut:]
         contents.setdefault(path[cut:].split("/")[0], []).append(
-            f"- [{title}]({encoded(path[cut:])}): {lead(text)} ({len(own_text(text).split())} words)")
+            f"- [{title}]({encoded(path[cut:])}): {lead(text)}")
     index = [f"# {memory['deal']['name']}: contents", "", "[Sources](sources.md) lists every source of the record. "
              f"[Documents](../../{encoded(files.CLIENT)}/index.md) lists what the client shared.", ""]
     for shelf, lines in contents.items():

@@ -327,7 +327,7 @@ class Deal(unittest.TestCase):
                          [["deal.md", "second-uht-line.md"], ["cedar-foods-ltd.md"]])
         contents = files.read(self.deal, "Internal/wiki/index.md")
         self.assertIn("- [Cedar Foods Ltd](parties/cedar-foods-ltd.md): Cedar Foods Ltd is a dairy processor in Nakuru, Kenya, "
-                      "and the borrower of the proposed EUR 12m loan. (", contents)
+                      "and the borrower of the proposed EUR 12m loan.\n", contents)
         self.assertIn("- P-003 Bluegate Supermarkets: party, customer", contents)
         self.assertEqual(pages.lead("# Blue\n\nBlue Co. Ltd sells milk under Decree No. 12 in Thika Town [F-001]. It is small.\n"),
                          "Blue Co. Ltd sells milk under Decree No. 12 in Thika Town.")  # cut at the sentence, not at an abbreviation

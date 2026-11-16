@@ -101,6 +101,10 @@ def status(args):
     for row in rows:
         counts[row["state"]] = counts.get(row["state"], 0) + 1
     print("\n## Next\n\nChecks: " + (", ".join(f"{count} {state}" for state, count in counts.items()) or "none apply yet") + ".")
+    due = [row["due_by"] for row in rows if row["state"] == "open"]
+    if due:  # most open checks are work for a later stage
+        print("Open, by the stage each is ideally answered by: "
+              + ", ".join(f"{titles[stage]} {due.count(stage)}" for stage in std["stage_ids"] if stage in due) + ".")
     print("\n## Where the claims stand\n")
     for pillar in std["pillars"]:
         counts = assess.view(found, std)[pillar["id"]]

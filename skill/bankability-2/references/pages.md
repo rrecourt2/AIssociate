@@ -8,7 +8,7 @@ Write it so that you, or another assistant who has never seen this deal, can pic
 
 An assistant reads the contents page, `Internal/wiki/index.md`, and the page of the deal first. It opens another page only when the task needs it. So:
 
-- **Every page starts with a lead that can stand alone.** The contents page prints the first sentence of each page and its length in words. That line decides whether the page is opened.
+- **Every page starts with a lead that can stand alone.** The contents page prints the first sentence of each page. That line decides whether the page is opened.
 - **The contents page is the map.** The tool writes it on every `pages`. It also lists each subject that no page describes, in one line: its kind, its roles and its note. Beside it the tool writes `sources.md`: every source of the record, how far it was read, how many facts rest on it, and links to its original and its extract.
 - **A page may be long** when its subject needs it. Keep it workable: one subject per page, headings or bold lead-ins that name what follows, and each thing said once, on the page it belongs to. Link to it from elsewhere. A figure that sits on five pages has to be changed on five pages.
 

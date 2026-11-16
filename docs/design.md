@@ -165,7 +165,7 @@ Six shelves, two levels deep:
 | Work | piece of work, such as a consultant to hire or a site visit, and the working notes |
 
 - **Fewer and richer pages.** The tool creates a page for the deal, for each borrower, repayment source, guarantor and sponsor, and for each financed project. Every other subject has one line on the contents page. The AI writes a page for one of them only when there is something to say. A page may describe several subjects, such as the lenders: each is named at its top, links to that page and leaves the list of subjects without a page.
-- **The contents page is the map.** It gives the first sentence and the length of every page. An assistant reads the contents page and the page of the deal first, and opens another page only when the task needs it. A long wiki is then no burden.
+- **The contents page is the map.** It gives the first sentence of every page. An assistant reads the contents page and the page of the deal first, and opens another page only when the task needs it. A long wiki is then no burden.
 - **One page lists every source**: what it is, how far it was read, how many facts rest on it, and links to its original and its extract.
 - **A page describes before it lists.** What the thing is, how it works, how it relates to the rest, what is particular about it, how the context shows in the figures, and only then the assumptions and the open points. A project or an asset gets a real page: what, where, how big, by when, who pays, how far it has come.
 - **A few details that show understanding**, each specific to this business, each tied to a figure, each with a source. No filler.
