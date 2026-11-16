@@ -87,7 +87,7 @@ def status(args):
     deal, titles = memory["deal"], std["stage_titles"]
     print(f"# {deal['name']}: stage {titles[deal['stage']]}, revision {store.revision(memory)}, standard {deal['standard']}")
     if scope is None:
-        print("\nThe record holds " + ", ".join(f"{len(memory[table])} {table}" for table in store.TABLES) + ".")
+        print("\nThe record holds: " + ", ".join(f"{table} {len(memory[table])}" for table in store.TABLES) + ".")
     if scope:
         print(f"\nOnly what concerns {pages.name_of(args.about, memory)} ({args.about}).")
     structure(memory, std, None if args.about == store.DEAL else scope)
