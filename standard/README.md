@@ -2,7 +2,7 @@
 
 The standard says what a deal folder holds and what must be known about a deal. It is data only: lists, a data-room structure and checks. No meaning lives in code.
 
-Version 4.2.0 holds 70 indicators with 551 checks in nine pillars, a data room of 10 folders with 64 slots, and 82 kinds of source.
+Version 4.2.1 holds 70 indicators with 551 checks in nine pillars, a data room of 10 folders with 64 slots, and 82 kinds of source.
 
 - [FRAMEWORK.md](FRAMEWORK.md) explains how the standard is organised, and why. Read it first.
 - [CHANGES.md](CHANGES.md) lists what changed: after two trials on a real company, and from the first Bankability's standard.

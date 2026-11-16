@@ -48,7 +48,7 @@ checks:
     supporting: [company_record, annual_report, prospectus, management_accounts]
     stated: [correspondence, call, officer_note, management_presentation]
   note: A tenth is a guide. Say in the reason what share of output or earnings the asset carries, and whether it is to
-    be security.
+    be security. Answer again when the security for the loan is settled.
 - id: OBS_ASSET_001
   question: What condition is the asset in?
   answer: choice

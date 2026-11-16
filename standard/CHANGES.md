@@ -2,7 +2,21 @@
 
 ## Version 4: a new framework
 
-Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room and the stages are unchanged from version 3. Version 4.0.1 is version 4.0.0 after two reviews. Version 4.1.0 is version 4.0.1 after its first trial on a real company, version 4.1.1 is 4.1.0 after a second pass of that trial, and version 4.2.0 follows an assessment of which open checks of that deal are material. The three come first here, the latest on top. The sections after them describe version 4 as it stood at 4.0.1.
+Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room and the stages are unchanged from version 3. Version 4.0.1 is version 4.0.0 after two reviews. Version 4.1.0 is version 4.0.1 after its first trial on a real company, version 4.1.1 is 4.1.0 after a second pass of that trial, version 4.2.0 follows an assessment of which open checks of that deal are material, and version 4.2.1 is 4.2.0 after a review. The four come first here, the latest on top. The sections after them describe version 4 as it stood at 4.0.1.
+
+### Version 4.2.1: after a review of 4.2.0
+
+A reviewer read 4.2.0 before it was released and found gates that could hide a check when it matters.
+
+- **"No terms yet" made 24 checks fall away.** `OBS_TS_001` asked whether a term sheet was agreed. At screening the honest answer is no. The checks on terms, covenants and conditions then left the list, and nothing brought them back. `OBS_TS_011` takes its place. It asks how far the terms have got on paper, and its answers are proposed, agreed and signed. It has no answer for "none yet". While it is open the 24 checks wait, and `status` lists the question as the thing to do. It is due by the concept stage. `OBS_TS_001` was due at screening.
+- **The funding test fell away where the use of the money was vague.** `OBS_USE_003` waited for a yes on `OBS_USE_001`, which is a test and not an opening question. A loan with no list of uses then lost the test of whether the plan is funded. `OBS_USE_003` is asked without a condition again.
+- **"None" could be read as "none yet".** The note of `OBS_SECPKG_001` now says to choose "none" only where the loan is to be unsecured, and to leave the question open while the security is not settled. The note of `OBS_ASSET_007` says to answer again when the security is settled.
+
+One check is dropped and one is new: 551 checks as before, of which 119 questions, 365 tests and 67 mitigants.
+
+**Open, for a practitioner to confirm.** Since 4.2.0 the three checks on traceability are asked of an agribusiness, or where `OBS_ES_003` flags the place or the source of the raw materials. A manufacturer that buys a farm or forest commodity from a setting that no list flags is not asked them.
+
+**A deal that runs on 4.2.0.** After `upgrade`, an answer to `OBS_TS_001` no longer counts. Leave `OBS_TS_011` open until terms are on paper. Where `OBS_SECPKG_001` was answered "none" because the security was not yet discussed, withdraw that answer.
 
 ### Version 4.2.0: a check waits for the answer that opens it
 
@@ -26,7 +40,7 @@ So about half were material. A third were conditional, most of them mitigants th
 - **Every plant was examined as if repayment hung on it.** `OBS_ASSET_007` is new: does repayment depend on this asset, or is it security? The five tests on its condition, its upkeep and its remaining life are asked when the answer is yes. A contract and a customer already had a question of this kind.
 - **Three checks did not wait for their own opening question.** `OBS_OFFTAKER_004` now waits for `OBS_OFFTAKER_001`, `OBS_CONT_005` for `OBS_CONT_001`, and `OBS_OWN_007` for `OBS_OWN_006`.
 - **Forest and traceability were asked of a recycler.** `OBS_SUPPLYCHAIN_001`, `OBS_SUPPLYCHAIN_002` and `OBS_SUPPLYCHAIN_003` are asked of an agribusiness, or where `OBS_ES_003` has flagged the place or the source of the raw materials.
-- **Sources and uses were asked before a use was set out.** `OBS_USE_003` waits for `OBS_USE_001`.
+- **Sources and uses were asked before a use was set out.** `OBS_USE_003` waits for `OBS_USE_001`. Version 4.2.1 takes this back.
 - **A company that runs its own plant was asked for its operator's contract.** The descriptions of `operates` and `builds` now say that they are for a party that works for the owner under a contract.
 
 One check is dropped and two are new: 551 checks, of which 119 questions, 365 tests and 67 mitigants.
@@ -37,7 +51,7 @@ One check is dropped and two are new: 551 checks, of which 119 questions, 365 te
 
 - Answer `OBS_ASSET_007` for each asset. Until then the tests on the asset wait.
 - An answer to `OBS_LENDER_007` no longer counts. Answer `OBS_COV_011` once there are terms.
-- Checks on terms, covenants, conditions and security leave the list until `OBS_TS_001` and `OBS_SECPKG_001` are answered.
+- Checks on terms, covenants and conditions are asked once `OBS_TS_001` is answered yes, and checks on security once `OBS_SECPKG_001` names a kind of security. Version 4.2.1 changes the first of the two.
 
 ### Version 4.1.1: after the second pass of the trial
 

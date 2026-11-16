@@ -13,19 +13,23 @@ look_again_when:
 - {new_source: facility_agreement, reason: The signed agreement can differ from the term sheet that was approved}
 - {new_source: financial_model, reason: A new model moves the cash flow the terms were fitted to}
 checks:
-- id: OBS_TS_001
-  question: Have the lender and the borrower agreed a term sheet or heads of terms for the facility?
-  answer: yes_no
-  why: Opens the topic. Until the terms are on paper, the tests below are answered from what is proposed, and the answer
-    should say so.
-  due_by: screening
+- id: OBS_TS_011
+  question: 'How far have the terms of the facility got on paper: proposed by one side, agreed in a term sheet or heads
+    of terms, or signed?'
+  answer: choice
+  options: [proposed, agreed, signed]
+  why: Opens the topic. The tests below are tests of terms that are written down. While none are, leave this question
+    open, and the tests wait for it.
+  due_by: concept
   look_in: [04.01.a]
   evidence:
-    best: [term_sheet]
+    best: [term_sheet, facility_agreement]
     supporting: [internal_memo]
     stated: [correspondence, call, officer_note]
   ask: Is there a term sheet or heads of terms that you and the lender have both accepted? Please share the latest version
     and say whether it is signed.
+  note: There is no answer for "none yet". An open question says that, and it is listed as the thing to do. Where the
+    terms are only proposed, the answers to the tests below should say so.
 - id: OBS_TS_002
   question: Does the term sheet state the amount, the currency, the tenor, the grace period, the repayment schedule, the
     interest rate and the fees, with none of them left open?
@@ -33,7 +37,7 @@ checks:
   assumption: The main terms are written down and none is still to be agreed
   disproved_by: 'no'
   when:
-  - {check: OBS_TS_001, is: true}
+  - {check: OBS_TS_011, answered: true}
   look_in: [04.01.a, 04.01.b]
   evidence:
     best: [term_sheet, facility_agreement]
@@ -47,7 +51,7 @@ checks:
   assumption: Each repayment falls due after the cash that pays it has come in
   disproved_by: 'yes'
   when:
-  - {check: OBS_TS_001, is: true}
+  - {check: OBS_TS_011, answered: true}
   look_in: [04.01.a, 03.02.b, 03.01.b]
   evidence:
     best: [term_sheet, facility_agreement, technical_feasibility]
@@ -65,7 +69,7 @@ checks:
   disproved_by: 'yes'
   due_by: concept
   when:
-  - {check: OBS_TS_001, is: true}
+  - {check: OBS_TS_011, answered: true}
   look_in: [04.01.a, 03.02.b]
   evidence:
     best: [term_sheet, facility_agreement]
@@ -83,7 +87,7 @@ checks:
   why: Terms more generous than any precedent need a reason that belongs to this deal. Comparable means the same sector,
     the same country or region and the same kind of borrower.
   when:
-  - {check: OBS_TS_001, is: true}
+  - {check: OBS_TS_011, answered: true}
   look_in: [04.01.a, 04.03.b]
   evidence:
     best: [dfi_facility_document, facility_agreement]
@@ -99,7 +103,7 @@ checks:
     judgement of its own loan, not a test of the borrower.
   due_by: approval
   when:
-  - {check: OBS_TS_001, is: true}
+  - {check: OBS_TS_011, answered: true}
   look_in: [04.01.a]
   evidence:
     best: [internal_memo]

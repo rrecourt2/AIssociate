@@ -45,7 +45,8 @@ checks:
   ask: What could you offer as security for this loan? For example land and buildings, equipment, receivables, stock, shares,
     cash on deposit, or your rights under contracts. A list with rough values is enough to start with.
   note: Choose every kind that is offered. 'contract_rights' covers an assignment of contracts, of a concession or of insurance
-    proceeds. Choose 'none' only on its own.
+    proceeds. Choose 'none' only on its own, and only where the loan is to be unsecured. While the security is not settled,
+    leave this question open, and the checks on the security wait for it.
 - id: OBS_FACILITY_EXPOSURE_001
   question: 'What is the most the lender can be owed under the facility: the full amount committed, plus interest that is
     capitalised or can run unpaid, at its highest point?'

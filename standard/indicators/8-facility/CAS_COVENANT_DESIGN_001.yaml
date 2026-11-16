@@ -6,7 +6,7 @@ claim: The covenants warn the lender while there is still time to act, give it t
 due_by: diligence
 applies_to: [facility]
 applies_when:
-- {check: OBS_TS_001, is: true}
+- {check: OBS_TS_011, answered: true}
 matters_more_when:
 - {check: OBS_COLLATERAL_001, is: unsecured, reason: Without security the covenants are the lender's only hold on the borrower}
 - {check: OBS_BORROWER_003, is: true, reason: 'In a group, cash and assets can move to members that the covenants do not

@@ -107,11 +107,12 @@ def status(args):
               + ", ".join(f"{titles[stage]} {due.count(stage)}" for stage in std["stage_ids"] if stage in due) + ".")
     waits = [row for row in rows if row["state"] == "waiting"]
     if waits:  # a check that waits needs no work now
-        mitigants = sum(bool(std["checks"][row["check"]].get("mitigant")) for row in waits)
-        seats = sum(not std["checks"][row["check"]].get("mitigant") and not memory["subjects"].get(row["for"], {"name": 1}).get("name")
-                    for row in waits)
-        print(f"Waiting: {mitigants} mitigants, asked only if a test goes against its claim; {seats} for a party that is not "
-              f"yet named; {len(waits) - mitigants - seats} for an earlier answer.")
+        others = [row["for"] for row in waits if not std["checks"][row["check"]].get("mitigant")]
+        seats = sum(sid in memory["subjects"] and not memory["subjects"][sid].get("name") for sid in others)
+        mitigants = len(waits) - len(others)
+        parts = [(mitigants, f"mitigant{'s' * (mitigants != 1)}, asked only if a test goes against its claim"),
+                 (seats, "for a party that is not yet named"), (len(others) - seats, "for an earlier answer")]
+        print("Waiting: " + "; ".join(f"{count} {why}" for count, why in parts if count) + ".")
     print("\n## Where the claims stand\n")
     for pillar in std["pillars"]:
         counts = assess.view(found, std)[pillar["id"]]
@@ -121,7 +122,7 @@ def status(args):
     urgent = [line[2:] for line in pages.claim_lines(found, memory, std) if not line.startswith("- **Claims:**")]
     lines = []
     for row in todo["checks"]:
-        waits = f"; {row['unlocks']} checks wait on it" if row["unlocks"] else ""
+        waits = f"; {row['unlocks']} check{'s wait' if row['unlocks'] > 1 else ' waits'} on it" if row["unlocks"] else ""
         state = ", ".join([row["state"], *row["flags"]])
         check = std["checks"][row["check"]]
         lines.append(f"{check['question']} ({pages.name_of(row['for'], memory)}; ideally by {titles[row['due_by']]}; "

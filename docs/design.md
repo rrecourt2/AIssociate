@@ -69,7 +69,7 @@ What Microsoft documents for Copilot Cowork in November 2026, none of it tested 
 └── Internal/           the officer and the deal team only
     ├── sources/        calls, emails, notes, press articles, internal memos, and extracts/
     ├── record/         record.json: the record and its log; only the tool writes it
-    ├── wiki/           deal, parties, people, topics, terms, work, with index.md and wiki.html
+    ├── wiki/           deal, parties, people, context, topics, terms, work, with index.md and wiki.html
     ├── standard/       the standard this deal uses, and its adjustments
     └── outputs/        drafts of the scan, the CIP and the FP
 ```
@@ -165,7 +165,7 @@ Seven shelves, two levels deep:
 
 | Shelf | One page per |
 |---|---|
-| Deal | the deal, and each project, asset, facility or contract that needs one |
+| Deal | the deal, and each plant, line, project, facility or contract that has a name |
 | Parties | company, group or person that needs one |
 | People | group of people: the client's side, our side, other lenders and advisers |
 | Context | what surrounds the company: its history, its market and competitors, its products and how they are made, the country |
@@ -173,7 +173,7 @@ Seven shelves, two levels deep:
 | Terms | term under negotiation |
 | Work | piece of work, such as a consultant to hire or a site visit, and the working notes |
 
-- **A page for each subject a reader would look up.** The wiki holds the larger context, also where no check asks for it: a plant, a machine, a project, a product, the history of the company, its market, a customer that matters. A subject earns a page when two or more sources bear on it or other pages keep mentioning it. As a guide there are about as many pages as sources, or somewhat more. Not a page: a check, a single figure, a document retold, an account of what was done. The tool creates a page only for the deal, for each borrower, repayment source, guarantor and sponsor, and for each financed project. The first version had 36 pages that recited checks and read badly. The fault was what the pages were about, not how many there were.
+- **A page for each subject a reader would look up.** The wiki holds the larger context, also where no check asks for it: a plant, a machine, a project, a product, the history of the company, its market, a customer that matters. A subject earns a page when two or more sources bear on it or other pages keep mentioning it. As a guide there are about as many pages as sources, or somewhat more. Not a page: a check, a single figure, a document retold, an account of what was done. The tool creates a page only for the deal, for each borrower, repayment source, guarantor and sponsor, and for each financed project.
 - **The contents page is the map.** It gives the first sentence of every page. An assistant reads the contents page and the page of the deal first, and opens another page only when the task needs it. A long wiki is then no burden.
 - **One page lists every source**: what it is, how far it was read, how many facts rest on it, and links to its original and its extract.
 - **A page describes before it lists.** What the thing is, how it works, how it relates to the rest, what is particular about it, how the context shows in the figures, and only then the assumptions and the open points. A project or an asset gets a real page: what, where, how big, by when, who pays, how far it has come.
@@ -303,7 +303,7 @@ The tool always outlines what to do and collect next. `status` lists every candi
 
 `status --for <ID>` keeps all of this to one subject or link. Each check in the list ends with its ID and the answer it takes.
 
-Open checks are the work of due diligence, and `status` says so in two lines: by which stage the open checks are ideally answered, and what the waiting ones wait for. Most of those are mitigants, which are asked only if a test goes against its claim. The standard makes a check wait wherever one answer opens it: the checks on terms wait for a term sheet, the checks on an asset for whether repayment depends on it.
+Open checks are the work of due diligence, and `status` says so in two lines: by which stage the open checks are ideally answered, and what the waiting ones wait for. Many of those are mitigants, which are asked only if a test goes against its claim. The standard makes a check wait wherever one answer opens it: the checks on terms wait until terms are on paper, the checks on an asset for whether repayment depends on it. A question that opens others is left open while its answer is not known, so that what depends on it waits and does not fall away.
 
 The AI chooses what to show and how.
 
@@ -387,7 +387,7 @@ One thing comes before first use: a half-hour test in the tenant, with the made-
 
 1. A half-hour test in the tenant of how Cowork runs a script from a skill and saves files.
 2. A review of the standard by someone who does credit work.
-3. Use on a live deal with an officer. Two trials on public documents have been run.
+3. Use on a live deal with an officer. The trial on public documents ran in three rounds.
 4. Whether an institution lets client calls be transcribed. It decides how much of the record can come from calls.
 5. The fields of an institution's systems. They are written inside its own tenant and stay there.
 6. Whether an institution lets its assistants keep a memory of their own, and how it is scoped.

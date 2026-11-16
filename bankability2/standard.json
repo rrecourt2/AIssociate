@@ -1,6 +1,6 @@
 {
  "name": "Bankability Standard",
- "version": "4.2.0",
+ "version": "4.2.1",
  "description": "A standard for investment due diligence built on claims that can be disproved. It says what a deal folder holds and what must be known.",
  "licence": "MIT",
  "stages": [
@@ -2205,12 +2205,6 @@
      "assumption": "The whole plan is funded from committed sources, with room for overruns and for working capital",
      "disproved_by": "no",
      "due_by": "concept",
-     "when": [
-      {
-       "check": "OBS_USE_001",
-       "is": true
-      }
-     ],
      "look_in": [
       "01.02.a",
       "03.02.b",
@@ -5238,7 +5232,7 @@
        "management_presentation"
       ]
      },
-     "note": "A tenth is a guide. Say in the reason what share of output or earnings the asset carries, and whether it is to be security."
+     "note": "A tenth is a guide. Say in the reason what share of output or earnings the asset carries, and whether it is to be security. Answer again when the security for the loan is settled."
     },
     {
      "id": "OBS_ASSET_001",
@@ -22569,8 +22563,8 @@
    ],
    "applies_when": [
     {
-     "check": "OBS_TS_001",
-     "is": true
+     "check": "OBS_TS_011",
+     "answered": true
     }
    ],
    "matters_more_when": [
@@ -22892,8 +22886,8 @@
    ],
    "applies_when": [
     {
-     "check": "OBS_TS_001",
-     "is": true
+     "check": "OBS_TS_011",
+     "answered": true
     }
    ],
    "matters_more_when": [
@@ -24211,7 +24205,7 @@
       ]
      },
      "ask": "What could you offer as security for this loan? For example land and buildings, equipment, receivables, stock, shares, cash on deposit, or your rights under contracts. A list with rough values is enough to start with.",
-     "note": "Choose every kind that is offered. 'contract_rights' covers an assignment of contracts, of a concession or of insurance proceeds. Choose 'none' only on its own."
+     "note": "Choose every kind that is offered. 'contract_rights' covers an assignment of contracts, of a concession or of insurance proceeds. Choose 'none' only on its own, and only where the loan is to be unsecured. While the security is not settled, leave this question open, and the checks on the security wait for it."
     },
     {
      "id": "OBS_FACILITY_EXPOSURE_001",
@@ -24566,17 +24560,23 @@
    ],
    "checks": [
     {
-     "id": "OBS_TS_001",
-     "question": "Have the lender and the borrower agreed a term sheet or heads of terms for the facility?",
-     "answer": "yes_no",
-     "why": "Opens the topic. Until the terms are on paper, the tests below are answered from what is proposed, and the answer should say so.",
-     "due_by": "screening",
+     "id": "OBS_TS_011",
+     "question": "How far have the terms of the facility got on paper: proposed by one side, agreed in a term sheet or heads of terms, or signed?",
+     "answer": "choice",
+     "options": [
+      "proposed",
+      "agreed",
+      "signed"
+     ],
+     "why": "Opens the topic. The tests below are tests of terms that are written down. While none are, leave this question open, and the tests wait for it.",
+     "due_by": "concept",
      "look_in": [
       "04.01.a"
      ],
      "evidence": {
       "best": [
-       "term_sheet"
+       "term_sheet",
+       "facility_agreement"
       ],
       "supporting": [
        "internal_memo"
@@ -24587,7 +24587,8 @@
        "officer_note"
       ]
      },
-     "ask": "Is there a term sheet or heads of terms that you and the lender have both accepted? Please share the latest version and say whether it is signed."
+     "ask": "Is there a term sheet or heads of terms that you and the lender have both accepted? Please share the latest version and say whether it is signed.",
+     "note": "There is no answer for \"none yet\". An open question says that, and it is listed as the thing to do. Where the terms are only proposed, the answers to the tests below should say so."
     },
     {
      "id": "OBS_TS_002",
@@ -24597,8 +24598,8 @@
      "disproved_by": "no",
      "when": [
       {
-       "check": "OBS_TS_001",
-       "is": true
+       "check": "OBS_TS_011",
+       "answered": true
       }
      ],
      "look_in": [
@@ -24629,8 +24630,8 @@
      "disproved_by": "yes",
      "when": [
       {
-       "check": "OBS_TS_001",
-       "is": true
+       "check": "OBS_TS_011",
+       "answered": true
       }
      ],
      "look_in": [
@@ -24668,8 +24669,8 @@
      "due_by": "concept",
      "when": [
       {
-       "check": "OBS_TS_001",
-       "is": true
+       "check": "OBS_TS_011",
+       "answered": true
       }
      ],
      "look_in": [
@@ -24709,8 +24710,8 @@
      "why": "Terms more generous than any precedent need a reason that belongs to this deal. Comparable means the same sector, the same country or region and the same kind of borrower.",
      "when": [
       {
-       "check": "OBS_TS_001",
-       "is": true
+       "check": "OBS_TS_011",
+       "answered": true
       }
      ],
      "look_in": [
@@ -24742,8 +24743,8 @@
      "due_by": "approval",
      "when": [
       {
-       "check": "OBS_TS_001",
-       "is": true
+       "check": "OBS_TS_011",
+       "answered": true
       }
      ],
      "look_in": [

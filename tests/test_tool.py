@@ -365,6 +365,11 @@ class Deal(unittest.TestCase):
         self.assertNotIn("- P-003 Bluegate", files.read(deal, "Internal/wiki/index.md"))  # no longer without a page
         self.assertIn("sells to [Bluegate Supermarkets](../topics/customers.md)",
                       files.read(deal, "Internal/wiki/parties/cedar-foods-ltd.md"))
+        os.remove(os.path.join(deal, "Internal", "wiki", "parties", "cedar-foods-ltd.md"))
+        with open(os.path.join(deal, "Internal", "wiki", "topics", "history.md"), "w", encoding="utf-8") as f:
+            f.write("---\ntitle: History\nabout: P-001\n---\n\nCedar Foods was founded in Nakuru [F-001].\n")
+        self.assertIn("parties/cedar-foods-ltd.md", run("pages", deal)[1])  # a page about a topic is nobody's own page:
+        self.assertIn("[Cedar Foods Ltd](../parties/cedar-foods-ltd.md)", files.read(deal, "Internal/wiki/deal/deal.md"))  # made again
 
     def test_the_entry_sheet_shows_values_and_gaps(self):
         sheet = "\n".join(assess.sheet(self.memory(), standard.effective(self.deal)))

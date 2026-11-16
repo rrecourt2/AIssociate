@@ -353,12 +353,11 @@ def refresh(deal, memory, std, rows, held):
     """Create the pages the structure calls for, fill in the tool's parts of every page, and write the contents page and
     the browser view. Returns the pages it created, the other pages it changed and the number it left as they were."""
     pages, cut = all_pages(deal), len(files.WIKI) + 1
-    where = {}  # the page of the deal and of each subject that has one, as a path from the wiki folder
-    for first in (True, False):  # a page belongs to the first ID it names. The others it names are described on it too
-        for path, text in sorted(pages.items()):
-            owner = path[cut:].split("/")[0] not in BRIEF  # a page about people, context or a topic is nobody's own page
-            for rid in about(text)[:owner] if first else about(text)[owner:]:
-                where.setdefault(rid, path[cut:])
+    named = [(path[cut:], about(text)) for path, text in sorted(pages.items())]
+    where = {}  # the page of the deal and of each subject, as a path from the wiki folder. First its own page: a page
+    for path, ids in named:  # belongs to the first ID it names, and a page about people, context or a topic to nobody
+        if ids and path.split("/")[0] not in BRIEF:
+            where.setdefault(ids[0], path)
     created, changed = [], []
     wanted = [sid for sid, subject in memory["subjects"].items() if subject.get("name") and held.get(sid, set()) & MAIN]
     for rid in [DEAL, *wanted]:
@@ -372,6 +371,9 @@ def refresh(deal, memory, std, rows, held):
                 path = f"{files.WIKI}/{shelf}/{slug}-{rid.lower()}.md"
             pages[path], where[rid] = SKELETON.format(title=name, about=rid), path[cut:]
             created.append(path)
+    for path, ids in named:  # what has no page of its own is found on the first page that names it
+        for rid in ids:
+            where.setdefault(rid, path)
     contents = {shelf: [] for shelf in SHELVES}
     for path, text in sorted(pages.items()):
         new = fill(text, "glance", glance(about(text), memory, std, rows, held, where, path[cut:]))
@@ -434,9 +436,10 @@ def problems(deal, memory):
         found += [f"{path}: cites {rid}, which does not exist" for rid in cited if not table_of(memory, rid)]
         if len(ID.sub("", body).split()) > 40 and not notes and not any(table_of(memory, rid) for rid in cited):
             found.append(f"{path}: has text and cites nothing")
-        for link in re.findall(r"\]\((?![a-z]+:)([^)#\s]+\.md)", body):  # a link to another page of the wiki
+        for link in re.findall(r"\]\((?![a-z]+:)([^)#\s]+\.md)", text):  # a link to another page, also in the tool's parts
             target = files.beside(path, re.sub(r"%([0-9A-Fa-f]{2})", lambda code: chr(int(code.group(1), 16)), link))
-            reached |= {target} if path in pages and target != path else set()
+            if path in pages and target != path:
+                reached.add(target)
             if target.startswith(files.WIKI + "/") and target not in there:
                 found.append(f"{path}: links to {link}, which is not there")
         stale = {}
@@ -458,5 +461,5 @@ def problems(deal, memory):
         found += [f"{path}: cites {rid}, which is {entry['state']}" + (f" (replaced by {entry['replaced_by']})" if entry.get(
             "replaced_by") else "") + f". Cite what took its place, or start the sentence with \"{entry['state'].capitalize()}:\""
             for rid, entry in stale.items()]
-    return found + [f"{path}: no other page links to it" for path, text in sorted(pages.items())  # the deal page is the way in
-                    if path not in reached and about(text)[:1] != [DEAL] and not path.startswith(f"{files.WIKI}/work/")]
+    return found + [f"{path}: no other page links to it" for path in sorted(pages)  # the page of the deal is the way in
+                    if path not in reached and path != f"{files.WIKI}/deal/deal.md" and not path.startswith(f"{files.WIKI}/work/")]

@@ -81,10 +81,9 @@ The standard is a backbone. It says where to look and it keeps the record honest
 
 - **Work from the claims.** The standard holds 70. `status` counts the ones that apply to this deal, and `show claims` lists each of them for every party or link it is made about. A check is the detail behind a claim. Ask which claims this deal turns on, and go there first.
 - **Follow what the documents show.** When a document raises something no check asks about, record it and write about it. When a figure moves and nobody explains it, find the cause.
-- **Do not answer a check for its own sake.** A check that does not matter here stays open, or the officer has it switched off with a reason.
+- **Do not answer a check for its own sake.** A check that does not matter for this deal is switched off with the reason, on the officer's word. Others fall away by themselves when the question that opens them is answered as things stand. Never choose an answer for what it does to the list.
 - **Do not recite the list.** Tell the officer what the deal turns on, in a few points, each with its reason.
 - **Open checks are the work of due diligence.** Many are due at a later stage, and many wait for an earlier answer: `status` says how many of each. Do not present them as hundreds of gaps. Group them by what settles them: what the record already decides, what one request to the company would settle (`status` lists the documents that open checks look for), what one screening of all the names would settle, and what needs the terms of the loan.
-- **A check that does not matter for this deal** gets the answer that makes it fall away, or is switched off with the reason. It is not left to pile up.
 
 ## Rules
 
