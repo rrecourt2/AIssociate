@@ -42,7 +42,7 @@ The deal folder comes right after the command: `show "<deal folder>" facts`. Bel
 
 | Command | Use it to |
 |---|---|
-| `status <deal>` | See the structure, what changed, where the claims stand, what settles the open checks and every candidate for what to do next. `--for <ID>` keeps to one subject or link, to `DEAL`, the opportunity itself, or to one pillar, such as `business`. `--all` gives the full lists. `--since <revision>` lists what changed after it. |
+| `status <deal>` | See the structure, what changed, where the claims stand, what settles the open checks and every candidate for what to do next. `--for <ID>` keeps to one subject or link, to `DEAL`, the opportunity itself, to one pillar, such as `business`, or to what settles a check, such as `company`. `--all` gives the full lists. `--since <revision>` lists what changed after it. |
 | `add <deal> changes.json` | Record what you learned. It prints the ID of each new record, what the set did to the checks ("Checks: +3 answered, -2 open."), a `Note:` for a quotation that is not in its source and for a link an answer calls for, and the pages that cite a record the set changed. `--try` prints the same and writes nothing. See [recording](references/recording.md). |
 | `show <deal> claims` | Every claim by pillar, one line each: where it stands and what that rests on. |
 | `show <deal> facts` | One line per fact that is current or disputed. Add IDs or words to keep to a subject (`facts P-001`), a link (`facts R-003`), a source (`facts S-004`), a check (`facts OBS_REV_001`) or a word (`facts capacity`): outdated facts that match are then listed too. A fact named by its ID (`facts F-012 F-015`) is printed whole, with its quote: name the facts you are about to cite. |

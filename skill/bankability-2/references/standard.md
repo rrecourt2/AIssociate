@@ -57,7 +57,7 @@ A reference point such as "above 20" is the standard's own, with its reason in `
 
 Each check says in `settled_by` what settles it: `company` (its documents or its answers), `screening` (a search on a name), `terms` (the terms of the loan), `lender` (the lender itself), `expert` (counsel, an engineer, a valuer, a consultant) or `public` (public sources).
 
-`status` prints one line: "Open, by what settles them: the company 160, a screening 13, ...". Use it to tell the analyst what the open checks come down to: one request to the company, one screening, and so on.
+`status` prints one line: "Open, by what settles them: the company 160, a screening 13, ...". Use it to tell the analyst what the open checks come down to: one request to the company, one screening, and so on. `status <deal> --for company --all` lists the checks behind the request to the company, and likewise for `screening`, `terms`, `lender`, `expert` and `public`.
 
 The tool writes the page of checks, `Internal/wiki/checks.md`, on every `pages`. It is listed last on the contents page and in the browser view, as "The due diligence list". It holds the count of checks in each state; a table of the open checks by what settles them and by stage, with the claims they are mostly about; the names for the screening; then, pillar by pillar and claim by claim, every check with its state, whom it is asked of (one row where it stands the same for several), its answer or what it waits for, what settles it while it is still to answer, and the stage it is ideally answered by; and last the documents that are not in the folder.
 

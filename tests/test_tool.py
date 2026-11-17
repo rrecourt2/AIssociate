@@ -90,6 +90,7 @@ class Deal(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn("Not filed. The tool never overwrites a file", said)
         self.assertIn('"where": "Client folder/Scan.pdf", "extract": "Internal/sources/extracts/Scan.txt"}', said)  # a source to add
+        self.assertIn("filed and not recorded (2)\n- Client folder/Scan.pdf\n- Internal/sources/extracts/Scan.txt", run("status", deal)[1])
         self.assertIn("Inbox/Cedar Foods teaser.md: Client folder/Cedar Foods teaser.md already exists", said)
         filed = files.read_json(deal, files.MANIFEST)["documents"][-1]
         self.assertEqual((filed["path"], filed["extract"]), ("Client folder/Scan.pdf", "Internal/sources/extracts/Scan.txt"))
@@ -216,6 +217,8 @@ class Deal(unittest.TestCase):
         said = run("status", self.deal, "--for", "es_impact", "--all")[1]  # one pillar, and one line for a check asked of two
         self.assertIn("Only what concerns Environmental, social and impact (es_impact).", said)
         self.assertIn("(Cedar Foods Ltd; Second UHT line; ideally by", said)
+        self.assertIn("Only what concerns the company (company).", run("status", self.deal, "--for", "company")[1])  # a route
+        self.assertEqual(run("show", self.deal, "F-008", "F-011")[1].count("\n- F-0") + 1, 2)  # two facts by their IDs
         self.assertIn("- OBS_GROUP_011:", run("show", self.deal, "own account")[1])  # a search also finds a check
         self.assertIn("- D-002: Cedar is to propose", run("show", self.deal, "decisions")[1])  # every record of one kind
         self.assertEqual(len(run("show", self.deal, "sample")[1].splitlines()), 10)  # ten facts to compare with their pages

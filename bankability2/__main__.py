@@ -73,14 +73,15 @@ def structure(memory, std, scope=None):
 def status(args):
     memory, std = load(args.deal)
     rows, scope = assess.assess(memory, std), None
-    pillar = {pillar["id"]: pillar["title"] for pillar in std["pillars"]}.get(args.about)
-    if pillar:  # only the checks of one pillar, and whom they are asked of
-        rows = [row for row in rows if std["by_id"][row["indicator"]]["pillar"] == args.about]
+    part = {**{pillar["id"]: pillar["title"] for pillar in std["pillars"]}, **standard.ROUTES}.get(args.about)
+    if part:  # only the checks of one pillar, or those that one route settles, and whom they are asked of
+        rows = [row for row in rows if args.about in (std["by_id"][row["indicator"]]["pillar"], standard.route(std["checks"][row["check"]]))]
         scope = {row["for"] for row in rows}
     elif args.about:  # only what concerns one subject or link, and for a subject the links that touch it
         if args.about != store.DEAL and store.table_of(memory, args.about) not in ("subjects", "links"):
-            raise Refused(f"--for takes the ID of a subject or a link, {store.DEAL}, or a pillar "
-                          f"({', '.join(pillar['id'] for pillar in std['pillars'])}), and {args.about!r} is none of them")
+            raise Refused(f"--for takes the ID of a subject or a link, {store.DEAL}, a pillar "
+                          f"({', '.join(pillar['id'] for pillar in std['pillars'])}) or what settles a check "
+                          f"({', '.join(standard.ROUTES)}), and {args.about!r} is none of them")
         scope = {args.about} | {lid for lid, link in memory["links"].items() if args.about in (link["from"], link["to"])}
         rows = [row for row in rows if row["for"] in scope]
     listed = files.read_json(args.deal, files.MANIFEST, {"documents": []})["documents"]
@@ -102,7 +103,7 @@ def status(args):
         if bare:
             print(f"Facts from a document that carry no quotation: {bare}.")
     if scope:
-        print(f"\nOnly what concerns {pillar or pages.name_of(args.about, memory)} ({args.about}).")
+        print(f"\nOnly what concerns {part or pages.name_of(args.about, memory)} ({args.about}).")
     structure(memory, std, None if args.about == store.DEAL else scope)
     entries = memory["log"][-5:] if args.since is None else [entry for entry in memory["log"] if entry["n"] > args.since]
     if scope is None or args.since is not None:
@@ -148,6 +149,9 @@ def status(args):
     group("Gaps with an agreed action", todo["actions"], limit)
     if scope is None:
         group("Documents not in the folder", [f"{doc['slot']} {doc['title']}: {doc['why']}" for doc in todo["documents"]], limit)
+        named = {source.get(key) for source in memory["sources"].values() for key in ("where", "extract")}
+        group("Documents filed and not recorded", [path for folder in (files.CLIENT, "Internal/sources") for path in files.listing(
+            args.deal, folder) if path not in named | {files.MANIFEST, files.CLIENT + "/index.md"}], limit)
     group("Questions without an answer", [f"{q['id']} to {q['asked_of']}, " + (f"asked {q['asked']}" if q.get("asked") else
                                           "not sent yet") + f": {q['text']}" for q in todo["questions"]], limit)
     group("Facts that rest on a replaced source", todo["replaced"], limit)
@@ -297,8 +301,8 @@ def show(args):
         show_kinds(std)
     elif what == "claims":
         show_claims(memory, std, rows)
-    elif args.what[0] == "facts":
-        print("\n".join(fact_lines(memory, args.what[1:])) or "Nothing found.")
+    elif args.what[0] == "facts" or (len(args.what) > 1 and all(term.upper() in memory["facts"] for term in args.what)):
+        print("\n".join(fact_lines(memory, args.what[args.what[0] == "facts":])) or "Nothing found.")
         outdated = sum(fact["state"] == "outdated" for fact in memory["facts"].values())
         if outdated and len(args.what) == 1:
             print(f"\nOutdated facts not listed: {outdated}. Name one, or a word it holds, to see it.")
@@ -595,7 +599,7 @@ def main(argv=None):
     sub.add_argument("--institution", help="the institution's layer of the standard, a JSON file")
     sub = command("status", status, "the structure, what changed and what to do next")
     sub.add_argument("--all", action="store_true", help="list every candidate")
-    sub.add_argument("--for", dest="about", metavar="ID", help="only what concerns this subject, link or pillar")
+    sub.add_argument("--for", dest="about", metavar="ID", help="only what concerns this subject or link, this pillar, or what settles a check")
     sub.add_argument("--since", type=int, help="show changes after this revision")
     sub.add_argument("--json", action="store_true")
     sub = command("add", add, "record a set of changes")

@@ -51,7 +51,7 @@ One per document, call, email or note. `title` and `kind` are required.
 
 ## Filing documents
 
-`file` moves documents to their place. It records nothing: it prints a source record for each document, with its `where` and its `extract`, to put into the next `add` with the date, what was read and a note. It takes a list:
+`file` moves documents to their place. It records nothing: it prints a source record for each document, with its `where` and its `extract`, to put into the next `add` with the date, what was read and a note. `status` lists what was filed and is in no source, under "Documents filed and not recorded". It takes a list:
 
 ```json
 [{"file": "Inbox/AR 2025.pdf", "kind": "audited_annual_report", "title": "Audited financial statements 2025",
@@ -59,7 +59,7 @@ One per document, call, email or note. `title` and `kind` are required.
 ```
 
 - `file` is the path of the document in the deal folder, and `kind` a kind of source. The rest is optional.
-- The kind decides the folder, and `show kinds` names it, with what each kind is for. What the company itself published counts as the client's, also when nothing has been shared yet. Where no kind fits, use `other`. A page of the company's website, a news release and a broker's research report are each a `public_source`; a sustainability report is filed as an `annual_report`, the company's report on its governance as `board_composition`, and a notice filed with an exchange or a regulator as a `regulatory_document`. Most kinds go to `Client folder/<file name>`, which the tool lists in `Client folder/index.md`: also an email with the client (`correspondence`), and a screening or a report the lender ordered. A call, the analyst's note, a press article and a public source go to `Internal/sources/`. What must stay inside the deal team is an `internal_memo`, which goes there too.
+- The kind decides the folder, and `show kinds` names it, with what each kind is for. What the company itself published counts as the client's, also when nothing has been shared yet. Where no kind fits, use `other`. A page of the company's website, a news release and a broker's research report are each a `public_source`; a sustainability report is filed as an `annual_report`, the company's report on its governance as `board_composition`, and a notice filed with an exchange or a regulator as a `regulatory_document`. A public document of a kind that has a place in the client folder, such as a law or a rating agency's report, may be filed as that kind and then counts as such evidence. Filed as a `public_source` it stays in `Internal/sources/` and counts as supporting at most. Most kinds go to `Client folder/<file name>`, which the tool lists in `Client folder/index.md`: also an email with the client (`correspondence`), and a screening or a report the lender ordered. A call, the analyst's note, a press article and a public source go to `Internal/sources/`. What must stay inside the deal team is an `internal_memo`, which goes there too.
 - An `extract` goes to `Internal/sources/extracts/`. Give that path as `extract` on the source.
 - The tool never overwrites. Where a name is taken, it refuses that document: give it a name of its own and file it again. A folder that filing left empty can be removed.
 
@@ -77,7 +77,7 @@ Record what would go into a table or a system field: names, amounts, dates, term
 
 - `about`: a subject, a link, or `DEAL`. A figure from consolidated accounts is about the group, one from a company's own accounts about the company.
 - `statement`: one plain sentence that can stand alone.
-- `label`, `value`, `unit`: for a value that belongs in a table. Use the same label for the same figure at another date.
+- `label`, `value`, `unit`: for a value that belongs in a table. Use the same label for the same figure at another date. Give a label only to a figure of the subject itself: a competitor's revenue or a market figure would show among the subject's key values. Competitors are facts about the party or the group whose market it is, not subjects.
 - `as_of`: the date the fact refers to, such as the balance sheet date, not the date of the document. For an event, when it happened: `2015` or `2012-09` will do. A standing fact needs none: the date of its source counts.
 - `source`, `place`: where it comes from, and the page, note or minute of the original.
 - `quote`, `said_by`: the words of the source that carry the fact, and who says so (below).
