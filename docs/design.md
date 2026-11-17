@@ -357,7 +357,7 @@ These rules are checked by a test that fails when the code breaks one:
 - No network access, no starting of other programs, no `eval`, no reading of environment variables, no deleting.
 - One module touches the disk. It writes through three functions, and each refuses a path outside the deal folder.
 - No function longer than 100 lines.
-- The whole tool stays under 2,000 lines of Python, in at most seven files. It is about 1,970 lines now.
+- The whole tool stays under 2,000 lines of Python, in at most seven files.
 
 The view for a browser is one more file, `bankability2/wiki.html`: about 250 lines of HTML, CSS and plain JavaScript that load nothing from the network. A test checks that it names no address and no outside file.
 

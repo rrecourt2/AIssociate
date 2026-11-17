@@ -23,7 +23,7 @@ A check has one of three jobs:
 - A **test** has an assumption. One answer goes against it.
 - A **mitigant** is asked once a test has gone against the claim. It asks what limits the damage.
 
-For each claim, and each party or link it is made about, the tool says where it stands. Take "Currency risk". With no test answered it is not tested. While nothing speaks against it and something is still to be done, it stands so far: a test is not answered yet, or an answer rests on the company's word, or on evidence that is weak or out of date. Once every test is answered in its favour and no answer needs more, it stands. As soon as one test goes against it, it is challenged.
+For each claim, and each party or link it is made about, the tool says where it stands.
 
 | The claim | Means |
 |---|---|
@@ -150,7 +150,7 @@ An adjustment that should hold for every deal belongs in the institution's layer
 
 ## A newer standard, or an older folder
 
-`upgrade` puts the standard that comes with the tool into the deal folder and records the change of version in the log. It prints the recorded answers that name a check which no longer exists: they stay in the facts and no longer count. It also lists the checks that are new, that are gone and that changed, each with its indicator. A check counts as changed when its own text or its indicator's claim, conditions or roles changed. For each answer that no longer counts, look at the new checks of the same indicator. Where the fact decides one, add that answer to the fact. Where none fits, take the old answer off: send the fact's `id` with its `answers` without it. Then read the changed checks that are already answered, because an answer may no longer fit its question.
+`upgrade` puts the standard that comes with the tool into the deal folder and records the change of version in the log. It prints the recorded answers that name a check which no longer exists: they stay in the facts and no longer count. It also lists the checks that are new, that are gone and that changed, each with its indicator. A check counts as changed when its own text changed or it moved to another indicator. For each answer that no longer counts, look at the new checks of the same indicator. Where the fact decides one, add that answer to the fact. Where none fits, take the old answer off: send the fact's `id` with its `answers` without it. Then read the changed checks that are already answered, because an answer may no longer fit its question.
 
 A folder made by an earlier version of the tool keeps its record in `Internal/memory/memory.json`. Every command then says so and names the remedy. `upgrade` moves the record to `Internal/record/record.json`. The documents of such a folder stay in the folders they were filed in, and the record still finds them. Only documents filed from then on go flat into `Client folder`.
 

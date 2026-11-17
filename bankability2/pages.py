@@ -134,7 +134,7 @@ def check_lines(rows, memory, std):
         tested = ("Mitigant: " if check.get("mitigant") else "") + check.get("assumption", "")
         if "against" in row:
             tested += " (**the answer goes against it**)" if row["against"] else (
-                " (**stands" + (", on someone's own word" if row.get("own_word") else "") + "**)")
+                " (**holds on this answer" + (", on someone's own word" if row.get("own_word") else "") + "**)")
         rests = ", ".join(row.get("facts", [])) + (f" ({row['evidence']})" if "evidence" in row else "")
         lines.append(f"| {row['check']} {check['question']} | {name_of(row['for'], memory)} | {state} | "
                      f"{shown(row.get('value', ''))} | {tested} | {rests} |")
@@ -310,7 +310,7 @@ def source_lines(memory):
         notes = [source["kind"], source.get("date", "no date"), source.get("read") and f"read: {source['read']}",
                  source["state"] != "current" and source["state"], f"facts: {facts}"]
         held = "".join(f" [{name}](../../{encoded(source[key])})" for key, name in (("where", "Original"), ("extract", "Extract"))
-                       if source.get(key))
+                       if source.get(key) and source["state"] == "current")  # what was replaced is listed, not linked
         lines.append(f"- {sid} {source['title']}: {', '.join(filter(None, notes))}.{held}")
     return lines + [""]
 
@@ -405,11 +405,11 @@ def refresh(deal, memory, std, rows, held):
     client = f"../../{files.CLIENT}/index.md"  # the index of the client folder, as a path from the wiki folder
     texts = {"index.md": "\n".join(index), "sources.md": sources, **{path[cut:]: text for path, text in sorted(pages.items())},
              client: documents(memory["deal"]["name"], listed, std)}
-    cited = set(ID.findall(" ".join(texts.values())))  # a record that was replaced or has ended goes in only where a page cites it
-    shown = {table: {rid: record for rid, record in memory[table].items()
-                     if rid in cited or record.get("state") not in ("outdated", "replaced", "ended")} for table in TABLES}
+    cited = set(ID.findall(" ".join(text for path, text in texts.items() if path != "sources.md")))
     data = {"name": memory["deal"]["name"], "revision": memory["log"][-1]["n"], "shelves": SHELVES, "pages": texts,
-            "documents": client, "where": where, **shown}
+            "documents": client, "where": where,  # a fact or a source that was replaced goes in only where a page cites it
+            **{table: {rid: record for rid, record in memory[table].items()
+                       if rid in cited or record.get("state") not in ("outdated", "replaced")} for table in TABLES}}
     filled = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")  # so that no text can end the script it sits in
     files.write(deal, f"{files.WIKI}/wiki.html", files.packaged("wiki.html").replace("{{DATA}}", filled))
     return created, changed, len(pages) - len(created) - len(changed)

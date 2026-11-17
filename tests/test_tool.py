@@ -224,6 +224,8 @@ class Deal(unittest.TestCase):
         self.assertEqual(self.rows(memory)["OBS_REV_004", "P-001"], rows["OBS_REV_004", "P-001"])  # about the deal: no effect here
         memory["decisions"]["D-900"]["about"] = "P-001"
         self.assertEqual(self.rows(memory)["OBS_REV_004", "P-001"]["state"], "off")
+        memory["decisions"]["D-900"]["covers"] = ["OBS_SANC_001"]  # a check the institution has locked is not settled this way
+        self.assertEqual(self.rows(memory)["OBS_SANC_001", "P-001"], rows["OBS_SANC_001", "P-001"])
         memory = self.memory()  # a fact of a later date answers, and does not contest the earlier one
         memory["facts"]["F-900"] = dict(memory["facts"]["F-012"], as_of="2027-01-01", answers=[{"check": "OBS_COST_004", "value": False}])
         later = self.rows(memory)["OBS_COST_004", "P-001"]

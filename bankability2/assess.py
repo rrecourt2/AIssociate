@@ -200,7 +200,8 @@ def assess(memory, std, today=None):
         conds = [decided(cond, check, target) for cond in check.get("when", [])]
         applies = [holds(cond, target, found, std) for cond in ind.get("applies_when", [])]
         own, wide = actions.get((cid, target)), actions.get((cid, DEAL))
-        action = own or (wide if wide in agreed else None)  # an agreed action about the deal covers every subject
+        settles = own and own not in agreed and not (check.get("locked") or ind.get("locked"))  # for this subject only
+        action = own if own in agreed or settles else wide if wide in agreed else None  # an agreed action can cover them all
         if action:
             row["action"] = action  # a decision that covers this check: an agreed action, or the reason nothing is needed
         follows_dead_end = any(state(dep, target) == "not relevant" for dep in after
@@ -214,8 +215,8 @@ def assess(memory, std, today=None):
                 row["not_relevant"] = True  # an answer to a check that is not relevant here: `add` says so
         elif dead:
             row["state"] = "not relevant"
-        elif own and own not in agreed and not (check.get("locked") or ind.get("locked")):  # settled here by a decision
-            row.update(state="off", reason=memory["decisions"][own]["reason"])
+        elif settles:
+            row["state"] = "off"  # settled here by the decision that row["action"] names
         elif (any(not (found.get((dep, target)) or found.get((dep, DEAL))) for dep in after) or unnamed
               or (conds and True not in conds) or (applies and True not in applies)):
             row["state"] = "waiting"  # for an earlier answer, for a condition, or for the seat to be filled
@@ -243,7 +244,7 @@ def claims(rows, memory, std):
         if row["state"] in ("off", "not relevant") or not (test or row["state"] == "contested"):
             continue
         claim = found.setdefault((row["indicator"], row["for"]), {
-            "indicator": row["indicator"], "for": row["for"], "asked": 0, "tests": 0, "firm": 0, "own_word": 0, "against": [],
+            "indicator": row["indicator"], "for": row["for"], "asked": 0, "tests": 0, "own_word": 0, "to_strengthen": 0, "against": [],
             "contested": [], "mitigants": {}, "actions": [], "look_again": [], "seen": 0})
         answered = row["state"] == "answered"
         claim["seen"] = max([claim["seen"], *(memory["facts"][fid]["rev"] for fid in row.get("facts", []))])
@@ -260,12 +261,12 @@ def claims(rows, memory, std):
         elif answered:
             claim["tests"] += 1
             claim["own_word"] += bool(row.get("own_word"))
-            listed = "evidence" not in check or row.get("evidence") in TIERS[1:]  # what the check lists as supporting or best
-            claim["firm"] += listed and not (row.get("own_word") or row["flags"])  # an answer that leaves nothing to strengthen
+            listed = "evidence" not in check or row["evidence"] in TIERS[1:]  # what the check lists as supporting or best
+            claim["to_strengthen"] += not row.get("own_word") and (bool(row["flags"]) or not listed)
     for claim in found.values():
+        done = claim["tests"] == claim["asked"] and not (claim["own_word"] or claim["to_strengthen"])  # no work is left
         claim["stands"] = ("challenged" if claim["against"] else "contested" if claim["contested"]
-                           else "not tested" if claim["tests"] <= claim["own_word"]
-                           else "stands" if claim["firm"] == claim["asked"] else "stands so far")  # work is left on a test
+                           else "not tested" if claim["tests"] <= claim["own_word"] else "stands" if done else "stands so far")
         for item in std["by_id"][claim["indicator"]].get("look_again_when", []) if claim["seen"] else []:
             if "new_source" in item:
                 later = any(source["kind"] == item["new_source"] and source["rev"] > claim["seen"]

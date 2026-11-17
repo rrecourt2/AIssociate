@@ -222,12 +222,11 @@ def show_claims(memory, std, rows):
         for claim in mine:
             states = sorted(claim["mitigants"].values())
             answered = claim["tests"] + len(claim["against"]) + len(claim["contested"])
-            weak = claim["tests"] - claim["firm"] - claim["own_word"]  # on evidence that is thin, old or not listed
             parts = [claim["stands"], f"tests answered {answered} of {claim['asked']}",
                      claim["against"] and f"against {', '.join(claim['against'])}",
                      claim["contested"] and f"facts disagree on {', '.join(claim['contested'])}",
                      claim["own_word"] and f"answers on someone's own word {claim['own_word']}",
-                     weak and f"answers on evidence to strengthen {weak}",
+                     claim["to_strengthen"] and f"answers on evidence to strengthen {claim['to_strengthen']}",
                      states and "mitigants " + ", ".join(f"{states.count(state)} {state}" for state in dict.fromkeys(states)),
                      claim["actions"] and f"decision {', '.join(claim['actions'])}"]
             print(f"- {std['by_id'][claim['indicator']]['title']} ({pages.name_of(claim['for'], memory)}): "
@@ -239,7 +238,8 @@ def show_claims(memory, std, rows):
 def fact_lines(memory, terms):
     """One line per fact that is current or disputed. With IDs or words: every fact whose line holds one of them, such as
     the facts about a subject, from a source or in answer to a check, a fact named by its ID, or the facts with a word."""
-    lines = []
+    lines, ids = [], {term.upper() for term in terms} & set(memory["facts"])  # a fact named by its ID: that fact, in full
+    words = [term for term in terms if term.upper() not in ids]
     for fid, fact in memory["facts"].items():
         state = "" if fact["state"] == "current" else f" ({fact['state']})"
         value = f" {fact.get('label', 'Value')}: {fact.get('value')} {fact.get('unit', '')}".rstrip() + "."
@@ -248,9 +248,9 @@ def fact_lines(memory, terms):
                  answers and f"answers {answers}"]
         line = (f"- {fid}{state} about {fact['about']}: {fact['statement']}{value if 'value' in fact else ''} "
                 f"({'; '.join(filter(None, where))})")
-        named = any(re.search(rf"(?<!\w){re.escape(term)}(?!\w)", line, re.I) for term in terms)
-        if named or (not terms and fact["state"] != "outdated"):  # a long statement is cut, unless the fact is named by its ID
-            cut = fid not in map(str.upper, terms) and len(fact["statement"]) > 300
+        named = fid in ids or any(re.search(rf"(?<!\w){re.escape(term)}(?!\w)", line, re.I) for term in words)
+        if named or (not terms and fact["state"] != "outdated"):  # a long statement is cut in a list
+            cut = fid not in ids and len(fact["statement"]) > 300
             lines.append(line.replace(fact["statement"], fact["statement"][:300] + " ...") if cut else line)
     return lines
 
@@ -293,7 +293,7 @@ def show(args):
         if used:
             print("\n" + "\n".join(pages.check_lines([row for row in used if row["state"] != "not relevant"], memory, std)))
     else:
-        hits = [f"- {rid} ({record.get('state', 'current')}): {summary(record)}"
+        hits = [f"- {rid}: {summary(record)}" + f" ({record.get('state')})" * (record.get("state", "current") != "current")
                 for table in store.TABLES for rid, record in memory[table].items()
                 if what.lower() in json.dumps(record, ensure_ascii=False).lower()]
         hits += [f"- {cid}: {check['question']}" for cid, check in std["checks"].items()  # and the checks of the standard
@@ -417,15 +417,15 @@ def file_documents(args):
 
 
 def upgrade(args):
-    """Put the standard that comes with the tool into the deal folder, and say which answers it leaves without a check.
+    """Put the standard that comes with the tool into the deal folder, and say which answers it leaves without a check
+    and which checks are new, gone or changed.
     A record that an earlier version of the tool kept elsewhere is first moved to its place."""
     if files.read(args.deal, files.MEMORY) is None and files.read(args.deal, files.OLD_MEMORY) is not None:
         files.move(args.deal, files.OLD_MEMORY, files.MEMORY)
         print(f"Moved the record to {files.MEMORY}. It was in {files.OLD_MEMORY}.")
-    memory, _ = load(args.deal)
+    memory, was = load(args.deal)
     new, old = files.packaged_standard(), memory["deal"]["standard"]
-    before = files.read_json(args.deal, files.BASE)
-    if before == new:
+    if files.read_json(args.deal, files.BASE) == new:
         print(f"The deal already uses the standard that comes with the tool: {old}.")
         return
     files.write_json(args.deal, files.BASE, new)
@@ -440,12 +440,11 @@ def upgrade(args):
             for answer in fact.get("answers", []) if answer["check"] not in std["checks"]]
     print("Answers that name a check that no longer exists. They stay in the facts and no longer count:\n- "
           + "\n- ".join(gone) if gone else "Every recorded answer still names a check of the standard.")
-    was, now = ({check["id"]: (ind["id"], check, {key: value for key, value in ind.items() if key != "checks"})
-                 for ind in base["indicators"] for check in ind["checks"]} for base in (before, new))  # a check with its claim
+    was, now = was["checks"], std["checks"]
     for title, ids in (("New checks", now.keys() - was.keys()), ("Checks that are gone", was.keys() - now.keys()),
                        ("Checks that changed", [cid for cid in now.keys() & was.keys() if now[cid] != was[cid]])):
         if ids:  # with the indicator of each, where the check that took the place of a removed one is found
-            print(f"{title}: " + ", ".join(f"{cid} ({(now.get(cid) or was[cid])[0]})" for cid in sorted(ids)) + ".")
+            print(f"{title}: " + ", ".join(f"{cid} ({(now.get(cid) or was[cid])['indicator']})" for cid in sorted(ids)) + ".")
     for note in std["notes"]:
         print(f"Note: {note}")
 

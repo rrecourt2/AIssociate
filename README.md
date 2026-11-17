@@ -84,7 +84,7 @@ The record holds what is known: exact, sourced and written only by the tool. The
 
 ## Kept simple
 
-The tool is about 1,970 lines of Python in seven files. These rules hold, and `tests/test_audit.py` fails if the code breaks one:
+The tool is under 2,000 lines of Python in seven files. These rules hold, and `tests/test_audit.py` fails if the code breaks one:
 
 - Python standard library only.
 - No network access, no starting of other programs, no `eval`, no reading of environment variables, no deleting.

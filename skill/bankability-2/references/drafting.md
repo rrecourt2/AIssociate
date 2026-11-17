@@ -53,9 +53,9 @@ A scan takes 1 to 3 in a page or two, the fatal flaws (exclusion list, sanctions
 If the amount, the currency, the tenor, the security or the borrower is not yet known, the document cannot ask for a decision.
 
 - Write a **preliminary view** and say on the first page which terms are missing.
-- Make **no recommendation**, and still conclude: say what today's figures already decide, what would change that, and what the decision turns on.
+- Make **no recommendation**.
 - End with **the list of what is missing**, in the order in which it should be obtained.
-- Say what is decided already. A test that speaks of "after this loan" can go against the claim on today's debt alone.
+- Say what is decided already, what would change it and what the decision turns on. A test that speaks of "after this loan" can go against the claim on today's debt alone.
 
 ## Rules
 

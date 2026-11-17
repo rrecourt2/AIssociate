@@ -105,7 +105,7 @@ Record what would go into a table or a system field: names, amounts, dates, term
 | Field | Meaning |
 |---|---|
 | `about` | A subject, a link, or `DEAL`. A figure from consolidated accounts is about the group. A figure from a company's own accounts is about the company. |
-| `statement` | One plain sentence that can stand alone. `show <deal> facts` prints its first 300 characters in a list, and all of it for a fact named by its ID: `facts F-012 F-015`. |
+| `statement` | One plain sentence that can stand alone. A list of facts prints its first 300 characters. |
 | `label`, `value`, `unit` | Give a label to a value that belongs in a table, such as `Revenue`. Use the same label for the same figure at another date. |
 | `as_of` | The date the fact refers to: the balance sheet date, the end of the year. Not the date of the document. For a standing fact, the date of the source. For an event, the date it happened: a year (`2015`) or a month (`2012-09`) will do where the day is not known. |
 | `source`, `place` | Where it comes from, and the page, note or minute. Give the page as the PDF counts it, and the printed number in brackets where it differs: `p.24 (printed 22), note 16`. The browser view opens the original at that page. |
@@ -131,6 +131,7 @@ Record what would go into a table or a system field: names, amounts, dates, term
 - **A fact was recorded about the wrong subject.** Send its `id` with the right `about`.
 - **A slip that changes no figure**, such as the ID of a fact that a statement names, is corrected in place: send the `id` with the new `statement`.
 - **A fact held figures at several dates.** `replaces` names one fact. Record the other dates as facts of their own.
+- **A fact should not have been recorded at all**, such as an instruction on how to write. Send its `id` with `"state": "outdated"`, say why in the `note` of the set, and take its citations off the pages.
 - **A source was withdrawn or reissued.** Record the new source with `replaces` and the ID of the old one. The old source stays, marked `replaced`, and `status` lists the facts that still rest on it. A page may cite it only after `Replaced:`.
 
 ## Subjects and links
