@@ -13,9 +13,10 @@ from .standard import EXPECTS, fits
 # For each table: the ID prefix, the fields a new record must have, and the other fields it may have.
 TABLES = {
     "sources": ("S", ("title", "kind"),
-                ("where", "extract", "fingerprint", "date", "about", "read", "map", "sent_by", "state", "replaced_by", "note")),
+                ("where", "extract", "page_offset", "fingerprint", "date", "about", "read", "map", "sent_by", "state", "replaced_by",
+                 "note")),
     "facts": ("F", ("about", "statement", "source"),
-              ("label", "value", "unit", "as_of", "place", "said_by", "nothing_found", "answers", "fills",
+              ("label", "value", "unit", "as_of", "place", "quote", "said_by", "nothing_found", "answers", "fills",
                "state", "replaced_by", "note")),
     "subjects": (None, ("kind",), ("name", "note", "state")),  # the prefix comes from the kind of subject
     "links": ("R", ("from", "type", "to"), ("state", "why", "source", "note")),
@@ -29,7 +30,7 @@ REFERS = {"source": ("sources",), "via": ("sources",), "about": ("subjects", "li
 STATES = {"sources": ("current", "replaced"), "facts": ("current", "outdated", "disputed"),
           "subjects": ("current", "ended"), "links": ("proposed", "confirmed", "ended"),
           "questions": ("open", "answered", "withdrawn")}
-SAID_BY = ("document", "client", "officer", "third_party", "inference")
+SAID_BY = ("document", "client", "analyst", "third_party", "inference")
 DEAL = "DEAL"  # stands for the deal as a whole wherever a subject is expected
 
 
@@ -178,6 +179,8 @@ def problems_of(table, rid, fields, is_new, memory, known, std):
         if allowed and fields.get(key) is not None and fields[key] not in allowed:
             found.append(f"{key} {fields[key]!r} is not known. Known: {', '.join(sorted(allowed))}")
     found += [f"covers {cid!r}: not a check of the standard" for cid in as_list(fields.get("covers")) if cid not in std["checks"]]
+    if not isinstance(fields.get("page_offset", 0), int):
+        found.append("page_offset is a whole number: the page of the PDF less the page number printed on it")
     for answer in as_list(fields.get("answers")):
         if not isinstance(answer, dict) or answer.get("check") not in std["checks"] or "value" not in answer:
             found.append(f"answer {answer!r} needs a known check and a value")
@@ -197,7 +200,9 @@ def apply(memory, change, std):
     if "base" in change and change["base"] != revision(memory):
         errors.append(f"the record is at revision {revision(memory)}, not {change['base']}. Look at it again and resend.")
     deal = change.get("deal", {})
-    errors += [f"deal: unknown field {key!r}" for key in deal if key not in ("name", "stage")]
+    errors += [f"deal: unknown field {key!r}" for key in deal if key not in ("name", "stage", "avoid")]
+    if not all(isinstance(words, str) and words.strip() for words in as_list(deal.get("avoid"))):
+        errors.append("deal: 'avoid' is a list of wordings, each a few words that one sentence must not hold together")
     if "stage" in deal and deal["stage"] not in std["stage_ids"]:
         errors.append(f"deal: unknown stage {deal['stage']!r}. Known: {', '.join(std['stage_ids'])}")
     placed, names = place(memory, change, std, errors)

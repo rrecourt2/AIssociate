@@ -29,7 +29,7 @@ checks:
   evidence:
     best: [offtake_agreement, regulatory_document]
     supporting: [legal_opinion, financial_model]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: How is your selling price set? By a regulator, by a tariff scheme, by an auction award, by a contract you negotiated
     with the buyer, or by the market?
   note: bilateral_contract is a price negotiated with the buyer. hybrid means part of the output is sold at market prices.
@@ -48,7 +48,7 @@ checks:
   evidence:
     best: [offtake_agreement, regulatory_document, legal_opinion]
     supporting: [financial_model, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A regulated tariff that is reset every few years is a no, even where past resets were mild. Indexation by a stated
     formula is not a review. For a plant that sells at market prices the answer is no.
 - id: OBS_EREG_003
@@ -61,7 +61,7 @@ checks:
   evidence:
     best: [regulatory_document, legal_opinion, consultant_report]
     supporting: [public_source, press_article, internal_memo]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Do you know of any change to tariffs, grid rules, taxes or incentives for power producers that is being prepared?
     What would it mean for the project?
   note: Name the measure and the date it is due. If the search finds nothing, record what was searched, where and when.
@@ -75,7 +75,7 @@ checks:
   evidence:
     best: [legal_opinion, consultant_report, market_study]
     supporting: [public_source, press_article, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: This asks about the country's record, not about this project. Name each case and its year. If the search finds nothing,
     record what was searched, where and when.
   leads_to:
@@ -91,7 +91,7 @@ checks:
   evidence:
     best: [consultant_report, regulatory_document, offtake_agreement]
     supporting: [financial_model, financial_projections, tax_clearance]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Which subsidies, tax incentives or special tariffs does the project receive? Would it still cover its debt service
     without them, at the price the buyer pays for other power?
   note: Run the projections without the support. Name each support, who grants it and until when it is granted.
@@ -108,7 +108,7 @@ checks:
   evidence:
     best: [regulatory_document, technical_feasibility]
     supporting: [material_contract, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: A plant that does not meet the grid code can be refused connection or be disconnected.
 - id: OBS_EREG_007
   question: Does a signed agreement or a law protect the project if the tariff or the rules change, through a clause that
@@ -127,7 +127,7 @@ checks:
   evidence:
     best: [offtake_agreement, guarantee_agreement, legal_opinion]
     supporting: [regulatory_document, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Read the clause itself and say who must pay, and whether that party has paid under such a clause before. A protection
     owed by the same state that changes the rule is only as good as that state's record (OBS_EREG_006).
   leads_to:

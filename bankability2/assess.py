@@ -58,9 +58,11 @@ def targets(ind, check, memory, std, held):
         holders -= members
     elif asked_of == "entity":
         holders = {sid for sid in holders | members & set(kind_of) if kind_of[sid] != "group"}
+    parts = {link["from"] for link in memory["links"].values() if link["type"] == "part_of" and link["state"] != "ended"
+             and kind_of.get(link["from"]) == kind_of.get(link["to"]) == "asset"}  # examined with the asset it is part of
     found = [DEAL] if "deal" in names else []
     found += [sid for sid, kind in kind_of.items()
-              if (kind in names or sid in holders) and ind["id"] in only.get(kind, [ind["id"]])]
+              if (kind in names or sid in holders) and ind["id"] in only.get(kind, [ind["id"]]) and sid not in parts]
     return found + [lid for lid, link in memory["links"].items() if link["type"] in names and counts(link, memory, std)]
 
 
@@ -220,6 +222,8 @@ def assess(memory, std, today=None):
         elif (any(not (found.get((dep, target)) or found.get((dep, DEAL))) for dep in after) or unnamed
               or (conds and True not in conds) or (applies and True not in applies)):
             row["state"] = "waiting"  # for an earlier answer, for a condition, or for the seat to be filled
+            earlier = after + [cond["check"] for cond in check.get("when", []) + ind.get("applies_when", [])]
+            row["waits_for"] = [dep for dep in dict.fromkeys(earlier) if not (found.get((dep, target)) or found.get((dep, DEAL)))]
         return row["state"]
 
     asked = [(ind, check["id"], target) for ind in std["indicators"] for check in ind["checks"]
@@ -232,6 +236,14 @@ def assess(memory, std, today=None):
         state(cid, target)
         rows.append(states[cid, target])
     return rows
+
+
+def tally(rows):
+    """How many checks are in each state."""
+    counts = {}
+    for row in rows:
+        counts[row["state"]] = counts.get(row["state"], 0) + 1
+    return counts
 
 
 def claims(rows, memory, std):

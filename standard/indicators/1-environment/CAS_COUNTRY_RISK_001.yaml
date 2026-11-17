@@ -25,7 +25,7 @@ checks:
   evidence:
     best: [registry_extract, certificate_of_incorporation, audited_annual_report]
     supporting: [term_sheet, organizational_chart, management_accounts, annual_report, prospectus]
-    stated: [management_presentation, correspondence, call, officer_note]
+    stated: [management_presentation, correspondence, call, analyst_note]
   ask: Where is the company registered, where are its main sites, and in which countries does it sell?
   if_unknown: Until the countries are named, none of the country checks can be answered.
 - id: OBS_COUNTRY_003
@@ -39,7 +39,7 @@ checks:
   evidence:
     best: [credit_rating_report]
     supporting: [public_source, press_article, consultant_report, internal_memo]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: A regular programme with the International Monetary Fund is not by itself an emergency. Arrears, a moratorium, a
     restructuring or rapid financing to close a gap in payments abroad are. If the search finds nothing, record what was
     searched, where and when.
@@ -55,7 +55,7 @@ checks:
   evidence:
     best: [credit_rating_report, consultant_report]
     supporting: [public_source, press_article, internal_memo]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: Say which of the two it was, and how close to the assets. If the search finds nothing, record what was searched,
     where and when.
 - id: OBS_COUNTRY_004
@@ -70,7 +70,7 @@ checks:
   evidence:
     best: [credit_rating_report, consultant_report]
     supporting: [public_source, press_article, internal_memo]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: If the search finds nothing, record what was searched, where and when.
 - id: OBS_FX_CAPITAL_CONTROLS_001
   question: Under the rules and the practice of today, do exchange controls or a shortage of foreign currency delay or limit
@@ -83,7 +83,7 @@ checks:
   evidence:
     best: [legal_opinion, regulatory_document, consultant_report]
     supporting: [internal_memo, public_source, press_article, bank_statement]
-    stated: [management_presentation, correspondence, call, officer_note]
+    stated: [management_presentation, correspondence, call, analyst_note]
   ask: Do you need an approval, a registration or an allocation of foreign currency to pay a lender abroad? How long did
     your last transfer abroad take, from the request to the payment?
   note: Where the loan must be registered or approved before it can be serviced abroad, answer for the position once that
@@ -99,7 +99,7 @@ checks:
   evidence:
     best: [legal_opinion]
     supporting: [consultant_report, internal_memo, public_source, press_article]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: Three years is a guide. Ask local counsel how long contested enforcement by a foreign creditor has taken in recent
     cases, not how long the law says it takes.
   leads_to:
@@ -121,7 +121,7 @@ checks:
   evidence:
     best: [security_agreement, facility_agreement, offtake_agreement]
     supporting: [term_sheet, bank_statement]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Ask counsel whether the rules of the country allow export proceeds to be kept abroad. An account that breaks them
     protects nobody.
 - id: OBS_COUNTRY_008
@@ -142,7 +142,7 @@ checks:
   evidence:
     best: [insurance_policy, guarantee_agreement, dfi_facility_document]
     supporting: [term_sheet, legal_opinion, internal_memo]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: 'Cover must name the risk: a block on conversion and transfer, expropriation, or political violence. Treatment as
     a preferred creditor rests on practice, and it does not help against conflict or expropriation.'

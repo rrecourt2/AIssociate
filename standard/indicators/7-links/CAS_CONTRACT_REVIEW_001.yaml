@@ -29,7 +29,7 @@ checks:
   evidence:
     best: [material_contract, offtake_agreement, supply_agreement]
     supporting: [financial_model, management_accounts, internal_memo]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: If this contract ended tomorrow, could you still pay your lenders?
   note: '"The party" is the party to the contract that the lender counts on. "The other side" is whoever it has contracted
     with. Examples are a sales contract that brings most of the revenue, and a supply, lease, concession or licence contract
@@ -51,7 +51,7 @@ checks:
   evidence:
     best: [material_contract, offtake_agreement, supply_agreement]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Please share the signed contract, or a summary of its parties, term, volume, price and termination rights.
 - id: OBS_CONT_005
   question: Does the contract end, or come up for renewal, before the final repayment date of the loan?
@@ -65,7 +65,7 @@ checks:
   evidence:
     best: [material_contract, offtake_agreement, supply_agreement]
     supporting: [term_sheet, internal_memo, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: When does this contract end? Is there a right to extend it, and whose right is it?
   if_unknown: The projections may count on the contract in years in which it no longer exists.
   note: This check does not hang on OBS_CONT_001, so that the review cannot close on one answer. An option to extend that
@@ -86,7 +86,7 @@ checks:
   evidence:
     best: [material_contract, offtake_agreement, consultant_report]
     supporting: [financial_model, term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Check the price formula, the indexation, the minimum and maximum volumes, the start date and any ramp-up. Where
     only a draft exists, say so. The answer is then looked at again when the contract is signed.
 - id: OBS_CONT_006
@@ -101,7 +101,7 @@ checks:
   evidence:
     best: [material_contract, offtake_agreement, supply_agreement]
     supporting: [legal_opinion, term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Look for a right to end for convenience or on notice, price review and benchmarking clauses, most-favoured-customer
     clauses, volume flexibility, and wide rights on force majeure or change in law.
 - id: OBS_CONT_003
@@ -116,7 +116,7 @@ checks:
   evidence:
     best: [material_contract, offtake_agreement, legal_opinion]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Does this contract let the other side end or renegotiate it if the ownership or control of your company changes,
     or if a lender takes over the company or its assets?
   note: Read the clauses on change of control, on assignment and on insolvency. A ban on assignment without consent has
@@ -133,7 +133,7 @@ checks:
   evidence:
     best: [legal_opinion]
     supporting: [material_contract, offtake_agreement, consultant_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: The contract shows the law and the forum. Whether a decision can be enforced is for a lawyer to say. Where the other
     side is a state or a state-owned body, ask whether it has waived immunity.
 - id: OBS_CONT_MIT_001
@@ -150,6 +150,6 @@ checks:
   evidence:
     best: [security_agreement, material_contract, legal_opinion]
     supporting: [term_sheet]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: An assignment needs the other side's consent where the contract forbids assignment. Say whether the consent has
     been given.

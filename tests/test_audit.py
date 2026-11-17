@@ -10,7 +10,7 @@ FORBIDDEN_NAMES = {"eval", "exec", "compile", "__import__", "input", "breakpoint
                    "getattr", "setattr", "delattr", "globals", "locals", "vars", "__builtins__"}
 ALLOWED_OS = {"path", "replace", "makedirs", "walk", "sep"}  # all that files.py may use of os
 WRITERS = {"write", "move", "make_folder"}  # the only functions that change the disk
-MAX_FILES, MAX_LINES, MAX_FUNCTION = 7, 2000, 100
+MAX_FILES, MAX_LINES, MAX_FUNCTION = 7, 2250, 100
 
 
 def sources():

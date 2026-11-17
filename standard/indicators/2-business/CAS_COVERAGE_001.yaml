@@ -24,7 +24,7 @@ checks:
   evidence:
     best: [insurance_policy]
     supporting: [insurance_broker_report, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Does the company hold any insurance? A policy schedule, a certificate or a letter from your broker would be ideal,
     but a list of the policies is enough to start with.
 - id: OBS_INS_002
@@ -41,7 +41,7 @@ checks:
   evidence:
     best: [insurance_policy]
     supporting: [insurance_broker_report, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Which kinds of insurance do you hold? For example property, machinery breakdown, business interruption, liability,
     goods in transit, key person.
 - id: OBS_INS_005
@@ -55,7 +55,7 @@ checks:
   evidence:
     best: [insurance_policy, insurance_broker_report]
     supporting: [bank_statement, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Are all your policies in force and all premiums paid to date? A confirmation from your broker or insurer would show
     this.
   note: 'This check does not hang on OBS_INS_001, so that the topic cannot close on one answer. Answer no where the party
@@ -72,7 +72,7 @@ checks:
   evidence:
     best: [insurance_policy, valuation_report]
     supporting: [insurance_broker_report, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What are the sums insured for your assets and for lost profit, and how were they set? We will compare them with the
     replacement cost of the assets and with a year's gross profit.
   if_unknown: Until the sums insured are set against replacement cost, the party may be insured for less than a loss would
@@ -92,7 +92,7 @@ checks:
   evidence:
     best: [insurance_policy, consultant_report]
     supporting: [insurance_broker_report, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Which risks do your policies exclude? For example flood, earthquake, machinery breakdown, riot or political violence.
   note: Start from the hazards of the sites and of the sector, then read the exclusions and the deductibles. A deductible
     larger than the cash the party holds works like an exclusion.
@@ -108,7 +108,7 @@ checks:
   evidence:
     best: [credit_rating_report, insurance_policy]
     supporting: [insurance_broker_report, consultant_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Which insurer carries your property and business interruption cover? Is it rated, and is the risk reinsured?
   note: Investment grade (BBB- or its equal on the scale of an international rating agency) is a guide, and many lenders
     ask for more. A local insurer that keeps the whole risk on its own books may be unable to pay a large claim. Where the
@@ -125,7 +125,7 @@ checks:
   evidence:
     best: [insurance_broker_report, audited_annual_report]
     supporting: [company_record, board_minutes, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In the last five years, has an insurer refused or reduced a claim of yours, or cancelled or declined to renew a policy?
     May we see the claims record from your broker or insurer?
   note: Ask for the claims record from the insurer or the broker, not only from the party.

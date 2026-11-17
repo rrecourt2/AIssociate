@@ -25,7 +25,7 @@ checks:
   evidence:
     best: [adverse_media_screen, regulatory_document, aml_screening]
     supporting: [company_certificate, audited_annual_report, legal_opinion]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In the last ten years, has a court, a regulator, a tax authority or a development bank fined, penalised or debarred
     you for fraud, bribery, money laundering, tax evasion or a breach of sanctions? Please include matters that were settled.
   if_unknown: A record that has not been disclosed and cannot be checked is not a clean record.
@@ -45,7 +45,7 @@ checks:
   evidence:
     best: [adverse_media_screen, regulatory_document]
     supporting: [kyc_package, company_certificate, public_source, press_article]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Has any director or senior manager ever been convicted of fraud, bribery, money laundering or a similar offence?
     Is any of them charged or under investigation now?
   note: A party that says yes is believed. Owners and controllers are parties of their own and get this check themselves.
@@ -61,7 +61,7 @@ checks:
   evidence:
     best: [adverse_media_screen]
     supporting: [aml_screening, internal_memo]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   if_unknown: Without a search, the record is only what the party says it is.
   note: A search in one language of a party that works in another has not been done. Owners and controllers are parties
@@ -78,7 +78,7 @@ checks:
   evidence:
     best: [adverse_media_screen]
     supporting: [public_source, press_article, internal_memo, consultant_report]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: Record who made the allegation, when, and what became of it. One report in a source with a known grudge weighs less
     than several that do not depend on each other, but it is still recorded. A penalty or a conviction goes under OBS_KYC_003
     or OBS_KYC_008. If the search finds nothing, record what was searched, where and when.
@@ -93,7 +93,7 @@ checks:
   evidence:
     best: [corporate_governance_policy, board_resolution, audit_management_letter]
     supporting: [board_minutes, organizational_chart, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Do you have a written code of conduct or a policy against bribery? Who answers for it, and how can a member of staff
     report a breach?
   note: All three parts are needed for a yes. In a small business the person can be an owner or a senior manager beside
@@ -113,7 +113,7 @@ checks:
   evidence:
     best: [corporate_governance_policy, regulatory_document]
     supporting: [board_minutes, audit_management_letter]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Do you have a written policy against money laundering? Could we have a copy, with the date on which the board approved
     it?
 - id: OBS_KYC_002
@@ -130,7 +130,7 @@ checks:
   evidence:
     best: [audit_management_letter, regulatory_document]
     supporting: [company_record, corporate_governance_policy]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Before you take on a new customer, agent or large supplier, what do you check about them, and where is that kept?
   note: For a financial institution this is the identification of customers that its regulator requires. Ask to see the
     file of one recent counterparty.
@@ -152,7 +152,7 @@ checks:
   evidence:
     best: [regulatory_document, legal_opinion, consultant_report]
     supporting: [board_minutes, audit_management_letter, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: 'full_remediation: all three are done and shown. partial_remediation: some are done, or the work is still under
     way. none: nothing is done, or nothing is shown. For an allegation, an independent inquiry that found no basis for it
     is full_remediation.'

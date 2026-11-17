@@ -26,7 +26,7 @@ checks:
   evidence:
     best: [audited_annual_report, technical_feasibility]
     supporting: [management_accounts, financial_projections, annual_report, prospectus]
-    stated: [business_plan, executive_summary, call, officer_note]
+    stated: [business_plan, executive_summary, call, analyst_note]
   ask: Is the business already operating? If it is, is it running steadily, in the middle of a large expansion or change,
     or in difficulty?
   note: Choose greenfield where the business is not yet operating. Choose expanding where it operates and a capital spending
@@ -48,7 +48,7 @@ checks:
   evidence:
     best: [technical_feasibility, epc_contract, audited_annual_report]
     supporting: [investment_plan, financial_model, board_minutes, annual_report, prospectus]
-    stated: [business_plan, correspondence, call, officer_note]
+    stated: [business_plan, correspondence, call, analyst_note]
   ask: Do you plan to build, expand or replace on a scale that needs outside money, or that the growth in your plan depends
     on?
   note: This covers a new plant, a large expansion and a major overhaul. The routine replacement of worn equipment is not
@@ -72,7 +72,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [financial_model, financial_projections, annual_report, prospectus]
-    stated: [business_plan, management_presentation, call, officer_note]
+    stated: [business_plan, management_presentation, call, analyst_note]
   ask: Could the business repay the loan from what it earns today, or only once the new capacity is in use?
   note: Compare the first projected year with the last audited year. Revenue, capacity or margin that the model shows and
     the accounts do not belongs to the future state. Choose current_state where the projections hold no planned change.
@@ -96,7 +96,7 @@ checks:
   evidence:
     best: [audited_annual_report, credit_rating_report, tax_clearance]
     supporting: [management_accounts, company_record, bank_statement, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is the business making a profit this year? Are all suppliers, lenders, salaries and taxes being paid on time at the
     moment?
   note: Read the latest management accounts and the ageing list of amounts owed to suppliers, not only the last audited
@@ -121,4 +121,4 @@ checks:
   evidence:
     best: [technical_feasibility, epc_contract]
     supporting: [investment_plan, financial_model, board_resolution]
-    stated: [business_plan, call, officer_note]
+    stated: [business_plan, call, analyst_note]

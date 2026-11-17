@@ -40,7 +40,7 @@ checks:
   evidence:
     best: [shareholder_register, registry_extract]
     supporting: [beneficial_ownership_declaration, organizational_chart, kyc_package]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: 'Who holds your shares directly: people in their own name, companies, a trust, or someone who holds them for another
     person? A copy of the shareholder register would answer this.'
   note: 'Give every kind that applies. Enter each holder above the lender''s threshold as a party with an ''owns'' link,
@@ -58,7 +58,7 @@ checks:
   evidence:
     best: [beneficial_ownership_declaration, kyc_package]
     supporting: [organizational_chart, shareholder_register, registry_extract]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: 'Please give us your ownership chain in writing: who owns you, who owns them, and so on up to the people at the top,
     with the percentage held at each step.'
   if_unknown: Until the chain is disclosed, the checks on the owners cannot start.
@@ -76,7 +76,7 @@ checks:
   evidence:
     best: [kyc_package, registry_extract, shareholder_register, legal_opinion]
     supporting: [beneficial_ownership_declaration, organizational_chart]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: 'Common practice sets the threshold at a quarter of the shares or votes. Many lenders set it lower, and lower still
     where the risk is higher: use the lender''s own. Where no one is above it, identify the person who in fact controls
     the party, or failing that its most senior manager. For a party that is a natural person, the question is whether that
@@ -94,7 +94,7 @@ checks:
   evidence:
     best: [shareholder_register, registry_extract, legal_opinion]
     supporting: [beneficial_ownership_declaration, organizational_chart]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Does anyone in your ownership chain hold shares for someone else, as a nominee or as a trustee? If so, for whom?
   if_unknown: A nominee or a trust that is not disclosed hides the owner the other checks are meant to reach.
 - id: OBS_BO_004
@@ -108,7 +108,7 @@ checks:
   evidence:
     best: [legal_opinion, consultant_report]
     supporting: [organizational_chart, beneficial_ownership_declaration, internal_memo]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Why is each holding company in your chain there, and why in that country?
   note: A company in a country with no tie to the business, to the owners or to the financing needs a reason of its own.
     "For tax" is a reason only if the party can say which tax and how.
@@ -130,7 +130,7 @@ checks:
   evidence:
     best: [adverse_media_screen, consultant_report, legal_opinion]
     supporting: [shareholder_agreement, board_minutes, kyc_package]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is there anyone outside the shareholder register whose agreement is needed for the big decisions, or who gives instructions
     to the directors?
   note: Signs are a director who cannot answer for the business, a power of attorney over the shares or the bank accounts,
@@ -150,6 +150,6 @@ checks:
   evidence:
     best: [kyc_package, legal_opinion]
     supporting: [beneficial_ownership_declaration, company_certificate]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: For a trust, name the settlor, the trustees, the protector if there is one, and the beneficiaries. Each person so
     named is entered as a party.

@@ -28,7 +28,7 @@ checks:
   evidence:
     best: [financial_model, term_sheet]
     supporting: [internal_memo, financial_projections, organizational_chart]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: Answer from the financial model and the credit paper, not from memory. An equity injection, a shareholder loan or
     a promise to cover cost overruns in the projections means support_from_owner. Debt of the owner that is serviced from
@@ -49,7 +49,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [debt_schedule, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: How much does the owner itself owe, leaving out the debt of the companies it owns? Please share the owner's own accounts.
   note: Use the owner's own accounts, not the consolidated ones. Say the date and the currency. Leave out the debt of the
     companies it owns, also where the owner has guaranteed it, and name such guarantees in the reason.
@@ -68,7 +68,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, bank_statement, board_minutes, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: How much cash did the owner receive from the company last year, as dividends, fees, interest or loans?
   note: Count cash received in the year, not dividends declared or income booked. Take it from the owner's own cash flow
     statement, or from the company's payments to the owner. Say the year and the currency, and how much of it was loans
@@ -91,7 +91,7 @@ checks:
   evidence:
     best: [guarantee_agreement, jv_agreement]
     supporting: [term_sheet, shareholder_agreement, board_resolution]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Will the owner sign a guarantee, or an undertaking addressed to us, to put money into the company if it runs short?
 - id: OBS_GROUP_003
   question: 'Would the company''s failure hurt the owner itself: would the owner lose about a fifth or more of its own assets
@@ -107,7 +107,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement]
     supporting: [organizational_chart, management_accounts, debt_schedule, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   note: A fifth is a guide. What counts is that walking away would cost the owner something it values. A company that is
     small, new, in a side business or up for sale gives its owner little reason to pay.
 - id: OBS_GROUP_004
@@ -126,7 +126,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [bank_statement, board_minutes, shareholder_resolution, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Money in means new equity, or a loan that ranks behind the lenders, paid in cash. A promise is not money in. Where
     the company is new, look at what the owner did for its other companies and say so.
 - id: OBS_GROUP_005
@@ -142,7 +142,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, debt_schedule, bank_statement, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   note: Use the owner's own accounts, not the consolidated ones. Cash held in other subsidiaries may not be the owner's
     to move. One year of debt service is a guide to the size of the support. Where the owner has guaranteed the loan, its
     capacity is tested in full as a guarantor.
@@ -161,7 +161,7 @@ checks:
   evidence:
     best: [facility_agreement, shareholder_agreement, legal_opinion]
     supporting: [memorandum_and_articles, audited_annual_report, regulatory_document]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Read the company's own loan agreements for dividend tests and lock-ups. A block that applies only after a default
     still counts. It bites exactly when the owner needs the cash.
 - id: OBS_GROUP_007
@@ -180,7 +180,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement, registry_extract]
     supporting: [debt_schedule, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Any such debt ranks first. Give its amount in the reason and set it against the company's yearly cash flow, so that
     a small working-capital line can be told from debt that takes most of the cash.
   leads_to:
@@ -202,7 +202,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, board_minutes, shareholder_resolution, bank_statement, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   leads_to:
   - {indicator: CAS_RELATED_PARTY_001, is: true, reason: 'Cash taken out by the owner is a dealing with a related party,
       and there may be more'}
@@ -220,7 +220,7 @@ checks:
   evidence:
     best: [audited_annual_report, material_contract]
     supporting: [bank_statement, management_accounts, corporate_governance_policy, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Does the company keep its cash in its own bank accounts, or is it swept into a group account or lent to the group's
     treasury?
   note: The cash pooling agreement shows who owes whom. In the audited accounts a pooled balance appears as an amount due
@@ -237,7 +237,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [debt_schedule, management_accounts, organizational_chart, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Does the owner, or any holding company above the company, have debt of its own? What does it pay the interest and
     the repayments from?
   if_unknown: Where the owner's own accounts have not been seen, its debt is not known.
@@ -260,7 +260,7 @@ checks:
   evidence:
     best: [facility_agreement]
     supporting: [term_sheet]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: The limits help only if the company has signed them. A covenant given by the owner alone does not stop the company
     from paying.
   leads_to:
@@ -283,6 +283,6 @@ checks:
   evidence:
     best: [guarantee_agreement, security_agreement, facility_agreement]
     supporting: [term_sheet]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A pledge of the company's shares is not a direct claim. It gives the lender the owner's place, behind the company's
     creditors. Whether a company may guarantee its owner's debt is asked about the guarantee itself.

@@ -27,7 +27,7 @@ checks:
   evidence:
     best: [market_study, consultant_report]
     supporting: [public_source, press_article, internal_memo]
-    stated: [business_plan, management_presentation, call, officer_note]
+    stated: [business_plan, management_presentation, call, analyst_note]
   ask: Over the last five years, has your market as a whole sold more, about the same or less, in volume? What figures do
     you rely on?
   note: The main market is the product and the place that bring in the largest share of the party's revenue. Say which it
@@ -45,7 +45,7 @@ checks:
   evidence:
     best: [market_study, consultant_report]
     supporting: [public_source, press_article, company_record, internal_memo]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   note: Where the price is fixed and the market adjusts through volume (a regulated price, a service), give the fall in
     volume and say so. Give the years of the peak and of the low.
   leads_to:
@@ -60,7 +60,7 @@ checks:
   evidence:
     best: [offtake_agreement, market_study]
     supporting: [company_record, management_accounts]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   ask: Who sets the price you sell at? When your costs last went up, could you raise your price, and how long did it take?
   leads_to:
   - {indicator: CAS_RATE_PRICE_RISK_001, is: true, reason: A party that takes the market's price carries price risk on its
@@ -78,7 +78,7 @@ checks:
   evidence:
     best: [audited_annual_report, market_study, consultant_report]
     supporting: [financial_model, management_accounts, annual_report, prospectus]
-    stated: [business_plan, management_presentation, call, officer_note]
+    stated: [business_plan, management_presentation, call, analyst_note]
   note: Use the party's accounts for that year where it was already trading. Otherwise set today's cash cost per unit against
     that price (for a processor or a trader, today's cash costs other than the main input against that gap). Where the price
     is fixed and the market adjusts through volume, use the lowest volume. A producer whose costs are among the highest
@@ -97,7 +97,7 @@ checks:
   evidence:
     best: [market_study, consultant_report, credit_rating_report]
     supporting: [public_source, press_article, internal_memo]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   ask: Has any of your competitors failed or had to restructure its debt in the last five years? What went wrong?
   note: Record who failed and why. If the search finds nothing, record what was searched, where and when.
 - id: OBS_MARKET_006
@@ -110,7 +110,7 @@ checks:
   evidence:
     best: [regulatory_document, tax_clearance, audited_annual_report]
     supporting: [market_study, consultant_report, financial_model, annual_report, prospectus]
-    stated: [business_plan, management_presentation, call, officer_note]
+    stated: [business_plan, management_presentation, call, analyst_note]
   ask: Would you still make money if the import duty, the quota, the export ban or levy, the subsidy or the regulated price
     that applies to your business were changed or taken away?
   note: A regulated price, an export ban, a quota or a levy can protect the party in one year and squeeze it in the next.
@@ -129,7 +129,7 @@ checks:
   evidence:
     best: [market_study, consultant_report]
     supporting: [public_source, press_article, internal_memo, company_record]
-    stated: [business_plan, management_presentation, call, officer_note]
+    stated: [business_plan, management_presentation, call, analyst_note]
   ask: Who could take your customers in the next few years? Is anyone building new capacity, or importing at a lower price
     than yours?
   note: Count only what can be named today, such as a plant under construction, an import that is already landing or a product
@@ -144,7 +144,7 @@ checks:
   evidence:
     best: [market_study, consultant_report, audited_annual_report]
     supporting: [management_accounts, company_record, public_source, press_article, annual_report, prospectus]
-    stated: [business_plan, management_presentation, call, officer_note]
+    stated: [business_plan, management_presentation, call, analyst_note]
   ask: How have your sales moved over the last three years compared with your market as a whole? Who has gained share, and
     who has lost it?
   note: Set the party's sales, from its accounts, against the figures for the market used in OBS_MARKET_001, in volume where
@@ -170,7 +170,7 @@ checks:
   evidence:
     best: [offtake_agreement, material_contract]
     supporting: [company_record, financial_model]
-    stated: [business_plan, management_presentation, call, officer_note]
+    stated: [business_plan, management_presentation, call, analyst_note]
   note: A contract that follows the market price, or that the buyer can end at short notice, does not count.
   leads_to:
   - {indicator: CAS_OFFTAKER_CREDIT_001, is: true, reason: A sales contract is worth what the buyer behind it can pay}

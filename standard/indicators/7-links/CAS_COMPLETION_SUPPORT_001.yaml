@@ -29,7 +29,7 @@ checks:
   evidence:
     best: [guarantee_agreement, jv_agreement, facility_agreement]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Choose unclear where the trigger depends on the giver's own judgement, on an event that is not defined, or on a
     document not yet written. Unclear may be chosen together with other options. Where the undertaking covers only the debt,
     it is a guarantee and belongs on a guarantees link (CAS_GUARANTEE_001).
@@ -43,7 +43,7 @@ checks:
   evidence:
     best: [guarantee_agreement, jv_agreement, technical_feasibility]
     supporting: [term_sheet, financial_model, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Record the cap. Where no independent downside case exists, set the cap against the contingency in the budget. A
     cap smaller than that contingency adds little.
 - id: OBS_COMPSUPPORT_003
@@ -60,7 +60,7 @@ checks:
   evidence:
     best: [guarantee_agreement, jv_agreement, facility_agreement]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: financial_completion means the project has met stated financial tests after it started to operate. dsra_funded means
     the debt service reserve account is filled. A release at the start of commercial operation ends the support before the
     plant has shown that it performs. Record any fixed end date.
@@ -79,7 +79,7 @@ checks:
   evidence:
     best: [guarantee_agreement, jv_agreement, facility_agreement]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Choose every proof that is required. completion_certificate means a certificate signed by the project, its builder
     or its sponsor.
 - id: OBS_COMPSUPPORT_005
@@ -92,7 +92,7 @@ checks:
   evidence:
     best: [legal_opinion, guarantee_agreement, security_agreement]
     supporting: [term_sheet, board_resolution]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: Support that the lender cannot call depends on the sponsor choosing to honour it.
   note: A draft, a term sheet or a letter of comfort is a no. So is an undertaking given only to the borrower, which the
     lender cannot call unless it is assigned.

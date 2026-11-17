@@ -28,7 +28,7 @@ checks:
   evidence:
     best: [regulatory_document, audited_annual_report]
     supporting: [management_accounts, interim_financial_statements, credit_rating_report, annual_report, prospectus]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   ask: What was your capital adequacy ratio at your latest reporting date? Your latest prudential return would answer this.
   note: Say which date the figure is for, and whether it is for the institution alone or for its group. Record the tier
     1 ratio beside it. Tier 1 is the capital that takes losses while the institution is still running. Where the regulator
@@ -50,7 +50,7 @@ checks:
   evidence:
     best: [regulatory_document, audited_annual_report]
     supporting: [management_accounts, credit_rating_report, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What minimum capital ratio does your regulator require of you, with all buffers? What was your ratio at each quarter-end
     of the last year?
   note: Take the lowest quarter-end of the last twelve months, not the year-end alone. A negative answer means the institution
@@ -66,7 +66,7 @@ checks:
   evidence:
     best: [audited_annual_report, regulatory_document]
     supporting: [management_accounts, company_record, credit_rating_report, internal_memo, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: Take the non-performing loans less the provisions held against them, and take that amount off both capital and risk-weighted
     assets. Collateral is left out on purpose, because it is realised late and for less than its book value. Where restructured
     loans are counted as performing (OBS_FIP_004), work the answer out a second time with them added, and record both.
@@ -87,7 +87,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [board_minutes, shareholder_resolution, corporate_governance_policy, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: What dividends have you paid in each of the last three years? Do you have a rule that ties dividends to your capital
     ratio?
   note: 'The options: no_dividends is nothing paid out in the three years. conservative is less than about a third of profit.
@@ -104,7 +104,7 @@ checks:
   evidence:
     best: [regulatory_document, consultant_report]
     supporting: [business_plan, financial_projections, financial_model, internal_memo]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   ask: How fast do you plan to grow your loan book over the next three years? Please send the capital plan that shows your
     capital ratio in each of those years.
   if_unknown: Without a capital plan nobody has shown that growth will not take the institution to the minimum.
@@ -121,7 +121,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement, regulatory_document]
     supporting: [debt_schedule, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Does any subordinated debt count towards your regulatory capital? If so, from whom, how much, and when does each
     loan fall due?
   note: Record the amounts, the lenders and the maturity dates. Where the loan under review is itself meant to count as
@@ -144,7 +144,7 @@ checks:
   evidence:
     best: [shareholder_resolution, guarantee_agreement, regulatory_document]
     supporting: [board_minutes, business_plan]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A letter of comfort, or a statement that the shareholders stand behind the institution, is a no. Whether the shareholders
     can pay is asked in Owner and group.
   leads_to:

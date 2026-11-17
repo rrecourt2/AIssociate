@@ -62,14 +62,14 @@ One per document, call, email or note. `title` and `kind` are required.
 | `read` | `full`, `part` or `none`. `extract` when you read the extract and not the original. The pages that cite the source say so. |
 | `map` | Where things are: `at` (page, note, minute), `topic`, `gist`. Add entries for the parts you may need again. |
 | `sent_by` | Who it came from. |
-| `note` | Anything else. For what the officer said in conversation: their words. |
+| `note` | Anything else. For what the analyst said in conversation: their words. |
 
 **The kind decides two things:** the folder the document is filed in, and how strong its evidence counts. Choose the kind for what the document is. An annual report that is not itself audited is `annual_report`, not `audited_annual_report`. A prospectus is `prospectus`. A newspaper article is `press_article`, and other public information is `public_source`. See [standard](standard.md).
 
-**What the officer tells you in conversation** about the deal is a source too. It needs no file. Put the officer's words in `note`, and mark the facts you take from it `said_by: officer`:
+**What the analyst tells you in conversation** about the deal is a source too. It needs no file. Put the analyst's words in `note`, and mark the facts you take from it `said_by: analyst`:
 
 ```json
-{"sources": [{"ref": "steer", "title": "Officer, in conversation", "kind": "officer_note", "date": "2026-11-12",
+{"sources": [{"ref": "steer", "title": "Analyst, in conversation", "kind": "analyst_note", "date": "2026-11-12",
               "note": "We might finance the second UHT line."}]}
 ```
 
@@ -109,7 +109,7 @@ Record what would go into a table or a system field: names, amounts, dates, term
 | `label`, `value`, `unit` | Give a label to a value that belongs in a table, such as `Revenue`. Use the same label for the same figure at another date. |
 | `as_of` | The date the fact refers to: the balance sheet date, the end of the year. Not the date of the document. For a standing fact, the date of the source. For an event, the date it happened: a year (`2015`) or a month (`2012-09`) will do where the day is not known. |
 | `source`, `place` | Where it comes from, and the page, note or minute. Give the page as the PDF counts it, and the printed number in brackets where it differs: `p.24 (printed 22), note 16`. The browser view opens the original at that page. |
-| `said_by` | Who says so: `document`, `client`, `officer`, `third_party` or `inference`. Use `document` for the figures and terms in accounts, contracts, registers and the tables of a prospectus. Use `client` for what any party to the deal says about itself, its plans or its prospects: the borrower, its owners, a guarantor. That holds also when it says so in its own prospectus, report or website, or through the press. Use `third_party` for what a journalist, an analyst or an authority reports on their own account. Use `inference` for anything the document does not itself say: a conclusion, a figure you worked out, a borrower the note does not name. A favourable answer that only a `client` gave is marked as someone's own word. |
+| `said_by` | Who says so: `document`, `client`, `analyst`, `third_party` or `inference`. Use `document` for the figures and terms in accounts, contracts, registers and the tables of a prospectus. Use `client` for what any party to the deal says about itself, its plans or its prospects: the borrower, its owners, a guarantor. That holds also when it says so in its own prospectus, report or website, or through the press. Use `third_party` for what a journalist, an analyst or an authority reports on their own account. Use `inference` for anything the document does not itself say: a conclusion, a figure you worked out, a borrower the note does not name. A favourable answer that only a `client` gave is marked as someone's own word. |
 | `answers` | The checks it answers, as a list: `[{"check": "OBS_REV_001", "value": true}]`. Yes or no is `true` or `false`, a number is a number, a choice is one of the check's options, or a list of them where the check allows several. `status` shows the answer each check takes. An answer counts for the subject the fact is about. Add `"for": "G-001"` if it is for another subject. An answer to a check that is asked about the deal counts for the deal. |
 | `fills` | The system fields it fills, such as `["CRM.country"]`. A field the institution's layer does not list is refused. |
 | `nothing_found` | `true` for a search that found nothing. Say in the statement what was looked for and where, and what the search could not cover, such as a scan that cannot be searched by word. Such a fact answers a check only where the search covered the record that would show the thing: a register, or an authority's list. |
@@ -211,13 +211,13 @@ Repayment does not always come from the borrower. Link the facility to the party
                 "rests_on": ["F-009", "F-015"], "by": "assistant"},
                {"about": "R-002", "decision": "The guarantee is to be backed by a standby letter of credit.",
                 "reason": "The guarantor pays only after enforcement against the borrower.",
-                "rests_on": ["F-021"], "by": "officer", "covers": ["OBS_GUARANTEE_MIT_001"],
-                "owner": "officer", "due": "2027-01-31"}],
+                "rests_on": ["F-021"], "by": "analyst", "covers": ["OBS_GUARANTEE_MIT_001"],
+                "owner": "analyst", "due": "2027-01-31"}],
  "questions": [{"asked_of": "CFO of Cedar Foods", "text": "Please send the supply contracts.",
                 "about": "P-001", "asked": "2026-11-12", "via": "S-003", "checks": ["OBS_INPUT_MIT_001"]}]}
 ```
 
-**A decision** needs a `decision` and a `reason`, and should name what it rests on: facts, or a source such as the officer's note. A decision that no longer holds is changed in place: send its `id` with the new text. The log keeps what it said before. A decision that `covers` checks takes them off the list of checks to answer.
+**A decision** needs a `decision` and a `reason`, and should name what it rests on: facts, or a source such as the analyst's note. A decision that no longer holds is changed in place: send its `id` with the new text. The log keeps what it said before. A decision that `covers` checks takes them off the list of checks to answer.
 
 - With an `owner` and a `due` date it is a gap with an agreed action: a condition, a covenant or a task. `status` lists it as such.
 - Without them it settles the matter, for the subject it names in `about`. That is how you record that an answer calls for nothing more in the structure, and why. On a check that is not answered, it takes the check off for that subject: see [standard](standard.md).

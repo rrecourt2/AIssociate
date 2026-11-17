@@ -24,7 +24,7 @@ checks:
   evidence:
     best: [audited_annual_report, consultant_report]
     supporting: [management_cv, board_minutes, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: When was the last bad year for this business, who was in charge then, and what did they do?
   note: Where the loan pays for a step up in size or for a new line of business, measure against the business as it will
     be, not as it is. The accounts of the bad year show how it was handled.
@@ -41,7 +41,7 @@ checks:
   evidence:
     best: [registry_extract, audited_annual_report]
     supporting: [board_minutes, organizational_chart, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Has your chief executive or head of finance changed in the last two years? Why did the previous one leave, and where
     is that person now?
   note: If both changed, give the worse of the two. A change of auditor in the same period is worth noting beside it.
@@ -55,7 +55,7 @@ checks:
   evidence:
     best: [credit_rating_report, adverse_media_screen, registry_extract]
     supporting: [management_cv, kyc_package]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: 'Ten years is a guide. A party that says yes is believed: ask what the lenders of that business recovered. If the
     search finds nothing, record what was searched, where and when.'
 - id: OBS_SUCC_001
@@ -69,7 +69,7 @@ checks:
   evidence:
     best: [consultant_report, audited_annual_report]
     supporting: [organizational_chart, management_cv, board_minutes, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: If you, or your most important colleague, could not work for six months, who would deal with the main customers,
     the bank and the technical side?
   note: Six months is a guide. Look at whose name is on the customer contracts, the licences and the personal guarantees,
@@ -87,7 +87,7 @@ checks:
   evidence:
     best: [consultant_report, audit_management_letter]
     supporting: [organizational_chart, management_cv, board_minutes]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   note: Titles on a chart are not a second line. Ask who decided the last price change, the last hire and the last large
     purchase.
 - id: OBS_SUCC_002
@@ -103,7 +103,7 @@ checks:
   evidence:
     best: [board_resolution, shareholder_resolution]
     supporting: [board_minutes, company_record, corporate_governance_policy]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is there a written plan for who would take over from each key person? Has the board approved it, and do the people
     named know?
 - id: OBS_SUCC_003
@@ -118,6 +118,6 @@ checks:
   evidence:
     best: [insurance_policy]
     supporting: [insurance_broker_report, board_minutes]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: 'Insurance pays money: it does not replace the person. Set the sum insured against what the party would lose in
     the year it takes to find someone else.'

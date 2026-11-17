@@ -2,7 +2,7 @@
 
 Bankability 2 keeps the record of an investment deal. It keeps everything that is shared about a deal in one folder, in a form that a person and any AI assistant can pick up again later. It knows how the deal is structured, what is known, what is assumed and what is missing, and it says what to do and collect next.
 
-It is made for a development finance institution and for an investment officer who works with an AI assistant. It is a rebuild from scratch of the first Bankability. It takes that project's standard and none of its code.
+It is made for a development finance institution and for an investment analyst who works with an AI assistant. It is a rebuild from scratch of the first Bankability. It takes that project's standard and none of its code.
 
 ## Where it stands
 
@@ -10,7 +10,7 @@ Built on 14 November 2026, and repaired on 15 and 16 November after three rounds
 
 - **Tried three times on a real company**, from its public documents only, by assistants that had nothing but the skill and the tool. The record they built was accurate, and each assistant could pick the deal up where the last had stopped. The first round showed that the tool asked too much, and asked some of it of the wrong subjects. The second, with the repaired tool, asked about half as much, kept the original documents beside their extracts and gave a wiki that describes the business before it measures it. The third widened the wiki to the company's history, its market and its country, assessed where the decisions of a subsidiary are taken, and acted on a credit colleague's review of the open checks. An independent reader then judged about two in three of the checks still open to be material. What each round showed and what changed is in [standard/CHANGES.md](standard/CHANGES.md). The trial itself is private and not in this repository.
 - **Not yet tried in Microsoft Copilot Cowork.** How Cowork saves files and runs a script from a skill has to be tested in the tenant first.
-- **Not yet used on a live deal with an officer.**
+- **Not yet used on a live deal with an analyst.**
 - **The standard was rebuilt on a new framework** (version 4): it starts from how the loan is repaid, keeps the deal, each party, the links and the facility apart, and puts every check under a claim that can turn out false. See [standard/FRAMEWORK.md](standard/FRAMEWORK.md).
 - **The standard needs a review by someone who does credit work.** Blind judges agreed with the direction of its tests, and two reviewers' findings are applied. Its reference points and its strictness remain open questions, listed in [standard/CHANGES.md](standard/CHANGES.md).
 

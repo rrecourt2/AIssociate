@@ -29,7 +29,7 @@ checks:
   evidence:
     best: [audited_annual_report, debt_schedule]
     supporting: [management_accounts, facility_agreement, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Do you owe money to any bank, lender, leasing company or shareholder at the moment? A yes or no is enough to start
     with.
   leads_to:
@@ -48,7 +48,7 @@ checks:
   evidence:
     best: [audited_annual_report, debt_schedule]
     supporting: [management_accounts, facility_agreement, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: How much do you owe in total today, to all lenders together? Please include leases and loans from shareholders.
   note: Take the figure at its highest point in the year where borrowing is seasonal, and say which date it is for. Say
     how much of it falls due within twelve months.
@@ -65,7 +65,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement]
     supporting: [debt_schedule, management_accounts, board_minutes, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In the last three years, was there any moment when a payment to a lender was late, a covenant was not met, or you
     asked a lender for more time?
   note: A party that says yes is believed. A party that says no is believed once the accounts or a lender bear it out.
@@ -79,7 +79,7 @@ checks:
   evidence:
     best: [audited_annual_report, registry_extract]
     supporting: [management_accounts, bank_statement, credit_rating_report, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: This check does not hang on OBS_DEBT_001, so that the topic cannot close on one answer. If the search finds nothing,
     record what was searched, where and when.
 - id: OBS_DEBT_009
@@ -93,7 +93,7 @@ checks:
   evidence:
     best: [audited_annual_report, guarantee_agreement]
     supporting: [management_accounts, board_minutes, registry_extract, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Have you signed a guarantee for anyone else's borrowing, or pledged any of your assets for it? For example for a
     sister company, a shareholder or a supplier. For whom, and for how much?
   note: 'A guarantee or security for the debt of a member of the group that repayment relies on does not count: that debt
@@ -114,7 +114,7 @@ checks:
   evidence:
     best: [audited_annual_report, debt_schedule]
     supporting: [management_accounts, facility_agreement, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: How much of your debt falls due within the next twelve months, and what does it finance?
   note: Count overdrafts, lines that come up for renewal within the year and the part of long-term loans that falls due
     within it. Take debt, stock and receivables at the same date, and at the seasonal peak of borrowing where there is one.
@@ -131,5 +131,5 @@ checks:
   evidence:
     best: [facility_agreement, correspondence]
     supporting: [audited_annual_report, board_minutes]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: The letter must come from the lender concerned. The party's own account of it is not a confirmation.

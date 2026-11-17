@@ -23,7 +23,7 @@ checks:
   evidence:
     best: [investment_plan, term_sheet]
     supporting: [financial_model, shareholder_resolution]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   note: Answer from the sources and uses of the financing plan, not from what the party says alone. Money paid in during
     the last two years to prepare this financing counts.
 - id: OBS_SOF_001
@@ -39,7 +39,7 @@ checks:
   evidence:
     best: [company_certificate, kyc_package]
     supporting: [investment_plan, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Where does the money you are putting in come from? Please name the source (profits of which business, the sale of
     which asset, a loan from whom) and the account it will be paid from.
   if_unknown: Money whose source is not named cannot be counted as equity.
@@ -55,7 +55,7 @@ checks:
   evidence:
     best: [audited_annual_report, tax_returns]
     supporting: [bank_statement, management_accounts, kyc_package, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Set the amount against several years of profit after tax, or against the price in the sale agreement. A source that
     explains a tenth of the money explains a tenth of it.
 - id: OBS_SOF_004
@@ -70,7 +70,7 @@ checks:
   evidence:
     best: [bank_statement, material_contract, audited_annual_report]
     supporting: [tax_returns, company_certificate, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: 'Could we have the documents that show where the money comes from: the bank statements, and the sale agreement or
     the accounts behind them?'
 - id: OBS_SOF_003
@@ -85,7 +85,7 @@ checks:
   evidence:
     best: [bank_statement]
     supporting: [investment_plan, company_record, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: 'Look again when the money is paid in: the statement of the receiving account names the sender.'
 - id: OBS_SOF_005
   question: Has the party borrowed the money for its stake in the business, or does anyone have a right to get that money
@@ -102,7 +102,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement, shareholder_agreement]
     supporting: [debt_schedule, registry_extract, company_certificate, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Did you borrow to fund your stake in the company, or does any investor or lender have a right to be bought out or
     repaid from it?
   note: Equity that is someone else's debt has to be served from dividends, and whoever lent it can end up as the owner.

@@ -31,7 +31,7 @@ checks:
   evidence:
     best: [security_agreement, lease_agreement, valuation_report]
     supporting: [company_record, audited_annual_report]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Who holds the title to this asset? If it is leased or held under a concession, from whom, and until when?
   note: Title documents are filed with the security documents. Under a lease or a concession the owner is someone else,
     however long it runs.
@@ -46,7 +46,7 @@ checks:
   evidence:
     best: [audited_annual_report, valuation_report, security_agreement]
     supporting: [company_record, annual_report, prospectus, management_accounts]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   note: A tenth is a guide. The earnings meant are what the asset itself brings in before financing costs, set against
     the same line of the whole business, not the profit its owner keeps after interest. Say in the fact what share
     of output or earnings the asset carries, and whether it is to be security. Answer again when the security for
@@ -66,13 +66,13 @@ checks:
   evidence:
     best: [technical_feasibility, valuation_report]
     supporting: [company_record, management_accounts]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: How old is this asset and what condition is it in? An asset register, a recent valuation or an inspection report
     would answer this.
   note: 'New: in its first years of use. Good: runs at the output it was built for, with routine maintenance. Fair: runs
     at that output, with wear that planned maintenance can deal with. Poor: runs below that output, breaks down often or
     needs a major overhaul now. End of life: at or past the life it was built for. Record the age of the asset with the
-    answer. What the officer saw on a site visit counts as stated.'
+    answer. What the analyst saw on a site visit counts as stated.'
 - id: OBS_ASSET_002
   question: Has someone independent of the party (an engineer, a surveyor or a valuer) inspected the asset and reported
     on its condition in the last three years?
@@ -85,7 +85,7 @@ checks:
   evidence:
     best: [technical_feasibility, valuation_report]
     supporting: [consultant_report, insurance_broker_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Has an independent engineer, surveyor or valuer inspected this asset in the last three years? May we see the report?
   note: Three years is a guide. A valuation made without an inspection does not count.
 - id: OBS_ASSET_003
@@ -99,7 +99,7 @@ checks:
   evidence:
     best: [technical_feasibility, om_agreement]
     supporting: [company_record, financial_projections, financial_model]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Do you have a maintenance plan and a yearly maintenance budget for this asset? Where does that budget appear in your
     projections?
   if_unknown: Without a plan and a budget, the cost of keeping the asset working is not in the projections.
@@ -114,7 +114,7 @@ checks:
   evidence:
     best: [technical_feasibility, valuation_report]
     supporting: [company_record, management_accounts]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Has any maintenance that was due on this asset been postponed? What would it cost to catch up?
   if_unknown: A backlog that nobody has counted is a cost that the projections do not show.
   note: Where there is a backlog, record what it would cost to clear. Maintenance spending that falls while the asset ages
@@ -130,7 +130,7 @@ checks:
   evidence:
     best: [technical_feasibility, valuation_report]
     supporting: [company_record, audited_annual_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: How many more years can this asset work before it has to be replaced or rebuilt?
   note: Use the technical life that an engineer or a valuer gives, not the life used for depreciation in the accounts. Where
     the asset is held under a lease or a concession, its life for the party ends when that does.
@@ -149,6 +149,6 @@ checks:
   evidence:
     best: [technical_feasibility]
     supporting: [financial_model, financial_projections, investment_plan]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What will the repair, overhaul or replacement of this asset cost, when is it planned, and how will it be paid for?
   note: Compare the amount in the projections with the estimate of the engineer or the valuer, not with the party's own.

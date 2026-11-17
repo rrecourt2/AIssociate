@@ -25,7 +25,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, organizational_chart, company_record, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Does your company buy from, sell to, lend to or borrow from its shareholders, its directors, their families, or other
     companies that they own? A yes or no is enough to start with.
 - id: OBS_RP_006
@@ -49,7 +49,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, board_minutes, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: 'Choose every kind that applies. Choose guarantees_and_security_received where a shareholder, a director or a related
     company guarantees the party''s debt or pledges its own assets for it, and record who gave what as a fact about the
     link that holds that debt. Choose pay_and_advances_to_insiders for salaries, bonuses and advances to shareholders, directors,
@@ -73,7 +73,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: What is the total value of all your dealings with related parties in the last financial year, as a percentage of
     your revenue? The notes to your audited accounts should give the breakdown.
   note: Take the last full financial year and name it. Give purchases and payments also as a share of costs.
@@ -90,7 +90,7 @@ checks:
   evidence:
     best: [consultant_report, audited_annual_report]
     supporting: [company_record, management_accounts, board_minutes, annual_report, prospectus]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: How are prices set for what you buy from and sell to related companies? Is there a transfer-pricing study, or can
     you show us what unrelated customers and suppliers pay for the same thing?
   if_unknown: Margins and cash flow may be flattered, or drained, by prices that the owners set.
@@ -108,7 +108,7 @@ checks:
   evidence:
     best: [memorandum_and_articles, shareholder_agreement]
     supporting: [corporate_governance_policy, board_minutes, board_resolution]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: Who approves a transaction with a related party? Is there a written rule that the director or shareholder concerned
     does not vote on it?
 - id: OBS_RP_EXPOSURE_001
@@ -127,7 +127,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: Please add up all loans, advances and receivables owed to you by related parties (group companies, associates, shareholders,
     directors). What is the total, and what is your equity?
   note: Tangible equity is equity less goodwill and other intangible assets. Give the date of the balance.
@@ -147,7 +147,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, bank_statement, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: What was the highest amount that related parties owed you at any time in the last financial year, and what did they
     owe you at the year-end? Monthly balances would answer this.
   note: Some accounts disclose the highest balance in the year. Where they do not, ask for the monthly balances. Where nothing
@@ -167,7 +167,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: Can you demand repayment of your loans to group companies, for example at 30 days' notice? If you did, would the
     company that borrowed have the cash to pay?
   if_unknown: The loans to related parties cannot be counted as assets that turn into cash.
@@ -184,7 +184,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [audit_management_letter, shareholder_register, organizational_chart, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: This check does not hang on OBS_RP_001, so that the topic cannot close on one answer. Compare the note with the
     shareholder register, the organisation chart, the list of directors and the bank statements. Where the party said it
     has no dealings with related parties and the accounts show some, correct the answer to OBS_RP_001.
@@ -200,7 +200,7 @@ checks:
   evidence:
     best: [audited_annual_report, scheme_of_arrangement, registry_extract]
     supporting: [board_minutes, organizational_chart, management_presentation, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: In the last two years, has any plant, division or subsidiary been moved into or out of the company, for example through
     a scheme of arrangement, a carve-out, a demerger or a merger? If so, which periods are affected?
   if_unknown: The past figures may describe a business that is no longer the one the lender counts on.

@@ -30,7 +30,7 @@ checks:
   evidence:
     best: [intercreditor_agreement, facility_agreement, legal_opinion]
     supporting: [term_sheet, debt_schedule, organizational_chart]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: 'If the company could not pay everyone, who would be paid first: us, this other lender, or both side by side? Where
     is that written down?'
   note: 'Count ranking by agreement (a subordination), by law, and by place in the group: a loan to the company that holds
@@ -48,7 +48,7 @@ checks:
   evidence:
     best: [registry_extract, security_agreement, audited_annual_report]
     supporting: [debt_schedule, facility_agreement, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What have you pledged or charged to this lender? Does it include the assets or the bank accounts that we would rely
     on?
   note: A right of set-off over accounts kept with the other lender counts as control. If the search finds nothing, record
@@ -63,7 +63,7 @@ checks:
   evidence:
     best: [facility_agreement, correspondence]
     supporting: [debt_schedule, board_minutes]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: Does your agreement with this lender limit new borrowing, or forbid you to give security to another lender? If it
     does, has the lender agreed in writing to our loan?
   if_unknown: The new loan may itself be a default under the other loan, which the other lender could then call.
@@ -80,7 +80,7 @@ checks:
   evidence:
     best: [facility_agreement, audited_annual_report]
     supporting: [debt_schedule, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A line that runs for a year and is then renewed falls due at its next renewal date. A loan that is repaid in instalments
     from cash flow is a no.
   leads_to:
@@ -96,7 +96,7 @@ checks:
   evidence:
     best: [facility_agreement, audited_annual_report]
     supporting: [debt_schedule, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is this line committed for a fixed period, or can the lender reduce it or ask for its money back whenever it chooses?
   leads_to:
   - {indicator: CAS_LIQUIDITY_001, is: true, reason: A line that can be withdrawn at will is not liquidity the party can
@@ -111,7 +111,7 @@ checks:
   evidence:
     best: [facility_agreement]
     supporting: [term_sheet, debt_schedule, financial_model]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Compare the same ratio on the same definitions. A looser level on a stricter definition can still be breached first.
   leads_to:
   - {indicator: CAS_COVENANT_DESIGN_001, is: true, reason: The lender's covenants can be set so that they are breached no
@@ -132,7 +132,7 @@ checks:
   evidence:
     best: [intercreditor_agreement]
     supporting: [term_sheet, facility_agreement]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A vote that the other lender can always outvote is not a say. Record the lender's share of the vote and what needs
     its consent. Until the agreement is signed, a term sheet agreed by both lenders is supporting evidence only.
 - id: OBS_LENDER_MIT_002
@@ -149,7 +149,7 @@ checks:
   evidence:
     best: [intercreditor_agreement]
     supporting: [term_sheet, shareholder_agreement]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: This is the usual answer for loans from shareholders and related parties. A bank will seldom agree to it. A subordination
     that is only promised in a term sheet, or only mentioned in the notes to the accounts, is not yet an agreement signed
     by the other lender.

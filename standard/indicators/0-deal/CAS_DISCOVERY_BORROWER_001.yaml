@@ -30,7 +30,7 @@ checks:
   evidence:
     best: [audited_annual_report, registry_extract, memorandum_and_articles]
     supporting: [organizational_chart, internal_memo, annual_report, prospectus]
-    stated: [executive_summary, correspondence, call, officer_note]
+    stated: [executive_summary, correspondence, call, analyst_note]
   ask: Is the borrower a company that runs the business itself, a holding company, a company set up only for this project
     or asset, or a fund?
   if_unknown: Until the kind of borrower is known, nobody can say where the cash that repays the loan is earned.
@@ -50,7 +50,7 @@ checks:
   evidence:
     best: [audited_annual_report, registry_extract, shareholder_register]
     supporting: [organizational_chart, internal_memo, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Does the borrower have a parent company, subsidiaries or sister companies? A group chart would answer this.
   if_unknown: Without the group, the lender does not know which other companies can take cash out of the borrower or bring
     obligations to it.
@@ -71,7 +71,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement]
     supporting: [organizational_chart, internal_memo]
-    stated: [executive_summary, correspondence, call, officer_note]
+    stated: [executive_summary, correspondence, call, analyst_note]
   ask: Could you describe the deal in outline? Who borrows, which projects or assets are financed, which facilities are
     planned and which contracts matter. A structure chart or a term sheet is enough at this stage.
   if_unknown: Without the structure, the checks cannot be put to the right parties.
@@ -87,7 +87,7 @@ checks:
   evidence:
     best: [guarantee_agreement, facility_agreement, jv_agreement]
     supporting: [term_sheet, organizational_chart, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Does any party stand behind another in this deal, for example with a guarantee, an undertaking to complete the project,
     a cash sweep or shared reserves? If so, who supports whom?
   if_unknown: A support that is not in the structure is not examined, and may be counted on without reason.
@@ -106,7 +106,7 @@ checks:
   evidence:
     best: [offtake_agreement, lease_agreement, supply_agreement, material_contract]
     supporting: [financial_model, company_record]
-    stated: [business_plan, call, officer_note]
+    stated: [business_plan, call, analyst_note]
   ask: Is there a contract that the business could not service its debt without? For example with a main customer, a public
     authority, a landlord or a main supplier.
   leads_to:
@@ -122,7 +122,7 @@ checks:
   look_in: [04.01.a, 02.03.a]
   evidence:
     supporting: [term_sheet, organizational_chart, board_minutes]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is it settled which company will borrow and who else will stand behind the loan, or could that still change before
     signing?
 - id: OBS_BORROWER_004
@@ -141,7 +141,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, organizational_chart, annual_report, prospectus]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   ask: Does the borrower itself employ the people and hold the plant, premises and equipment of the business, or are they
     in another company of the group?
   note: Read the borrower's own accounts, not the consolidated accounts of its group. Staff costs and fixed assets are in
@@ -161,7 +161,7 @@ checks:
   evidence:
     best: [audited_annual_report, registry_extract, material_contract, offtake_agreement]
     supporting: [bank_statement, management_accounts, organizational_chart, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: Follow the money. Who invoices the customer, into whose account does the customer pay, and who owns the site, the
     licences and the brand? This check does not hang on what the client has said. If the search finds nothing, record what
     was searched, where and when.

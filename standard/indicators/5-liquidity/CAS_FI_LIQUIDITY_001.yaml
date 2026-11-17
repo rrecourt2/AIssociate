@@ -32,7 +32,7 @@ checks:
   evidence:
     best: [audited_annual_report, regulatory_document]
     supporting: [management_accounts, company_record, credit_rating_report, annual_report, prospectus]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   ask: What liquid assets do you hold today, and what are they as a share of your deposits and other short-term funding?
     Your latest prudential return would answer this.
   note: Regulators define the liquid asset ratio in different ways. Give the figure as the question defines it, and record
@@ -49,7 +49,7 @@ checks:
   evidence:
     best: [regulatory_document]
     supporting: [audited_annual_report, management_accounts, company_record, board_minutes]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Which liquidity ratios does your regulator require, and at what level? Please send your returns for each month of
     the last year.
   note: Ask for the returns of every month or quarter, not for the year-end alone, because a ratio is easily dressed for
@@ -64,7 +64,7 @@ checks:
   evidence:
     best: [regulatory_document, audited_annual_report]
     supporting: [company_record, management_accounts, credit_rating_report, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: What share of your deposits do your twenty largest depositors hold? How much of it could be withdrawn within a month?
   note: Twenty depositors and a quarter are a guide. Count connected depositors as one, and count the deposits of the state
     and of state bodies together, because they move on one decision. An institution that takes no deposits is a no. Its
@@ -81,7 +81,7 @@ checks:
   evidence:
     best: [audited_annual_report, regulatory_document]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: Take the figures from the maturity table in the notes to the accounts, by the time left to run and not by the original
     term. Where the institution reports a net stable funding ratio, a ratio below 100 percent is a yes. Where OBS_FIL_002
     found the deposits concentrated, they are less sure to stay than this test takes them to be.
@@ -98,7 +98,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement, regulatory_document]
     supporting: [debt_schedule, management_accounts, company_record, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Please send a list of your borrowings from banks, funds and other lenders, with the amount, the currency and the
     date on which each falls due.
   note: Include the part of long-term loans that falls due within the year, and loans that a lender can call early because
@@ -115,7 +115,7 @@ checks:
   evidence:
     best: [audited_annual_report, regulatory_document]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: How much do you owe to other banks today, and for how long is it lent to you? Has that amount grown or shrunk over
     the last three years?
   note: Record how long the bulk of it has left to run (overnight, under three months, longer) and the figure for each of
@@ -134,7 +134,7 @@ checks:
   evidence:
     best: [regulatory_document, audited_annual_report]
     supporting: [company_record, management_accounts, hedge_document, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: What is your net open position in foreign currency as a share of your capital, and what limit applies to it? What
     share of your foreign-currency loans went to borrowers who earn local currency?
   note: A fifth is a guide. Take the highest month-end of the last twelve months. Record what share of the loans in foreign
@@ -151,7 +151,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement, credit_rating_report]
     supporting: [debt_schedule, management_accounts, board_minutes, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In the last three years, was there any moment when a payment to one of your lenders was late, a financial covenant
     was not met, or you asked a lender for a waiver or for more time?
   note: An institution that says yes is believed. An institution that says no is believed once the accounts, a lender or
@@ -172,7 +172,7 @@ checks:
   evidence:
     best: [regulatory_document, facility_agreement]
     supporting: [company_record, management_accounts, board_minutes]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Can you borrow from the central bank when you need to? Against which assets, and have you done so in the last twelve
     months?
   note: Access in name is not enough. The collateral must be in hand and free. A central bank lends its own currency, so
@@ -190,5 +190,5 @@ checks:
   evidence:
     best: [facility_agreement, correspondence]
     supporting: [audited_annual_report, board_minutes]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: The letter must come from the lender concerned. The institution's own account of it is not a confirmation.

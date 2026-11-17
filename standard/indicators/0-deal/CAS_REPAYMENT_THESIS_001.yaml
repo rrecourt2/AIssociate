@@ -28,7 +28,7 @@ checks:
   evidence:
     best: [audited_annual_report, term_sheet]
     supporting: [financial_model, internal_memo, annual_report, prospectus]
-    stated: [executive_summary, business_plan, call, officer_note]
+    stated: [executive_summary, business_plan, call, analyst_note]
   ask: Where will the money to repay the loan come from? Which company earns it, and from which activity or contract?
   if_unknown: If nobody can say whose cash flow repays the loan, there is no deal to analyse yet.
 - id: OBS_WAYOUT_002
@@ -40,7 +40,7 @@ checks:
   evidence:
     best: [credit_rating_report, market_study]
     supporting: [internal_memo]
-    stated: [officer_note, public_source, press_article]
+    stated: [analyst_note, public_source, press_article]
   ask_whom: lender
   note: Name the two or three usual causes, for example a fall in the price of the product, a late start of operations,
     a customer that pays late or a currency that loses value. Each cause points at an indicator to look at first.
@@ -58,7 +58,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, organizational_chart, financial_model, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Which company receives the revenue that will repay the loan? Is it the borrower itself, or another company in the
     group?
   note: Read the borrower's own accounts, not the consolidated accounts of its group. A holding company's cash is whatever
@@ -79,7 +79,7 @@ checks:
   evidence:
     best: [audited_annual_report, offtake_agreement, lease_agreement, material_contract]
     supporting: [management_accounts, financial_model, financial_projections, annual_report, prospectus]
-    stated: [business_plan, call, officer_note]
+    stated: [business_plan, call, analyst_note]
   ask: Will the loan be repaid from what the business already earns, from payments under contracts that are already signed,
     or from revenue that is still to be built up?
   note: Choose by what covers debt service, not by what the business plan calls it. Choose historical where the cash flow
@@ -101,7 +101,7 @@ checks:
   look_in: [03.02.b, 03.02.a]
   evidence:
     supporting: [financial_model, financial_projections, internal_memo]
-    stated: [business_plan, call, officer_note]
+    stated: [business_plan, call, analyst_note]
   ask_whom: lender
   note: Keep the list short. A list of ten has not yet been thought through.
 - id: OBS_WAYOUT_005
@@ -114,7 +114,7 @@ checks:
   evidence:
     best: [security_agreement, guarantee_agreement, facility_agreement]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
 - id: OBS_COLLATERAL_001
   question: 'What is the loan secured on: one asset, several assets, the whole business, or nothing?'
   answer: choice
@@ -134,7 +134,7 @@ checks:
   evidence:
     best: [security_agreement, facility_agreement, registry_extract]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What security is offered for the loan? One asset, several assets, everything the business owns, or none?
   note: Choose enterprise where the security covers all, or nearly all, of the assets of the business and its shares. Record
     what is offered now. Whether the security holds, and what it is worth, is asked about the facility and about each asset.
@@ -150,7 +150,7 @@ checks:
   evidence:
     best: [valuation_report, audited_annual_report, consultant_report]
     supporting: [financial_model, internal_memo, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: First name the most likely reason. Then ask what the security would fetch, or what the guarantor could pay, in that
     case. A plant built for one customer is worth little once that customer is gone. A guarantor that lives on the borrower's
@@ -174,7 +174,7 @@ checks:
   evidence:
     best: [guarantee_agreement, security_agreement]
     supporting: [term_sheet, jv_agreement]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A letter of comfort or a statement of intent is not a promise to pay. The promise itself is examined on its own
     link.
 - id: OBS_WAYOUT_MIT_002
@@ -191,4 +191,4 @@ checks:
   evidence:
     best: [facility_agreement, guarantee_agreement, security_agreement]
     supporting: [term_sheet]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]

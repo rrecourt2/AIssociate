@@ -27,7 +27,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, interim_financial_statements, bank_statement, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Does the company earn revenue from selling goods or services today? A yes or no is enough to start with.
   leads_to:
   - {indicator: CAS_FEASIBILITY_001, is: false, reason: 'With no sales record, the case for future revenue rests on the
@@ -47,7 +47,7 @@ checks:
   evidence:
     best: [audited_annual_report, offtake_agreement]
     supporting: [management_accounts, company_record, material_contract, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Is there a customer that brings in a tenth or more of your sales, or that will once a signed contract starts? If
     so, who is it and what share does it bring?
   note: 'A tenth is a guide, not a gate. Listed companies that report under IFRS disclose reliance on a customer of that
@@ -67,7 +67,7 @@ checks:
   evidence:
     best: [audited_annual_report, offtake_agreement, consultant_report]
     supporting: [financial_model, management_accounts, company_record, internal_memo, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: If your largest customer stopped buying tomorrow, how much of its volume could you sell elsewhere within a year,
     and which costs could you cut?
   if_unknown: Until this is worked out, nobody knows whether the loan hangs on one customer.
@@ -88,7 +88,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: What share of last year's sales came from your three largest customers? A list of sales by customer would answer
     this.
   if_unknown: Without sales by customer, nobody can say how much revenue one lost account would take with it.
@@ -105,7 +105,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Which product, and which market, earns you the most gross profit, and what share of the total is it?
   note: 'Half is a guide. Measure gross profit, not revenue: a product can be a small part of sales and most of the profit.'
   leads_to:
@@ -125,7 +125,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, interim_financial_statements, annual_report, prospectus]
-    stated: [call, officer_note, management_presentation]
+    stated: [call, analyst_note, management_presentation]
   ask: What were your sales in each of the last three financial years?
   note: 'Record each year as well as the average, since one bad year can hide in it. Where inflation is high, measure in
     volume or in a stable currency: growth below inflation is a fall. With fewer than three full years, use the years there
@@ -142,7 +142,7 @@ checks:
   evidence:
     best: [interim_financial_statements, quarterly_report]
     supporting: [management_accounts, bank_statement]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: Do your sales peak in certain months? Monthly or quarterly sales for the last two years would show it.
   note: One and a half times is a guide.
   leads_to:
@@ -164,7 +164,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: 'How much of what you are owed is owed by government bodies: unpaid sales to state bodies, subsidies, tax or duty
     refunds? How old are those balances?'
   note: 'Count all receivables, not only trade receivables: tax and subsidy claims often sit under other receivables. Record
@@ -183,7 +183,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: Do customers pay you before delivery? How much do you hold in customer advances, at the year-end and at the highest
     point in the year?
   note: Take the balance at its highest point in the year where it swings, and say which date it is for.
@@ -204,7 +204,7 @@ checks:
   evidence:
     best: [audited_annual_report, insurance_policy]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: Of the money customers owe you, what share is covered by a letter of credit, a bank guarantee, credit insurance or
     collateral?
   note: This protects what customers already owe. It does not replace the sales that a lost customer would have brought.

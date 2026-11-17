@@ -27,7 +27,7 @@ checks:
   evidence:
     best: [board_resolution]
     supporting: [board_minutes, company_certificate]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Has the board passed a resolution for this financing? Please share a certified copy, or say when the board will meet
     to pass it.
   note: The resolution has to fit this transaction (the lender, the amount, the documents). A general approval "to raise
@@ -44,7 +44,7 @@ checks:
   evidence:
     best: [memorandum_and_articles, legal_opinion]
     supporting: [shareholder_agreement, company_certificate]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Do the articles or a shareholders' agreement cap what the directors may borrow, guarantee or pledge without going
     to the shareholders? If so, what is the cap and how much of it is used?
   note: Where a cap is a multiple of capital and reserves, work it out on the latest accounts and count all the party's
@@ -63,7 +63,7 @@ checks:
   evidence:
     best: [shareholder_resolution, legal_opinion]
     supporting: [memorandum_and_articles, shareholder_agreement, board_minutes]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: An answer of not_required should rest on counsel's reading of the articles, any shareholders' agreement and the
     law, not on the party's say-so. Typical cases that need approval are reserved matters, a transaction large against the
     party's assets, and a guarantee or security given for a shareholder or a related party.
@@ -81,7 +81,7 @@ checks:
   evidence:
     best: [regulatory_document, legal_opinion]
     supporting: [internal_memo, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: Ask counsel in the party's country early. An approval of this kind can take months and may have to be in place
     before the first drawing.
   note: An answer of not_required should rest on the advice of counsel in the party's country. This check is about approvals
@@ -96,7 +96,7 @@ checks:
   evidence:
     best: [board_resolution, legal_opinion, registry_extract]
     supporting: [memorandum_and_articles, corporate_governance_policy, company_certificate]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Match the names and the signatures on the documents to the resolution or the power of attorney, and to the specimen
     signatures. Check that a power of attorney is still in force and covers this transaction. Ask for the party's signing
     rules (limits, joint signatures, list of signatories) and check against them.
@@ -112,6 +112,6 @@ checks:
   evidence:
     best: [legal_opinion]
     supporting: [conditions_precedent_checklist, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Read the assumptions and the qualifications. An opinion that assumes the resolutions are valid has not confirmed
     them.

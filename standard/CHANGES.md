@@ -35,7 +35,7 @@ One check is dropped and one is new: 551 checks as before, of which 119 question
 
 ### Version 4.2.0: a check waits for the answer that opens it
 
-**The assessment.** After the second pass the trial deal had 580 checks open or waiting. Three assessors, each working as a credit officer on a third of the pillars, judged every one of them: would it change a credit decision on this deal, and what would settle it?
+**The assessment.** After the second pass the trial deal had 580 checks open or waiting. Three assessors, each working as a credit analyst on a third of the pillars, judged every one of them: would it change a credit decision on this deal, and what would settle it?
 
 | Judgement | Checks |
 |---|---|
@@ -258,7 +258,7 @@ Version 3.0.0 was copied from version 2.0.0 in the `bankability` repository (`ba
 
 ### Repaired
 
-1. **One list for evidence.** The checks named 160 kinds of evidence, and 24 of them existed in the list of 64 document types. There is now one list of 79 kinds of source: the 64 document types and 15 new ones, among them calls, notes by the officer and internal memos. The other names were mapped onto that list.
+1. **One list for evidence.** The checks named 160 kinds of evidence, and 24 of them existed in the list of 64 document types. There is now one list of 79 kinds of source: the 64 document types and 15 new ones, among them calls, notes by the analyst and internal memos. The other names were mapped onto that list.
 2. **Who an indicator applies to.** Each indicator now says so in `applies_to`. Indicators about a party follow how far the old standard reached from the borrower: borrower only, borrower and guarantor, or borrower, guarantor and sponsor. Five were moved by judgement, because their questions are about the company and not about the facility or the transaction: debt, liquidity, projections, working capital and tax.
 3. **Bank indicators.** The four indicators for financial institutions apply only when the borrower is one.
 4. **Dead references removed.** Two pointers to indicators that do not exist, three conditions on a check that does not exist, one hint on an answer that is not an option, and 16 references to six data-room slots that do not exist. The three checks behind those conditions were never asked. They are asked now.

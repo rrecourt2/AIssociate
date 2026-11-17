@@ -32,7 +32,7 @@ checks:
   evidence:
     best: [bank_statement, audited_annual_report]
     supporting: [management_accounts, interim_financial_statements, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: How much cash do you have in the bank today that you could use to pay a bill tomorrow? Please leave out anything
     that is pledged to a lender or held for someone else.
   note: Say which date and which currency. For a group, say which companies hold the cash.
@@ -50,7 +50,7 @@ checks:
   evidence:
     best: [debt_schedule, facility_agreement, consultant_report]
     supporting: [financial_projections, financial_model, management_accounts, internal_memo]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   ask: Please send your cash forecast for the next twelve months, month by month, with every loan repayment, tax payment
     and capital spending shown.
   if_unknown: Without a monthly forecast nobody has shown that the party can pay through its weakest month. A year-end balance
@@ -70,7 +70,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement, security_agreement]
     supporting: [management_accounts, bank_statement, debt_schedule, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A fifth is a guide. What counts is whether the party could still pay what falls due without that cash. Look in the
     notes to the accounts for restricted cash, in the loan agreements for reserve accounts and pledged accounts, and at
     which company and which country holds each balance.
@@ -84,7 +84,7 @@ checks:
   evidence:
     best: [facility_agreement]
     supporting: [debt_schedule, audited_annual_report, term_sheet]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Which credit lines could you draw on tomorrow, and up to what amount? Please send the agreement for each, so that
     we can see until when it runs and whether the bank can cancel it.
   note: Read the cancellation and review clauses of each line. An overdraft that is repayable on demand, or a line the bank
@@ -102,7 +102,7 @@ checks:
   evidence:
     best: [audited_annual_report, tax_clearance]
     supporting: [management_accounts, bank_statement, company_record, board_minutes, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In the last two years, was there a month when wages, a tax payment or a supplier had to wait because the cash was
     not there, or when a shareholder or the bank had to step in at short notice?
   note: Late payments to lenders are asked in Existing debt (OBS_DEBT_008). A party that says yes is believed. A no is borne
@@ -127,7 +127,7 @@ checks:
   evidence:
     best: [guarantee_agreement, facility_agreement]
     supporting: [board_resolution, term_sheet]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: The promise must name an amount and say when it can be drawn. A statement that the owner stands behind the party
     is a no.
   leads_to:

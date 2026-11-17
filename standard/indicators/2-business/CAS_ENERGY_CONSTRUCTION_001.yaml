@@ -30,7 +30,7 @@ checks:
   evidence:
     best: [epc_contract]
     supporting: [technical_feasibility, investment_plan, company_record]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Is the construction contract signed? Please share it. If the works are split between several contracts, please list
     them and say who answers for the whole.
   if_unknown: Until a contract is signed, the scope, the price and the completion date are estimates.
@@ -48,7 +48,7 @@ checks:
   evidence:
     best: [epc_contract]
     supporting: [technical_feasibility, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: The project may have to accept and pay for a plant that does not perform as designed.
 - id: OBS_ECON_004
   question: Would the damages the builder must pay for delay, up to their cap, cover the interest and repayments that fall
@@ -63,7 +63,7 @@ checks:
   evidence:
     best: [epc_contract, technical_feasibility]
     supporting: [financial_model, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Six months is a guide. Use the delay the independent engineer thinks plausible where there is one. For a new project
     with no existing business, the damages have to cover all the debt service of those months. For a line added to a running
     business, take off what the existing business can pay, and say how much that is. Record the daily rate, the cap as a
@@ -81,7 +81,7 @@ checks:
   evidence:
     best: [technical_feasibility, consultant_report]
     supporting: [company_record, management_accounts, financial_model]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Has an independent engineer or cost consultant reviewed the budget? If construction has started, please share the
     latest report on cost to date and cost to complete.
   note: minor_overrun means the overrun fits within the contingency that is left. material_overrun means it does not. For
@@ -96,7 +96,7 @@ checks:
   evidence:
     best: [facility_agreement, epc_contract, technical_feasibility]
     supporting: [term_sheet, financial_model, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Take the completion date the independent engineer expects where there is one, and the date in the contract otherwise.
     Say which. Six months is a guide. What counts is that a plausible delay does not leave a repayment due before the project
     earns.
@@ -117,7 +117,7 @@ checks:
   evidence:
     best: [guarantee_agreement, jv_agreement, facility_agreement]
     supporting: [term_sheet, board_resolution]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A letter of comfort or a statement of intent is a no.
   leads_to:
   - {indicator: CAS_COMPLETION_SUPPORT_001, is: true, reason: 'The undertaking is worth what its triggers, its cap and its

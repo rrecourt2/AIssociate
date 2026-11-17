@@ -41,7 +41,7 @@ checks:
   evidence:
     best: [security_agreement]
     supporting: [term_sheet, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What could you offer as security for this loan? For example land and buildings, equipment, receivables, stock, shares,
     cash on deposit, or your rights under contracts. A list with rough values is enough to start with.
   note: Choose every kind that is offered. 'contract_rights' covers an assignment of contracts, of a concession or of insurance
@@ -58,7 +58,7 @@ checks:
   evidence:
     best: [facility_agreement]
     supporting: [term_sheet, financial_model, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Say in which currency, and whether a grace period or capitalised interest lifts the figure above the amount committed.
 - id: OBS_SECPKG_004
   question: Can the payments due under the main contracts, or from the main customers, be assigned to the lender and paid
@@ -79,7 +79,7 @@ checks:
   evidence:
     best: [material_contract, offtake_agreement, legal_opinion]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Could the payments from your main customers be made into an account that we control? Does any of your contracts forbid
     assigning its payments, or need the customer's consent?
   note: Look for a clause that forbids assignment or needs the customer's consent, and ask whether the customers would follow
@@ -103,7 +103,7 @@ checks:
   evidence:
     best: [security_agreement, intercreditor_agreement, registry_extract]
     supporting: [term_sheet, debt_schedule]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Security held by an agent for several lenders is shared. Say with whom, and in what proportion.
   leads_to:
   - {indicator: CAS_OTHER_LENDERS_001, is: true, reason: 'Whoever shares the security or ranks ahead on it decides, with
@@ -128,7 +128,7 @@ checks:
   evidence:
     best: [security_agreement, legal_opinion]
     supporting: [term_sheet, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
 - id: OBS_SECPKG_006
   question: What would the security fetch in a forced sale, as a percentage of the most the lender can be owed under the
     facility?
@@ -151,7 +151,7 @@ checks:
   evidence:
     best: [valuation_report]
     supporting: [internal_memo, financial_model, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Add up the forced-sale value of each asset (OBS_SECASSET_004), after the costs of sale and after claims that rank
     ahead. Where security is shared, count only the lender's share. Do not count guarantees. Divide by the figure in OBS_FACILITY_EXPOSURE_001.
     Where no security is offered, the answer is zero.
@@ -168,7 +168,7 @@ checks:
   evidence:
     best: [guarantee_agreement]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Compare the cap of the guarantee with the shortfall in money, not in words.
   leads_to:
   - {indicator: CAS_GUARANTEE_001, is: true, reason: 'That part of the loan then rests on the guarantee, which is tested

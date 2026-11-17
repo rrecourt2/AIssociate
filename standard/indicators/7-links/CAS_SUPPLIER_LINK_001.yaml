@@ -21,7 +21,7 @@ checks:
   evidence:
     best: [supply_agreement, audited_annual_report]
     supporting: [company_record, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: How much of this input do you buy from this supplier, as a share of all you need?
   note: Take the last full financial year, by volume, or by value where volume is not recorded. Name the input in the reason.
 - id: OBS_SUPPLIER_002
@@ -35,7 +35,7 @@ checks:
   evidence:
     best: [market_study, consultant_report, supply_agreement]
     supporting: [company_record, management_accounts]
-    stated: [correspondence, call, officer_note, business_plan]
+    stated: [correspondence, call, analyst_note, business_plan]
   ask: If this supplier stopped delivering tomorrow, who else could supply you, how soon, and at what price?
   note: Three months and a tenth are guides. Count the time needed to approve a new supplier (tests, certification, a customer's
     sign-off) and to move the goods. A supplier that owns the only pipeline, grid connection, licence or technology cannot
@@ -51,7 +51,7 @@ checks:
   evidence:
     best: [credit_rating_report, audited_annual_report, adverse_media_screen]
     supporting: [company_record, public_source, press_article, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Check the buyer's delivery records, the supplier's accounts or a credit report on it, the insolvency register and
     the press. If the search finds nothing, record what was searched, where and when.
 - id: OBS_SUPPLIER_004
@@ -69,7 +69,7 @@ checks:
   evidence:
     best: [supply_agreement, material_contract]
     supporting: [term_sheet, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   leads_to:
   - {indicator: CAS_CONTRACT_REVIEW_001, is: true, reason: The contract is reviewed as a subject of its own}
 - id: OBS_SUPPLIER_005
@@ -82,7 +82,7 @@ checks:
   evidence:
     best: [audited_annual_report, supply_agreement]
     supporting: [management_accounts, company_record, bank_statement, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Do you pay this supplier before it delivers? How much is outstanding with it at the highest point in the year, and
     is any of it covered by a bank guarantee?
   note: One month of deliveries is a guide. Advances to growers, deposits for equipment and goods of the buyer held at the
@@ -105,6 +105,6 @@ checks:
   evidence:
     best: [supply_agreement, consultant_report]
     supporting: [company_record, management_accounts]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Give the stock in days of use, and the share of the need that the second supplier delivers today and is bound to
     deliver.

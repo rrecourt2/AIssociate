@@ -95,10 +95,10 @@ Parts 2 to 5 go under "What we know". Use `###` headings or short bold lead-ins.
 
 On the page of the deal, write the request, how the loan is to be repaid, and the structure in words: who borrows, where the cash is earned and how it reaches the lender. Link to the pages of the parties and the project.
 
-**The working notes** have their own page, `work/working-notes.md`, with `about: DEAL`. They say how to work on this deal: what the officer asked for, in their words and with the date, which page is the place for what, and what is left to do. They hold no analysis and no account of what was done: `show <deal> log` has that. `check` does not ask this one page for citations. It still reports a citation of a replaced fact there.
+**The working notes** have their own page, `work/working-notes.md`, with `about: DEAL`. They say how to work on this deal: what the analyst asked for, in their words and with the date, which page is the place for what, and what is left to do. They hold no analysis and no account of what was done: `show <deal> log` has that. `check` does not ask this one page for citations. It still reports a citation of a replaced fact there.
 
 ```markdown
-- 12 November 2026, officer: "Write more about the second line. The committee will ask what it adds."
+- 12 November 2026, analyst: "Write more about the second line. The committee will ask what it adds."
 - The supply contracts belong on the page of Cedar Foods Ltd, not on a page of their own.
 - Left to do: the page of the guarantor, once it is named.
 ```

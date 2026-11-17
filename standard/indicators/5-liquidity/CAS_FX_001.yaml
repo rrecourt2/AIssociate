@@ -29,7 +29,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Do you earn revenue in a foreign currency, or sell at prices that follow one? A revenue breakdown by currency or
     a rough share is enough to start with.
   note: Foreign means any currency other than the one in which the party pays most of its costs.
@@ -46,7 +46,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Where the answer is other, name the currency.
 - id: OBS_FX_002
   question: What share of the party's revenue is earned in a foreign currency, or at prices set in one?
@@ -60,7 +60,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What share of your revenue is in foreign currency, or at prices that follow one? A rough percentage is fine at this
     stage.
 - id: OBS_FX_007
@@ -73,7 +73,7 @@ checks:
   evidence:
     best: [audited_annual_report, supply_agreement]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Do you pay for anything in a foreign currency, or at a price that goes up when the local currency falls? Think of
     imported raw materials, fuel, spare parts, freight and licence fees.
   if_unknown: A breakdown of costs by currency is not in the documents so far.
@@ -95,7 +95,7 @@ checks:
   evidence:
     best: [audited_annual_report, supply_agreement]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Roughly what share of your input costs is imported, or priced off international markets even when billed in local
     currency (imported gas, fuel or raw materials, for example)?
   note: Inputs billed in local currency at a price that follows the import price count as imported.
@@ -111,7 +111,7 @@ checks:
   evidence:
     best: [facility_agreement, audited_annual_report]
     supporting: [debt_schedule, term_sheet, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is any of your borrowing in a different currency from the income you repay it with? For example a loan in dollars
     or euros repaid from sales in local currency. How much is it, out of all your borrowing?
   note: 'A tenth is a guide to what matters. What counts is whether a fall of the earning currency would raise the party''s
@@ -140,7 +140,7 @@ checks:
   evidence:
     best: [internal_memo, consultant_report]
     supporting: [financial_model, audited_annual_report, public_source, press_article]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   if_unknown: Nobody knows how far the currency can fall before a payment is missed.
   note: Take the fall from published exchange rates and name the twelve months. Take the party's prices and volumes in those
@@ -159,7 +159,7 @@ checks:
   evidence:
     best: [epc_contract, supply_agreement, material_contract]
     supporting: [investment_plan, financial_model, management_accounts]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Are any of your equipment orders, building contracts or other large purchases priced in a foreign currency? In which
     currency is the money that will pay for them?
   if_unknown: A fall in the currency between the order and the payment would leave the investment plan short of funds.
@@ -181,7 +181,7 @@ checks:
   evidence:
     best: [audited_annual_report, offtake_agreement, material_contract]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [management_presentation, correspondence, call, officer_note]
+    stated: [management_presentation, correspondence, call, analyst_note]
   ask: When a weaker currency raises your input costs and the cost of your foreign-currency debt, can you raise your selling
     prices to match within a quarter, fully or in part? Are your prices set in or linked to a foreign currency, or are they
     set or capped by the state?
@@ -202,7 +202,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, financial_model, company_record, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Do you have costs or debt in the same foreign currencies as your revenue? For each currency, how much do you receive
     and how much do you pay in a year?
   note: About a fifth is a guide. Take the year of the loan in which the gap is widest. The risk note in the audited accounts
@@ -225,7 +225,7 @@ checks:
   evidence:
     best: [hedge_document, audited_annual_report]
     supporting: [management_accounts, company_record, corporate_governance_policy, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What part of your foreign-currency exposure for the next twelve months is hedged today, and with which contracts?
     Please share the confirmations or the bank's hedge report.
   note: Count only contracts that are signed. Where there are none, the answer is 0. The party's own figure needs the bank's
@@ -245,7 +245,7 @@ checks:
   evidence:
     best: [hedge_document]
     supporting: [management_accounts, debt_schedule]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Where hedges are rolled over each year, the answer is no. The party then depends on being able to roll them, at
     a price nobody knows yet. Where there are no hedging contracts, the answer is no.
 - id: OBS_HEDGE_COUNTERPARTY_001
@@ -263,6 +263,6 @@ checks:
   evidence:
     best: [hedge_document, credit_rating_report]
     supporting: [company_record, management_accounts]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Record the bank's rating where it has one. A hedge with a weak bank fails when the currency moves most. Where there
     are no hedging contracts, the answer is no.

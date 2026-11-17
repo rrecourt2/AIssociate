@@ -28,7 +28,7 @@ checks:
   evidence:
     best: [audited_annual_report, technical_feasibility]
     supporting: [company_record, management_accounts, annual_report, prospectus]
-    stated: [call, officer_note, management_presentation, business_plan]
+    stated: [call, analyst_note, management_presentation, business_plan]
   ask: How much of the crop you process or trade comes from your own farms, and how much do you buy from farmers or outgrowers?
   note: Give the figure for the last full season, and say whether it changes much from year to year.
 - id: OBS_AGRI_002
@@ -42,7 +42,7 @@ checks:
   evidence:
     best: [technical_feasibility, consultant_report]
     supporting: [company_record, management_accounts, board_minutes]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: In each of the last five seasons, how much did your contracted farmers agree to deliver and how much did they deliver?
     Was there a season in which they sold to others?
   note: 'Four fifths is a guide. Look at the seasons in which the market price rose above the contract price: that is when
@@ -61,7 +61,7 @@ checks:
   evidence:
     best: [supply_agreement, technical_feasibility]
     supporting: [financial_model, company_record, management_accounts]
-    stated: [call, officer_note, business_plan]
+    stated: [call, analyst_note, business_plan]
   ask: What is the highest yearly intake in your projections, and what was your intake in each of the last five seasons?
     Where will the extra volume come from, and is it under contract?
   note: Use volume, not value. A letter of intent, or a list of farmers the party hopes to sign, is not a contract. Where
@@ -80,7 +80,7 @@ checks:
   evidence:
     best: [technical_feasibility, audited_annual_report]
     supporting: [company_record, public_source, press_article, annual_report, prospectus]
-    stated: [call, officer_note, management_presentation]
+    stated: [call, analyst_note, management_presentation]
   ask: What was your harvest or intake in each of the last ten years? Which was the worst year, and what caused it?
   note: Use volume, not value. With fewer than ten years of record, use the record of the district or of the crop and say
     so.
@@ -95,7 +95,7 @@ checks:
   evidence:
     best: [technical_feasibility, audited_annual_report]
     supporting: [company_record, management_accounts, public_source, press_article, annual_report, prospectus]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: In the last five years, was there a season in which drought, flood, frost, a pest or a disease cut your harvest or
     intake? By how much?
   note: Four fifths is a guide. Record the event, the season and the fall in volume. If a search of weather and disease
@@ -114,7 +114,7 @@ checks:
   evidence:
     best: [regulatory_document, consultant_report]
     supporting: [company_record, board_minutes, public_source, press_article]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: In the last five years, was any shipment of yours stopped at a border? Was any of your certificates suspended or
     withdrawn?
   note: If the search finds nothing, record what was searched, where and when. Some importing markets publish their border
@@ -130,7 +130,7 @@ checks:
   evidence:
     best: [technical_feasibility, lease_agreement, material_contract]
     supporting: [company_record]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: How does the produce get from the farm to your plant, and who owns the collection points, the cooling and the testing
     at intake? Where is your product stored until it is sold, and who owns the stores, the cold rooms and the refrigerated
     transport?
@@ -146,7 +146,7 @@ checks:
   evidence:
     best: [interim_financial_statements]
     supporting: [management_accounts, bank_statement, financial_model]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: In which months do you buy your crop, and in which months is your overdraft or seasonal borrowing at its highest?
   leads_to:
   - {indicator: CAS_LIQUIDITY_001, reason: 'Cash has to be read in the months this answer names, not at the year-end'}
@@ -167,7 +167,7 @@ checks:
   evidence:
     best: [technical_feasibility, insurance_policy]
     supporting: [company_record, insurance_broker_report]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: 'What protects you in a bad season: irrigation, buying from several regions, or crop or weather insurance?'
   note: 'Say which event each protection answers: irrigation does not help against a flood or a disease, and insurance pays
     only for the perils and the area it names.'

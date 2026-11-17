@@ -2,7 +2,7 @@
 
 The tool gives you the material: the claims, the facts and the pages. You write the document.
 
-**The institution's own template and style come first.** Ask the officer for them if you do not have them. Follow their headings, their order and their wording. Use the outline below only where the institution has none.
+**The institution's own template and style come first.** Ask the analyst for them if you do not have them. Follow their headings, their order and their wording. Use the outline below only where the institution has none.
 
 ## Before you draft
 
@@ -65,5 +65,5 @@ If the amount, the currency, the tenor, the security or the borrower is not yet 
 - **Say who said what.** "The CFO said" is not "the accounts show".
 - **State what is not known.**
 - **Do not quote the tool's counts** of claims or checks. They change with the next answer, and no fact holds them. Name the claims that matter and say where each stands.
-- **Save the draft as Markdown in `Internal/outputs`**, named for the document, the borrower and the version: `FP Cedar Foods v2 draft.md`. `check` reads the Markdown files there the same way as the pages: paragraph by paragraph, every number against the records cited beside it. Put the title, the date and the version in top lines between two `---`, as on a page: `check` does not read those. Make the Word file from the draft with your own tools once `check` is clean. Take the citations out of the final version only if the officer asks. Move a draft that was sent, or that a newer version replaced, to a sub-folder such as `Internal/outputs/sent`. It says what was said then, and `check` reads only the drafts directly in `Internal/outputs`.
-- **When the officer corrects the draft**, correct the fact and the page as well.
+- **Save the draft as Markdown in `Internal/outputs`**, named for the document, the borrower and the version: `FP Cedar Foods v2 draft.md`. `check` reads the Markdown files there the same way as the pages: paragraph by paragraph, every number against the records cited beside it. Put the title, the date and the version in top lines between two `---`, as on a page: `check` does not read those. Make the Word file from the draft with your own tools once `check` is clean. Take the citations out of the final version only if the analyst asks. Move a draft that was sent, or that a newer version replaced, to a sub-folder such as `Internal/outputs/sent`. It says what was said then, and `check` reads only the drafts directly in `Internal/outputs`.
+- **When the analyst corrects the draft**, correct the fact and the page as well.

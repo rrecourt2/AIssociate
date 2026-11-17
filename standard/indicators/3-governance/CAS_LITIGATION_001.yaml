@@ -23,7 +23,7 @@ checks:
   evidence:
     best: [legal_opinion, audited_annual_report]
     supporting: [company_certificate, board_minutes, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is anyone suing you, or has anyone sent you a written claim? Please include arbitrations and cases you expect to
     win.
   leads_to:
@@ -40,7 +40,7 @@ checks:
   evidence:
     best: [legal_opinion, audited_annual_report]
     supporting: [management_accounts, board_minutes, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What is claimed in each pending case, and what do your lawyers say about each?
   note: Take the amount claimed, not the party's own view of what it will lose, and say at which date. List the cases one
     by one where there are more than one.
@@ -56,7 +56,7 @@ checks:
   evidence:
     best: [legal_opinion, audited_annual_report]
     supporting: [financial_model, management_accounts, internal_memo, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: This is the worst case, and it is meant to be. If the answer is no, OBS_LIT_003 and OBS_LIT_008 show how likely
     the loss is and who else would bear it.
 - id: OBS_LIT_003
@@ -72,7 +72,7 @@ checks:
   evidence:
     best: [audited_annual_report, legal_opinion]
     supporting: [management_accounts, board_minutes, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Which of the pending cases have you provided for in your accounts, and for how much?
   note: Set the lawyers' letter to the auditor beside the note on provisions and contingent liabilities. A case the lawyers
     call likely to be lost, with no provision, means that profit and equity are overstated by that amount.
@@ -87,7 +87,7 @@ checks:
   evidence:
     best: [regulatory_document, legal_opinion, audited_annual_report]
     supporting: [board_minutes, company_certificate, company_record, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: 'Is any authority looking into your company at the moment: a regulator, the competition authority, a prosecutor?
     A routine inspection with no findings does not count.'
   note: This check does not hang on OBS_LIT_001. Tax audits and tax disputes are asked under OBS_TAX_005.
@@ -105,7 +105,7 @@ checks:
   evidence:
     best: [legal_opinion, credit_rating_report, adverse_media_screen]
     supporting: [audited_annual_report, registry_extract, public_source, press_article]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: This check does not hang on OBS_LIT_001, so that the topic cannot close on one answer. Search where the party is
     registered and where its main assets are. If the search finds nothing, record what was searched, where and when.
 - id: OBS_LIT_008
@@ -121,6 +121,6 @@ checks:
   evidence:
     best: [insurance_policy, correspondence, material_contract]
     supporting: [insurance_broker_report, legal_opinion]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: 'The letter has to come from the insurer or from whoever gave the indemnity. A policy that exists is not cover that
     has been confirmed: insurers reserve their rights. An indemnity is worth what its giver can pay.'

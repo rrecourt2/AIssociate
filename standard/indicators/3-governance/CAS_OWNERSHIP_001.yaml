@@ -25,7 +25,7 @@ checks:
   evidence:
     best: [shareholder_register, shareholder_agreement, memorandum_and_articles]
     supporting: [organizational_chart, board_composition]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A tenth is a guide. A family that votes together counts as one shareholder only if nothing shows that its members
     disagree.
 - id: OBS_OWN_005
@@ -39,7 +39,7 @@ checks:
   evidence:
     best: [shareholder_register, registry_extract, audited_annual_report]
     supporting: [organizational_chart, beneficial_ownership_declaration, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: If the holdings cannot be drawn on one page with every line ending in a name, treat the answer as not known.
   leads_to:
   - {indicator: CAS_BENEFICIAL_OWNERSHIP_001, is: true, reason: A chain of owners that runs in a circle does not end at
@@ -57,7 +57,7 @@ checks:
   evidence:
     best: [shareholder_agreement, jv_agreement, memorandum_and_articles]
     supporting: [shareholder_resolution, board_minutes]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is there a shareholders' agreement? If so, could we have a copy?
 - id: OBS_OWN_004
   question: 'Do the shareholders'' agreement or the articles give minority shareholders rights of their own: a veto on named
@@ -71,7 +71,7 @@ checks:
   evidence:
     best: [shareholder_agreement, memorandum_and_articles]
     supporting: [legal_opinion, shareholder_resolution]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: If yes, list the decisions that need the minority's consent, and see whether this financing is one of them.
   leads_to:
   - {indicator: CAS_AUTHORIZATION_001, is: true, reason: The borrowing or the security may need the consent of a minority
@@ -89,7 +89,7 @@ checks:
   evidence:
     best: [legal_opinion, audited_annual_report, adverse_media_screen]
     supporting: [board_minutes, shareholder_resolution, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Have the shareholders had a serious disagreement in the last five years, among themselves or with the company? What
     was it about, and how did it end?
   note: A party that says yes is believed. If the search finds nothing, record what was searched, where and when.
@@ -105,7 +105,7 @@ checks:
   evidence:
     best: [registry_extract, shareholder_register, legal_opinion]
     supporting: [security_agreement, shareholder_agreement, company_certificate]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Has any shareholder pledged its shares in the company, or given someone an option over them?
   note: Whoever enforces a pledge over the shares can end up as the owner, and the lender has no say in it. A pledge
     counts when its enforcement, alone or with a change that is already planned, could move control or a blocking stake.
@@ -127,7 +127,7 @@ checks:
   evidence:
     best: [shareholder_agreement, company_certificate]
     supporting: [board_minutes, shareholder_resolution]
-    stated: [correspondence, call, officer_note, management_presentation, business_plan]
+    stated: [correspondence, call, analyst_note, management_presentation, business_plan]
   ask: Do the owners plan to sell, to bring in a new investor, to list the company or to hand over to the next generation
     during the life of the loan?
   note: Where one company owns the party and is not itself asked this check, look up the chain to the people or the
@@ -146,7 +146,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, shareholder_resolution, board_minutes, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: 'Take profit in cash terms: leave out gains on revaluation. Count fees and other payments to shareholders that are
     not the price of a service at market rates.'
   leads_to:

@@ -19,7 +19,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement]
     supporting: [term_sheet, organizational_chart, internal_memo, annual_report, prospectus]
-    stated: [executive_summary, call, officer_note]
+    stated: [executive_summary, call, analyst_note]
   ask_whom: lender
   if_unknown: Until the kind of credit is known, the tool cannot say which indicators apply.
   note: The answer is for the deal. It can be recorded for one party alone when that party is a different kind of credit
@@ -35,7 +35,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, operational_license, annual_report, prospectus]
-    stated: [business_plan, executive_summary, public_source, press_article, call, officer_note]
+    stated: [business_plan, executive_summary, public_source, press_article, call, analyst_note]
   ask: What does the business do, and which activity earns the largest part of its profit?
   note: Choose the sector that earns the largest part of the profit, also where another activity brings in more revenue.
     A business that trades more than it makes, and earns most of its profit from what it makes, is in manufacturing. OBS_VALUE_CHAIN_001
@@ -50,7 +50,7 @@ checks:
   evidence:
     best: [regulatory_document, operational_license, audited_annual_report]
     supporting: [internal_memo, annual_report, prospectus]
-    stated: [public_source, press_article, correspondence, call, officer_note]
+    stated: [public_source, press_article, correspondence, call, analyst_note]
   ask: Does the business hold a licence from a central bank or another financial regulator, and does that regulator supervise
     it?
   note: If the answer is yes and the kind of credit is not recorded as a financial institution, look at the kind of credit
@@ -69,7 +69,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, internal_memo, annual_report, prospectus]
-    stated: [business_plan, executive_summary, call, officer_note]
+    stated: [business_plan, executive_summary, call, analyst_note]
   ask: What is the main role of the business? Does it grow or extract, make, trade, distribute, sell to consumers, provide
     a service, develop assets, own and operate them, hold a concession, lend, or manage funds?
   note: Choose the role that earns the largest part of the profit, also where another role brings in more revenue. A business
@@ -86,7 +86,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, market_study, internal_memo, annual_report, prospectus]
-    stated: [business_plan, executive_summary, management_presentation, public_source, press_article, call, officer_note]
+    stated: [business_plan, executive_summary, management_presentation, public_source, press_article, call, analyst_note]
   ask: Please walk us through the business. What do you buy and from whom, what do you do with it, whom do you sell to,
     and on which step do you earn your margin?
   note: 'Describe, do not judge. A few sentences in the terms of the business itself: the goods, the steps, the customers.
@@ -102,7 +102,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, market_study, internal_memo, annual_report, prospectus]
-    stated: [business_plan, executive_summary, management_presentation, public_source, press_article, call, officer_note]
+    stated: [business_plan, executive_summary, management_presentation, public_source, press_article, call, analyst_note]
   ask: What do you do differently from other businesses in your line? What would surprise someone who knows the sector but
     not your company?
   note: Name a few things, each with the figure it shows in. Examples are an unusual mix of activities, an owner who is
@@ -122,7 +122,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, interim_financial_statements, tax_returns, annual_report, prospectus]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   note: Read the revenue note or the segment note, not the description at the front of the report. The check is not asked
     of a business that does not operate yet, because it has no revenue to read.
 - id: OBS_SECTOR_CONFIRM_004
@@ -140,7 +140,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, interim_financial_statements, tax_returns, annual_report, prospectus]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   note: Take the profit before tax over the last three years where the accounts allow it, and count gains from revaluation
     as something else. Half is a guide. What counts is whether the business that was described is the one that earns the
     money.

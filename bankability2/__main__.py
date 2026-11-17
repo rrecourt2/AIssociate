@@ -97,14 +97,15 @@ def status(args):
         for entry in entries:
             touched = len(entry["added"]) + len(entry["changed"])
             print(f"- {entry['n']}. {entry['at'][:10]} {entry['by']}: {entry['note']} ({touched} records)")
-    counts = {}
-    for row in rows:
-        counts[row["state"]] = counts.get(row["state"], 0) + 1
-    print("\n## Next\n\nChecks: " + (", ".join(f"{count} {state}" for state, count in counts.items()) or "none apply yet") + ".")
+    print("\n## Next\n\nChecks: " + (", ".join(f"{count} {state}" for state, count in assess.tally(rows).items())
+                                    or "none apply yet") + ".")
     due = [row["due_by"] for row in rows if row["state"] == "open"]
     if due:  # most open checks are work for a later stage
         print("Open, by the stage each is ideally answered by: "
               + ", ".join(f"{titles[stage]} {due.count(stage)}" for stage in std["stage_ids"] if stage in due) + ".")
+        routes = [std["checks"][row["check"]].get("settled_by", "company") for row in rows if row["state"] == "open"]
+        print("Open, by what settles them: " + ", ".join(f"{title} {routes.count(route)}" for route, title in standard.ROUTES.items()
+                                                         if route in routes) + ".")
     waits = [row for row in rows if row["state"] == "waiting"]
     if waits:  # a check that waits needs no work now
         others = [row["for"] for row in waits if not std["checks"][row["check"]].get("mitigant")]
@@ -160,6 +161,7 @@ def add(args):
                 source.setdefault("fingerprint", mark)
             else:
                 missing.append(source["where"])
+    was = assess.tally(assess.assess(memory, std))
     try:
         entry, names = store.apply(memory, change, std)
     except (TypeError, KeyError, AttributeError) as error:  # nothing is written before apply returns
@@ -176,7 +178,12 @@ def add(args):
         print(f"{name} -> {rid}")
     for path in missing:
         print(f"Note: {path} was not found in this copy of the folder, so it has no fingerprint.")
-    for line in assess.stray(memory, std, assess.assess(memory, std), [*entry["added"], *entry["changed"]]):
+    rows = assess.assess(memory, std)
+    now = assess.tally(rows)
+    moved = [f"{now.get(state, 0) - was.get(state, 0):+d} {state}" for state in {**was, **now} if now.get(state) != was.get(state)]
+    if moved:
+        print(f"Checks: {', '.join(moved)}.")
+    for line in assess.stray(memory, std, rows, [*entry["added"], *entry["changed"]]):
         print(f"Note: {line}. The answer is recorded all the same.")
     cite = [path for path, text in pages.all_pages(args.deal).items()  # what a page says of a changed record may no longer hold
             if set(entry["changed"]) & set(pages.ID.findall(pages.own_text(text)))]
@@ -275,6 +282,13 @@ def show(args):
         outdated = sum(fact["state"] == "outdated" for fact in memory["facts"].values())
         if outdated and len(args.what) == 1:
             print(f"\nOutdated facts not listed: {outdated}. Name one, or a word it holds, to see it.")
+    elif what == "sample":  # ten facts taken from a document, spread over the record, to compare with the page each names
+        taken = [fid for fid, fact in memory["facts"].items() if fact["state"] == "current" and fact.get("said_by") != "inference"]
+        step = max(1, len(taken) // 10)  # another ten after each change to the record
+        print("\n".join(fact_lines(memory, taken[store.revision(memory) % step::step][:10])) or "Nothing found.")
+    elif what in store.TABLES:  # every record of one kind, one line each
+        print("\n".join(f"- {rid}: {summary(record)}" + f" ({record.get('state')})" * (record.get("state", "current") != "current")
+                        for rid, record in memory[what].items()) or "Nothing found.")
     elif what in std["checks"] or what in std["by_id"]:
         entry = std["checks"].get(what) or std["by_id"][what]
         print(json.dumps({key: value for key, value in entry.items() if key != "checks"}, indent=1, ensure_ascii=False))
@@ -338,9 +352,27 @@ def file_problems(deal, memory):
     return found
 
 
+def quote_problems(deal, memory):
+    """Quotations that are not in the text of their source: its extract, or its original where that is a text file."""
+    found, texts = [], {}
+    for fid, fact in memory["facts"].items():
+        sid, source = fact["source"], memory["sources"][fact["source"]]
+        if not fact.get("quote") or fact["state"] == "outdated":
+            continue
+        if sid not in texts:
+            paths = [source.get("extract"), *filter(re.compile(r"\.(md|txt|html?)$", re.I).search, [source.get("where") or ""])]
+            texts[sid] = [" ".join(text.split()).casefold() for text in (files.read(deal, path) for path in paths if path) if text]
+            if not any(paths):
+                found.append(f"{sid}: facts quote it, and it has no extract to check them against")
+        if texts[sid] and not any(" ".join(fact["quote"].split()).casefold() in text for text in texts[sid]):
+            found.append(f"{fid}: its quotation is not in the text of {sid}")
+    return found
+
+
 def check(args):
     memory, std = load(args.deal)
     found = store.verify(memory) + std["notes"] + file_problems(args.deal, memory) + pages.problems(args.deal, memory)
+    found += quote_problems(args.deal, memory)
     found += [f"{did}: the decision names nothing it rests on" for did, decision in memory["decisions"].items()
               if not decision.get("rests_on")]
     for table, keys in (("facts", ["statement"]), ("decisions", ["decision", "reason"]), ("links", ["why"]), ("subjects", ["note"])):

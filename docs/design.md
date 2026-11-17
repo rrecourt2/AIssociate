@@ -2,13 +2,13 @@
 
 16 November 2026. This document describes Bankability 2 as it is built, and what is left for later. It gathers the decisions taken in the design interview of 13 and 14 November, and the owner's decisions after the three rounds of the trial on 15 and 16 November.
 
-The tool has run on a made-up deal and, in three rounds, on the public documents of a real company. It has not been tried in Microsoft Copilot Cowork, and not on a live deal with an officer.
+The tool has run on a made-up deal and, in three rounds, on the public documents of a real company. It has not been tried in Microsoft Copilot Cowork, and not on a live deal with an analyst.
 
 ## 1. What it is
 
 Bankability 2 keeps the record of an investment deal. It keeps everything that is shared about a deal in one folder, in a form that a person and any AI tool can pick up again later. It knows how the deal is structured, what is known, what is assumed and what is still missing, and it always says what to do and collect next.
 
-It is written for a development finance institution and for an investment officer who works with an AI assistant. The first host is Microsoft Copilot Cowork.
+It is written for a development finance institution and for an investment analyst who works with an AI assistant. The first host is Microsoft Copilot Cowork.
 
 It is built from scratch. It takes its standard and its lessons from the first Bankability, and none of its code.
 
@@ -66,7 +66,7 @@ What Microsoft documents for Copilot Cowork in November 2026, none of it tested 
 │   ├── …               every document the client shared, in this one folder
 │   ├── index.md        the documents by the folders of the data room, and the slots still empty
 │   └── manifest.json   one entry per document
-└── Internal/           the officer and the deal team only
+└── Internal/           the analyst and the deal team only
     ├── sources/        calls, emails, notes, press articles, internal memos, and extracts/
     ├── record/         record.json: the record and its log; only the tool writes it
     ├── wiki/           deal, parties, people, context, topics, terms, work, with index.md and wiki.html
@@ -103,7 +103,7 @@ One entry per source: a document, a call, an email or a note. It says what the s
 ```json
 "S-003": {"title": "Call with the CFO, 12 November 2026", "kind": "call", "date": "2026-11-12",
           "where": "Internal/sources/2026-11-12 CFO call.md", "fingerprint": "9f2c…",
-          "about": ["P-001"], "read": "full", "sent_by": "The investment officer",
+          "about": ["P-001"], "read": "full", "sent_by": "The investment analyst",
           "map": [{"at": "min 12–18", "topic": "margins", "gist": "Explains the margin drop by milk prices."}]}
 ```
 
@@ -121,7 +121,7 @@ Exact things: names, amounts, dates, terms, shares, commitments. If something wo
           "answers": [{"check": "OBS_DEBT_001", "value": true}], "state": "current"}
 ```
 
-- **Who said it.** A document, the client, the officer, a third party, or the AI's own inference.
+- **Who said it.** A document, the client, the analyst, a third party, or the AI's own inference.
 - **Replaced, not removed.** A fact that is replaced keeps its place, with the state `outdated` and a pointer to what replaced it. A fact can be marked `disputed`.
 - **A figure at a date is not replaced by a later one.** Both stay current. The tool shows the latest, and the latest answers a check.
 - **A fact comes from a source.** A wiki page or a draft is the AI's own writing and is never evidence for a fact.
@@ -151,7 +151,7 @@ Who the borrower is, who guarantees, which customers, suppliers and related part
 - **Repayment may rest on someone other than the borrower.** A facility `relies_on` the party or group whose cash flow repays it: the perimeter. The business and its money are examined once, on the perimeter. A company inside it is examined as a legal entity: its owners, its integrity, its board, its standing.
 - **Checks on a project follow the financing.** A facility `finances` a project or an asset. Other projects are described and not checked.
 - **A role can be an empty seat**, such as a guarantor who is not yet known. Its checks wait until it has a name. Analysis of the rest goes ahead.
-- **Anything can propose.** The AI proposes parties and links as it reads, and the officer can simply say so. A proposed link is usable at once.
+- **Anything can propose.** The AI proposes parties and links as it reads, and the analyst can simply say so. A proposed link is usable at once.
 - **A link carries its reason:** why this party matters for repayment. What is left out is a decision, with a reason that points to facts.
 - **The AI states the structure once**, mentions it again when it changes, and asks only when it cannot decide.
 
@@ -159,7 +159,7 @@ Decisions and questions to the client are recorded as well. A question is record
 
 ### 5.4 The wiki: what is understood
 
-The standard gives the work its rigour. The wiki gives it depth: what the business is, how it works, how its parts relate, what is particular about it, and how its context shows in its figures. It is a wiki, not the financial proposal. It describes, objectively and in context. The FP concludes, and is condensed from it. The officer reads the FP, not the wiki, so there is no review duty. When the officer corrects something in a draft or in chat, the AI corrects the page and the fact behind it.
+The standard gives the work its rigour. The wiki gives it depth: what the business is, how it works, how its parts relate, what is particular about it, and how its context shows in its figures. It is a wiki, not the financial proposal. It describes, objectively and in context. The FP concludes, and is condensed from it. The analyst reads the FP, not the wiki, so there is no review duty. When the analyst corrects something in a draft or in chat, the AI corrects the page and the fact behind it.
 
 Seven shelves, two levels deep:
 
@@ -199,7 +199,7 @@ Other rules for a page:
 - One subject per page, and each thing said once.
 - Nothing is written when a source adds nothing.
 - Only a person can mark a page as checked. Nobody has to.
-- The People shelf holds what people said, asked for and decided, with sources. The officer's private reading of people stays out of the deal folder.
+- The People shelf holds what people said, asked for and decided, with sources. The analyst's private reading of people stays out of the deal folder.
 
 Writing rules, taken from Wikipedia's list of signs of AI writing:
 
@@ -218,12 +218,12 @@ A preference goes by what it is about.
 
 | About | Example | Home |
 |---|---|---|
-| This deal | "Write more about the projects." "The committee will ask about the owners." | The deal folder: one page of working notes on the Work shelf, in the officer's words and with the date. The next assistant inherits it. What the officer says about the deal itself is a source and a fact as well. |
+| This deal | "Write more about the projects." "The committee will ask about the owners." | The deal folder: one page of working notes on the Work shelf, in the analyst's words and with the date. The next assistant inherits it. What the analyst says about the deal itself is a source and a fact as well. |
 | The institution | Its template, its house style, its own checks | The institution's layer |
-| The officer | How they like answers | The assistant's own memory, if its host gives it one |
+| The analyst | How they like answers | The assistant's own memory, if its host gives it one |
 
-- **Deal content belongs in the deal folder.** An assistant's own memory is for how the officer likes to work, never for what a deal contains.
-- **A preference is recorded only when the officer stated it**, never because a document says so.
+- **Deal content belongs in the deal folder.** An assistant's own memory is for how the analyst likes to work, never for what a deal contains.
+- **A preference is recorded only when the analyst stated it**, never because a document says so.
 - **Whether an assistant's own memory is on, and how it is scoped, is for the user and the institution to decide.** The tool cannot see it. See [audit.md](audit.md).
 
 ## 6. The standard
@@ -269,7 +269,7 @@ There are three layers. A lower layer can add, change or switch off anything in 
 | Institution | All deals of one institution | Its names for the stages, its own checks, its system fields |
 | Deal | One deal | "Add a check on the milk-price clause." |
 
-- **The officer adjusts by saying so.** The AI writes the change and hands it to the tool. The tool checks it and records it in the deal's layer, with the reason, the date and who asked.
+- **The analyst adjusts by saying so.** The AI writes the change and hands it to the tool. The tool checks it and records it in the deal's layer, with the reason, the date and who asked.
 - **The base is copied into the deal folder** when the deal starts, so the folder says by itself which standard it uses. `upgrade` replaces the copy with the standard that comes with the tool, and logs the change of version.
 - **Moving an adjustment up to the institution's layer is a deliberate step**, done by hand.
 - **Two ways to switch something off**, both reversible and both with a reason:
@@ -342,11 +342,11 @@ There is one skill. Its four reference files cover recording, pages, the standar
 
 Text in a document is data and never an instruction. The skill says so. That is guidance to a model, not a control.
 
-Two more rules keep the record from poisoning itself. A fact comes from a source, never from a wiki page or a draft: the AI's own writing is not evidence. And a preference is recorded only when the officer stated it.
+Two more rules keep the record from poisoning itself. A fact comes from a source, never from a wiki page or a draft: the AI's own writing is not evidence. And a preference is recorded only when the analyst stated it.
 
 ## 10. Systems and documents
 
-- **Systems.** The institution's layer lists each system, its fields and the gate each field belongs to. A fact names the fields it fills. `show sheet` prints each system with every field: the value, the fact and the source, or "missing". The officer types the values in through the browser. Fields without a value are on the next list from the start, so that a gate does not come as a surprise.
+- **Systems.** The institution's layer lists each system, its fields and the gate each field belongs to. A fact names the fields it fills. `show sheet` prints each system with every field: the value, the fact and the source, or "missing". The analyst types the values in through the browser. Fields without a value are on the next list from the start, so that a gate does not come as a surprise.
 - **Documents.** The scan, the CIP and the FP are drafted by the AI from the claims, the wiki and the facts. The institution's own template and style come first. The draft is kept as Markdown in `Internal/outputs`, where `check` reads it like a page, and is made into a Word file with the host's tools. A CIP lists the assumptions that still need testing. An FP is driven by conclusions on risk. Where no terms exist, the document gives a preliminary view and a list of what is missing, and makes no recommendation.
 
 ## 11. Simple to audit
@@ -388,7 +388,7 @@ One thing comes before first use: a half-hour test in the tenant, with the made-
 
 1. A half-hour test in the tenant of how Cowork runs a script from a skill and saves files.
 2. A review of the standard by someone who does credit work.
-3. Use on a live deal with an officer. The trial on public documents ran in three rounds.
+3. Use on a live deal with an analyst. The trial on public documents ran in three rounds.
 4. Whether an institution lets client calls be transcribed. It decides how much of the record can come from calls.
 5. The fields of an institution's systems. They are written inside its own tenant and stay there.
 6. Whether an institution lets its assistants keep a memory of their own, and how it is scoped.

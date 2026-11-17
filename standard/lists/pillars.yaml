@@ -1,6 +1,6 @@
 pillars:
 - id: deal
-  title: The deal
+  title: The opportunity
   layer: deal
   description: The request, the two ways out, who is in the deal and the kind of business.
 - id: environment

@@ -71,7 +71,7 @@
  "pillars": [
   {
    "id": "deal",
-   "title": "The deal",
+   "title": "The opportunity",
    "layer": "deal",
    "description": "The request, the two ways out, who is in the deal and the kind of business."
   },
@@ -728,9 +728,9 @@
    "description": "Transcript or notes of a call or a meeting."
   },
   {
-   "id": "officer_note",
-   "title": "Note by the officer",
-   "description": "A note by the investment officer or the deal team, including what the officer tells the assistant."
+   "id": "analyst_note",
+   "title": "Note by the analyst",
+   "description": "A note by the investment analyst or the deal team, including what the analyst tells the assistant."
   },
   {
    "id": "internal_memo",
@@ -1539,7 +1539,7 @@
        "executive_summary",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is the borrower a company that runs the business itself, a holding company, a company set up only for this project or asset, or a fund?",
@@ -1587,7 +1587,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does the borrower have a parent company, subsidiaries or sister companies? A group chart would answer this.",
@@ -1636,7 +1636,7 @@
        "executive_summary",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Could you describe the deal in outline? Who borrows, which projects or assets are financed, which facilities are planned and which contracts matter. A structure chart or a term sheet is enough at this stage.",
@@ -1677,7 +1677,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does any party stand behind another in this deal, for example with a guarantee, an undertaking to complete the project, a cash sweep or shared reserves? If so, who supports whom?",
@@ -1725,7 +1725,7 @@
       "stated": [
        "business_plan",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is there a contract that the business could not service its debt without? For example with a main customer, a public authority, a landlord or a main supplier.",
@@ -1760,7 +1760,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is it settled which company will borrow and who else will stand behind the loan, or could that still change before signing?"
@@ -1804,7 +1804,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does the borrower itself employ the people and hold the plant, premises and equipment of the business, or are they in another company of the group?",
@@ -1850,7 +1850,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Follow the money. Who invoices the customer, into whose account does the customer pay, and who owns the site, the licences and the brand? This check does not hang on what the client has said. If the search finds nothing, record what was searched, where and when."
@@ -1918,7 +1918,7 @@
        "executive_summary",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What are you asking us for? How much, in which currency, for how long, and what will the money pay for?"
@@ -1955,7 +1955,7 @@
        "business_plan",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Will the money pay for one thing that you can name, such as a new plant or line, or the purchase of an asset? Or will it go into the business as a whole?",
@@ -1999,7 +1999,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What kind of financing are you looking for? A senior loan with or without security, a loan that ranks behind other lenders, equity, or a guarantee?",
@@ -2039,7 +2039,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does the business already have loans, bonds, leases or shareholder loans? A yes or no is enough to start with.",
@@ -2089,7 +2089,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please list all the financing of the business. For each loan or lease we need the lender, the amount, the security and the final repayment date, and we need the equity that has been paid in. A table is ideal.",
@@ -2106,7 +2106,7 @@
        "internal_memo"
       ],
       "stated": [
-       "officer_note",
+       "analyst_note",
        "call"
       ]
      },
@@ -2138,7 +2138,7 @@
        "business_plan",
        "executive_summary",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Could you give us a list of what the money will pay for, with an amount for each item?",
@@ -2180,7 +2180,7 @@
        "executive_summary",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Will any of the money be used to repay an existing loan or a shareholder loan, to settle an amount owed to a related company, to pay a dividend or to buy shares?",
@@ -2226,7 +2226,7 @@
        "business_plan",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Could you show us the full cost of the plan and where each part of the money comes from? Which of these sources are signed or already paid in, and which are still being discussed?",
@@ -2285,7 +2285,7 @@
        "business_plan",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How much of the cost of the plan do the owners pay themselves, in cash? When is that money paid in, before our loan is drawn or alongside it, and where does it come from?",
@@ -2330,7 +2330,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A letter counts as best evidence only if it comes from the lender that is repaid. Twelve months is a guide."
@@ -2411,7 +2411,7 @@
        "business_plan",
        "executive_summary",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is the business already operating? If it is, is it running steadily, in the middle of a large expansion or change, or in difficulty?",
@@ -2462,7 +2462,7 @@
        "business_plan",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you plan to build, expand or replace on a scale that needs outside money, or that the growth in your plan depends on?",
@@ -2510,7 +2510,7 @@
        "business_plan",
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Could the business repay the loan from what it earns today, or only once the new capacity is in use?",
@@ -2566,7 +2566,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is the business making a profit this year? Are all suppliers, lenders, salaries and taxes being paid on time at the moment?",
@@ -2622,7 +2622,7 @@
       "stated": [
        "business_plan",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      }
     }
@@ -2675,7 +2675,7 @@
       "stated": [
        "executive_summary",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -2717,7 +2717,7 @@
        "public_source",
        "press_article",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What does the business do, and which activity earns the largest part of its profit?",
@@ -2748,7 +2748,7 @@
        "press_article",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does the business hold a licence from a central bank or another financial regulator, and does that regulator supervise it?",
@@ -2797,7 +2797,7 @@
        "business_plan",
        "executive_summary",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What is the main role of the business? Does it grow or extract, make, trade, distribute, sell to consumers, provide a service, develop assets, own and operate them, hold a concession, lend, or manage funds?",
@@ -2830,7 +2830,7 @@
        "public_source",
        "press_article",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please walk us through the business. What do you buy and from whom, what do you do with it, whom do you sell to, and on which step do you earn your margin?",
@@ -2865,7 +2865,7 @@
        "public_source",
        "press_article",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What do you do differently from other businesses in your line? What would surprise someone who knows the sector but not your company?",
@@ -2910,7 +2910,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Read the revenue note or the segment note, not the description at the front of the report. The check is not asked of a business that does not operate yet, because it has no revenue to read."
@@ -2954,7 +2954,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Take the profit before tax over the last three years where the accounts allow it, and count gains from revaluation as something else. Half is a guide. What counts is whether the business that was described is the one that earns the money.",
@@ -3049,7 +3049,7 @@
        "executive_summary",
        "business_plan",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Where will the money to repay the loan come from? Which company earns it, and from which activity or contract?",
@@ -3072,7 +3072,7 @@
        "internal_memo"
       ],
       "stated": [
-       "officer_note",
+       "analyst_note",
        "public_source",
        "press_article"
       ]
@@ -3113,7 +3113,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Which company receives the revenue that will repay the loan? Is it the borrower itself, or another company in the group?",
@@ -3161,7 +3161,7 @@
       "stated": [
        "business_plan",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Will the loan be repaid from what the business already earns, from payments under contracts that are already signed, or from revenue that is still to be built up?",
@@ -3198,7 +3198,7 @@
       "stated": [
        "business_plan",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -3227,7 +3227,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      }
     },
@@ -3281,7 +3281,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What security is offered for the loan? One asset, several assets, everything the business owns, or none?",
@@ -3316,7 +3316,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -3370,7 +3370,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A letter of comfort or a statement of intent is not a promise to pay. The promise itself is examined on its own link."
@@ -3406,7 +3406,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      }
     }
@@ -3471,7 +3471,7 @@
        "management_presentation",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Where is the company registered, where are its main sites, and in which countries does it sell?",
@@ -3499,7 +3499,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A regular programme with the International Monetary Fund is not by itself an emergency. Arrears, a moratorium, a restructuring or rapid financing to close a gap in payments abroad are. If the search finds nothing, record what was searched, where and when.",
@@ -3532,7 +3532,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Say which of the two it was, and how close to the assets. If the search finds nothing, record what was searched, where and when."
@@ -3560,7 +3560,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "If the search finds nothing, record what was searched, where and when."
@@ -3593,7 +3593,7 @@
        "management_presentation",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you need an approval, a registration or an allocation of foreign currency to pay a lender abroad? How long did your last transfer abroad take, from the request to the payment?",
@@ -3621,7 +3621,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Three years is a guide. Ask local counsel how long contested enforcement by a foreign creditor has taken in recent cases, not how long the law says it takes.",
@@ -3673,7 +3673,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Ask counsel whether the rules of the country allow export proceeds to be kept abroad. An account that breaks them protects nobody."
@@ -3722,7 +3722,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -3798,7 +3798,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -3842,7 +3842,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A regulated tariff that is reset every few years is a no, even where past resets were mild. Indexation by a stated formula is not a review. For a plant that sells at market prices the answer is no."
@@ -3872,7 +3872,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -3904,7 +3904,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "This asks about the country's record, not about this project. Name each case and its year. If the search finds nothing, record what was searched, where and when.",
@@ -3941,7 +3941,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -3978,7 +3978,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "A plant that does not meet the grid code can be refused connection or be disconnected."
@@ -4027,7 +4027,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Read the clause itself and say who must pay, and whether that party has paid under such a clause before. A protection owed by the same state that changes the rule is only as good as that state's record (OBS_EREG_006).",
@@ -4106,7 +4106,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -4137,7 +4137,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please share your key licences and permits, or a confirmation from the authority that they are in force. Is any of them held by another company of the group, or by a person?",
@@ -4176,7 +4176,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In the last three years, has any regulator or authority sent you a warning, a notice of breach, a fine or a request to explain yourself? What was it about, and how did it end?",
@@ -4218,7 +4218,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "When does each of your key licences and permits expire? What do you have to do to renew it?",
@@ -4255,7 +4255,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "Security over the shares or the business may be worth little if the licence does not pass to a buyer.",
@@ -4293,7 +4293,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -4333,7 +4333,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Say which of the two it is. A record of renewals is weaker than a right, and weaker still where the authority or the policy has changed since the last renewal."
@@ -4372,7 +4372,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The confirmation must come from the authority. The party's own account of it is not a confirmation."
@@ -4456,7 +4456,7 @@
        "business_plan",
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Over the last five years, has your market as a whole sold more, about the same or less, in volume? What figures do you rely on?",
@@ -4493,7 +4493,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Where the price is fixed and the market adjusts through volume (a regulated price, a service), give the fall in volume and say so. Give the years of the peak and of the low.",
@@ -4526,7 +4526,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Who sets the price you sell at? When your costs last went up, could you raise your price, and how long did it take?",
@@ -4566,7 +4566,7 @@
        "business_plan",
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Use the party's accounts for that year where it was already trading. Otherwise set today's cash cost per unit against that price (for a processor or a trader, today's cash costs other than the main input against that gap). Where the price is fixed and the market adjusts through volume, use the lowest volume. A producer whose costs are among the highest in its market is the first to lose money when the price falls. The test does not wait for the terms of the loan. If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known."
@@ -4596,7 +4596,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has any of your competitors failed or had to restructure its debt in the last five years? What went wrong?",
@@ -4630,7 +4630,7 @@
        "business_plan",
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Would you still make money if the import duty, the quota, the export ban or levy, the subsidy or the regulated price that applies to your business were changed or taken away?",
@@ -4668,7 +4668,7 @@
        "business_plan",
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Who could take your customers in the next few years? Is anyone building new capacity, or importing at a lower price than yours?",
@@ -4702,7 +4702,7 @@
        "business_plan",
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How have your sales moved over the last three years compared with your market as a whole? Who has gained share, and who has lost it?",
@@ -4755,7 +4755,7 @@
        "business_plan",
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A contract that follows the market price, or that the buyer can end at short notice, does not count.",
@@ -4833,7 +4833,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation",
        "business_plan"
       ]
@@ -4863,7 +4863,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -4894,7 +4894,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "business_plan"
       ]
      },
@@ -4932,7 +4932,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -4965,7 +4965,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -5002,7 +5002,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -5031,7 +5031,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -5058,7 +5058,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -5110,7 +5110,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -5195,7 +5195,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -5228,7 +5228,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -5271,12 +5271,12 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
      "ask": "How old is this asset and what condition is it in? An asset register, a recent valuation or an inspection report would answer this.",
-     "note": "New: in its first years of use. Good: runs at the output it was built for, with routine maintenance. Fair: runs at that output, with wear that planned maintenance can deal with. Poor: runs below that output, breaks down often or needs a major overhaul now. End of life: at or past the life it was built for. Record the age of the asset with the answer. What the officer saw on a site visit counts as stated."
+     "note": "New: in its first years of use. Good: runs at the output it was built for, with routine maintenance. Fair: runs at that output, with wear that planned maintenance can deal with. Poor: runs below that output, breaks down often or needs a major overhaul now. End of life: at or past the life it was built for. Record the age of the asset with the answer. What the analyst saw on a site visit counts as stated."
     },
     {
      "id": "OBS_ASSET_002",
@@ -5306,7 +5306,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has an independent engineer, surveyor or valuer inspected this asset in the last three years? May we see the report?",
@@ -5342,7 +5342,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you have a maintenance plan and a yearly maintenance budget for this asset? Where does that budget appear in your projections?",
@@ -5376,7 +5376,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has any maintenance that was due on this asset been postponed? What would it cost to catch up?",
@@ -5411,7 +5411,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How many more years can this asset work before it has to be replaced or rebuilt?",
@@ -5455,7 +5455,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What will the repair, overhaul or replacement of this asset cost, when is it planned, and how will it be paid for?",
@@ -5527,7 +5527,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does the company hold any insurance? A policy schedule, a certificate or a letter from your broker would be ideal, but a list of the policies is enough to start with."
@@ -5569,7 +5569,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Which kinds of insurance do you hold? For example property, machinery breakdown, business interruption, liability, goods in transit, key person."
@@ -5597,7 +5597,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Are all your policies in force and all premiums paid to date? A confirmation from your broker or insurer would show this.",
@@ -5632,7 +5632,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What are the sums insured for your assets and for lost profit, and how were they set? We will compare them with the replacement cost of the assets and with a year's gross profit.",
@@ -5668,7 +5668,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Which risks do your policies exclude? For example flood, earthquake, machinery breakdown, riot or political violence.",
@@ -5703,7 +5703,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Which insurer carries your property and business interruption cover? Is it rated, and is the risk reinsured?",
@@ -5739,7 +5739,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In the last five years, has an insurer refused or reduced a claim of yours, or cancelled or declined to renew a policy? May we see the claims record from your broker or insurer?",
@@ -5820,7 +5820,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -5855,7 +5855,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "The project may have to accept and pay for a plant that does not perform as designed."
@@ -5888,7 +5888,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Six months is a guide. Use the delay the independent engineer thinks plausible where there is one. For a new project with no existing business, the damages have to cover all the debt service of those months. For a line added to a running business, take off what the existing business can pay, and say how much that is. Record the daily rate, the cap as a share of the contract price, and for how long after handover the builder must repair defects."
@@ -5924,7 +5924,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has an independent engineer or cost consultant reviewed the budget? If construction has started, please share the latest report on cost to date and cost to complete.",
@@ -5955,7 +5955,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Take the completion date the independent engineer expects where there is one, and the date in the contract otherwise. Say which. Six months is a guide. What counts is that a plausible delay does not leave a repayment due before the project earns."
@@ -6007,7 +6007,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A letter of comfort or a statement of intent is a no.",
@@ -6083,7 +6083,7 @@
        "business_plan",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What is the capacity of the plant in megawatts, installed or planned?",
@@ -6110,7 +6110,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Take the figure net of the plant's own use, of losses up to the meter and of planned outages. Say whether it is the central estimate (P50) or a more cautious one."
@@ -6142,7 +6142,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -6203,7 +6203,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "buyer_pays means the buyer pays for energy deemed delivered. For shared, say what allowance of unpaid hours or what cap applies, and set it against the curtailment found in OBS_EGEN_005."
@@ -6230,7 +6230,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is the plant connected, or is the connection agreement signed? Who builds and pays for the line and the substation, and by when?",
@@ -6261,7 +6261,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has output from this plant, or from plants nearby, been held back by the grid operator? Is there a grid study that estimates how much will be?",
@@ -6307,7 +6307,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please share the metered energy delivered in each of the last three years, with the buyer's statements or invoices.",
@@ -6376,7 +6376,7 @@
        "business_plan",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What does the plant run on? Sun, wind, water, heat from the ground, or a fuel that is bought in?",
@@ -6409,7 +6409,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What resource data do you have for the site, measured how, and over what period? Please share the measurement report or the dataset.",
@@ -6443,7 +6443,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Who prepared the energy yield report? Please share it.",
@@ -6475,7 +6475,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "Without a P90 the debt cannot be set against a poor year.",
@@ -6510,7 +6510,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Paying in full means cash flow available for debt service of at least one times the debt service of that year, before any reserve is drawn. The model is the party's own. The case counts as tested once the lender or an independent adviser has run it.",
@@ -6544,7 +6544,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What yearly loss of output do your projections assume, and what is that rate based on?",
@@ -6584,7 +6584,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Who supplies the fuel, under what contract, for what quantity and until when? Please share the contract.",
@@ -6665,7 +6665,7 @@
        "management_presentation",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please describe the project. What will be built or bought, where, at what cost and by when? Who pays for which part, and what will it add to the business (capacity, products, revenue)?",
@@ -6694,7 +6694,7 @@
        "business_plan",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has a feasibility study been made for the project? Please share it, with its date and the name of whoever wrote it.",
@@ -6725,7 +6725,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -6758,7 +6758,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Are the rights of way to the site and the connections to water and transport signed? Please share the agreements, with the date on which each ends.",
@@ -6795,7 +6795,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Both parts must hold for a yes. Indicative quotes, price lists and the sponsor's own figures do not fix a cost. \"The larger part\" is a guide. Record the contingency as a share of the cost that is not fixed.",
@@ -6828,7 +6828,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "The feasibility of the project rests on the sponsor's word alone.",
@@ -6866,7 +6866,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Examples are ground that has not been surveyed, equipment with no reference at this size, a resource or a feedstock that has not been measured, or a single route for delivery. Name each open risk. A study that names no risk at all has not looked."
@@ -6902,7 +6902,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A warranty is worth what its giver can pay. A young technology company with little capital does not carry this risk, whatever it signs. Two years is a guide. Performance at handover is asked under OBS_ECON_003.",
@@ -6998,7 +6998,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -7042,7 +7042,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Which single input costs you the most, and roughly what share of your cost of sales is it?",
@@ -7074,7 +7074,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In which of the last five years did the price of your main input rise the most? What was your gross margin in that year and in the year before?",
@@ -7118,7 +7118,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Could another supplier deliver this input in the volume you need, or is there in practice only one source, such as one pipeline, one allocation or one licensed producer?",
@@ -7159,7 +7159,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is the price of this input, or the amount you are allotted, set by a government body? For example a regulated tariff, a quota or a levy.",
@@ -7206,7 +7206,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has this input been cut, reduced or suspended at any time in the last two years, even briefly? Please include partial cuts.",
@@ -7246,7 +7246,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is there any court case, disputed levy or regulatory proceeding that affects what you pay for this input, or whether you receive it?",
@@ -7302,7 +7302,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What limits the effect of a price rise on you: a price fixed in your supply contract, sales contracts that pass the rise on to your customers, or a hedge?",
@@ -7347,7 +7347,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "If this input stopped tomorrow, could you keep producing within about three months, by switching fuel, feedstock or plant? Have you ever done so?",
@@ -7397,7 +7397,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Of your operating earnings, roughly what share comes from plants or business lines that do not rely on this input?"
@@ -7476,7 +7476,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -7505,7 +7505,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -7548,7 +7548,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -7592,7 +7592,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -7623,7 +7623,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -7656,7 +7656,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -7696,7 +7696,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence",
        "management_presentation"
       ]
@@ -7739,7 +7739,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -7775,7 +7775,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -7858,7 +7858,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -7905,7 +7905,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -7947,7 +7947,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "If your largest customer stopped buying tomorrow, how much of its volume could you sell elsewhere within a year, and which costs could you cut?",
@@ -7984,7 +7984,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -8021,7 +8021,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -8065,7 +8065,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -8098,7 +8098,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -8147,7 +8147,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -8182,7 +8182,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -8226,7 +8226,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -8343,7 +8343,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -8378,7 +8378,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please give us your ownership chain in writing: who owns you, who owns them, and so on up to the people at the top, with the percentage held at each step.",
@@ -8411,7 +8411,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Common practice sets the threshold at a quarter of the shares or votes. Many lenders set it lower, and lower still where the risk is higher: use the lender's own. Where no one is above it, identify the person who in fact controls the party, or failing that its most senior manager. For a party that is a natural person, the question is whether that person's own identity has been checked. Use extracts no more than about twelve months old. A holder or a holding that differs from what the party declared, or a transfer agreed but not registered, is a no."
@@ -8445,7 +8445,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does anyone in your ownership chain hold shares for someone else, as a nominee or as a trustee? If so, for whom?",
@@ -8479,7 +8479,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -8531,7 +8531,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is there anyone outside the shareholder register whose agreement is needed for the big decisions, or who gives instructions to the directors?",
@@ -8571,7 +8571,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "For a trust, name the settlor, the trustees, the protector if there is one, and the beneficiaries. Each person so named is entered as a party."
@@ -8643,7 +8643,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does your company have a board of directors that meets separately from the management team?",
@@ -8680,7 +8680,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is any member of your board independent: not an employee, not a significant shareholder or related to one, and with no other business with the company?",
@@ -8713,7 +8713,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Four a year is a guide. A meeting counts if a quorum was present and minutes were kept."
@@ -8744,7 +8744,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Could we see the minutes of the board meetings of the last two years? Sensitive passages can be blacked out."
@@ -8770,7 +8770,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Can you give an example from the last three years where the board did not approve what management or the main shareholder proposed, or approved it only after changes?",
@@ -8806,7 +8806,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "As there is no board, who reviews what management does, and how often?",
@@ -8885,7 +8885,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Where do you stand with your supervisor today? Are you under ordinary supervision, or has the supervisor asked for closer reporting, agreed a corrective plan with you, or taken any other special measure?",
@@ -8924,7 +8924,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In the last three years, has your supervisor fined you, limited what you may do, or written to you with an order to correct something? If so, what was it about, and is it closed?",
@@ -8956,7 +8956,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How much have you lent to your shareholders, directors and managers, and to companies connected with them? What limit does your regulator set, and how do you decide who is connected?",
@@ -8994,7 +8994,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you have a risk committee of the board? How often did it meet last year, and to whom does your head of risk report?",
@@ -9023,7 +9023,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Who can approve a loan, and up to what amount? In the last two years, was any loan approved although the risk function had advised against it?",
@@ -9061,7 +9061,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The confirmation must come from the supervisor. The institution's own account of it is not a confirmation."
@@ -9125,7 +9125,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you have written rules on who may sign contracts, approve payments and make entries in the accounts, and up to what amount? Could we have a copy?"
@@ -9153,7 +9153,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Who orders, who approves, who pays and who books a purchase? Are these different people?",
@@ -9183,7 +9183,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Above what amount does a payment need two signatures? Is there anyone who can sign alone without limit?",
@@ -9215,7 +9215,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you have an internal audit, in-house or by an outside firm? To whom does it report, and could we see its last report?"
@@ -9245,7 +9245,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In the last three years, has there been a fraud, a payment nobody had approved, or a loss of cash or stock you could not explain? Please include cases that are settled.",
@@ -9273,7 +9273,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Could we have the auditor's last two management letters, with your replies?",
@@ -9309,7 +9309,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "That the person involved has left does not close the gap. The control has to be different."
@@ -9379,7 +9379,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In the last ten years, has a court, a regulator, a tax authority or a development bank fined, penalised or debarred you for fraud, bribery, money laundering, tax evasion or a breach of sanctions? Please include matters that were settled.",
@@ -9412,7 +9412,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has any director or senior manager ever been convicted of fraud, bribery, money laundering or a similar offence? Is any of them charged or under investigation now?",
@@ -9439,7 +9439,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -9468,7 +9468,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Record who made the allegation, when, and what became of it. One report in a source with a known grudge weighs less than several that do not depend on each other, but it is still recorded. A penalty or a conviction goes under OBS_KYC_003 or OBS_KYC_008. If the search finds nothing, record what was searched, where and when."
@@ -9502,7 +9502,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you have a written code of conduct or a policy against bribery? Who answers for it, and how can a member of staff report a breach?",
@@ -9544,7 +9544,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you have a written policy against money laundering? Could we have a copy, with the date on which the board approved it?"
@@ -9586,7 +9586,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Before you take on a new customer, agent or large supplier, what do you check about them, and where is that kept?",
@@ -9638,7 +9638,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "full_remediation: all three are done and shown. partial_remediation: some are done, or the work is still under way. none: nothing is done, or nothing is shown. For an allegation, an independent inquiry that found no basis for it is full_remediation."
@@ -9709,7 +9709,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is anyone suing you, or has anyone sent you a written claim? Please include arbitrations and cases you expect to win.",
@@ -9752,7 +9752,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What is claimed in each pending case, and what do your lawyers say about each?",
@@ -9790,7 +9790,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "This is the worst case, and it is meant to be. If the answer is no, OBS_LIT_003 and OBS_LIT_008 show how likely the loss is and who else would bear it."
@@ -9829,7 +9829,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Which of the pending cases have you provided for in your accounts, and for how much?",
@@ -9863,7 +9863,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is any authority looking into your company at the moment: a regulator, the competition authority, a prosecutor? A routine inspection with no findings does not count.",
@@ -9906,7 +9906,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "This check does not hang on OBS_LIT_001, so that the topic cannot close on one answer. Search where the party is registered and where its main assets are. If the search finds nothing, record what was searched, where and when."
@@ -9941,7 +9941,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The letter has to come from the insurer or from whoever gave the indemnity. A policy that exists is not cover that has been confirmed: insurers reserve their rights. An indemnity is worth what its giver can pay."
@@ -10010,7 +10010,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A tenth is a guide. A family that votes together counts as one shareholder only if nothing shows that its members disagree."
@@ -10042,7 +10042,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "If the holdings cannot be drawn on one page with every line ending in a name, treat the answer as not known.",
@@ -10085,7 +10085,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is there a shareholders' agreement? If so, could we have a copy?"
@@ -10117,7 +10117,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "If yes, list the decisions that need the minority's consent, and see whether this financing is one of them.",
@@ -10162,7 +10162,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Have the shareholders had a serious disagreement in the last five years, among themselves or with the company? What was it about, and how did it end?",
@@ -10200,7 +10200,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has any shareholder pledged its shares in the company, or given someone an option over them?",
@@ -10237,7 +10237,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation",
        "business_plan"
       ]
@@ -10276,7 +10276,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Take profit in cash terms: leave out gains on revaluation. Count fees and other payments to shareholders that are not the price of a service at market rates.",
@@ -10351,7 +10351,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does any owner, director or senior manager hold a prominent public office, or has one held such an office? Is any of them a close relative or a close business associate of someone who does?",
@@ -10397,7 +10397,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      }
     },
@@ -10423,7 +10423,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "Without a screening, the answer to OBS_PEP_001 rests on the party's word alone.",
@@ -10462,7 +10462,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Look at who signed the licence or the contract, and who decides on its renewal. An office that the person left counts while the people the person appointed still decide.",
@@ -10501,7 +10501,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -10534,7 +10534,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -10570,7 +10570,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The record is the tender notice, the list of bidders and the decision. A direct award, or a tender with one bidder, is not an open procedure."
@@ -10622,7 +10622,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -10651,7 +10651,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "A possible match that has not been cleared is not a no.",
@@ -10688,7 +10688,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In the last three years, have you sold to, bought from or been paid from a country under embargo, or dealt with anyone on a sanctions list? Please include sales through agents and distributors.",
@@ -10728,7 +10728,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "What the party's own law allows may still be forbidden to the lender. The confirmation has to cover both."
@@ -10768,7 +10768,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you have a written sanctions policy? How do you check a new customer, supplier or bank against the lists, and how often are existing ones checked again?",
@@ -10832,7 +10832,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -10868,7 +10868,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Where does the money you are putting in come from? Please name the source (profits of which business, the sale of which asset, a loan from whom) and the account it will be paid from.",
@@ -10906,7 +10906,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Set the amount against several years of profit after tax, or against the price in the sale agreement. A source that explains a tenth of the money explains a tenth of it."
@@ -10943,7 +10943,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Could we have the documents that show where the money comes from: the bank statements, and the sale agreement or the accounts behind them?"
@@ -10976,7 +10976,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Look again when the money is paid in: the statement of the receiving account names the sender."
@@ -11018,7 +11018,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Did you borrow to fund your stake in the company, or does any investor or lender have a right to be bought out or repaid from it?",
@@ -11092,7 +11092,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -11133,7 +11133,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has your chief executive or head of finance changed in the last two years? Why did the previous one leave, and where is that person now?",
@@ -11163,7 +11163,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Ten years is a guide. A party that says yes is believed: ask what the lenders of that business recovered. If the search finds nothing, record what was searched, where and when."
@@ -11195,7 +11195,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -11233,7 +11233,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -11269,7 +11269,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is there a written plan for who would take over from each key person? Has the board approved it, and do the people named know?"
@@ -11302,7 +11302,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Insurance pays money: it does not replace the person. Set the sum insured against what the party would lose in the year it takes to find someone else."
@@ -11371,7 +11371,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -11407,7 +11407,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Record whether the firm is registered with the audit regulator or the professional body where it works, and any tie between the firm and the party's owners or managers."
@@ -11445,7 +11445,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is your audit firm registered with the body that oversees auditors? Which other companies of your size does it audit? Does it, or anyone in it, do other work for you or have a tie to your owners?",
@@ -11481,7 +11481,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Read the audit report itself. A summary of the figures, or a set of accounts without the auditor's pages, does not show the opinion. Look at the two years before as well, and say so if a reservation was made then and has since gone.",
@@ -11534,7 +11534,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -11587,7 +11587,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Count to the day of the answer and give the year-end date. The answer grows older with every month, so look at it again before approval."
@@ -11626,7 +11626,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has the same firm audited your accounts in each of the last three years? If not, why did the earlier firm leave?",
@@ -11660,7 +11660,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A change that a new accounting standard required of every company is a no. Say what changed, and compare the years on one basis.",
@@ -11700,7 +11700,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A quarter is a guide. Take the items from the income statement and its notes, and set them against profit before tax of the same year.",
@@ -11746,7 +11746,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A few percent is a guide. A party that keeps no monthly or quarterly accounts cannot show this. Answer no for it and say so."
@@ -11779,7 +11779,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please send your value added or sales tax returns for the last financial year, as filed, and the statements of all your bank accounts for the same months.",
@@ -11862,7 +11862,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Revenue moved a good deal between these years. What was behind it, and which document shows that?",
@@ -11901,7 +11901,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Three points is a guide. For a trader on thin margins, take a move of about a fifth of the margin itself. If there was no such change, answer no and say so. Management's explanation alone is not support.",
@@ -11943,7 +11943,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A fifth is a guide. Compare working capital as days of sales at the start and at the end of the three years. If there was no such change, answer no and say so. Support for a cause is an ageing list, a stock count or a contract with new payment terms. Management's explanation alone is not support.",
@@ -11981,7 +11981,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Read the cash flow statement for each year. Set new borrowing against capital spending, acquisitions and the change in working capital. If debt did not rise in this way, answer no and say so.",
@@ -12023,7 +12023,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Compare cash from operations in the cash flow statement with profit before tax, year by year. If the two did not part in this way, answer no and say so.",
@@ -12066,7 +12066,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Read the statement of changes in equity for each year. Support for a cause is a shareholder resolution, a valuation report or a note to the audited accounts. If equity moved only by profit or loss, answer no and say so.",
@@ -12163,7 +12163,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -12192,7 +12192,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Say which year it was and what caused it. Use the same definition of margin as in OBS_COST_001. For a party with fewer than five years of accounts, say how many years the answer covers."
@@ -12223,7 +12223,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Which of your costs would stay the same for a year if your sales fell by a quarter (rent, salaried staff, depreciation, interest), and which would fall with them (raw materials, commissions, freight)?",
@@ -12259,7 +12259,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What was your gross margin in each of the last three years? If it fell, what was behind the fall?",
@@ -12299,7 +12299,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -12328,7 +12328,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A quarter is a guide. Gains that brought in no cash, such as revaluations, are asked about in The accounts (OBS_ACC_008)."
@@ -12412,7 +12412,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -12461,7 +12461,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How much do you owe in total today, to all lenders together? Please include leases and loans from shareholders.",
@@ -12500,7 +12500,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In the last three years, was there any moment when a payment to a lender was late, a covenant was not met, or you asked a lender for more time?",
@@ -12530,7 +12530,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "This check does not hang on OBS_DEBT_001, so that the topic cannot close on one answer. If the search finds nothing, record what was searched, where and when."
@@ -12564,7 +12564,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Have you signed a guarantee for anyone else's borrowing, or pledged any of your assets for it? For example for a sister company, a shareholder or a supplier. For whom, and for how much?",
@@ -12601,7 +12601,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How much of your debt falls due within the next twelve months, and what does it finance?",
@@ -12635,7 +12635,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The letter must come from the lender concerned. The party's own account of it is not a confirmation."
@@ -12717,7 +12717,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -12746,7 +12746,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please send a schedule of all your loans and leases that shows, year by year, the interest and the principal that fall due on each.",
@@ -12780,7 +12780,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -12823,7 +12823,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -12854,7 +12854,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "For a party with fewer than five years of accounts, answer for the years there are and say how many. Where the business has changed so much that those years say little, say so. The downside case in Projections and downside then carries the test. The test does not wait for the terms of the loan. If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known.",
@@ -12897,7 +12897,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Count all borrowing, leases and shareholder loans that must be repaid, without taking cash off. Take the debt at its highest point in the year, not at the year-end. Take EBITDA without one-off items. Record in the reason the multiple before the loan, and the multiple on net debt (after the cash the party is free to use). The test does not wait for the terms of the loan. If the multiple is already above the reference point on the debt the party owes today, record that figure now and say that it is before the new loan. Record it again when the terms are known."
@@ -12925,7 +12925,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Two thirds is a guide. Three years are taken together so that one year's swing in working capital does not decide the answer.",
@@ -12974,7 +12974,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A reserve buys time for one or two payments. It does not mend a cash flow that stays short."
@@ -13025,7 +13025,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "If cash flow fell short of a loan payment, would a shareholder be willing to sign an undertaking to put in the missing cash? Who would sign it?",
@@ -13105,7 +13105,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What was your capital adequacy ratio at your latest reporting date? Your latest prudential return would answer this.",
@@ -13138,7 +13138,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What minimum capital ratio does your regulator require of you, with all buffers? What was your ratio at each quarter-end of the last year?",
@@ -13171,7 +13171,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Take the non-performing loans less the provisions held against them, and take that amount off both capital and risk-weighted assets. Collateral is left out on purpose, because it is realised late and for less than its book value. Where restructured loans are counted as performing (OBS_FIP_004), work the answer out a second time with them added, and record both.",
@@ -13213,7 +13213,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What dividends have you paid in each of the last three years? Do you have a rule that ties dividends to your capital ratio?",
@@ -13244,7 +13244,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How fast do you plan to grow your loan book over the next three years? Please send the capital plan that shows your capital ratio in each of those years.",
@@ -13276,7 +13276,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does any subordinated debt count towards your regulatory capital? If so, from whom, how much, and when does each loan fall due?",
@@ -13331,7 +13331,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A letter of comfort, or a statement that the shareholders stand behind the institution, is a no. Whether the shareholders can pay is asked in Owner and group.",
@@ -13409,7 +13409,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Say which year the figure is for. Where inflation is high, record it beside the figure, because a return below inflation shrinks the capital in real terms."
@@ -13440,7 +13440,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Take the loan-loss charge of each year as a percentage of average gross loans, and apply the highest to today's loan book. With fewer than five years of accounts, use the years there are and say how many. Where the provisions have been short (OBS_FIP_002), the past charges understate the cost. Say so.",
@@ -13480,7 +13480,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Stable means a change of less than about a quarter of a percentage point over the three years. Record the margin of each year.",
@@ -13516,7 +13516,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      }
     },
@@ -13543,7 +13543,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A third is a guide. Where the institution would have made a loss without such gains, the answer is yes. Look at each of the last three years. A one-off that comes back every year under another name is still not income from lending."
@@ -13573,7 +13573,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A tenth is a guide. Set the interest income in the profit and loss account against the interest received in the cash flow statement, and the growth of accrued interest receivable against the growth of the loan book. Loans with long grace periods (to farmers, to projects) accrue interest by design. Say so, and record what happened when earlier grace periods ended."
@@ -13650,7 +13650,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What share of your loan book is non-performing today, and how do you define non-performing? Your latest prudential return would answer this.",
@@ -13683,7 +13683,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "After how many days in arrears do you classify a loan as non-performing? Do you then classify the whole loan, or only the instalments that are overdue?",
@@ -13716,7 +13716,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What share of your loan book has been rescheduled or refinanced because the borrower could not pay as first agreed? How do you classify such loans afterwards?",
@@ -13749,7 +13749,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What provisions do you hold against your non-performing loans, and what collateral? When was the collateral last valued, and by whom?",
@@ -13788,7 +13788,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "When do you write a loan off, and who decides? Please send the policy and the list of write-offs of the last two years.",
@@ -13821,7 +13821,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Twice is a guide. Take the growth of the market from the central bank's published figures, and say which figures were used. Growth by buying another institution or a portfolio is growth all the same."
@@ -13852,7 +13852,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How is your loan book spread over sectors and regions? Which is the largest of each, and what share of the book does it hold?",
@@ -13882,7 +13882,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please send the list of your twenty largest exposures, with borrowers that belong together shown as one group, and each as a percentage of your capital.",
@@ -13914,7 +13914,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What share of your loan book is in foreign currency? How much of that is lent to borrowers who earn that currency, such as exporters, and how do you establish it?",
@@ -13987,7 +13987,7 @@
        "business_plan",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Have you prepared financial projections, such as a financial model, a business plan with projected figures or a budget for the coming years? A yes or no is enough to start with."
@@ -14024,7 +14024,7 @@
       "stated": [
        "business_plan",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Set the period against the life of this loan, and say whether the projections reach the final repayment."
@@ -14058,7 +14058,7 @@
       "stated": [
        "business_plan",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Can you send us the assumptions behind your projections, with the source of each? In a model this is usually the assumptions sheet.",
@@ -14089,7 +14089,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has anyone outside your company reviewed the projections, for example a model auditor or a financial adviser? Can we see the report?",
@@ -14130,7 +14130,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Aggressive: growth or margin in any projected year is above the best of the last five years. In line: both stay within the range of those years. Conservative: both stay at or below their average. For a business with no history, compare with businesses of the same kind and say which."
@@ -14163,7 +14163,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What budget did your board approve for last year, and how did revenue and operating profit turn out against it? Please send the budget as it was approved.",
@@ -14189,7 +14189,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -14222,7 +14222,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Give the lowest figure over the life of the loan, and the year it falls in."
@@ -14295,7 +14295,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Are all your tax returns for the last three years filed (income tax, value added or sales tax, payroll taxes)? A tax clearance certificate, or the filed returns with proof of filing, would show it.",
@@ -14330,7 +14330,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is any tax overdue at the moment, or are you paying off older tax in instalments agreed with the tax authority?",
@@ -14368,7 +14368,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has the tax authority audited you in the last three years, asked for more tax than you declared, or is any audit or dispute still open? What amounts are involved?",
@@ -14407,7 +14407,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A tenth of a year's profit before tax is a guide to what matters. A regime that saves less is a no: record what it is, what it saves in a year and when it ends. Compare the tax the party pays with the standard rate on its profit. A wide gap means that a special regime is at work, whether or not the party has mentioned one. Check that the projections charge the full rate from the day the regime ends. Where the party does not meet the conditions now, the answer is yes whatever the tenor of the loan turns out to be: record it now.",
@@ -14444,7 +14444,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you pay or receive interest, dividends, fees or the price of goods across a border, in particular to or from companies in your own group? Is tax withheld on any of these payments?",
@@ -14494,7 +14494,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A provision is the party's own estimate. Set it against the amount in the tax authority's notice."
@@ -14571,7 +14571,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What liquid assets do you hold today, and what are they as a share of your deposits and other short-term funding? Your latest prudential return would answer this.",
@@ -14602,7 +14602,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Which liquidity ratios does your regulator require, and at what level? Please send your returns for each month of the last year.",
@@ -14633,7 +14633,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What share of your deposits do your twenty largest depositors hold? How much of it could be withdrawn within a month?",
@@ -14664,7 +14664,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Take the figures from the maturity table in the notes to the accounts, by the time left to run and not by the original term. Where the institution reports a net stable funding ratio, a ratio below 100 percent is a yes. Where OBS_FIL_002 found the deposits concentrated, they are less sure to stay than this test takes them to be."
@@ -14697,7 +14697,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please send a list of your borrowings from banks, funds and other lenders, with the amount, the currency and the date on which each falls due.",
@@ -14727,7 +14727,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How much do you owe to other banks today, and for how long is it lent to you? Has that amount grown or shrunk over the last three years?",
@@ -14759,7 +14759,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What is your net open position in foreign currency as a share of your capital, and what limit applies to it? What share of your foreign-currency loans went to borrowers who earn local currency?",
@@ -14793,7 +14793,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In the last three years, was there any moment when a payment to one of your lenders was late, a financial covenant was not met, or you asked a lender for a waiver or for more time?",
@@ -14842,7 +14842,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Can you borrow from the central bank when you need to? Against which assets, and have you done so in the last twelve months?",
@@ -14876,7 +14876,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The letter must come from the lender concerned. The institution's own account of it is not a confirmation."
@@ -14958,7 +14958,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -15001,7 +15001,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Where the answer is other, name the currency."
@@ -15036,7 +15036,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What share of your revenue is in foreign currency, or at prices that follow one? A rough percentage is fine at this stage."
@@ -15065,7 +15065,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -15106,7 +15106,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Roughly what share of your input costs is imported, or priced off international markets even when billed in local currency (imported gas, fuel or raw materials, for example)?",
@@ -15139,7 +15139,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is any of your borrowing in a different currency from the income you repay it with? For example a loan in dollars or euros repaid from sales in local currency. How much is it, out of all your borrowing?",
@@ -15187,7 +15187,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -15226,7 +15226,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Are any of your equipment orders, building contracts or other large purchases priced in a foreign currency? In which currency is the money that will pay for them?",
@@ -15277,7 +15277,7 @@
        "management_presentation",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "When a weaker currency raises your input costs and the cost of your foreign-currency debt, can you raise your selling prices to match within a quarter, fully or in part? Are your prices set in or linked to a foreign currency, or are they set or capped by the state?",
@@ -15323,7 +15323,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you have costs or debt in the same foreign currencies as your revenue? For each currency, how much do you receive and how much do you pay in a year?",
@@ -15372,7 +15372,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What part of your foreign-currency exposure for the next twelve months is hedged today, and with which contracts? Please share the confirmations or the bank's hedge report.",
@@ -15414,7 +15414,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Where hedges are rolled over each year, the answer is no. The party then depends on being able to roll them, at a price nobody knows yet. Where there are no hedging contracts, the answer is no."
@@ -15456,7 +15456,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Record the bank's rating where it has one. A hedge with a weak bank fails when the currency moves most. Where there are no hedging contracts, the answer is no."
@@ -15541,7 +15541,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How much cash do you have in the bank today that you could use to pay a bill tomorrow? Please leave out anything that is pledged to a lender or held for someone else.",
@@ -15578,7 +15578,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please send your cash forecast for the next twelve months, month by month, with every loan repayment, tax payment and capital spending shown.",
@@ -15612,7 +15612,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A fifth is a guide. What counts is whether the party could still pay what falls due without that cash. Look in the notes to the accounts for restricted cash, in the loan agreements for reserve accounts and pledged accounts, and at which company and which country holds each balance."
@@ -15639,7 +15639,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Which credit lines could you draw on tomorrow, and up to what amount? Please send the agreement for each, so that we can see until when it runs and whether the bank can cancel it.",
@@ -15677,7 +15677,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In the last two years, was there a month when wages, a tax payment or a supplier had to wait because the cash was not there, or when a shareholder or the bank had to step in at short notice?",
@@ -15732,7 +15732,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The promise must name an amount and say when it can be drawn. A statement that the owner stands behind the party is a no.",
@@ -15824,7 +15824,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How much of your borrowing is at a floating rate, and how much falls due within the next twelve months?"
@@ -15855,7 +15855,7 @@
       "stated": [
        "management_presentation",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Three points is a guide. Where the reference rate has stood more than three points above today's level within the last ten years, test against that level. For a business without a full year of trading, use the first full year of the base case. The test does not wait for the terms of the loan. If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known.",
@@ -15893,7 +15893,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -15930,7 +15930,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "At the busiest point of your season, how much stock do you hold that is not yet sold or hedged? And how much have you sold forward at a fixed price without having bought the goods?",
@@ -15970,7 +15970,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "This check does not hang on OBS_PRICE_001, so that the topic cannot close on one answer. Large gains or losses on derivatives in the accounts of a party that says it does not deal in commodities are a sign. If the search finds nothing, record what was searched, where and when."
@@ -16008,7 +16008,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "When prices last moved sharply, did any buyer refuse to take delivery, or any supplier fail to deliver at the agreed price? What did it cost you?",
@@ -16044,7 +16044,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A hedge that ends before the debt does covers only the years it runs."
@@ -16083,7 +16083,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -16170,7 +16170,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How long does it take from the day you pay for your inputs to the day your customers pay you? If the figure is not to hand, we can work it out from your stock, receivables and payables.",
@@ -16200,7 +16200,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What credit terms do you give your customers, and how long do they take to pay in practice? An ageing list of your receivables would answer this.",
@@ -16232,7 +16232,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Take the figure from the ageing list at the latest month-end and, where possible, at the seasonal peak. Count the days from the due date, not from the invoice date. Record how much of the overdue amount is provided for."
@@ -16288,7 +16288,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Who was present at your last year-end stock count besides your own staff? Is any of your stock held by someone else, such as a warehouse keeper or a processor?",
@@ -16345,7 +16345,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A tenth is a guide. Ask for the stock list by age. For a commodity, set the value per tonne in the accounts against the market price on the balance sheet date and today."
@@ -16373,7 +16373,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you pay suppliers or farmers in advance? How much is outstanding today, and how much of it was paid more than a season ago?",
@@ -16409,7 +16409,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In which month do you need the most money for stock and receivables, and how much? Which credit lines pay for it, and when does each of them fall due?",
@@ -16486,7 +16486,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has an environmental impact assessment been done for your sites, or for the investment this loan would pay for? Please share the report and the authority's approval of it. If none was needed, who confirmed that?",
@@ -16517,7 +16517,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please share your environmental permits and your latest monitoring results for emissions, effluent and waste. Is any permit expired, under renewal or held in another name?",
@@ -16559,7 +16559,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In the last three years, has there been a spill, a leak or any other environmental incident at your sites? Has an environmental authority fined you, sent you a notice or told you to stop work? What happened, and how did it end?",
@@ -16592,7 +16592,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you know of any contamination of soil or water at your sites, or at sites you used before? Do you have to clean up, dismantle or restore any site, now or when operations end? Is there a provision for it in your accounts?",
@@ -16632,7 +16632,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Who in your company is responsible for environmental and social matters, and to whom does that person report? Please share your environmental and social policy and procedures, and the latest monitoring report made under them.",
@@ -16663,7 +16663,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Have your main sites been assessed for flood, drought, heat, storm or rising sea level? Who did the assessment, and what did it find?",
@@ -16703,7 +16703,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you measure your greenhouse gas emissions? If so, please share the latest figures and say who calculated them.",
@@ -16756,7 +16756,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The plan counts once the party has signed it or it is part of the facility agreement. A draft is not an agreement. An action that needs money counts only if the money is in the party's budget or in the loan."
@@ -16795,7 +16795,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "An indemnity is worth what the one who gave it can pay. A provision is not cash. Say when the money will be needed and where it will come from."
@@ -16864,7 +16864,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -16894,7 +16894,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -16928,7 +16928,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -16967,7 +16967,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -17016,7 +17016,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Where are your sites, and where do your main raw materials come from? Please name the regions, not only the countries.",
@@ -17062,7 +17062,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -17097,7 +17097,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -17139,7 +17139,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The topics are those named in OBS_ES_002. An impact assessment written for a permit answers the law of the country, not the lender's standard, and is not enough by itself. The report should say, topic by topic, where the business falls short of the standard."
@@ -17205,7 +17205,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -17228,7 +17228,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -17257,7 +17257,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -17289,7 +17289,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "For each benefit you expect, what is the figure today, what figure do you aim for and by when? From which of your records would you report it each year?",
@@ -17318,7 +17318,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -17345,7 +17345,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -17373,7 +17373,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What share of your owners, of your board and senior managers, of your employees and of your customers are women? Approximate figures will do to start with."
@@ -17458,7 +17458,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "For each of your sites, do you own the land or lease it? In whose name is it registered, and when does the lease or concession end? Please share the title deed, the lease or the extract from the land register.",
@@ -17497,7 +17497,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How and when did you get the land for each site, and from whom? Was anyone living on it, farming it or using it at the time? What happened to them?",
@@ -17528,7 +17528,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has anyone challenged your right to any of your land, in court or outside it? Think of former owners, heirs, neighbours, communities, or another holder of a licence over the same area.",
@@ -17566,7 +17566,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Who used this land before you, and who crosses it, grazes on it or takes water or wood from it today? Do any of them belong to an indigenous people?",
@@ -17607,7 +17607,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "IFC Performance Standards 5 and 7 are the usual reference. Money paid to a chief or an official is not compensation paid to those who lost the land. Where the plan is not yet carried out, the answer is no, and what remains belongs in an action agreed with the lender."
@@ -17648,7 +17648,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "For your main raw materials, what share of the volume can you trace back to the farm, the forest or the mine it came from? And what share only as far as the first buyer, such as a co-operative, a collection point or a mill?",
@@ -17693,7 +17693,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has any forest or other natural land been cleared on your own land, and since when is each plot in use? What do you know about clearing on the land of your suppliers?",
@@ -17739,7 +17739,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has child labour or forced labour ever been found at one of your suppliers, by you, by an auditor, by a customer or by anyone else? How do you check for it, and how far down the chain?",
@@ -17784,7 +17784,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Check the certificate in the scheme's own public register, and record the share of the volume that it covers. A certificate for part of the volume protects only that part. Read the audit report for open findings."
@@ -17827,7 +17827,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How do you know where each delivery comes from? How often do you check your suppliers, against what, and when did you last stop buying from one?",
@@ -17901,7 +17901,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does every worker have a written contract? Do you pay at least the minimum wage, overtime, and social security contributions in full? When did the labour inspector last visit, and what did the report say?",
@@ -17936,7 +17936,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In the last three years, has anyone died or been permanently injured at work on your sites, including contractors' workers? What happened, and what did you change afterwards?",
@@ -17970,7 +17970,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How many seasonal, agency, contract or migrant workers do you use at the busiest time of the year? Who recruits them, who pays them, and where do they live? Do they pay anything to get the job?",
@@ -18004,7 +18004,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In the last three years, have you had a strike, a mass dismissal, a court case brought by a group of workers, or a fine or an order from the labour authority? What was it about, and how did it end?",
@@ -18042,7 +18042,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Have neighbours, local leaders or local groups complained about your operations, or protested against them? What about, and where does the matter stand today?",
@@ -18081,7 +18081,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Who guards your sites, and are they armed? Do police or soldiers ever protect them? What written rules do the guards follow on the use of force, and has anyone been hurt or held by them in the last three years?",
@@ -18114,7 +18114,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How can a worker or a neighbour complain to you? Please share the procedure and the log of complaints received in the last twelve months, with what was done about each.",
@@ -18175,7 +18175,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The plan counts once the party has signed it or it is part of the facility agreement. After a death or a permanent injury, the plan should rest on a written finding of the cause. For a dispute or a sanction, the plan should show the settlement or the authority's confirmation that the breach is put right."
@@ -18241,7 +18241,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -18276,7 +18276,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "Damages and warranties are worth nothing if the firm that owes them cannot pay.",
@@ -18307,7 +18307,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is the construction contract a fixed-price, fixed-date contract for the whole of the works? If the works are split, who answers for the gaps between the contracts?",
@@ -18336,7 +18336,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Where the contract is shorter, record when it ends, whether it renews by itself, and on what price."
@@ -18366,7 +18366,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A direct agreement is signed by the builder or operator with the lender. It lets the lender step into the contract or appoint a substitute before the contract can be ended. A right to replace is worth little where only this firm can do the work (its own technology, a licence, the only local presence). Say whether other firms could take over."
@@ -18408,7 +18408,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is the builder or the operator part of the sponsor's group, or owned by any of the same people?",
@@ -18456,7 +18456,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Say which kind, who issued it, its amount as a share of the contract price, and when it expires. Set the amount against the damages the firm can owe. A bond that lapses at handover does not cover defects.",
@@ -18499,7 +18499,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "An assignment that takes effect only after the borrower defaults under the loan comes late. Say from when the lender can act."
@@ -18574,7 +18574,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Choose unclear where the trigger depends on the giver's own judgement, on an event that is not defined, or on a document not yet written. Unclear may be chosen together with other options. Where the undertaking covers only the debt, it is a guarantee and belongs on a guarantees link (CAS_GUARANTEE_001)."
@@ -18604,7 +18604,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Record the cap. Where no independent downside case exists, set the cap against the contingency in the budget. A cap smaller than that contingency adds little."
@@ -18645,7 +18645,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "financial_completion means the project has met stated financial tests after it started to operate. dsra_funded means the debt service reserve account is filled. A release at the start of commercial operation ends the support before the plant has shown that it performs. Record any fixed end date."
@@ -18685,7 +18685,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Choose every proof that is required. completion_certificate means a certificate signed by the project, its builder or its sponsor."
@@ -18714,7 +18714,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "Support that the lender cannot call depends on the sponsor choosing to honour it.",
@@ -18797,7 +18797,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -18846,7 +18846,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please share the signed contract, or a summary of its parties, term, volume, price and termination rights."
@@ -18883,7 +18883,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "When does this contract end? Is there a right to extend it, and whose right is it?",
@@ -18927,7 +18927,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Check the price formula, the indexation, the minimum and maximum volumes, the start date and any ramp-up. Where only a draft exists, say so. The answer is then looked at again when the contract is signed."
@@ -18963,7 +18963,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Look for a right to end for convenience or on notice, price review and benchmarking clauses, most-favoured-customer clauses, volume flexibility, and wide rights on force majeure or change in law."
@@ -18997,7 +18997,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does this contract let the other side end or renegotiate it if the ownership or control of your company changes, or if a lender takes over the company or its assets?",
@@ -19031,7 +19031,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The contract shows the law and the forum. Whether a decision can be enforced is for a lawyer to say. Where the other side is a state or a state-owned body, ask whether it has waived immunity."
@@ -19066,7 +19066,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "An assignment needs the other side's consent where the contract forbids assignment. Say whether the consent has been given."
@@ -19139,7 +19139,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -19183,7 +19183,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How much does the owner itself owe, leaving out the debt of the companies it owns? Please share the owner's own accounts.",
@@ -19224,7 +19224,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "How much cash did the owner receive from the company last year, as dividends, fees, interest or loans?",
@@ -19275,7 +19275,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -19318,7 +19318,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -19365,7 +19365,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Money in means new equity, or a loan that ranks behind the lenders, paid in cash. A promise is not money in. Where the company is new, look at what the owner did for its other companies and say so."
@@ -19404,7 +19404,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -19446,7 +19446,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Read the company's own loan agreements for dividend tests and lock-ups. A block that applies only after a default still counts. It bites exactly when the owner needs the cash."
@@ -19489,7 +19489,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Any such debt ranks first. Give its amount in the reason and set it against the company's yearly cash flow, so that a small working-capital line can be told from debt that takes most of the cash.",
@@ -19541,7 +19541,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "leads_to": [
@@ -19592,7 +19592,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does the company keep its cash in its own bank accounts, or is it swept into a group account or lent to the group's treasury?",
@@ -19624,7 +19624,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does the owner, or any holding company above the company, have debt of its own? What does it pay the interest and the repayments from?",
@@ -19666,7 +19666,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The limits help only if the company has signed them. A covenant given by the owner alone does not stop the company from paying.",
@@ -19722,7 +19722,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A pledge of the company's shares is not a direct claim. It gives the lender the owner's place, behind the company's creditors. Whether a company may guarantee its owner's debt is asked about the guarantee itself."
@@ -19781,7 +19781,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What exactly would the guarantor sign up to? To pay when we ask, to pay only after we have enforced against the borrower, to share a loss, or to make sure something is done?"
@@ -19808,7 +19808,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      }
     },
@@ -19832,7 +19832,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      }
     },
@@ -19857,7 +19857,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Read the waiver clause itself. A summary that says \"unconditional\" is not enough."
@@ -19881,7 +19881,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      }
     },
@@ -19909,7 +19909,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "A guarantee that brings its giver no benefit may be challenged when it is called.",
@@ -19934,7 +19934,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Two years is a guide. What counts is that the money arrives while it still matters."
@@ -19960,7 +19960,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      }
     },
@@ -20000,7 +20000,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      }
     }
@@ -20072,7 +20072,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      }
     },
@@ -20102,7 +20102,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What do you own and what do you owe, in total, as of the latest date you have figures for? Please leave out your shares in the borrower and anything the borrower owes you.",
@@ -20135,7 +20135,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "A guarantor whose wealth is in land, unlisted shares or the borrower itself can be worth the amount and still be unable to pay it.",
@@ -20167,7 +20167,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please list every guarantee you have given for someone else's debt, with the amount, the lender and the borrower.",
@@ -20199,7 +20199,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A guarantor in the same business and the same market as the borrower can fail with it even where the two have no dealings with each other. Where that is so, say it in the reason. Where the guarantor is the borrower's parent, the parent's other businesses count as its own.",
@@ -20252,7 +20252,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Whether a judgment can be enforced in the country where the assets are is asked about the guarantee (OBS_GUARANTEE_ENFORCE_001). This check asks whether there is anything there to enforce against. Where the guarantor is a holding company, its assets are shares in subsidiaries, and the subsidiaries' own lenders are paid first."
@@ -20291,7 +20291,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Have you ever been asked to pay under a guarantee, or to put money into a company you owned or backed when it was short? What happened?",
@@ -20328,7 +20328,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Assets held jointly, or within a marriage in which property is shared, may be only partly within reach. Say which assets these are and take legal advice. Assets held through a company are reached only after that company's own creditors."
@@ -20365,7 +20365,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Record the agency, the rating, whether it is on the international or a national scale, and its date."
@@ -20430,7 +20430,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -20464,7 +20464,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "About what percentage of your revenue comes from this customer?",
@@ -20503,7 +20503,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -20557,7 +20557,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does this customer have a credit rating, or can you share its latest audited accounts or a credit report on it?",
@@ -20596,7 +20596,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does this customer pay your invoices when they fall due? Please share the ageing list of what it owes you.",
@@ -20630,7 +20630,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "business_plan"
       ]
      },
@@ -20668,7 +20668,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In the last three years, has this customer cut its price, taken longer to pay, charged you rebates or fees you had not agreed, or dropped one of your products, without your consent?",
@@ -20703,7 +20703,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Set the termination payment against the debt that would then be outstanding, and say in the reason whether it covers it. Whether the lender can take over the seller's rights is asked about the contract itself (OBS_CONT_MIT_001)."
@@ -20744,7 +20744,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Say which of these is in place. An assignment or a collection account sends the money to the lender. It does not make a customer pay that cannot."
@@ -20825,7 +20825,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "If the company could not pay everyone, who would be paid first: us, this other lender, or both side by side? Where is that written down?",
@@ -20858,7 +20858,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What have you pledged or charged to this lender? Does it include the assets or the bank accounts that we would rely on?",
@@ -20886,7 +20886,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Does your agreement with this lender limit new borrowing, or forbid you to give security to another lender? If it does, has the lender agreed in writing to our loan?",
@@ -20918,7 +20918,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A line that runs for a year and is then renewed falls due at its next renewal date. A loan that is repaid in instalments from cash flow is a no.",
@@ -20955,7 +20955,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is this line committed for a fixed period, or can the lender reduce it or ask for its money back whenever it chooses?",
@@ -20990,7 +20990,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Compare the same ratio on the same definitions. A looser level on a stricter definition can still be breached first.",
@@ -21042,7 +21042,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A vote that the other lender can always outvote is not a say. Record the lender's share of the vote and what needs its consent. Until the agreement is signed, a term sheet agreed by both lenders is supporting evidence only."
@@ -21079,7 +21079,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "This is the usual answer for loans from shareholders and related parties. A bank will seldom agree to it. A subordination that is only promised in a term sheet, or only mentioned in the notes to the accounts, is not yet an agreement signed by the other lender."
@@ -21143,7 +21143,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Where is the support between the projects written down? Please share the agreement, or the section of the facility agreement that sets out the order of payments.",
@@ -21183,7 +21183,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Choose every form that applies."
@@ -21225,7 +21225,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "dscr_breach means the supported project's debt service cover ratio has fallen below a stated level. distribution_lockup means the supported project is barred from paying its owners. Choose unclear where the trigger is not defined or depends on someone's judgement. Unclear may be chosen together with other options."
@@ -21255,7 +21255,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Wording such as \"may\", \"intends to\" or \"subject to approval\" is a no."
@@ -21292,7 +21292,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The debt service meant in the options is the supporting project's own.",
@@ -21327,7 +21327,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Read the supporting project's own loan documents, not only the agreement that grants the support. Where the supporting project has no debt of its own, the answer is yes. Record that.",
@@ -21375,7 +21375,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "dsra_funded means the supported project's debt service reserve account is filled. Any release before the supported loan is repaid leaves the rest of its life without the support. Record the event and any fixed end date."
@@ -21405,7 +21405,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Two plants that sell to the same buyer, draw on the same river or wind region, or are paid under the same tariff scheme fall short together. The support is then weakest when it is needed."
@@ -21482,7 +21482,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -21540,7 +21540,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Choose every kind that applies. Choose guarantees_and_security_received where a shareholder, a director or a related company guarantees the party's debt or pledges its own assets for it, and record who gave what as a fact about the link that holds that debt. Choose pay_and_advances_to_insiders for salaries, bonuses and advances to shareholders, directors, managers and their families. A loan to a related company is loans_given. A guarantee that the party has given for a related party's debt needs no link: record for whom and how much in a fact. Its size is asked under OBS_DEBT_009.",
@@ -21581,7 +21581,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What is the total value of all your dealings with related parties in the last financial year, as a percentage of your revenue? The notes to your audited accounts should give the breakdown.",
@@ -21618,7 +21618,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -21655,7 +21655,7 @@
       ],
       "stated": [
        "call",
-       "officer_note",
+       "analyst_note",
        "correspondence"
       ]
      },
@@ -21691,7 +21691,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please add up all loans, advances and receivables owed to you by related parties (group companies, associates, shareholders, directors). What is the total, and what is your equity?",
@@ -21728,7 +21728,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What was the highest amount that related parties owed you at any time in the last financial year, and what did they owe you at the year-end? Monthly balances would answer this.",
@@ -21770,7 +21770,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Can you demand repayment of your loans to group companies, for example at 30 days' notice? If you did, would the company that borrowed have the cash to pay?",
@@ -21801,7 +21801,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "This check does not hang on OBS_RP_001, so that the topic cannot close on one answer. Compare the note with the shareholder register, the organisation chart, the list of directors and the bank statements. Where the party said it has no dealings with related parties and the accounts show some, correct the answer to OBS_RP_001."
@@ -21833,7 +21833,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In the last two years, has any plant, division or subsidiary been moved into or out of the company, for example through a scheme of arrangement, a carve-out, a demerger or a merger? If so, which periods are affected?",
@@ -21901,7 +21901,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -21933,7 +21933,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "business_plan"
       ]
      },
@@ -21966,7 +21966,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Check the buyer's delivery records, the supplier's accounts or a credit report on it, the insolvency register and the press. If the search finds nothing, record what was searched, where and when."
@@ -22006,7 +22006,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "leads_to": [
@@ -22043,7 +22043,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do you pay this supplier before it delivers? How much is outstanding with it at the highest point in the year, and is any of it covered by a bank guarantee?",
@@ -22089,7 +22089,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Give the stock in days of use, and the share of the need that the second supplier delivers today and is bound to deliver."
@@ -22158,7 +22158,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note",
+       "analyst_note",
        "management_presentation"
       ]
      },
@@ -22188,7 +22188,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "An undertaking given only to the borrower, to its board or to its auditors leaves the claim with the borrower.",
@@ -22221,7 +22221,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      }
     },
@@ -22258,7 +22258,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Ask other lenders to the giver's group, and search court records and the press. If the search finds nothing, record what was searched, where and when."
@@ -22286,7 +22286,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "Without an opinion the undertaking is counted as a statement of intent, and not as a second way out."
@@ -22316,7 +22316,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "An undertaking signed by a manager without approval can be disowned by the giver when it is relied on."
@@ -22384,7 +22384,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has the board passed a resolution for this financing? Please share a certified copy, or say when the board will meet to pass it.",
@@ -22414,7 +22414,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do the articles or a shareholders' agreement cap what the directors may borrow, guarantee or pledge without going to the shareholders? If so, what is the cap and how much of it is used?",
@@ -22450,7 +22450,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "An answer of not_required should rest on counsel's reading of the articles, any shareholders' agreement and the law, not on the party's say-so. Typical cases that need approval are reserved matters, a transaction large against the party's assets, and a guarantee or security given for a shareholder or a related party."
@@ -22484,7 +22484,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "Ask counsel in the party's country early. An approval of this kind can take months and may have to be in place before the first drawing.",
@@ -22515,7 +22515,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Match the names and the signatures on the documents to the resolution or the power of attorney, and to the specimen signatures. Check that a power of attorney is still in force and covers this transaction. Ask for the party's signing rules (limits, joint signatures, list of signatories) and check against them."
@@ -22546,7 +22546,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Read the assumptions and the qualifications. An opinion that assumes the resolutions are valid has not confirmed them."
@@ -22617,7 +22617,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -22647,7 +22647,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A condition such as \"insurance in place\" passes only if it names what has to be delivered (the policy, the broker's letter). One that says only \"to the lender's satisfaction\" does not pass."
@@ -22680,7 +22680,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -22707,7 +22707,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender"
@@ -22732,7 +22732,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -22766,7 +22766,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Please show how the money drawn so far was spent, with the invoices and the proof of payment for the larger items.",
@@ -22798,7 +22798,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -22830,7 +22830,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Which of the agreed actions are complete, which are late, and what shows it for each?",
@@ -22868,11 +22868,11 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
-     "note": "For a change to what was approved, that is usually the level that approved the loan. An officer's own decision to let a condition go is not an approval."
+     "note": "For a change to what was approved, that is usually the level that approved the loan. An analyst's own decision to let a condition go is not an approval."
     }
    ]
   },
@@ -22956,7 +22956,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      }
     },
@@ -22991,7 +22991,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -23019,7 +23019,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Read the definitions. A covenant tested on a holding company's own accounts says nothing about the subsidiary that earns the cash, and the other way round. Where there is no financial covenant, leave this open. OBS_COV_004 records it."
@@ -23045,7 +23045,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Which accounts and reports would you have to send the lender, how often, and how long after the period ends? Can the finance team meet those dates today?"
@@ -23072,7 +23072,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Read the exceptions (permitted security, permitted debt). An exception without a cap undoes the rule. Where repayment relies on a group, the limits should bind the group's members too.",
@@ -23105,7 +23105,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "All three have to be covered for a yes. Repayments of shareholder loans and fees paid to the owners count as payments to the owners.",
@@ -23138,7 +23138,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A breach that only blocks dividends, or only obliges the borrower to present a plan, does not give this right. Record the length of the cure period."
@@ -23164,7 +23164,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Where the facility gives no right to cure with new money, the answer is no. Also read how the new money is counted. Money counted as cash flow hides the breach. Money used to repay debt reduces it."
@@ -23190,7 +23190,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Read how control is defined. A sale of shares higher up the chain of ownership should count as a change of control too. A clause that only obliges the borrower to tell the lender of the change does not give this right."
@@ -23215,7 +23215,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A clause that gives the right only once the other lender has in fact called its loan (cross-acceleration) leaves the lender one step behind. Answer no and say which clause it is. This check takes the place of OBS_LENDER_007, which asked the same of each other loan in turn."
@@ -23246,7 +23246,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "A certificate that has not arrived is itself a breach of the information covenant. OBS_COND_007 records it.",
@@ -23315,7 +23315,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Under which name, number and country is the company registered? Please share the certificate of incorporation or a recent extract from the registry.",
@@ -23347,7 +23347,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has the company, or any creditor, filed for its insolvency, administration or winding-up, or for a restructuring under the court's protection?",
@@ -23394,7 +23394,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Are all annual returns filed and all registry fees paid? A recent certificate of good standing or registry extract would show it.",
@@ -23429,7 +23429,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Do the company's articles allow it to borrow, to give guarantees and to give security? Please share the current articles with all amendments.",
@@ -23506,7 +23506,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The kinds are those of OBS_SECPKG_001. 'contract_rights' covers an assignment of a contract, of a concession or of insurance proceeds."
@@ -23544,7 +23544,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In whose name is this asset held? Could you send the title deed, the register extract or the other document that shows it?",
@@ -23571,7 +23571,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "When was this asset last valued, by whom, and who asked for the valuation?",
@@ -23598,7 +23598,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "If the valuer gives no forced-sale value, say what discount was taken from the market value and why. Say how long a sale is assumed to take."
@@ -23624,7 +23624,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Three years is a guide. Record the sales relied on: what was sold, when, and at what price. Typical cases for a no: a plant built for one purpose or in a remote place, stock that only this business can use, receivables that customers stop paying once supply ends, shares in the borrower itself. Cash on deposit is not sold: leave the check unanswered and record that decision with its reason."
@@ -23653,7 +23653,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Has anyone else a charge, a lien or a lease on this asset, or a claim to it in court? Is any part of its purchase price still owed to the seller?",
@@ -23689,7 +23689,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "The question is about this asset and this lender. Obstacles that hold for every kind of security in the country are asked about in CAS_SECURITY_LEGAL_001."
@@ -23716,7 +23716,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Record also how long a sale would take from the day of default, with or without a court. The forced-sale value in OBS_SECASSET_004 assumes that time."
@@ -23745,7 +23745,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A filing receipt shows that registration was asked for. The extract shows that it was made, and at what rank. Where there is no register (a notice to the debtor, control of an account), counsel's confirmation takes the place of the extract."
@@ -23787,7 +23787,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "If only one of the two holds, answer no and say which. An endorsement on the policy, or a notice that the insurer has acknowledged, shows that the lender is loss payee: a clause in the loan agreement that asks for it does not. Bare land has nothing to insure: leave the check unanswered and record that decision with its reason.",
@@ -23885,7 +23885,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Go through the package kind by kind: a charge over future assets, over a changing pool of stock or receivables, over a bank account, security held by an agent for several lenders, security given by someone other than the borrower. One kind that fails makes the answer no: say which."
@@ -23913,7 +23913,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -23943,7 +23943,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is there any charge over all the company's assets, any unpaid tax or wage claim, or any court order against its assets? A search of the company's charges register would confirm it.",
@@ -23971,7 +23971,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Record the register, the time limit for filing and the cost. Stamp duty and registry fees can be a real share of the loan, and a filing made late can lose its rank. Say which kind fails if the answer is no."
@@ -23996,7 +23996,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "if_unknown": "The forced-sale values assume an enforcement that nobody has checked can happen.",
@@ -24030,7 +24030,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Read the assumptions and the qualifications, not only the opinion paragraph. An opinion still in draft has not been given: answer no until it is signed."
@@ -24077,7 +24077,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A pledge over shares abroad gives control of the company, not of its assets. Say what the lender could in fact do with it."
@@ -24202,7 +24202,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "What could you offer as security for this loan? For example land and buildings, equipment, receivables, stock, shares, cash on deposit, or your rights under contracts. A list with rough values is enough to start with.",
@@ -24232,7 +24232,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Say in which currency, and whether a grace period or capitalised interest lifts the figure above the amount committed."
@@ -24292,7 +24292,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Could the payments from your main customers be made into an account that we control? Does any of your contracts forbid assigning its payments, or need the customer's consent?",
@@ -24353,7 +24353,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Security held by an agent for several lenders is shared. Say with whom, and in what proportion.",
@@ -24419,7 +24419,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      }
     },
@@ -24477,7 +24477,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Add up the forced-sale value of each asset (OBS_SECASSET_004), after the costs of sale and after claims that rank ahead. Where security is shared, count only the lender's share. Do not count guarantees. Divide by the figure in OBS_FACILITY_EXPOSURE_001. Where no security is offered, the answer is zero."
@@ -24510,7 +24510,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Compare the cap of the guarantee with the shortfall in money, not in words.",
@@ -24585,7 +24585,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "Is there a term sheet or heads of terms that you and the lender have both accepted? Please share the latest version and say whether it is signed.",
@@ -24618,7 +24618,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A term marked \"to be agreed\", or a range in place of a figure, counts as left open."
@@ -24655,7 +24655,7 @@
        "business_plan",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask": "In which months does your cash come in, and when would the first repayment fall? If the loan pays for an investment, when will that investment start to earn?",
@@ -24692,7 +24692,7 @@
        "business_plan",
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "A working-capital line that is repaid in full from each trading cycle does not depend on a refinancing. One that is only ever rolled over does.",
@@ -24730,7 +24730,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender",
@@ -24760,7 +24760,7 @@
       ],
       "stated": [
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "ask_whom": "lender"
@@ -24793,7 +24793,7 @@
       "stated": [
        "correspondence",
        "call",
-       "officer_note"
+       "analyst_note"
       ]
      },
      "note": "Check what counts as surplus cash, and whether dividends are paid before the sweep or after it."

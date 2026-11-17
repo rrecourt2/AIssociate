@@ -27,7 +27,7 @@ checks:
   evidence:
     best: [technical_feasibility, audited_annual_report]
     supporting: [company_record, management_accounts, annual_report, prospectus]
-    stated: [call, officer_note, management_presentation]
+    stated: [call, analyst_note, management_presentation]
   ask: How much could your plant or fleet produce or deliver in a year, and how much did it produce or deliver last year?
   note: Say what capacity is measured in (tonnes, units, hours, beds, vehicles), and whether it is the capacity the plant
     was designed for or the best output it has reached in a full year.
@@ -41,7 +41,7 @@ checks:
   evidence:
     best: [technical_feasibility]
     supporting: [financial_model, financial_projections, company_record]
-    stated: [call, officer_note, management_presentation]
+    stated: [call, analyst_note, management_presentation]
   ask: What is the highest yearly volume in your projections, and what would have to be added to the plant, the fleet or
     the staff to reach it?
   note: Compare with the best output reached in a full year, not with the capacity the plant was designed for.
@@ -61,7 +61,7 @@ checks:
   evidence:
     best: [technical_feasibility, consultant_report]
     supporting: [company_record, insurance_broker_report, management_accounts]
-    stated: [call, officer_note, management_presentation]
+    stated: [call, analyst_note, management_presentation]
   ask: If you lost your main site, line or machine tomorrow, how much of your output would stop, and for how long?
   note: Half and a month are guides. Think of fire, flood and breakdown, and of the time it takes to have a replacement
     delivered and running.
@@ -79,7 +79,7 @@ checks:
   evidence:
     best: [technical_feasibility, audited_annual_report]
     supporting: [company_record, management_accounts, public_source, press_article, annual_report, prospectus]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: In the last two years, on how many days did you stop or slow production or deliveries because power, water or transport
     failed?
   note: 'A week in total is a guide. The party has a reason to understate this: compare its answer with production records
@@ -95,7 +95,7 @@ checks:
   evidence:
     best: [audited_annual_report, technical_feasibility]
     supporting: [company_record, board_minutes, management_accounts, annual_report, prospectus]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: For each of the last three years, what volume did you budget and what volume did you produce or deliver?
   if_unknown: A party that cannot set its output against its own budget gives the lender no record to hold the projections
     against.
@@ -110,7 +110,7 @@ checks:
   evidence:
     best: [regulatory_document, audited_annual_report]
     supporting: [company_record, board_minutes, public_source, press_article, annual_report, prospectus]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: In the last three years, has a product of yours been recalled, sent back in bulk, taken off a customer's list or
     stopped by an authority?
   note: If the search finds nothing, record what was searched, where and when. For an agribusiness, border rejections and
@@ -129,7 +129,7 @@ checks:
   evidence:
     best: [lease_agreement, om_agreement, material_contract]
     supporting: [company_record, management_accounts]
-    stated: [call, officer_note, correspondence, management_presentation]
+    stated: [call, analyst_note, correspondence, management_presentation]
   ask: Do you produce in a plant that someone else owns or runs for you? Do you make or sell your products under someone
     else's brand, technology or franchise?
   note: 'A permit from an authority is not meant here: those are asked under Licences and regulation. Record who the other
@@ -150,7 +150,7 @@ checks:
   evidence:
     best: [technical_feasibility, consultant_report]
     supporting: [company_record, material_contract]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: If your main site or your power, water or transport failed, where would you produce, and how much could you produce
     there within a month?
   note: 'Half and a month are guides. A back-up that has never carried production is a plan: ask when it last did. Insurance
@@ -168,7 +168,7 @@ checks:
   evidence:
     best: [insurance_policy, valuation_report]
     supporting: [insurance_broker_report, company_record]
-    stated: [call, officer_note, correspondence]
+    stated: [call, analyst_note, correspondence]
   ask: What are the sums insured for your main site or line and for lost profit, and for how many months does the cover
     for lost profit run? How long would it take to rebuild and restart?
   note: Both parts must hold for a yes. Set the sum insured against the cost of rebuilding as new, not against book value.

@@ -5,7 +5,7 @@
  "deal": {"stage": "concept"},
  "sources": [
   {"ref": "call", "title": "Call with the CFO, 12 November 2026", "kind": "call", "date": "2026-11-12",
-   "where": "Internal/sources/2026-11-12 CFO call.md", "about": ["P-001"], "read": "full", "sent_by": "The investment officer"}
+   "where": "Internal/sources/2026-11-12 CFO call.md", "about": ["P-001"], "read": "full", "sent_by": "The investment analyst"}
  ],
  "subjects": [
   {"ref": "line", "kind": "project", "name": "Second UHT line"}
@@ -16,20 +16,20 @@
  ],
  "facts": [
   {"about": "P-001", "statement": "The CFO said the gross margin fell in 2025 because raw milk prices rose 18% during the drought.",
-   "as_of": "2026-11-12", "source": "@call", "said_by": "client", "answers": [{"check": "OBS_COST_004", "value": true}]},
+   "as_of": "2026-11-12", "quote": "the gross margin fell in 2025 because raw milk prices rose 18% during the drought", "source": "@call", "said_by": "client", "answers": [{"check": "OBS_COST_004", "value": true}]},
   {"about": "P-001", "statement": "Cedar buys milk from three cooperatives under contracts that fix volumes, not prices.",
-   "as_of": "2026-11-12", "source": "@call", "said_by": "client", "answers": [{"check": "OBS_INPUT_001", "value": true}]},
+   "as_of": "2026-11-12", "quote": "The contracts fix volumes, not prices.", "source": "@call", "said_by": "client", "answers": [{"check": "OBS_INPUT_001", "value": true}]},
   {"about": "R-003", "statement": "The CFO said Bluegate pays within 45 days.",
-   "as_of": "2026-11-12", "source": "@call", "said_by": "client", "answers": [{"check": "OBS_OFFTAKER_004", "value": true}]},
+   "as_of": "2026-11-12", "quote": "Bluegate pays within 45 days.", "source": "@call", "said_by": "client", "answers": [{"check": "OBS_OFFTAKER_004", "value": true}]},
   {"ref": "lakeside", "about": "P-001", "statement": "Lakeside Distributors buys under a one-year contract, and three other distributors serve the same region.",
-   "as_of": "2026-11-12", "source": "@call", "said_by": "client"},
+   "as_of": "2026-11-12", "quote": "Lakeside buys through a one-year contract.", "source": "@call", "said_by": "client"},
   {"about": "P-001", "statement": "About 6,000 smallholder farmers deliver milk through the three cooperatives. In the dry months, January to March, the plant gets about a third less milk.",
-   "as_of": "2026-11-12", "source": "@call", "said_by": "client",
+   "as_of": "2026-11-12", "quote": "About 6,000 smallholder farmers deliver through the three cooperatives.", "source": "@call", "said_by": "client",
    "answers": [{"check": "OBS_BUSINESS_MODEL_002", "value": "All milk comes from smallholders, at an open price, and a third less of it in the dry months. Costs and volumes move with the weather."}]},
   {"about": "@line", "statement": "The second UHT line goes into the existing hall in Nakuru and doubles capacity to 24,000 litres an hour. The first line has run close to full since 2024.",
-   "label": "Capacity with the second line", "value": 24000, "unit": "litres an hour", "as_of": "2026-11-12", "source": "@call", "said_by": "client"},
+   "label": "Capacity with the second line", "value": 24000, "unit": "litres an hour", "as_of": "2026-11-12", "quote": "It doubles capacity to 24,000 litres an hour.", "source": "@call", "said_by": "client"},
   {"about": "@line", "statement": "The second line costs EUR 14m. The loan pays EUR 12m and Cedar pays the rest from its own cash. The supplier is not chosen. Start-up is planned for the third quarter of 2027.",
-   "label": "Cost", "value": 14, "unit": "EUR m", "as_of": "2026-11-12", "source": "@call", "said_by": "client",
+   "label": "Cost", "value": 14, "unit": "EUR m", "as_of": "2026-11-12", "quote": "The line costs EUR 14m. The loan pays EUR 12m and Cedar pays the rest from its own cash.", "source": "@call", "said_by": "client",
    "answers": [{"check": "OBS_REQUEST_003", "value": true},
                {"check": "OBS_FEAS_008", "value": "A second UHT line in the existing hall in Nakuru, EUR 14m, start-up planned for the third quarter of 2027. Not yet ordered."}]},
   {"about": "P-001", "statement": "Cedar buys raw milk from three cooperatives, makes UHT milk and yoghurt from it in Nakuru and sells them in Kenya to supermarkets and distributors (F-001, F-009, F-013).",
@@ -42,7 +42,7 @@
    "rests_on": ["F-009", "@lakeside"], "by": "assistant"},
   {"about": "P-001", "decision": "Cedar is to propose how it will cover the euro loan before the concept note goes in.",
    "reason": "The loan is asked in euros and all revenue is in shillings.",
-   "rests_on": ["F-007", "F-010"], "by": "officer", "covers": ["OBS_HEDGE_003"], "owner": "officer", "due": "2026-12-15"}
+   "rests_on": ["F-007", "F-010"], "by": "analyst", "covers": ["OBS_HEDGE_003"], "owner": "analyst", "due": "2026-12-15"}
  ],
  "questions": [
   {"asked_of": "CFO of Cedar Foods", "text": "Please send the supply contracts with the three cooperatives.",

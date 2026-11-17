@@ -26,7 +26,7 @@ checks:
   evidence:
     best: [financial_model, financial_projections]
     supporting: [board_minutes]
-    stated: [business_plan, correspondence, call, officer_note]
+    stated: [business_plan, correspondence, call, analyst_note]
   ask: Have you prepared financial projections, such as a financial model, a business plan with projected figures or a budget
     for the coming years? A yes or no is enough to start with.
 - id: OBS_PROJ_002
@@ -40,7 +40,7 @@ checks:
   evidence:
     best: [financial_model, financial_projections]
     supporting: [board_minutes]
-    stated: [business_plan, call, officer_note]
+    stated: [business_plan, call, analyst_note]
   note: Set the period against the life of this loan, and say whether the projections reach the final repayment.
 - id: OBS_PROJ_003
   question: 'Are the assumptions behind the projections written down, so that each can be checked against a source: volumes,
@@ -55,7 +55,7 @@ checks:
   evidence:
     best: [financial_model, consultant_report]
     supporting: [financial_projections, internal_memo]
-    stated: [business_plan, call, officer_note]
+    stated: [business_plan, call, analyst_note]
   ask: Can you send us the assumptions behind your projections, with the source of each? In a model this is usually the
     assumptions sheet.
   note: Figures typed into the model with no source are not written down in this sense.
@@ -71,7 +71,7 @@ checks:
   evidence:
     best: [consultant_report]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Has anyone outside your company reviewed the projections, for example a model auditor or a financial adviser? Can
     we see the report?
   note: A model audit or an independent adviser's review counts. So does the lender's own rebuild of the figures, if it
@@ -91,7 +91,7 @@ checks:
   evidence:
     best: [audited_annual_report, financial_model]
     supporting: [management_accounts, internal_memo, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: 'Aggressive: growth or margin in any projected year is above the best of the last five years. In line: both stay
     within the range of those years. Conservative: both stay at or below their average. For a business with no history,
     compare with businesses of the same kind and say which.'
@@ -108,7 +108,7 @@ checks:
   evidence:
     best: [audited_annual_report, consultant_report]
     supporting: [board_minutes, management_accounts, company_record, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What budget did your board approve for last year, and how did revenue and operating profit turn out against it? Please
     send the budget as it was approved.
   note: A tenth is a guide. Use the budget that was approved before the year began, not a later revision. A party that set
@@ -124,7 +124,7 @@ checks:
   evidence:
     best: [internal_memo, consultant_report]
     supporting: [financial_model]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   if_unknown: Nobody knows how much can go wrong before a payment is missed.
   note: A case that trims the base case by a few percent is not a downside. For a business without five years behind it,
@@ -142,5 +142,5 @@ checks:
   evidence:
     best: [consultant_report]
     supporting: [financial_model, internal_memo]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: Give the lowest figure over the life of the loan, and the year it falls in.

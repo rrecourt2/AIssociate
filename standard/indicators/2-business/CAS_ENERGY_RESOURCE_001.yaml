@@ -26,7 +26,7 @@ checks:
   evidence:
     best: [technical_feasibility, operational_license]
     supporting: [investment_plan, company_record]
-    stated: [business_plan, correspondence, call, officer_note]
+    stated: [business_plan, correspondence, call, analyst_note]
   ask: What does the plant run on? Sun, wind, water, heat from the ground, or a fuel that is bought in?
   note: For a plant with two sources, answer for the one that most of the projected energy comes from, and say so.
 - id: OBS_ERES_001
@@ -42,7 +42,7 @@ checks:
   evidence:
     best: [technical_feasibility]
     supporting: [company_record, consultant_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What resource data do you have for the site, measured how, and over what period? Please share the measurement report
     or the dataset.
   if_unknown: Without data for the site, the yield cannot be estimated and the revenue projections have no base.
@@ -60,7 +60,7 @@ checks:
   evidence:
     best: [technical_feasibility, consultant_report]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Who prepared the energy yield report? Please share it.
   note: The report must be in hand, with the name of the firm and its date. A yield figure from the developer or from the
     equipment supplier's own software is not independent.
@@ -77,7 +77,7 @@ checks:
   evidence:
     best: [technical_feasibility]
     supporting: [financial_model, consultant_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: Without a P90 the debt cannot be set against a poor year.
   note: Say whether the P90 is for a single year or for an average over ten years. The single-year figure is the lower of
     the two and the one that matters for a year's debt service. Record both yields in gigawatt hours as well. For water,
@@ -94,7 +94,7 @@ checks:
   evidence:
     best: [technical_feasibility, consultant_report]
     supporting: [financial_model, financial_projections, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Paying in full means cash flow available for debt service of at least one times the debt service of that year, before
     any reserve is drawn. The model is the party's own. The case counts as tested once the lender or an independent adviser
     has run it.
@@ -111,7 +111,7 @@ checks:
   evidence:
     best: [technical_feasibility, consultant_report]
     supporting: [financial_model, supply_agreement]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What yearly loss of output do your projections assume, and what is that rate based on?
   note: Record the rate. A flat output over the whole life of the loan is a no. For a plant that burns fuel, the loss shows
     as lower output and as more fuel used for each unit of energy.
@@ -130,7 +130,7 @@ checks:
   evidence:
     best: [supply_agreement]
     supporting: [technical_feasibility, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Who supplies the fuel, under what contract, for what quantity and until when? Please share the contract.
   note: A contract that is shorter than the loan, or that covers less than the quantity the projections count on, is a no.
     Say what is missing. This covers fuel that is grown or collected, such as biomass, as well as gas, coal and oil.

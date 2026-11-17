@@ -25,7 +25,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is there a term sheet or heads of terms that you and the lender have both accepted? Please share the latest version
     and say whether it is signed.
   note: There is no answer for "none yet". An open question says that, and it is listed as the thing to do. Where the
@@ -42,7 +42,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A term marked "to be agreed", or a range in place of a figure, counts as left open.
 - id: OBS_TS_007
   question: Set against a month-by-month cash flow, does any repayment fall due before the cash to pay it has come in (during
@@ -56,7 +56,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement, technical_feasibility]
     supporting: [financial_model, financial_projections, management_accounts]
-    stated: [business_plan, correspondence, call, officer_note]
+    stated: [business_plan, correspondence, call, analyst_note]
   ask: In which months does your cash come in, and when would the first repayment fall? If the loan pays for an investment,
     when will that investment start to earn?
   note: A yearly cash flow hides this. Use a monthly or quarterly one for the grace period, the ramp-up and one full season.
@@ -74,7 +74,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement]
     supporting: [financial_model, financial_projections, internal_memo]
-    stated: [business_plan, correspondence, call, officer_note]
+    stated: [business_plan, correspondence, call, analyst_note]
   note: A working-capital line that is repaid in full from each trading cycle does not depend on a refinancing. One that
     is only ever rolled over does.
   leads_to:
@@ -92,7 +92,7 @@ checks:
   evidence:
     best: [dfi_facility_document, facility_agreement]
     supporting: [internal_memo, market_study]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   if_unknown: Where no comparable loan is known, the terms have no outside reference. The credit paper should say so.
 - id: OBS_TS_010
@@ -108,7 +108,7 @@ checks:
   evidence:
     best: [internal_memo]
     supporting: [term_sheet]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
 - id: OBS_TS_MIT_001
   question: Do the loan terms require the borrower to use surplus cash to prepay this loan (a cash sweep), so that the final
@@ -123,5 +123,5 @@ checks:
   evidence:
     best: [facility_agreement]
     supporting: [term_sheet, financial_model]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Check what counts as surplus cash, and whether dividends are paid before the sweep or after it.

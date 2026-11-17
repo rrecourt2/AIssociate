@@ -28,7 +28,7 @@ checks:
   evidence:
     best: [audited_annual_report, regulatory_document]
     supporting: [management_accounts, company_record, credit_rating_report, annual_report, prospectus]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   ask: What share of your loan book is non-performing today, and how do you define non-performing? Your latest prudential
     return would answer this.
   note: Say which date the figure is for. Record beside it the loans written off in each of the last three years as a share
@@ -46,7 +46,7 @@ checks:
   evidence:
     best: [audited_annual_report, regulatory_document]
     supporting: [corporate_governance_policy, company_record, audit_management_letter, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: After how many days in arrears do you classify a loan as non-performing? Do you then classify the whole loan, or
     only the instalments that are overdue?
   note: Read the accounting policy note and the credit policy, then check them against the arrears report. The balance of
@@ -68,7 +68,7 @@ checks:
   evidence:
     best: [audited_annual_report, regulatory_document]
     supporting: [company_record, management_accounts, audit_management_letter, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: What share of your loan book has been rescheduled or refinanced because the borrower could not pay as first agreed?
     How do you classify such loans afterwards?
   if_unknown: An institution that cannot say how much of its book is restructured does not know its own bad loans.
@@ -84,7 +84,7 @@ checks:
   evidence:
     best: [audited_annual_report, regulatory_document]
     supporting: [management_accounts, company_record, valuation_report, credit_rating_report, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: What provisions do you hold against your non-performing loans, and what collateral? When was the collateral last
     valued, and by whom?
   note: Count only collateral that the institution holds under a registered charge and that an independent valuer has valued
@@ -103,7 +103,7 @@ checks:
   evidence:
     best: [audited_annual_report, audit_management_letter, regulatory_document]
     supporting: [corporate_governance_policy, board_minutes, company_record, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: When do you write a loan off, and who decides? Please send the policy and the list of write-offs of the last two
     years.
   note: Set the write-offs of the last two years against the policy. Loans written off earlier than the policy says lower
@@ -122,7 +122,7 @@ checks:
   evidence:
     best: [audited_annual_report, regulatory_document]
     supporting: [public_source, press_article, credit_rating_report, management_accounts, annual_report, prospectus]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   note: Twice is a guide. Take the growth of the market from the central bank's published figures, and say which figures
     were used. Growth by buying another institution or a portfolio is growth all the same.
 - id: OBS_FIP_003
@@ -134,7 +134,7 @@ checks:
   evidence:
     best: [audited_annual_report, regulatory_document]
     supporting: [company_record, management_accounts, credit_rating_report, annual_report, prospectus]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   ask: How is your loan book spread over sectors and regions? Which is the largest of each, and what share of the book does
     it hold?
   note: A quarter is a guide. An institution built to serve one sector or one region (an agricultural bank, a regional microfinance
@@ -150,7 +150,7 @@ checks:
   evidence:
     best: [regulatory_document, audited_annual_report]
     supporting: [company_record, credit_rating_report, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: Please send the list of your twenty largest exposures, with borrowers that belong together shown as one group, and
     each as a percentage of your capital.
   note: Ten exposures and the whole of capital are a guide. Count loans, guarantees and undrawn commitments. Record the
@@ -169,7 +169,7 @@ checks:
   evidence:
     best: [audited_annual_report, regulatory_document]
     supporting: [company_record, management_accounts, credit_rating_report, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: What share of your loan book is in foreign currency? How much of that is lent to borrowers who earn that currency,
     such as exporters, and how do you establish it?
   if_unknown: An institution that does not know which of its borrowers earn the currency they borrow in cannot say what

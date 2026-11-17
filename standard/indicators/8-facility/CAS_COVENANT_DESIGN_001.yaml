@@ -32,7 +32,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
 - id: OBS_COV_004
   question: As results fall from the lender's base case towards the point where cash flow no longer covers debt service,
     when is a financial covenant first breached?
@@ -48,7 +48,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement, internal_memo]
     supporting: [financial_model, financial_projections, management_accounts]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask_whom: lender
   if_unknown: If no downside case has been run against the covenant levels, nobody knows when they would warn.
   note: Run the lender's downside case with the covenant's own definitions. It shows how far results have to fall before
@@ -64,7 +64,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Read the definitions. A covenant tested on a holding company's own accounts says nothing about the subsidiary that
     earns the cash, and the other way round. Where there is no financial covenant, leave this open. OBS_COV_004 records
     it.
@@ -78,7 +78,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Which accounts and reports would you have to send the lender, how often, and how long after the period ends? Can
     the finance team meet those dates today?
 - id: OBS_COV_003
@@ -92,7 +92,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Read the exceptions (permitted security, permitted debt). An exception without a cap undoes the rule. Where repayment
     relies on a group, the limits should bind the group's members too.
   leads_to:
@@ -108,7 +108,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: All three have to be covered for a yes. Repayments of shareholder loans and fees paid to the owners count as payments
     to the owners.
   leads_to:
@@ -123,7 +123,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A breach that only blocks dividends, or only obliges the borrower to present a plan, does not give this right. Record
     the length of the cure period.
 - id: OBS_COV_009
@@ -136,7 +136,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Where the facility gives no right to cure with new money, the answer is no. Also read how the new money is counted.
     Money counted as cash flow hides the breach. Money used to repay debt reduces it.
 - id: OBS_COV_010
@@ -149,7 +149,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Read how control is defined. A sale of shares higher up the chain of ownership should count as a change of control
     too. A clause that only obliges the borrower to tell the lender of the change does not give this right.
 - id: OBS_COV_011
@@ -162,7 +162,7 @@ checks:
   evidence:
     best: [facility_agreement]
     supporting: [term_sheet]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A clause that gives the right only once the other lender has in fact called its loan (cross-acceleration) leaves
     the lender one step behind. Answer no and say which clause it is. This check takes the place of OBS_LENDER_007, which
     asked the same of each other loan in turn.
@@ -176,7 +176,7 @@ checks:
   evidence:
     best: [company_certificate, audited_annual_report]
     supporting: [interim_financial_statements, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: A certificate that has not arrived is itself a breach of the information covenant. OBS_COND_007 records it.
   note: Work the ratios out again from the accounts that came with the certificate, using the definitions in the facility
     agreement.

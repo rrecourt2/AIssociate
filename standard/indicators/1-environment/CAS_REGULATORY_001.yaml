@@ -25,7 +25,7 @@ checks:
   evidence:
     best: [legal_opinion, operational_license, regulatory_document]
     supporting: [company_record, internal_memo]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Do you need a licence, a permit or a concession to run your main business? Examples are a banking or telecom licence,
     a mining or water permit, a generation licence or a concession to run a port or a road.
 - id: OBS_REG_002
@@ -38,7 +38,7 @@ checks:
   evidence:
     best: [operational_license, lease_agreement, legal_opinion, regulatory_document]
     supporting: [company_record, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Please share your key licences and permits, or a confirmation from the authority that they are in force. Is any of
     them held by another company of the group, or by a person?
   note: This check does not hang on OBS_REG_001, so that the topic cannot close on one answer. Where the party says it needs
@@ -58,7 +58,7 @@ checks:
   evidence:
     best: [regulatory_document, legal_opinion, audited_annual_report]
     supporting: [board_minutes, company_record, company_certificate, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In the last three years, has any regulator or authority sent you a warning, a notice of breach, a fine or a request
     to explain yourself? What was it about, and how did it end?
   note: A party that says yes is believed. A party that says no is believed once the authority's record or counsel's review
@@ -77,7 +77,7 @@ checks:
   evidence:
     best: [operational_license, lease_agreement, regulatory_document]
     supporting: [company_record, legal_opinion]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: When does each of your key licences and permits expire? What do you have to do to renew it?
   note: Record the expiry date of each licence, not only the answer.
 - id: OBS_REG_006
@@ -93,7 +93,7 @@ checks:
   evidence:
     best: [legal_opinion, operational_license, lease_agreement]
     supporting: [company_record, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: Security over the shares or the business may be worth little if the licence does not pass to a buyer.
   leads_to:
   - {indicator: CAS_SECURITY_PACKAGE_001, is: true, reason: 'A lender that cannot pass the licence to a buyer needs a direct
@@ -108,7 +108,7 @@ checks:
   evidence:
     best: [regulatory_document, legal_opinion, consultant_report]
     supporting: [public_source, press_article, internal_memo, board_minutes]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Do you know of any new law, regulation or change to your licence that is being prepared? Think of licensing rules,
     price controls, taxes on your product, or environmental standards. What would it cost you?
   if_unknown: Nobody has looked at what is in preparation.
@@ -127,7 +127,7 @@ checks:
   evidence:
     best: [operational_license, lease_agreement, legal_opinion, regulatory_document]
     supporting: [company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Say which of the two it is. A record of renewals is weaker than a right, and weaker still where the authority or
     the policy has changed since the last renewal.
 - id: OBS_REG_008
@@ -145,5 +145,5 @@ checks:
   evidence:
     best: [regulatory_document, operational_license]
     supporting: [legal_opinion, board_minutes]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: The confirmation must come from the authority. The party's own account of it is not a confirmation.

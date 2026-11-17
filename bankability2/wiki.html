@@ -53,6 +53,15 @@ a.cite:hover { color: var(--mark); }
 #card p { font: 1rem/1.5 var(--text); } #card dd { margin: 0; overflow-wrap: anywhere; }
 #card dt { margin-top: 0.7rem; color: var(--soft); font-size: 0.75rem; }
 #card button { float: right; border: 0; background: none; color: var(--soft); font-size: 1.3rem; line-height: 1; cursor: pointer; }
+main.broad { max-width: 78rem; }
+.filters button { margin: 0 0.4rem 0.4rem 0; padding: 0.3rem 0.8rem; font: 0.82rem var(--plain); color: inherit; cursor: pointer;
+  background: transparent; border: 1px solid var(--line); border-radius: 999px; }
+.filters button.on { background: var(--mark); border-color: var(--mark); color: var(--paper); }
+.filters small { opacity: 0.75; }
+.state { padding: 0.1rem 0.55rem; border-radius: 999px; background: var(--tint); white-space: nowrap; font-size: 0.78rem; }
+tr[data-group="To answer"] .state { background: #f4e2b8; color: #5b4300; }
+tr[data-group="Answered"] .state { background: #d6ebda; color: #1d4d2b; }
+tr[data-group="Waiting"] .state { background: #dee6f0; color: #2b4462; }
 @media (max-width: 60rem) {
   body { display: block; } main { margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
   nav { position: static; height: auto; border: 0; border-bottom: 1px solid var(--line); }
@@ -84,7 +93,7 @@ const pages = {};
 for (const [path, raw] of Object.entries(data.pages)) {
   const top = /^---\n([\s\S]*?)\n---\n?/.exec(raw), text = top ? raw.slice(top[0].length) : raw;
   const title = (top && /^title:[ \t]*["']?(.*?\S)["']?[ \t]*$/m.exec(top[1]) || /^#\s+(.+)$/m.exec(text) || [0, path])[1];
-  const shelf = ["index.md", "sources.md", data.documents].includes(path) ? "" : path.includes("/") ? path.split("/")[0] : "other";
+  const shelf = ["index.md", "sources.md", "checks.md", data.documents].includes(path) ? "" : path.includes("/") ? path.split("/")[0] : "other";
   pages[path] = {title, text, shelf};
 }
 let here = "index.md";  // the page that is open
@@ -184,8 +193,9 @@ function card(id) {  // what the record holds under an ID: a fact with its value
     let html = key === "where" || key === "extract" ? file(value) : named(value);
     if (key === "value") html = esc(record.label ? record.label + ": " : "") + html + " " + esc(record.unit || "");
     const source = key === "source" && data.sources[value];
+    const at = page && Number(page[1]) + (/PDF\s+p/i.test(record.place) ? 0 : source.page_offset || 0);  // a printed page, unless it says PDF
     if (source) html += [" " + esc(source.title) + (source.date ? ", " + esc(source.date) : ""),
-      source.where && file(source.where, page ? "#page=" + page[1] : ""), source.extract && file(source.extract)]
+      source.where && file(source.where, page ? "#page=" + at : ""), source.extract && file(source.extract)]
       .filter(Boolean).join("<br>");
     lines.push(`<dt>${esc(key[0].toUpperCase() + key.slice(1).replace(/_/g, " "))}</dt><dd>${html}</dd>`);
   }
@@ -210,12 +220,36 @@ function menu() {  // the pages by shelf, or the pages that hold the words searc
   const shown = Object.keys(pages).filter(path => words.every(word => starts(word).test(pages[path].title + "\n" + bare(pages[path].text))));
   const shelf = name => {
     const paths = shown.filter(path => pages[path].shelf === name);
-    return paths.length ? `<h2>${esc(name)}</h2>` + paths.map(path => entry(path)).join("") : "";
+    return paths.length ? `<h2>${esc(data.shelves[name] || name)}</h2>` + paths.map(path => entry(path)).join("") : "";
   };
-  const shelves = [...new Set([...data.shelves, ...shown.map(path => pages[path].shelf)])].filter(Boolean);
+  const shelves = [...new Set([...Object.keys(data.shelves), ...shown.map(path => pages[path].shelf)])].filter(Boolean);
   el("menu").innerHTML = words.length ? shown.map(path => entry(path)).join("") || "<p>No page holds these words.</p>"
     : entry("index.md", "Contents") + entry("sources.md", "Sources") + entry(data.documents, "Documents") +
-      shelves.map(shelf).join("");
+      shelves.map(shelf).join("") + (pages["checks.md"] ? "<h2>Checks</h2>" + entry("checks.md", "The due diligence list") : "");
+}
+
+const GROUPS = {"To answer": ["open", "contested"], "Waiting": ["waiting"], "Answered": ["answered"],
+  "Not relevant or off": ["not relevant", "off", "parked"]};
+
+function filters(rows) {  // on a page of checks: a mark on each state, and buttons that choose which states show
+  for (const tr of rows) {
+    tr.dataset.group = Object.keys(GROUPS).find(name => GROUPS[name].includes(tr.cells[0].textContent.split(",")[0]));
+    tr.cells[0].innerHTML = `<span class="state">${tr.cells[0].innerHTML}</span>`;
+  }
+  const bar = document.createElement("p"), count = name => rows.filter(tr => name === "All" || tr.dataset.group === name).length;
+  bar.className = "filters";
+  bar.innerHTML = [...Object.keys(GROUPS), "All"].map(name => `<button data-show="${name}">${name} <small>${count(name)}</small></button>`).join("");
+  el("page").querySelector("h1").after(bar);
+  const choose = name => {
+    for (const button of bar.children) button.classList.toggle("on", button.dataset.show === name);
+    for (const tr of rows) tr.hidden = name !== "All" && tr.dataset.group !== name;
+    for (const wide of new Set(rows.map(tr => tr.closest(".wide")))) {  // a table with no row left goes, with its claim and its heading
+      const empty = !wide.querySelector("tbody tr:not([hidden])");
+      for (let node = wide; node; node = node.previousElementSibling) { node.hidden = empty; if (node.tagName === "H3") break; }
+    }
+  };
+  bar.addEventListener("click", event => event.target.closest("button") && choose(event.target.closest("button").dataset.show));
+  choose("To answer");
 }
 
 function show() {  // open the page that the address names, or the contents page
@@ -226,6 +260,9 @@ function show() {  // open the page that the address names, or the contents page
     if (part.children.length < 2) part.remove();
     else part.open = part.querySelectorAll("li, tr").length <= 3;
   }
+  const states = [...el("page").querySelectorAll("tbody tr")].filter(tr => tr.closest("table").querySelector("th").textContent === "State");
+  el("page").classList.toggle("broad", states.length > 0);
+  if (states.length) filters(states);
   el("card").hidden = true;
   document.title = `${pages[here].title} | ${data.name}`;
   menu();

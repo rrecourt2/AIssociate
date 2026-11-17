@@ -272,9 +272,9 @@ source_kinds:
 - id: call
   title: Call or meeting
   description: Transcript or notes of a call or a meeting.
-- id: officer_note
-  title: Note by the officer
-  description: A note by the investment officer or the deal team, including what the officer tells the assistant.
+- id: analyst_note
+  title: Note by the analyst
+  description: A note by the investment analyst or the deal team, including what the analyst tells the assistant.
 - id: internal_memo
   title: Internal memo
   description: 'An internal paper of the lender: a credit memo, a committee paper or an analysis.'

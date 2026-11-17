@@ -26,7 +26,7 @@ checks:
   evidence:
     best: [certificate_of_incorporation, registry_extract, kyc_package]
     supporting: [organizational_chart, term_sheet]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
 - id: OBS_GTOR_002
   question: What is the guarantor's net worth (all it owns less all it owes), leaving out its shares in the borrower and
     what the borrower owes it?
@@ -39,7 +39,7 @@ checks:
   evidence:
     best: [audited_annual_report, valuation_report]
     supporting: [management_accounts, company_certificate, tax_returns, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What do you own and what do you owe, in total, as of the latest date you have figures for? Please leave out your
     shares in the borrower and anything the borrower owes you.
   note: Give the date of the figure. For a person, use a signed statement of net worth and check the larger assets against
@@ -55,7 +55,7 @@ checks:
   evidence:
     best: [audited_annual_report, valuation_report, credit_rating_report]
     supporting: [management_accounts, bank_statement, company_certificate, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: A guarantor whose wealth is in land, unlisted shares or the borrower itself can be worth the amount and still
     be unable to pay it.
   note: 90 days is a guide. Use the period the guarantee gives the guarantor to pay where that is shorter. Shares in the
@@ -71,7 +71,7 @@ checks:
   evidence:
     best: [audited_annual_report, credit_rating_report]
     supporting: [debt_schedule, company_certificate, board_minutes, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Please list every guarantee you have given for someone else's debt, with the amount, the lender and the borrower.
   note: Count guarantees for group companies, for other borrowers and for the guarantor's owners, and capital it has promised
     but not yet paid in. Use the net worth given under OBS_GTOR_002. A person's guarantees appear in no accounts. Ask for
@@ -89,7 +89,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, organizational_chart, company_certificate, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A guarantor in the same business and the same market as the borrower can fail with it even where the two have no
     dealings with each other. Where that is so, say it in the reason. Where the guarantor is the borrower's parent, the
     parent's other businesses count as its own.
@@ -111,7 +111,7 @@ checks:
   evidence:
     best: [registry_extract, valuation_report, audited_annual_report]
     supporting: [company_certificate, bank_statement, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Whether a judgment can be enforced in the country where the assets are is asked about the guarantee (OBS_GUARANTEE_ENFORCE_001).
     This check asks whether there is anything there to enforce against. Where the guarantor is a holding company, its assets
     are shares in subsidiaries, and the subsidiaries' own lenders are paid first.
@@ -128,7 +128,7 @@ checks:
   evidence:
     best: [adverse_media_screen, credit_rating_report, audited_annual_report]
     supporting: [board_minutes, bank_statement, public_source, press_article, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Have you ever been asked to pay under a guarantee, or to put money into a company you owned or backed when it was
     short? What happened?
   note: Ask the borrower's other lenders, and search court records and the press. If the search finds nothing, record what
@@ -145,7 +145,7 @@ checks:
   evidence:
     best: [registry_extract, security_agreement, legal_opinion]
     supporting: [company_certificate, bank_statement, tax_returns]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Assets held jointly, or within a marriage in which property is shared, may be only partly within reach. Say which
     assets these are and take legal advice. Assets held through a company are reached only after that company's own creditors.
 - id: OBS_GTOR_009
@@ -161,5 +161,5 @@ checks:
   evidence:
     best: [credit_rating_report]
     supporting: [audited_annual_report, public_source, press_article]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Record the agency, the rating, whether it is on the international or a national scale, and its date.

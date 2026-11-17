@@ -27,7 +27,7 @@ checks:
   evidence:
     best: [corporate_governance_policy, private_placement_memorandum]
     supporting: [internal_memo]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: '''none'' means the law of the country is the only standard. ''integration'' means the risks are weighed in the
     credit decision, without a fixed standard to meet. ''dfi_impact'' means the deal must meet a safeguard standard, such
@@ -43,7 +43,7 @@ checks:
   evidence:
     best: [corporate_governance_policy, private_placement_memorandum, dfi_facility_document]
     supporting: [internal_memo, term_sheet]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: 'Name each list and its version or date. Where no list applies, say so. Where another financier applies a stricter
     environmental or social standard, name it: the strictest is the one the borrower has to meet.'
@@ -57,7 +57,7 @@ checks:
   evidence:
     best: [audited_annual_report, operational_license, adverse_media_screen, consultant_report]
     supporting: [company_record, company_certificate, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Here is the list of activities we cannot finance. Does your company, or any company it controls, do any of these,
     even as a small part of its business? If so, what share of revenue does it bring?
   if_unknown: An excluded activity that comes to light after signing can force the lender out of the deal.
@@ -76,7 +76,7 @@ checks:
   evidence:
     best: [esia_report, consultant_report]
     supporting: [esms_policy, internal_memo, executive_summary]
-    stated: [call, officer_note, management_presentation]
+    stated: [call, analyst_note, management_presentation]
   note: Name a topic when the operations, a planned expansion or the main suppliers touch it, whether or not any harm has
     been found. Labour arises for every business that employs people or uses contractors.
   leads_to:
@@ -98,7 +98,7 @@ checks:
   evidence:
     best: [consultant_report, esia_report, adverse_media_screen]
     supporting: [public_source, press_article, market_study, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Where are your sites, and where do your main raw materials come from? Please name the regions, not only the countries.
   note: This is about the setting, not about what the business has done. A yes means that the tests on land, labour and
     supply need evidence from the ground and not from the office. Say which lists, maps or reports were used, and their
@@ -120,7 +120,7 @@ checks:
   evidence:
     best: [internal_memo, consultant_report]
     supporting: [esia_report, executive_summary]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: A is harm that is diverse, irreversible or without precedent. B is limited harm, mostly at the site, that known
     measures can deal with. C is little or no harm. FI is money passed on through a financial intermediary, where the risk
@@ -140,7 +140,7 @@ checks:
   evidence:
     best: [consultant_report]
     supporting: [esms_policy, company_record, corporate_governance_policy]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: How do you check the loans you make for activities on an exclusion list and for environmental and social risk? Who
     is in charge of it, and can you show us loans that you turned down or attached conditions to for these reasons?
   note: A procedure on paper is not enough. Ask for the list of loans screened in the last twelve months, with the result
@@ -160,7 +160,7 @@ checks:
   evidence:
     best: [consultant_report, esia_report]
     supporting: [esap, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: The topics are those named in OBS_ES_002. An impact assessment written for a permit answers the law of the country,
     not the lender's standard, and is not enough by itself. The report should say, topic by topic, where the business falls
     short of the standard.

@@ -27,7 +27,7 @@ checks:
   evidence:
     best: [memorandum_and_articles, registry_extract, board_composition]
     supporting: [board_minutes, organizational_chart, audited_annual_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Does your company have a board of directors that meets separately from the management team?
   note: A company led by one office-holder and no body that meets, such as a sole director or a managing partner, has
     no board. Answer no, also where its owner's board takes its large decisions. OBS_BOARD_006 then asks who oversees
@@ -45,7 +45,7 @@ checks:
   evidence:
     best: [board_composition, registry_extract]
     supporting: [management_cv, corporate_governance_policy, kyc_package]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: 'Is any member of your board independent: not an employee, not a significant shareholder or related to one, and
     with no other business with the company?'
   note: 'Significant means a holding that gives a say: about a twentieth of the votes is a guide, or the line that the
@@ -63,7 +63,7 @@ checks:
   evidence:
     best: [board_minutes]
     supporting: [audited_annual_report, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Four a year is a guide. A meeting counts if a quorum was present and minutes were kept.
 - id: OBS_BOARD_005
   question: Are minutes kept of every board meeting, signed by the chair, and do they record what was decided and who voted
@@ -77,7 +77,7 @@ checks:
   evidence:
     best: [board_minutes]
     supporting: [board_resolution, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Could we see the minutes of the board meetings of the last two years? Sensitive passages can be blacked out.
 - id: OBS_BOARD_007
   question: In the last three years, has the board, or the body that oversees management in its place, turned down, sent
@@ -88,7 +88,7 @@ checks:
   evidence:
     best: [board_minutes]
     supporting: [board_resolution, shareholder_resolution, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Can you give an example from the last three years where the board did not approve what management or the main shareholder
     proposed, or approved it only after changes?
   note: Read the minutes themselves. A board that approved every proposal as tabled for three years has not been tested,
@@ -105,7 +105,7 @@ checks:
   evidence:
     best: [memorandum_and_articles, shareholder_agreement, jv_agreement]
     supporting: [corporate_governance_policy, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: As there is no board, who reviews what management does, and how often?
   note: 'A body counts if it can refuse a proposal and has someone on it who does not report to the manager it oversees.
     Where it is the board of the parent, say so in the fact, and count how many of its members manage this party:

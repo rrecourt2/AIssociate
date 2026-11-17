@@ -29,7 +29,7 @@ checks:
   evidence:
     best: [regulatory_document, consultant_report]
     supporting: [corporate_governance_policy, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Does every worker have a written contract? Do you pay at least the minimum wage, overtime, and social security contributions
     in full? When did the labour inspector last visit, and what did the report say?
   note: Count the workers of labour contractors who do the party's regular work, and the workers who build what the
@@ -46,7 +46,7 @@ checks:
   evidence:
     best: [regulatory_document, consultant_report, insurance_broker_report]
     supporting: [company_record, board_minutes]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In the last three years, has anyone died or been permanently injured at work on your sites, including contractors'
     workers? What happened, and what did you change afterwards?
   note: Count contractors' workers and drivers on the party's business, and the workers who build what the loan pays
@@ -66,7 +66,7 @@ checks:
   evidence:
     best: [consultant_report, regulatory_document, esia_report]
     supporting: [company_record, material_contract, corporate_governance_policy]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: How many seasonal, agency, contract or migrant workers do you use at the busiest time of the year? Who recruits them,
     who pays them, and where do they live? Do they pay anything to get the job?
   note: Where the party uses no such workers, answer no and say so. Count the workers who build what the loan pays for,
@@ -84,7 +84,7 @@ checks:
   evidence:
     best: [regulatory_document, legal_opinion, adverse_media_screen]
     supporting: [company_record, board_minutes]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In the last three years, have you had a strike, a mass dismissal, a court case brought by a group of workers, or
     a fine or an order from the labour authority? What was it about, and how did it end?
   note: Accidents at work are asked in OBS_SOC_005. If the search finds nothing, record what was searched, where and when.
@@ -100,7 +100,7 @@ checks:
   evidence:
     best: [esia_report, consultant_report, adverse_media_screen]
     supporting: [stakeholder_engagement_plan, grievance_mechanism, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Have neighbours, local leaders or local groups complained about your operations, or protested against them? What
     about, and where does the matter stand today?
   if_unknown: Nobody has asked the neighbours, so their silence shows nothing.
@@ -121,7 +121,7 @@ checks:
   evidence:
     best: [consultant_report, esia_report, adverse_media_screen]
     supporting: [material_contract, corporate_governance_policy, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Who guards your sites, and are they armed? Do police or soldiers ever protect them? What written rules do the guards
     follow on the use of force, and has anyone been hurt or held by them in the last three years?
   note: Where no site has armed guards, police or soldiers, answer no and say so. IFC Performance Standard 4 is the usual
@@ -137,7 +137,7 @@ checks:
   evidence:
     best: [consultant_report, esia_report]
     supporting: [grievance_mechanism, company_record, corporate_governance_policy]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: How can a worker or a neighbour complain to you? Please share the procedure and the log of complaints received in
     the last twelve months, with what was done about each.
   note: Look at the log, not only at the procedure. An empty log at a large site more often means that the channel is not
@@ -163,7 +163,7 @@ checks:
   evidence:
     best: [esap, facility_agreement]
     supporting: [term_sheet, board_minutes, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: The plan counts once the party has signed it or it is part of the facility agreement. After a death or a permanent
     injury, the plan should rest on a written finding of the cause. For a dispute or a sanction, the plan should show the
     settlement or the authority's confirmation that the breach is put right.

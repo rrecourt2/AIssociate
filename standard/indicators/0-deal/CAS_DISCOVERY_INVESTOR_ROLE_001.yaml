@@ -25,7 +25,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement]
     supporting: [investment_plan, internal_memo]
-    stated: [executive_summary, correspondence, call, officer_note]
+    stated: [executive_summary, correspondence, call, analyst_note]
   ask: What are you asking us for? How much, in which currency, for how long, and what will the money pay for?
 - id: OBS_REQUEST_003
   question: 'Does the money pay for a project or an asset that can be named: something that is built, bought or expanded,
@@ -40,7 +40,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement]
     supporting: [investment_plan, internal_memo]
-    stated: [executive_summary, business_plan, correspondence, call, officer_note]
+    stated: [executive_summary, business_plan, correspondence, call, analyst_note]
   ask: Will the money pay for one thing that you can name, such as a new plant or line, or the purchase of an asset? Or
     will it go into the business as a whole?
   note: Record the project or the asset as a subject, and link the facility to it with a link of the kind finances. Where
@@ -59,7 +59,7 @@ checks:
   evidence:
     best: [term_sheet, facility_agreement, intercreditor_agreement]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What kind of financing are you looking for? A senior loan with or without security, a loan that ranks behind other
     lenders, equity, or a guarantee?
   if_unknown: Until the rank is known, nobody can say who would be paid before the lender.
@@ -78,7 +78,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement]
     supporting: [debt_schedule, management_accounts, term_sheet, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Does the business already have loans, bonds, leases or shareholder loans? A yes or no is enough to start with.
   leads_to:
   - {indicator: CAS_OTHER_LENDERS_001, is: true, reason: 'Each lender that is already there can rank ahead, hold security
@@ -96,7 +96,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement, intercreditor_agreement]
     supporting: [debt_schedule, management_accounts, shareholder_register, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Please list all the financing of the business. For each loan or lease we need the lender, the amount, the security
     and the final repayment date, and we need the equity that has been paid in. A table is ideal.
   if_unknown: Without the full list, nobody can say what ranks ahead of the lender or what falls due before its loan.
@@ -108,7 +108,7 @@ checks:
   disproved_by: 'no'
   evidence:
     best: [internal_memo]
-    stated: [officer_note, call]
+    stated: [analyst_note, call]
   ask_whom: lender
   note: This is about the lender's own products and limits. For the country limit, ask whoever keeps the limits and record
     the date. Whether the lender is the right source of the money is asked under impact and additionality.
@@ -123,7 +123,7 @@ checks:
   evidence:
     best: [facility_agreement, technical_feasibility]
     supporting: [investment_plan, term_sheet, financial_model]
-    stated: [business_plan, executive_summary, call, officer_note]
+    stated: [business_plan, executive_summary, call, analyst_note]
   ask: Could you give us a list of what the money will pay for, with an amount for each item?
   note: A purpose such as "general corporate purposes", "expansion" or "working capital", without a list of what is to be
     paid for, is a no.
@@ -140,7 +140,7 @@ checks:
   evidence:
     best: [facility_agreement, audited_annual_report]
     supporting: [investment_plan, term_sheet, debt_schedule, annual_report, prospectus]
-    stated: [executive_summary, correspondence, call, officer_note]
+    stated: [executive_summary, correspondence, call, analyst_note]
   ask: Will any of the money be used to repay an existing loan or a shareholder loan, to settle an amount owed to a related
     company, to pay a dividend or to buy shares?
   note: Record with the answer who is paid, how much, and why that party wants its money now. A refinancing is not a fault
@@ -161,7 +161,7 @@ checks:
   evidence:
     best: [technical_feasibility, facility_agreement, dfi_facility_document]
     supporting: [investment_plan, financial_model, board_resolution, bank_statement]
-    stated: [business_plan, correspondence, call, officer_note]
+    stated: [business_plan, correspondence, call, analyst_note]
   ask: Could you show us the full cost of the plan and where each part of the money comes from? Which of these sources are
     signed or already paid in, and which are still being discussed?
   if_unknown: A plan that is only partly funded can stop half way, with the lender's money already spent.
@@ -187,7 +187,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement, jv_agreement]
     supporting: [investment_plan, financial_model, bank_statement, shareholder_resolution, annual_report, prospectus]
-    stated: [business_plan, correspondence, call, officer_note]
+    stated: [business_plan, correspondence, call, analyst_note]
   ask: How much of the cost of the plan do the owners pay themselves, in cash? When is that money paid in, before our loan
     is drawn or alongside it, and where does it come from?
   note: A third is a guide. An institution can set its own share.
@@ -209,5 +209,5 @@ checks:
   evidence:
     best: [audited_annual_report, correspondence]
     supporting: [debt_schedule, bank_statement, management_accounts, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: A letter counts as best evidence only if it comes from the lender that is repaid. Twelve months is a guide.

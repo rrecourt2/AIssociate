@@ -24,7 +24,7 @@ checks:
   evidence:
     best: [security_agreement, valuation_report]
     supporting: [term_sheet, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: The kinds are those of OBS_SECPKG_001. 'contract_rights' covers an assignment of a contract, of a concession or
     of insurance proceeds.
 - id: OBS_SECASSET_002
@@ -40,7 +40,7 @@ checks:
   evidence:
     best: [security_agreement, registry_extract, legal_opinion]
     supporting: [company_record, audited_annual_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In whose name is this asset held? Could you send the title deed, the register extract or the other document that
     shows it?
   note: 'For shares, the share register. For cash, an account in the giver''s own name. For receivables, invoices issued
@@ -56,7 +56,7 @@ checks:
   evidence:
     best: [valuation_report]
     supporting: [company_record, audited_annual_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: When was this asset last valued, by whom, and who asked for the valuation?
   note: Twelve months is a guide. Stock, receivables and listed shares change faster and need a fresher figure. For cash,
     the bank's own confirmation of the balance counts. For stock and receivables, a count or an ageing list checked by someone
@@ -72,7 +72,7 @@ checks:
   evidence:
     best: [valuation_report]
     supporting: [internal_memo, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: If the valuer gives no forced-sale value, say what discount was taken from the market value and why. Say how long
     a sale is assumed to take.
 - id: OBS_SECASSET_005
@@ -85,7 +85,7 @@ checks:
   evidence:
     best: [valuation_report, consultant_report]
     supporting: [company_record, internal_memo]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: 'Three years is a guide. Record the sales relied on: what was sold, when, and at what price. Typical cases for a
     no: a plant built for one purpose or in a remote place, stock that only this business can use, receivables that customers
     stop paying once supply ends, shares in the borrower itself. Cash on deposit is not sold: leave the check unanswered
@@ -100,7 +100,7 @@ checks:
   evidence:
     best: [registry_extract, legal_opinion, security_agreement]
     supporting: [audited_annual_report, debt_schedule]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Has anyone else a charge, a lien or a lease on this asset, or a claim to it in court? Is any part of its purchase
     price still owed to the seller?
   note: Search the register that belongs to the kind of asset (land, vehicles, movable assets, company charges) and the
@@ -119,7 +119,7 @@ checks:
   evidence:
     best: [legal_opinion, regulatory_document]
     supporting: [lease_agreement, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: The question is about this asset and this lender. Obstacles that hold for every kind of security in the country
     are asked about in CAS_SECURITY_LEGAL_001.
 - id: OBS_SECASSET_008
@@ -132,7 +132,7 @@ checks:
   evidence:
     best: [legal_opinion, security_agreement]
     supporting: [internal_memo, consultant_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Record also how long a sale would take from the day of default, with or without a court. The forced-sale value in
     OBS_SECASSET_004 assumes that time.
 - id: OBS_SECASSET_009
@@ -146,7 +146,7 @@ checks:
   evidence:
     best: [registry_extract, legal_opinion]
     supporting: [conditions_precedent_checklist, security_agreement]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A filing receipt shows that registration was asked for. The extract shows that it was made, and at what rank. Where
     there is no register (a notice to the debtor, control of an account), counsel's confirmation takes the place of the
     extract.
@@ -165,7 +165,7 @@ checks:
   evidence:
     best: [insurance_policy, insurance_broker_report]
     supporting: [conditions_precedent_checklist]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: 'If only one of the two holds, answer no and say which. An endorsement on the policy, or a notice that the insurer
     has acknowledged, shows that the lender is loss payee: a clause in the loan agreement that asks for it does not. Bare
     land has nothing to insure: leave the check unanswered and record that decision with its reason.'

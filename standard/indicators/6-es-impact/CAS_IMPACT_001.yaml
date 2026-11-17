@@ -24,7 +24,7 @@ checks:
   evidence:
     best: [consultant_report, market_study]
     supporting: [internal_memo, business_plan, executive_summary]
-    stated: [call, officer_note, management_presentation]
+    stated: [call, analyst_note, management_presentation]
   ask: Who will benefit from this investment besides your company (workers, suppliers, customers, the people nearby), and
     how? Roughly how many are they?
   note: Name the people and the change, not the activity. "Builds a plant" is an activity. "Buys from about two thousand
@@ -37,7 +37,7 @@ checks:
   evidence:
     best: [facility_agreement, dfi_facility_document]
     supporting: [internal_memo, term_sheet]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: Name what the lender will do and where it is written down. A general statement of the lender's role is not an answer.
 - id: OBS_IMPACT_008
@@ -51,7 +51,7 @@ checks:
   evidence:
     best: [term_sheet, correspondence, market_study]
     supporting: [debt_schedule, internal_memo]
-    stated: [call, officer_note, management_presentation]
+    stated: [call, analyst_note, management_presentation]
   ask: Which banks or investors have you approached for this financing, and what did each of them offer or say? What tenor
     and which currency can you get from your current banks?
   note: A lower price is not the test. A borrower that can borrow from commercial lenders and prefers the lender's price
@@ -69,7 +69,7 @@ checks:
   evidence:
     best: [facility_agreement, consultant_report]
     supporting: [internal_memo, company_record, financial_projections]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: For each benefit you expect, what is the figure today, what figure do you aim for and by when? From which of your
     records would you report it each year?
   note: The baseline is a figure measured before the loan, not an estimate made afterwards. The indicators count as agreed
@@ -84,7 +84,7 @@ checks:
   evidence:
     best: [internal_memo, consultant_report]
     supporting: [investment_plan, technical_feasibility, esia_report]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: Go by the lender's own method and list. Many development banks treat the mining of thermal coal and power from coal
     or peat as never aligned, and judge other activities case by case against the country's climate plans. For a loan for
@@ -100,7 +100,7 @@ checks:
   evidence:
     best: [internal_memo, consultant_report]
     supporting: [investment_plan, technical_feasibility]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: Say which method was used. Where none of the loan counts, record 0.
 - id: OBS_IMPACT_012
@@ -114,6 +114,6 @@ checks:
   evidence:
     best: [shareholder_register, board_composition]
     supporting: [company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What share of your owners, of your board and senior managers, of your employees and of your customers are women?
     Approximate figures will do to start with.

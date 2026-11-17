@@ -31,7 +31,7 @@ checks:
   evidence:
     best: [regulatory_document]
     supporting: [board_minutes, credit_rating_report, public_source, press_article]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Where do you stand with your supervisor today? Are you under ordinary supervision, or has the supervisor asked for
     closer reporting, agreed a corrective plan with you, or taken any other special measure?
   note: 'The options: normal is ordinary supervision with no special measure. enhanced_monitoring is more frequent reporting
@@ -56,7 +56,7 @@ checks:
   evidence:
     best: [regulatory_document]
     supporting: [audited_annual_report, board_minutes, audit_management_letter, public_source, press_article]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In the last three years, has your supervisor fined you, limited what you may do, or written to you with an order
     to correct something? If so, what was it about, and is it closed?
   note: Remarks in a routine inspection that carry no deadline and no penalty are not meant. Ask for the last inspection
@@ -72,7 +72,7 @@ checks:
   evidence:
     best: [audited_annual_report, regulatory_document]
     supporting: [company_record, board_minutes, audit_management_letter, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: How much have you lent to your shareholders, directors and managers, and to companies connected with them? What limit
     does your regulator set, and how do you decide who is connected?
   note: Where no regulatory limit applies, take a tenth of the institution's capital as a guide and say so. The related-party
@@ -91,7 +91,7 @@ checks:
   evidence:
     best: [regulatory_document, audit_management_letter]
     supporting: [board_minutes, corporate_governance_policy, board_composition, organizational_chart]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   ask: Do you have a risk committee of the board? How often did it meet last year, and to whom does your head of risk report?
   note: A charter alone is not enough. Read the minutes of the last four meetings for who attended, what was reported and
     what was decided. In a small institution the whole board may do this work. Then answer for the board, and say so.
@@ -105,7 +105,7 @@ checks:
   evidence:
     best: [regulatory_document, audit_management_letter]
     supporting: [corporate_governance_policy, company_record, board_minutes]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: Who can approve a loan, and up to what amount? In the last two years, was any loan approved although the risk function
     had advised against it?
   note: Read the approval limits in the credit policy, then test them against practice. Ask for the loans of the last two
@@ -125,5 +125,5 @@ checks:
   evidence:
     best: [regulatory_document]
     supporting: [board_minutes, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: The confirmation must come from the supervisor. The institution's own account of it is not a confirmation.

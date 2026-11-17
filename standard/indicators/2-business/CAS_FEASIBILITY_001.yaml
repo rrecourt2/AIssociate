@@ -26,7 +26,7 @@ checks:
   evidence:
     best: [technical_feasibility, epc_contract]
     supporting: [investment_plan, board_resolution, internal_memo, annual_report, prospectus]
-    stated: [business_plan, executive_summary, management_presentation, correspondence, call, officer_note]
+    stated: [business_plan, executive_summary, management_presentation, correspondence, call, analyst_note]
   ask: Please describe the project. What will be built or bought, where, at what cost and by when? Who pays for which part,
     and what will it add to the business (capacity, products, revenue)?
   note: 'Give the figures with their dates: the cost, the capacity, the planned start and end, and what has been spent so
@@ -42,7 +42,7 @@ checks:
   evidence:
     best: [technical_feasibility]
     supporting: [investment_plan, internal_memo]
-    stated: [business_plan, correspondence, call, officer_note]
+    stated: [business_plan, correspondence, call, analyst_note]
   ask: Has a feasibility study been made for the project? Please share it, with its date and the name of whoever wrote it.
   if_unknown: Without a study, the design, the cost and the schedule are the sponsor's own word.
   note: A study written by or for the sponsor counts here. Whether anyone independent agrees with it is asked in OBS_FEAS_003.
@@ -57,7 +57,7 @@ checks:
   evidence:
     best: [technical_feasibility, consultant_report]
     supporting: [company_record, public_source, press_article]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Where is this technology already running commercially at a similar size? Since when, and who can confirm how it performs?
   note: 'A pilot plant, a demonstration unit or the first plant of its kind is a no. So is a known technology used at several
     times its largest size so far, or with a feedstock or in a climate it has not run in. The supplier''s own list of references
@@ -75,7 +75,7 @@ checks:
   evidence:
     best: [lease_agreement, material_contract, legal_opinion, regulatory_document]
     supporting: [technical_feasibility, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Are the rights of way to the site and the connections to water and transport signed? Please share the agreements,
     with the date on which each ends.
   note: An option, a letter of intent or an application that is still pending is a no until it is signed or granted. Say
@@ -94,7 +94,7 @@ checks:
   evidence:
     best: [epc_contract, technical_feasibility]
     supporting: [investment_plan, financial_model, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Both parts must hold for a yes. Indicative quotes, price lists and the sponsor's own figures do not fix a cost.
     "The larger part" is a guide. Record the contingency as a share of the cost that is not fixed.
   leads_to:
@@ -110,7 +110,7 @@ checks:
   evidence:
     best: [technical_feasibility, consultant_report]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: The feasibility of the project rests on the sponsor's word alone.
   note: The expert's report must be in hand. Whoever wrote the study for the sponsor has not reviewed it. The usual form
     is a technical adviser who reports to the lenders. A review that confirms only with open reservations is a no, and the
@@ -128,7 +128,7 @@ checks:
   evidence:
     best: [technical_feasibility, consultant_report]
     supporting: [company_record, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Examples are ground that has not been surveyed, equipment with no reference at this size, a resource or a feedstock
     that has not been measured, or a single route for delivery. Name each open risk. A study that names no risk at all has
     not looked.
@@ -145,7 +145,7 @@ checks:
   evidence:
     best: [epc_contract, supply_agreement, material_contract]
     supporting: [technical_feasibility, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A warranty is worth what its giver can pay. A young technology company with little capital does not carry this risk,
     whatever it signs. Two years is a guide. Performance at handover is asked under OBS_ECON_003.
   leads_to:

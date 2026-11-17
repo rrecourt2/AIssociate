@@ -23,7 +23,7 @@ checks:
   evidence:
     best: [aml_screening]
     supporting: [kyc_package, beneficial_ownership_declaration, company_certificate]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Does any owner, director or senior manager hold a prominent public office, or has one held such an office? Is any
     of them a close relative or a close business associate of someone who does?
   note: Prominent public office means, for example, a minister, a member of parliament, a senior judge, a general, a senior
@@ -45,7 +45,7 @@ checks:
   evidence:
     best: [aml_screening]
     supporting: [kyc_package, company_certificate]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
 - id: OBS_PEP_006
   question: Did a screening against a database of politically exposed persons, or a search of public sources, find a political
     tie that the party had not declared?
@@ -57,7 +57,7 @@ checks:
   evidence:
     best: [aml_screening, adverse_media_screen]
     supporting: [kyc_package, internal_memo]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   if_unknown: Without a screening, the answer to OBS_PEP_001 rests on the party's word alone.
   note: This check does not hang on OBS_PEP_001, so that the topic cannot close on what the party says. If the search finds
     nothing, record what was searched, where and when.
@@ -74,7 +74,7 @@ checks:
   evidence:
     best: [operational_license, material_contract, lease_agreement, regulatory_document]
     supporting: [adverse_media_screen, consultant_report, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Look at who signed the licence or the contract, and who decides on its renewal. An office that the person left counts
     while the people the person appointed still decide.
   leads_to:
@@ -91,7 +91,7 @@ checks:
   evidence:
     best: [adverse_media_screen, consultant_report, internal_memo]
     supporting: [kyc_package]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: This closer look is often called enhanced due diligence. The file has to show all three parts.
 - id: OBS_PEP_004
@@ -107,7 +107,7 @@ checks:
   evidence:
     best: [aml_screening, adverse_media_screen]
     supporting: [internal_memo]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: Once a year is a guide. An election, a change of government or a new public contract is a reason to look at once.
 - id: OBS_PEP_007
@@ -123,6 +123,6 @@ checks:
   evidence:
     best: [regulatory_document, legal_opinion]
     supporting: [public_source, press_article, consultant_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: The record is the tender notice, the list of bidders and the decision. A direct award, or a tender with one bidder,
     is not an open procedure.

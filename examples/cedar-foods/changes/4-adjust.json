@@ -1,7 +1,7 @@
 [
- {"do": "switch_off", "target": "CAS_COVERAGE_001", "strength": "not_now", "by": "officer",
+ {"do": "switch_off", "target": "CAS_COVERAGE_001", "strength": "not_now", "by": "analyst",
   "reason": "Insurance is reviewed with the insurance adviser once the term sheet is agreed."},
- {"do": "add", "to": "CAS_INPUT_CONC_001", "by": "officer",
+ {"do": "add", "to": "CAS_INPUT_CONC_001", "by": "analyst",
   "reason": "The CFO put the 2025 margin drop down to milk prices.",
   "check": {"id": "DEAL_MILK_PRICE_001", "question": "Do the supply contracts with the cooperatives cap the raw milk price?",
             "answer": "yes_no", "assumption": "The supply contracts cap the price Cedar pays for raw milk", "disproved_by": "no",

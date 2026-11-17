@@ -24,7 +24,7 @@ checks:
   evidence:
     best: [corporate_governance_policy, audit_management_letter]
     supporting: [company_record, board_resolution]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Do you have written rules on who may sign contracts, approve payments and make entries in the accounts, and up to
     what amount? Could we have a copy?
 - id: OBS_IC_002
@@ -37,7 +37,7 @@ checks:
   evidence:
     best: [audit_management_letter]
     supporting: [corporate_governance_policy, organizational_chart, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Who orders, who approves, who pays and who books a purchase? Are these different people?
   note: Include who can change supplier bank details and who reconciles the bank accounts. In a small finance team, look
     at what the owner or an outside accountant checks each month.
@@ -51,7 +51,7 @@ checks:
   evidence:
     best: [audit_management_letter, board_resolution]
     supporting: [corporate_governance_policy, company_record, bank_statement]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Above what amount does a payment need two signatures? Is there anyone who can sign alone without limit?
   note: 'Record the amount. Ask for the bank''s list of signatories: it shows what the bank will accept, which may differ
     from what the rules say.'
@@ -65,7 +65,7 @@ checks:
   evidence:
     best: [audit_management_letter, audited_annual_report]
     supporting: [board_minutes, organizational_chart, corporate_governance_policy, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Do you have an internal audit, in-house or by an outside firm? To whom does it report, and could we see its last
     report?
 - id: OBS_IC_004
@@ -78,7 +78,7 @@ checks:
   evidence:
     best: [audit_management_letter, audited_annual_report]
     supporting: [board_minutes, company_record, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In the last three years, has there been a fraud, a payment nobody had approved, or a loss of cash or stock you could
     not explain? Please include cases that are settled.
   if_unknown: If neither the auditor's letters nor the board minutes have been seen, the party's no is its own word.
@@ -93,7 +93,7 @@ checks:
   evidence:
     best: [audit_management_letter]
     supporting: [board_minutes, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Could we have the auditor's last two management letters, with your replies?
   if_unknown: If no management letter has been seen, ask the auditor whether one was issued. That none was issued is an
     answer. That none was shown is not.
@@ -111,5 +111,5 @@ checks:
   evidence:
     best: [audit_management_letter, consultant_report]
     supporting: [board_minutes, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: That the person involved has left does not close the gap. The control has to be different.

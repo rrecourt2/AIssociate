@@ -23,7 +23,7 @@ Cedar Foods Ltd is a dairy processor in Nakuru, Kenya, and the borrower of the p
 
 **What is particular.**
 
-- *The milk comes with the rain.* In the dry months, January to March, the plant gets about a third less milk [F-016]. The [second UHT line](../deal/second-uht-line.md) doubles what the plant can process, not what the farmers deliver.
+- *The milk comes with the rain.* In the dry months, January to March, the plant gets about a third less milk [F-016]. The [second UHT line](../assets/second-uht-line.md) doubles what the plant can process, not what the farmers deliver.
 - *Volumes are fixed and the price is open.* The contracts with the cooperatives fix how much Cedar takes and leave the price open [F-013], so a dry year reaches its costs at once. The CFO put the fall of the gross margin in 2025 down to an 18% rise in milk prices during the drought [F-012]. That is the CFO's account, given on one call. No document that shows the margin has been read.
 - *It earns shillings and asks for euros.* All revenue is in Kenyan shillings [F-010], and so is all existing debt [F-011]. The loan is asked in euros [F-007].
 

@@ -32,7 +32,7 @@ checks:
   evidence:
     best: [legal_opinion]
     supporting: [internal_memo, consultant_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: 'Go through the package kind by kind: a charge over future assets, over a changing pool of stock or receivables,
     over a bank account, security held by an agent for several lenders, security given by someone other than the borrower.
     One kind that fails makes the answer no: say which.'
@@ -47,7 +47,7 @@ checks:
   evidence:
     best: [legal_opinion, consultant_report]
     supporting: [internal_memo, public_source, press_article]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: A law that allows enforcement is not proof that it happens. Record the cases, how long each took and what share
     of the debt was recovered. If the search finds nothing, record what was searched, where and when.
@@ -61,7 +61,7 @@ checks:
   evidence:
     best: [registry_extract, legal_opinion, tax_clearance]
     supporting: [audited_annual_report, debt_schedule]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is there any charge over all the company's assets, any unpaid tax or wage claim, or any court order against its assets?
     A search of the company's charges register would confirm it.
   note: This check is about the package as a whole and is searched against the giver. Claims on one asset are searched for
@@ -76,7 +76,7 @@ checks:
   evidence:
     best: [legal_opinion, regulatory_document]
     supporting: [internal_memo, consultant_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Record the register, the time limit for filing and the cost. Stamp duty and registry fees can be a real share of
     the loan, and a filing made late can lose its rank. Say which kind fails if the answer is no.
 - id: OBS_SECLG_004
@@ -90,7 +90,7 @@ checks:
   evidence:
     best: [legal_opinion]
     supporting: [internal_memo, consultant_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: The forced-sale values assume an enforcement that nobody has checked can happen.
   note: Say which obstacle it is and which assets it touches. What stands in the way of one asset only is asked about under
     CAS_SECURITY_ASSET_001.
@@ -108,7 +108,7 @@ checks:
   evidence:
     best: [legal_opinion]
     supporting: [conditions_precedent_checklist]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: 'Read the assumptions and the qualifications, not only the opinion paragraph. An opinion still in draft has not
     been given: answer no until it is signed.'
 - id: OBS_SECLG_MIT_001
@@ -127,6 +127,6 @@ checks:
   evidence:
     best: [security_agreement, legal_opinion]
     supporting: [term_sheet, organizational_chart]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A pledge over shares abroad gives control of the company, not of its assets. Say what the lender could in fact do
     with it.

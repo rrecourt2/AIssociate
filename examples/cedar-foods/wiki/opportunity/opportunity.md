@@ -17,7 +17,7 @@ Cedar Foods Ltd, a dairy processor in Nakuru, Kenya, asks for a senior loan of E
 
 ## What we know
 
-**The request.** [Cedar Foods Ltd](../parties/cedar-foods-ltd.md) borrows. The money pays for the [second UHT line](second-uht-line.md), which costs EUR 14m: EUR 12m from the loan and the rest from Cedar's own cash [F-018]. A group company is asked to guarantee the loan. Which one is not decided [F-006].
+**The request.** [Cedar Foods Ltd](../parties/cedar-foods-ltd.md) borrows. The money pays for the [second UHT line](../assets/second-uht-line.md), which costs EUR 14m: EUR 12m from the loan and the rest from Cedar's own cash [F-018]. A group company is asked to guarantee the loan. Which one is not decided [F-006].
 
 **How the loan is to be repaid.** From the cash that Cedar earns on its sales of milk and yoghurt in Kenya [F-019]. Revenue was KES 4,060m in 2025 [F-008]. The second way out is the guarantee, and no company stands behind it yet [F-006].
 

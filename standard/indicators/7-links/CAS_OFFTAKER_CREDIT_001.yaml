@@ -23,7 +23,7 @@ checks:
   evidence:
     best: [offtake_agreement, audited_annual_report]
     supporting: [company_record, management_accounts, financial_model, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Does this customer buy about a tenth or more of what you sell, or will it once the project runs?
   note: A tenth is a guide. OBS_OFFTAKER_002 asks for the figure and does not hang on this answer.
 - id: OBS_OFFTAKER_002
@@ -36,7 +36,7 @@ checks:
   evidence:
     best: [audited_annual_report, offtake_agreement]
     supporting: [company_record, management_accounts, financial_model, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: About what percentage of your revenue comes from this customer?
   note: Take the last full financial year. For a business that is not yet selling, take the share of projected revenue in
     the first full year of operation and say so.
@@ -54,7 +54,7 @@ checks:
   evidence:
     best: [offtake_agreement, material_contract]
     supporting: [company_record, term_sheet]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   leads_to:
   - {indicator: CAS_CONTRACT_REVIEW_001, is: true, reason: The contract is reviewed as a subject of its own}
 - id: OBS_OFFTAKER_009
@@ -72,7 +72,7 @@ checks:
   evidence:
     best: [credit_rating_report, audited_annual_report]
     supporting: [internal_memo, company_record, public_source, press_article, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Does this customer have a credit rating, or can you share its latest audited accounts or a credit report on it?
   note: investment_grade means a rating of BBB- (or Baa3) or higher. rated_BB means the double-B range just below it. rated_B_or_below
     means single-B or lower. Choose unrated_strong where there is no rating but the customer's audited accounts show profits,
@@ -93,7 +93,7 @@ checks:
   evidence:
     best: [audited_annual_report, credit_rating_report]
     supporting: [company_record, bank_statement, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Does this customer pay your invoices when they fall due? Please share the ageing list of what it owes you.
   note: This check does not hang on OBS_OFFTAKER_001. Read the seller's ageing list of receivables and its bank statements.
     An invoice paid more than 30 days after it fell due counts as late. That is a guide. A strong rating does not replace
@@ -110,7 +110,7 @@ checks:
   evidence:
     best: [market_study, consultant_report]
     supporting: [company_record, management_accounts]
-    stated: [correspondence, call, officer_note, business_plan]
+    stated: [correspondence, call, analyst_note, business_plan]
   ask: If this customer stopped buying tomorrow, who else would take the volume, how soon, and at what price?
   note: Six months and a tenth are guides. What counts is whether the seller could go on servicing its debt while it finds
     other buyers. Where there is one possible buyer by law or by geography (a single power buyer, the only processor within
@@ -129,7 +129,7 @@ checks:
   evidence:
     best: [offtake_agreement, material_contract]
     supporting: [company_record, management_accounts, bank_statement]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In the last three years, has this customer cut its price, taken longer to pay, charged you rebates or fees you had
     not agreed, or dropped one of your products, without your consent?
   note: Set the agreed prices and terms beside what the customer in fact paid, and when, over the three years. The seller's
@@ -147,7 +147,7 @@ checks:
   evidence:
     best: [offtake_agreement, material_contract, legal_opinion]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Set the termination payment against the debt that would then be outstanding, and say in the reason whether it covers
     it. Whether the lender can take over the seller's rights is asked about the contract itself (OBS_CONT_MIT_001).
 - id: OBS_OFFTAKER_MIT_001
@@ -165,6 +165,6 @@ checks:
   evidence:
     best: [security_agreement, guarantee_agreement, insurance_policy]
     supporting: [offtake_agreement, term_sheet, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Say which of these is in place. An assignment or a collection account sends the money to the lender. It does not
     make a customer pay that cannot.

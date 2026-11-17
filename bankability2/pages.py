@@ -7,11 +7,15 @@ import json
 import re
 
 from . import files
-from .assess import MAIN, VERDICTS, central, claims, holds_still, view
+from .assess import MAIN, VERDICTS, central, claims, holds_still, next_list, tally, view
+from .standard import ROUTES
 from .store import DEAL, TABLES, live, table_of
 
-SHELVES = ("deal", "parties", "people", "context", "topics", "terms", "work")
-BRIEF = SHELVES[2:]  # a page on one of these shelves gets one line that names what it is about
+SHELVES = {"opportunity": "Opportunity", "assets": "Assets and projects", "parties": "Parties", "people": "People",
+           "context": "Context", "topics": "Topics", "deal": "Deal", "work": "Work"}  # the folders of the wiki, and their headings
+BRIEF = ("people", "context", "topics", "deal", "work")  # a page on one of these gets one line that names what it is about
+START = "opportunity/opportunity.md"  # the page of the opportunity: the way in
+ORDER = ("contested", "open", "answered", "waiting", "parked", "off", "not relevant")  # what is to answer comes first
 BEGIN, END = "<!-- tool:begin {} -->", "<!-- tool:end -->"
 PART = BEGIN + "((?!<!-- tool:begin).)*?" + END  # a begin marker, its lines and its own end marker
 ID = re.compile(r"\b[A-Z]-\d{3,}\b")
@@ -107,7 +111,7 @@ def encoded(path):
 
 def name_of(rid, memory):
     if rid == DEAL:
-        return "the deal"
+        return "the opportunity"
     if rid in memory["subjects"]:
         return memory["subjects"][rid].get("name") or f"the {memory['subjects'][rid]['kind']} not yet named ({rid})"
     if rid in memory["links"]:
@@ -315,9 +319,63 @@ def source_lines(memory):
     return lines + [""]
 
 
+def check_page(memory, std, rows, todo, where):
+    """Every check of the standard as it stands for this deal: first what is open and what settles it, then each claim
+    with its checks, what is to answer first. The view for a browser lets a reader choose which states to see."""
+    def name(rid):
+        return linked(rid, memory, where, "checks.md")
+
+    def route(row):
+        return std["checks"][row["check"]].get("settled_by", "company")
+
+    def line(row):
+        check, waits = std["checks"][row["check"]], row.get("waits_for", [])
+        if row["state"] in ("answered", "contested"):
+            note = shown(row.get("value", "")) + (" (**against the claim**)" if row.get("against") else "") + f" [{', '.join(row['facts'])}]"
+        elif row["state"] != "waiting":
+            note = f"decision {row['action']}" if "action" in row else row.get("reason", "")
+        elif row["for"] in memory["subjects"] and not memory["subjects"][row["for"]].get("name"):
+            note = "until the party is named"
+        else:
+            note = "only if a test goes against the claim" if check.get("mitigant") or not waits else (
+                f"until `{waits[0]}` is answered: {std['checks'][waits[0]]['question'][:70]} ...")
+        return (f"| {', '.join([row['state'], *row['flags']])} | {'Mitigant: ' * bool(check.get('mitigant'))}{check['question']} "
+                f"`{row['check']}` | {name(row['for'])} | {note} | {ROUTES[route(row)] if row['state'] in ORDER[:2] else ''} | "
+                f"{std['stage_titles'][row['due_by']]} |")
+
+    counts, found = tally(rows), claims(rows, memory, std)
+    work = [row for row in rows if row["state"] in ORDER[:2]]
+    stages = [stage for stage in std["stage_ids"] if any(row["due_by"] == stage for row in work)]
+    lines = [f"# {memory['deal']['name']}: checks", "", "Every check of the standard as it stands for this opportunity, written by the "
+             "tool from the record. A check is open when it can be answered now. It is waiting when an earlier answer or a name "
+             "comes first, and not relevant when an earlier answer made it so.", "",
+             "**" + ", ".join(f"{counts[state]} {state}" for state in ORDER if state in counts) + ".**", "",
+             "## What settles the open checks", "",
+             "| Settled by | " + " | ".join(std["stage_titles"][stage] for stage in stages) + " | All |", "|---|" + "---|" * (len(stages) + 1)]
+    for key, title in ROUTES.items():
+        due = [row["due_by"] for row in work if route(row) == key]
+        if due:
+            lines.append(f"| {title[0].upper()}{title[1:]} | " + " | ".join(str(due.count(stage)) for stage in stages) + f" | {len(due)} |")
+    screened = dict.fromkeys(row["for"] for row in work if route(row) == "screening" and row["for"] in memory["subjects"])
+    lines += ["", "**Names for the screening:** " + ", ".join(map(name, screened)) + "."] * bool(screened)
+    for pillar in std["pillars"]:
+        within = tally(row for row in rows if std["by_id"][row["indicator"]]["pillar"] == pillar["id"])
+        lines += ["", f"## {pillar['title']}", "", ", ".join(f"{within[state]} {state}" for state in ORDER if state in within) + "."]
+        for ind in std["indicators"]:
+            mine = sorted((row for row in rows if row["indicator"] == ind["id"]), key=lambda row: ORDER.index(row["state"]))
+            if ind["pillar"] == pillar["id"] and mine:
+                stands = "; ".join(f"{claim['stands']} for {name(claim['for'])}" for claim in found if claim["indicator"] == ind["id"])
+                lines += ["", f"### {ind['title']}", "", f"*{ind['claim']}*" + f" Where it stands: {stands}." * bool(stands), "",
+                          "| State | Check | For | Answer, or what it waits for | Settled by | Ideally by |", "|---|---|---|---|---|---|",
+                          *map(line, mine)]
+    lines += ["", "## Documents that are not in the folder", "", *(f"- {doc['title']} ({doc['slot']}): {doc['why']}" for doc in todo["documents"])
+              ] * bool(todo["documents"])
+    return "\n".join([*lines, ""])
+
+
 def all_pages(deal):
     paths = [path for path in files.listing(deal, files.WIKI)
-             if path.endswith(".md") and path[len(files.WIKI) + 1:] not in ("index.md", "sources.md")]
+             if path.endswith(".md") and path[len(files.WIKI) + 1:] not in ("index.md", "sources.md", "checks.md")]
     return {path: files.read(deal, path) for path in paths}
 
 
@@ -362,14 +420,13 @@ def refresh(deal, memory, std, rows, held):
     wanted = [sid for sid, subject in memory["subjects"].items() if subject.get("name") and held.get(sid, set()) & MAIN]
     for rid in [DEAL, *wanted]:
         if rid not in where:
-            kind = "deal" if rid == DEAL else memory["subjects"][rid]["kind"]
-            shelf = "parties" if kind in ("party", "group", "person") else "deal"
-            name = memory["deal"]["name"] if rid == DEAL else memory["subjects"][rid]["name"]
-            slug = "deal" if rid == DEAL else re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-") or rid.lower()
-            path = f"{files.WIKI}/{shelf}/{slug}.md"
+            subject = memory["subjects"].get(rid, {"kind": "", "name": memory["deal"]["name"]})  # the opportunity is no subject
+            shelf = "parties" if subject["kind"] in ("party", "group", "person") else "assets"
+            slug = re.sub(r"[^a-z0-9]+", "-", subject["name"].lower()).strip("-") or rid.lower()
+            path = f"{files.WIKI}/" + (START if rid == DEAL else f"{shelf}/{slug}.md")
             if path in pages:  # another subject has the same name
                 path = f"{files.WIKI}/{shelf}/{slug}-{rid.lower()}.md"
-            pages[path], where[rid] = SKELETON.format(title=name, about=rid), path[cut:]
+            pages[path], where[rid] = SKELETON.format(title=subject["name"], about=rid), path[cut:]
             created.append(path)
     for path, ids in named:  # what has no page of its own is found on the first page that names it
         for rid in ids:
@@ -392,20 +449,24 @@ def refresh(deal, memory, std, rows, held):
              f"[Documents](../../{encoded(files.CLIENT)}/index.md) lists what the client shared.", ""]
     for shelf, lines in contents.items():
         if lines:
-            index += [f"## {shelf.capitalize()}", "", *lines, ""]
+            index += [f"## {SHELVES.get(shelf, shelf.capitalize())}", "", *lines, ""]
     others = [f"- {sid} {subject.get('name') or 'not yet named'}: {described(sid, memory, std, held)}"
               + (f". {subject['note']}" if subject.get("note") else "")
               for sid, subject in live(memory).items() if sid not in where]
     if others:
         index += ["## Subjects without a page", "", *others, ""]
-    sources = "\n".join(source_lines(memory))
+    index += ["## Checks", "", "- [The due diligence list](checks.md): every check of the standard for this opportunity, with what "
+              "is answered, what is open and what settles it.", ""]
+    listed = files.read_json(deal, files.MANIFEST, {"documents": []})["documents"]
+    todo = next_list(memory, std, rows, in_folder={doc["slot"] for doc in listed})
+    sources, checks = "\n".join(source_lines(memory)), check_page(memory, std, rows, todo, where)
     files.write(deal, f"{files.WIKI}/index.md", "\n".join(index))
     files.write(deal, f"{files.WIKI}/sources.md", sources)
-    listed = files.read_json(deal, files.MANIFEST, {"documents": []})["documents"]
+    files.write(deal, f"{files.WIKI}/checks.md", checks)
     client = f"../../{files.CLIENT}/index.md"  # the index of the client folder, as a path from the wiki folder
     texts = {"index.md": "\n".join(index), "sources.md": sources, **{path[cut:]: text for path, text in sorted(pages.items())},
-             client: documents(memory["deal"]["name"], listed, std)}
-    cited = set(ID.findall(" ".join(text for path, text in texts.items() if path != "sources.md")))
+             client: documents(memory["deal"]["name"], listed, std), "checks.md": checks}
+    cited = set(ID.findall(" ".join(text for path, text in texts.items() if path not in ("sources.md", "checks.md"))))
     past = {"facts": "outdated", "sources": "replaced", "links": "ended"}  # history goes in only where a page cites it
     kept = {table: {rid: record for rid, record in memory[table].items()
                     if rid in cited or record.get("state", "current") != past.get(table)} for table in TABLES}
@@ -446,6 +507,10 @@ def problems(deal, memory):
                 reached.add(target)
             if target.startswith(files.WIKI + "/") and target not in there:
                 found.append(f"{path}: links to {link}, which is not there")
+        for words in [] if notes else memory["deal"].get("avoid", []):  # a wording to keep out: all its words in one sentence
+            found += [f"{path}: \"{' '.join(sentence.split()[:6])} ...\" holds a wording to avoid: {words}"
+                      for block in [front(text).get("title", ""), *blocks(body)] for sentence in re.split(r"(?<=[.!?])\s+", block)
+                      if all(re.search(rf"(?<!\w){re.escape(word)}(?!\w)", sentence, re.I) for word in words.split())]
         stale = {}
         for block in blocks(body):
             marks, held = list(MARKED.finditer(block)), ""
@@ -466,4 +531,4 @@ def problems(deal, memory):
             "replaced_by") else "") + f". Cite what took its place, or start the sentence with \"{entry['state'].capitalize()}:\""
             for rid, entry in stale.items()]
     return found + [f"{path}: no other page links to it" for path in sorted(pages)  # the page of the deal is the way in
-                    if path not in reached and path != f"{files.WIKI}/deal/deal.md" and not path.startswith(f"{files.WIKI}/work/")]
+                    if path not in reached and path != f"{files.WIKI}/{START}" and not path.startswith(f"{files.WIKI}/work/")]

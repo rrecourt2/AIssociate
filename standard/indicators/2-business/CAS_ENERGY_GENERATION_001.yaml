@@ -27,7 +27,7 @@ checks:
   evidence:
     best: [technical_feasibility, operational_license]
     supporting: [investment_plan, company_record]
-    stated: [business_plan, correspondence, call, officer_note]
+    stated: [business_plan, correspondence, call, analyst_note]
   ask: What is the capacity of the plant in megawatts, installed or planned?
   note: Say whether the figure is the capacity of the generating units or the capacity that may be fed into the grid, where
     the two differ.
@@ -42,7 +42,7 @@ checks:
   evidence:
     best: [technical_feasibility]
     supporting: [financial_model, financial_projections]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Take the figure net of the plant's own use, of losses up to the meter and of planned outages. Say whether it is
     the central estimate (P50) or a more cautious one.
 - id: OBS_EGEN_004
@@ -57,7 +57,7 @@ checks:
   evidence:
     best: [offtake_agreement]
     supporting: [regulatory_document, company_record]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Is a power purchase agreement signed? Please share it. If not, who will buy the power, and at what stage are the
     talks?
   if_unknown: Without a signed agreement the plant sells at whatever price and volume the market gives it.
@@ -85,7 +85,7 @@ checks:
   evidence:
     best: [offtake_agreement, legal_opinion]
     supporting: [technical_feasibility, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: buyer_pays means the buyer pays for energy deemed delivered. For shared, say what allowance of unpaid hours or what
     cap applies, and set it against the curtailment found in OBS_EGEN_005.
 - id: OBS_EGEN_003
@@ -98,7 +98,7 @@ checks:
   evidence:
     best: [material_contract, regulatory_document]
     supporting: [technical_feasibility, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is the plant connected, or is the connection agreement signed? Who builds and pays for the line and the substation,
     and by when?
   if_unknown: A plant that cannot deliver its power earns nothing, whatever it can generate.
@@ -115,7 +115,7 @@ checks:
   evidence:
     best: [technical_feasibility, consultant_report, regulatory_document]
     supporting: [company_record, financial_model]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Has output from this plant, or from plants nearby, been held back by the grid operator? Is there a grid study that
     estimates how much will be?
   note: A no needs a grid study or the operator's record behind it. If the search finds nothing, record what was searched,
@@ -135,7 +135,7 @@ checks:
   evidence:
     best: [technical_feasibility, audited_annual_report]
     supporting: [company_record, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Please share the metered energy delivered in each of the last three years, with the buyer's statements or invoices.
   note: Take metered energy at the delivery point. Where the plant has run for less than three years, use the years there
     are and say so. Where capacity is being added, compare per megawatt installed. A shortfall with a one-off cause is still

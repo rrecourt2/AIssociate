@@ -26,7 +26,7 @@ checks:
   evidence:
     best: [facility_agreement, guarantee_agreement, intercreditor_agreement]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Where is the support between the projects written down? Please share the agreement, or the section of the facility
     agreement that sets out the order of payments.
   if_unknown: Support that is not written down is the sponsor's intention, not an obligation.
@@ -43,7 +43,7 @@ checks:
   evidence:
     best: [facility_agreement, guarantee_agreement, intercreditor_agreement]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Choose every form that applies.
 - id: OBS_PORTSUPPORT_005
   question: Which events oblige the supporting project to pay?
@@ -60,7 +60,7 @@ checks:
   evidence:
     best: [facility_agreement, guarantee_agreement, intercreditor_agreement]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: dscr_breach means the supported project's debt service cover ratio has fallen below a stated level. distribution_lockup
     means the supported project is barred from paying its owners. Choose unclear where the trigger is not defined or depends
     on someone's judgement. Unclear may be chosen together with other options.
@@ -75,7 +75,7 @@ checks:
   evidence:
     best: [facility_agreement, guarantee_agreement, legal_opinion]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Wording such as "may", "intends to" or "subject to approval" is a no.
 - id: OBS_PORTSUPPORT_004
   question: Where does the support come in the supporting project's order of payments (its cash waterfall)?
@@ -90,7 +90,7 @@ checks:
   evidence:
     best: [facility_agreement, intercreditor_agreement]
     supporting: [term_sheet, financial_model, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: The debt service meant in the options is the supporting project's own.
   leads_to:
   - {indicator: CAS_DEBT_SERVICE_001, reason: There is cash to pass on only if the supporting project has some left after
@@ -105,7 +105,7 @@ checks:
   evidence:
     best: [facility_agreement, intercreditor_agreement, legal_opinion]
     supporting: [term_sheet, debt_schedule]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Read the supporting project's own loan documents, not only the agreement that grants the support. Where the supporting
     project has no debt of its own, the answer is yes. Record that.
   leads_to:
@@ -125,7 +125,7 @@ checks:
   evidence:
     best: [facility_agreement, guarantee_agreement, intercreditor_agreement]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: dsra_funded means the supported project's debt service reserve account is filled. Any release before the supported
     loan is repaid leaves the rest of its life without the support. Record the event and any fixed end date.
 - id: OBS_PORTSUPPORT_008
@@ -138,6 +138,6 @@ checks:
   evidence:
     best: [offtake_agreement, technical_feasibility, regulatory_document]
     supporting: [financial_model, company_record, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Two plants that sell to the same buyer, draw on the same river or wind region, or are paid under the same tariff
     scheme fall short together. The support is then weakest when it is needed.

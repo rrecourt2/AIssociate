@@ -25,7 +25,7 @@ checks:
   evidence:
     best: [certificate_of_incorporation, registry_extract, legal_opinion]
     supporting: [kyc_package, memorandum_and_articles]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Under which name, number and country is the company registered? Please share the certificate of incorporation or
     a recent extract from the registry.
   note: Check that the name and the registration number are those of the party that will sign, not of a sister company with
@@ -42,7 +42,7 @@ checks:
   evidence:
     best: [registry_extract, legal_opinion, regulatory_document]
     supporting: [audited_annual_report, adverse_media_screen, credit_rating_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Has the company, or any creditor, filed for its insolvency, administration or winding-up, or for a restructuring
     under the court's protection?
   note: Search the company registry, the insolvency or court register and the press. If the search finds nothing, record
@@ -63,7 +63,7 @@ checks:
   evidence:
     best: [registry_extract, legal_opinion]
     supporting: [tax_clearance, company_certificate]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Are all annual returns filed and all registry fees paid? A recent certificate of good standing or registry extract
     would show it.
   note: Record the date of the extract. Standing can lapse between diligence and signing, so a fresh extract is usual before
@@ -80,7 +80,7 @@ checks:
   evidence:
     best: [memorandum_and_articles, legal_opinion]
     supporting: [company_certificate, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Do the company's articles allow it to borrow, to give guarantees and to give security? Please share the current articles
     with all amendments.
   if_unknown: An obligation that the party had no power to take on can be challenged when the lender comes to rely on it.

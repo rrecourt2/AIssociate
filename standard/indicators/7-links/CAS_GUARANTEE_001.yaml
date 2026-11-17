@@ -22,7 +22,7 @@ checks:
   evidence:
     best: [guarantee_agreement]
     supporting: [term_sheet, facility_agreement]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: What exactly would the guarantor sign up to? To pay when we ask, to pay only after we have enforced against the borrower,
     to share a loss, or to make sure something is done?
 - id: OBS_GUARANTEE_CAP_001
@@ -35,7 +35,7 @@ checks:
   evidence:
     best: [guarantee_agreement]
     supporting: [term_sheet, facility_agreement]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
 - id: OBS_GUARANTEE_SCOPE_001
   question: Does the guarantee cover everything owed under the facility (principal, interest, default interest, fees and
     enforcement costs) for the whole life of the loan?
@@ -47,7 +47,7 @@ checks:
   evidence:
     best: [guarantee_agreement]
     supporting: [term_sheet]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
 - id: OBS_GUARANTEE_DEFENCES_001
   question: Could the guarantor refuse or delay payment by raising the borrower's defences, a set-off or a dispute about
     the loan?
@@ -58,7 +58,7 @@ checks:
   evidence:
     best: [guarantee_agreement, legal_opinion]
     supporting: [term_sheet]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Read the waiver clause itself. A summary that says "unconditional" is not enough.
 - id: OBS_GUARANTEE_RELEASE_001
   question: Can the guarantee end or shrink before the loan is repaid (an expiry date, a release on a ratio or an event,
@@ -70,7 +70,7 @@ checks:
   evidence:
     best: [guarantee_agreement]
     supporting: [term_sheet]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
 - id: OBS_GUARANTEE_POWER_001
   question: Does the guarantor receive a benefit of its own from the loan it guarantees, or has counsel confirmed that the
     guarantee cannot be set aside for lack of benefit to the guarantor or as financial assistance?
@@ -82,7 +82,7 @@ checks:
   evidence:
     best: [legal_opinion]
     supporting: [board_resolution, shareholder_resolution, memorandum_and_articles]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: A guarantee that brings its giver no benefit may be challenged when it is called.
   note: Power and approvals are asked under Legal standing and Authorisation.
 - id: OBS_GUARANTEE_ENFORCE_001
@@ -95,7 +95,7 @@ checks:
   evidence:
     best: [legal_opinion]
     supporting: [consultant_report, internal_memo]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: Two years is a guide. What counts is that the money arrives while it still matters.
 - id: OBS_GUARANTEE_SIGNED_001
   question: Is the guarantee signed by the guarantor and in force?
@@ -107,7 +107,7 @@ checks:
   evidence:
     best: [guarantee_agreement]
     supporting: [conditions_precedent_checklist]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
 - id: OBS_GUARANTEE_MIT_001
   question: Is the guarantee backed by something the lender can reach without going to court (cash collateral, a standby
     letter of credit, a pledge over the guarantor's assets)?
@@ -123,4 +123,4 @@ checks:
   evidence:
     best: [security_agreement, guarantee_agreement]
     supporting: [term_sheet]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]

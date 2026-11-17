@@ -31,7 +31,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, financial_model, annual_report, prospectus]
-    stated: [call, officer_note, management_presentation]
+    stated: [call, analyst_note, management_presentation]
   note: Take the figure from the cash flow statement. Leave out revaluations and other gains without cash, and money raised
     from new debt or new shares. Say which year and which currency. For a business with no full year behind it, use the
     first full year of the lender's base case and say so.
@@ -47,7 +47,7 @@ checks:
   evidence:
     best: [debt_schedule, facility_agreement]
     supporting: [term_sheet, financial_model]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Please send a schedule of all your loans and leases that shows, year by year, the interest and the principal that
     fall due on each.
   note: Include lease payments, and shareholder loans that must be paid. Take the interest on seasonal lines at the amounts
@@ -69,7 +69,7 @@ checks:
   evidence:
     best: [audited_annual_report, debt_schedule]
     supporting: [financial_model, management_accounts, internal_memo, annual_report, prospectus]
-    stated: [call, officer_note, management_presentation]
+    stated: [call, analyst_note, management_presentation]
   if_unknown: Until the cover is worked out, nobody has shown that the loan can be repaid from cash flow.
   note: Divide the answer to OBS_DS_001 by the answer to OBS_DS_002. A cover worked out from EBITDA (profit before interest,
     tax, depreciation and amortisation), before tax, working capital and capital spending, is not this figure. The test
@@ -92,7 +92,7 @@ checks:
   evidence:
     best: [internal_memo, consultant_report]
     supporting: [financial_model, financial_projections]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   if_unknown: Until the lowest cover is known, nobody has shown that the loan can be repaid from cash flow in every year.
   note: Say which year the lowest cover falls in. Work out the cash flow as in OBS_DS_001 and the debt service as in OBS_DS_002,
@@ -110,7 +110,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [financial_model, management_accounts, internal_memo, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: For a party with fewer than five years of accounts, answer for the years there are and say how many. Where the business
     has changed so much that those years say little, say so. The downside case in Projections and downside then carries
     the test. The test does not wait for the terms of the loan. If the answer already goes against the assumption on the
@@ -134,7 +134,7 @@ checks:
   evidence:
     best: [audited_annual_report, debt_schedule]
     supporting: [management_accounts, financial_model, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: Count all borrowing, leases and shareholder loans that must be repaid, without taking cash off. Take the debt at
     its highest point in the year, not at the year-end. Take EBITDA without one-off items. Record in the reason the multiple
     before the loan, and the multiple on net debt (after the cash the party is free to use). The test does not wait for
@@ -152,7 +152,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, financial_model, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: Two thirds is a guide. Three years are taken together so that one year's swing in working capital does not decide
     the answer.
   leads_to:
@@ -172,7 +172,7 @@ checks:
   evidence:
     best: [facility_agreement, security_agreement]
     supporting: [term_sheet, bank_statement]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A reserve buys time for one or two payments. It does not mend a cash flow that stays short.
 - id: OBS_DS_MIT_003
   question: Has an owner or sponsor undertaken in writing to pay in cash when the party's cash flow falls short of its debt
@@ -192,7 +192,7 @@ checks:
   evidence:
     best: [guarantee_agreement, jv_agreement]
     supporting: [term_sheet, board_resolution]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: If cash flow fell short of a loan payment, would a shareholder be willing to sign an undertaking to put in the missing
     cash? Who would sign it?
   note: A statement that the owner stands behind the party, with no promise to pay, is a no.

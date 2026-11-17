@@ -19,7 +19,7 @@ checks:
   evidence:
     best: [aml_screening]
     supporting: [kyc_package, internal_memo]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   if_unknown: A party that has not been screened is not known to be clear.
   note: The lists usually include those of the United Nations, the European Union, the United States and the United Kingdom,
@@ -35,7 +35,7 @@ checks:
   evidence:
     best: [aml_screening]
     supporting: [kyc_package, company_certificate, legal_opinion]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: A possible match that has not been cleared is not a no.
   note: A match on a name alone is checked against the date of birth, the nationality and the address before it is recorded
     as a yes or as a no. If the search finds nothing, record what was searched, where and when.
@@ -51,7 +51,7 @@ checks:
   evidence:
     best: [audited_annual_report, aml_screening]
     supporting: [management_accounts, company_record, company_certificate, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In the last three years, have you sold to, bought from or been paid from a country under embargo, or dealt with anyone
     on a sanctions list? Please include sales through agents and distributors.
   note: 'Dealings that a licence or an exemption allows still count: answer yes and say which. Look at where the goods end
@@ -72,7 +72,7 @@ checks:
   evidence:
     best: [legal_opinion, regulatory_document]
     supporting: [company_record, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: What the party's own law allows may still be forbidden to the lender. The confirmation has to cover both.
 - id: OBS_SANC_004
   question: Does the party screen its customers, suppliers and banks against sanctions lists before it deals with them,
@@ -89,7 +89,7 @@ checks:
   evidence:
     best: [corporate_governance_policy, audit_management_letter]
     supporting: [company_record, board_minutes]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Do you have a written sanctions policy? How do you check a new customer, supplier or bank against the lists, and
     how often are existing ones checked again?
   note: A policy that is not applied is no protection. Ask to see the record of a recent screening.

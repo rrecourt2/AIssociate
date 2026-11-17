@@ -34,7 +34,7 @@ checks:
   evidence:
     best: [audited_annual_report, supply_agreement]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Is there one input that your production cannot run without, such as a feedstock, a fuel or a utility? Or one supplier
     from which you buy a large part of what you need? If so, please name the input and the supplier.
   note: A fifth is a guide. The checks below call this input "the critical input".
@@ -55,7 +55,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, financial_model, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Which single input costs you the most, and roughly what share of your cost of sales is it?
   note: 'Take the figure from the breakdown of the cost of sales, not from what the party says. Where one input takes about
     a third of the cost of sales or more and OBS_INPUT_001 was answered no, look at that answer again: this input is then
@@ -72,7 +72,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, public_source, press_article, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In which of the last five years did the price of your main input rise the most? What was your gross margin in that
     year and in the year before?
   note: A tenth and a fifth are guides. This check does not hang on OBS_INPUT_001, so that the topic cannot close on one
@@ -94,7 +94,7 @@ checks:
   evidence:
     best: [supply_agreement, market_study, technical_feasibility]
     supporting: [company_record, management_accounts]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Could another supplier deliver this input in the volume you need, or is there in practice only one source, such as
     one pipeline, one allocation or one licensed producer?
   if_unknown: Until it is known whether the supplier can be replaced, the loss of that supplier has to be treated as the
@@ -112,7 +112,7 @@ checks:
   evidence:
     best: [supply_agreement, regulatory_document, audited_annual_report]
     supporting: [company_record, management_accounts, public_source, press_article, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is the price of this input, or the amount you are allotted, set by a government body? For example a regulated tariff,
     a quota or a levy.
   note: A price set by the state can be low today. The test is whether a decree, a budget or a change of policy can raise
@@ -132,7 +132,7 @@ checks:
   evidence:
     best: [audited_annual_report, technical_feasibility, regulatory_document]
     supporting: [company_record, management_accounts, board_minutes, public_source, press_article, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Has this input been cut, reduced or suspended at any time in the last two years, even briefly? Please include partial
     cuts.
   note: The party has a reason to understate this. Compare its answer with production volumes against capacity, and with
@@ -149,7 +149,7 @@ checks:
   evidence:
     best: [audited_annual_report, legal_opinion, regulatory_document]
     supporting: [board_minutes, company_record, public_source, press_article, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is there any court case, disputed levy or regulatory proceeding that affects what you pay for this input, or whether
     you receive it?
   note: If the search finds nothing, record what was searched, where and when.
@@ -172,7 +172,7 @@ checks:
   evidence:
     best: [supply_agreement, offtake_agreement, hedge_document]
     supporting: [company_record, material_contract]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: 'What limits the effect of a price rise on you: a price fixed in your supply contract, sales contracts that pass
     the rise on to your customers, or a hedge?'
   note: Name only what is in a signed contract or a hedge confirmation, and say until when it runs and what share of the
@@ -195,7 +195,7 @@ checks:
   evidence:
     best: [technical_feasibility]
     supporting: [company_record, consultant_report]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: If this input stopped tomorrow, could you keep producing within about three months, by switching fuel, feedstock
     or plant? Have you ever done so?
   note: 'Three months is a guide. A switch that has never been made is a plan: ask whether it has been done or tested, and
@@ -219,5 +219,5 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, financial_model, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Of your operating earnings, roughly what share comes from plants or business lines that do not rely on this input?

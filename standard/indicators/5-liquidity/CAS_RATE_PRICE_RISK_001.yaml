@@ -33,7 +33,7 @@ checks:
   evidence:
     best: [facility_agreement, audited_annual_report]
     supporting: [debt_schedule, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: How much of your borrowing is at a floating rate, and how much falls due within the next twelve months?
 - id: OBS_RATE_002
   question: If interest rates rose by three percentage points, would the party's operating cash flow of the last full year
@@ -46,7 +46,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement]
     supporting: [debt_schedule, financial_model, management_accounts, annual_report, prospectus]
-    stated: [management_presentation, call, officer_note]
+    stated: [management_presentation, call, analyst_note]
   note: Three points is a guide. Where the reference rate has stood more than three points above today's level within the
     last ten years, test against that level. For a business without a full year of trading, use the first full year of the
     base case. The test does not wait for the terms of the loan. If the answer already goes against the assumption on the
@@ -62,7 +62,7 @@ checks:
   evidence:
     best: [audited_annual_report, offtake_agreement, supply_agreement]
     supporting: [management_accounts, market_study, annual_report, prospectus]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Is the price of what you sell, or of your main input, set on a commodity market? Which one?
 - id: OBS_PRICE_002
   question: Taken at its seasonal peak, is the party's open price position (stock that is neither sold nor hedged, and forward
@@ -77,7 +77,7 @@ checks:
   evidence:
     best: [hedge_document, audited_annual_report]
     supporting: [company_record, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: At the busiest point of your season, how much stock do you hold that is not yet sold or hedged? And how much have
     you sold forward at a fixed price without having bought the goods?
   note: A fifth is a guide. Use a larger move where the price of this commodity has moved by more within a season. The year-end
@@ -96,7 +96,7 @@ checks:
   evidence:
     best: [audited_annual_report, hedge_document]
     supporting: [company_record, management_accounts, board_minutes, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: This check does not hang on OBS_PRICE_001, so that the topic cannot close on one answer. Large gains or losses on
     derivatives in the accounts of a party that says it does not deal in commodities are a sign. If the search finds nothing,
     record what was searched, where and when.
@@ -113,7 +113,7 @@ checks:
   evidence:
     best: [audited_annual_report, legal_opinion]
     supporting: [company_record, board_minutes, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: When prices last moved sharply, did any buyer refuse to take delivery, or any supplier fail to deliver at the agreed
     price? What did it cost you?
   note: A forward contract fixes the price only as long as the other side performs. A party that says yes is believed.
@@ -130,7 +130,7 @@ checks:
   evidence:
     best: [hedge_document, facility_agreement]
     supporting: [debt_schedule, term_sheet, management_accounts]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A hedge that ends before the debt does covers only the years it runs.
 - id: OBS_PRICE_005
   question: Does the party have a written price-risk policy with position limits, and does someone who does not trade (finance,
@@ -146,7 +146,7 @@ checks:
   evidence:
     best: [corporate_governance_policy, audit_management_letter]
     supporting: [board_minutes, company_record]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Who sets the limits on how much unsold stock and how many open contracts the traders may hold? Who checks them, and
     how often? Please share the policy and a recent limit report.
   note: Ask for a limit report from a month in which the price moved. A limit that was raised each time it was reached is

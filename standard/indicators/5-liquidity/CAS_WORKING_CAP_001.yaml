@@ -31,7 +31,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: How long does it take from the day you pay for your inputs to the day your customers pay you? If the figure is not
     to hand, we can work it out from your stock, receivables and payables.
   note: Where the monthly figures allow it, work the cycle out at the seasonal peak as well as at the year-end, and say
@@ -48,7 +48,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [company_record, management_accounts, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: What credit terms do you give your customers, and how long do they take to pay in practice? An ageing list of your
     receivables would answer this.
   if_unknown: A party that cannot produce an ageing list of its receivables does not know who owes it what.
@@ -68,7 +68,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [company_record, management_accounts, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: Take the figure from the ageing list at the latest month-end and, where possible, at the seasonal peak. Count the
     days from the due date, not from the invoice date. Record how much of the overdue amount is provided for.
 - id: OBS_WC_006
@@ -88,7 +88,7 @@ checks:
   evidence:
     best: [audited_annual_report, audit_management_letter, consultant_report]
     supporting: [company_record, management_accounts, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: Who was present at your last year-end stock count besides your own staff? Is any of your stock held by someone else,
     such as a warehouse keeper or a processor?
   note: A count by the party's own staff alone is a no. Stock held by others (in a public warehouse, at a processor, in
@@ -110,7 +110,7 @@ checks:
   evidence:
     best: [audited_annual_report, consultant_report, valuation_report]
     supporting: [company_record, management_accounts, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: A tenth is a guide. Ask for the stock list by age. For a commodity, set the value per tonne in the accounts against
     the market price on the balance sheet date and today.
 - id: OBS_WC_009
@@ -124,7 +124,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [company_record, management_accounts, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: Do you pay suppliers or farmers in advance? How much is outstanding today, and how much of it was paid more than
     a season ago?
   note: Ask for the advances by recipient and by date paid. Record the amount that is overdue and set it against the party's
@@ -143,7 +143,7 @@ checks:
   evidence:
     best: [facility_agreement]
     supporting: [debt_schedule, management_accounts, financial_model]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In which month do you need the most money for stock and receivables, and how much? Which credit lines pay for it,
     and when does each of them fall due?
   note: Take the peak from the monthly figures of the last two years, not from the year-end balance sheet. A line that falls

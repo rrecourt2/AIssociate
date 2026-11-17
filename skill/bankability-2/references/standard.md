@@ -111,7 +111,7 @@ The kind you give a source therefore decides two things: the folder it is filed 
 
 A check can stay open with an agreed action: a condition, a covenant or a task with an owner and a date. Record a decision that `covers` the check and names the `owner` and the `due` date. See [recording](recording.md). The check then leaves the list of checks to answer and appears under "Gaps with an agreed action".
 
-A check can also be settled for one subject and stay asked of the others: one lender's ranking that cannot matter here, the papers of a customer that is too small to count. Record a decision that `covers` the check, with the reason and what it rests on, and without an owner or a date. Name in `about` the subject or the link the check is asked of, as `show <check>` prints it: for a check on an owner's tie that is the `owns` link, not the owner. The check then shows as `off` there. Do this on the officer's word, as for a switch-off. `adjust` switches a check off for the whole deal, and a check the institution has locked cannot be settled this way.
+A check can also be settled for one subject and stay asked of the others: one lender's ranking that cannot matter here, the papers of a customer that is too small to count. Record a decision that `covers` the check, with the reason and what it rests on, and without an owner or a date. Name in `about` the subject or the link the check is asked of, as `show <check>` prints it: for a check on an owner's tie that is the `owns` link, not the owner. The check then shows as `off` there. Do this on the analyst's word, as for a switch-off. `adjust` switches a check off for the whole deal, and a check the institution has locked cannot be settled this way.
 
 A check that opens others is answered, not settled: for a plant that carries little, answer `OBS_ASSET_007` no, and the checks on its condition fall away.
 
@@ -121,11 +121,11 @@ Stages are targets, not gates. "Ideally by concept" means the answer is ideally 
 
 ## Adjusting
 
-The officer adjusts the standard by saying so. You write the adjustment and hand it to `adjust`. Every adjustment needs a `reason`. Add `"by"` with who asked.
+The analyst adjusts the standard by saying so. You write the adjustment and hand it to `adjust`. Every adjustment needs a `reason`. Add `"by"` with who asked.
 
 ```json
 [
- {"do": "add", "to": "CAS_INPUT_CONC_001", "by": "officer",
+ {"do": "add", "to": "CAS_INPUT_CONC_001", "by": "analyst",
   "reason": "The CFO put the margin drop down to milk prices.",
   "check": {"id": "DEAL_MILK_PRICE_001", "question": "Do the supply contracts cap the raw milk price?",
             "answer": "yes_no", "assumption": "The supply contracts cap the price Cedar pays for raw milk",
@@ -146,7 +146,7 @@ The officer adjusts the standard by saying so. You write the adjustment and hand
 
 The tool refuses an adjustment that names something unknown, lacks a reason, or touches what the institution has locked. A lock on an indicator covers its checks, and a lock on a check covers its indicator.
 
-An adjustment that should hold for every deal belongs in the institution's layer. Tell the officer. Moving it there is their step.
+An adjustment that should hold for every deal belongs in the institution's layer. Tell the analyst. Moving it there is their step.
 
 ## A newer standard, or an older folder
 

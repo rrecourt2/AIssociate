@@ -6,6 +6,8 @@ from .files import Refused
 
 ANSWERS = ("yes_no", "number", "choice", "text")
 TIERS = ("stated", "supporting", "best")  # weakest first
+ROUTES = {"company": "the company", "screening": "a screening", "terms": "the terms of the loan", "lender": "the lender",
+          "expert": "an expert", "public": "public sources"}  # what settles a check, and how a reader is told
 STRENGTHS = ("not_now", "not_for_this_deal")
 FLAG = re.compile(r"^(above|below|at most|at least) (-?\d+(?:\.\d+)?)$|^is (not )?(\w+(?: or \w+)*)$")
 
@@ -205,7 +207,7 @@ def problems(std):
             if "flag_when" in check:
                 need(cid, flag_fits(check), "flag_when does not fit the answer the check asks for")
                 need(cid, check.get("why"), "a reference point needs its reason in 'why'")
-            need(cid, check.get("ask_whom", "client") in ("client", "lender"), "ask_whom must be client or lender")
+            need(cid, check.get("settled_by", "company") in ROUTES, f"settled_by is one of: {', '.join(ROUTES)}")
             need(cid, not check.get("mitigant") or ("assumption" in check and check.get("when")),
                  "a mitigant needs an assumption, and a 'when' that says which test it answers")
             for call in check.get("calls_for", []):

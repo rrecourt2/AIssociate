@@ -134,6 +134,9 @@ class Deal(unittest.TestCase):
         memory["subjects"]["A-001"] = {"kind": "asset", "name": "Nakuru plant"}
         memory["links"]["R-200"] = {"from": "P-001", "type": "owns", "to": "A-001", "state": "confirmed"}
         self.assertNotIn("shareholder", assess.roles(memory, std)["P-001"])  # owning a plant makes nobody a shareholder
+        memory["subjects"]["A-002"] = {"kind": "asset", "name": "Filling line 1"}
+        memory["links"]["R-201"] = {"from": "A-002", "type": "part_of", "to": "A-001", "state": "confirmed"}
+        self.assertEqual({target for check, target in self.rows(memory) if check == "OBS_ASSET_007"}, {"A-001"})  # not its part
         memory["subjects"]["N-001"]["state"] = "ended"  # a subject that has ended holds no role and is asked nothing
         self.assertNotIn("N-001", assess.roles(memory, std))
         self.assertNotIn("N-001", {target for _, target in self.rows(memory)})
@@ -153,8 +156,11 @@ class Deal(unittest.TestCase):
         run("add", deal, self.handed({"facts": [{"id": "F-020", "answers": []}]}))
         memory = files.read_json(deal, files.MEMORY)
         self.assertEqual((memory["facts"]["F-020"]["answers"], memory["log"][-1]["changed"]), ([], {"F-020": {"answers": [answer]}}))
-        self.assertIn("Pages that cite a record this set changed, to read again: Internal/wiki/deal/deal.md",
+        self.assertIn("Pages that cite a record this set changed, to read again: Internal/wiki/opportunity/opportunity.md",
                       run("add", deal, self.handed({"facts": [{"id": "F-008", "place": "page 12"}]}))[1])
+        said = run("add", deal, self.handed({"facts": [{"id": "F-014", "answers": [], "quote": "Bluegate pays within 54 days."}]}))[1]
+        self.assertTrue("-1 answered" in said and "+1 open" in said)  # what the set did to the checks
+        self.assertIn("- F-014: its quotation is not in the text of S-003", run("check", deal)[1])
         run("add", deal, self.handed({"decisions": [{"decision": "Kept.", "reason": "Small.", "about": "P-003", "rests_on": ["F-014"]}]}))
         run("pages", deal)  # a record that no page cites is in the view all the same, unless it is history
         self.assertIn('"D-003"', files.read(deal, "Internal/wiki/wiki.html"))
@@ -188,6 +194,8 @@ class Deal(unittest.TestCase):
         self.assertIn("x" * 300 + " ...", fact_lines(long, ["P-001"])[0])  # a long statement is cut in a list
         self.assertIn("x" * 400, fact_lines(long, ["F-1"])[0])  # and given in full when the fact is named
         self.assertIn("- OBS_GROUP_011:", run("show", self.deal, "own account")[1])  # a search also finds a check
+        self.assertIn("- D-002: Cedar is to propose", run("show", self.deal, "decisions")[1])  # every record of one kind
+        self.assertEqual(len(run("show", self.deal, "sample")[1].splitlines()), 10)  # ten facts to compare with their pages
         self.assertIn("The deal folder comes right after the command", run("show", "facts", self.deal)[1])
         kinds = run("show", self.deal, "kinds")[1]
         self.assertIn("- call: Call or meeting. Folder: Internal/sources", kinds)
@@ -339,9 +347,12 @@ class Deal(unittest.TestCase):
         # The head row of a table names the columns and is not read. A figure cites in its own row.
         self.assertEqual(found("| | 2025 |\n|---|---|\n| Revenue | KES 4,060m [F-008] |\n"), [])
         # A link to a page that is not there is reported. Working notes say how to work, and need not cite.
-        self.assertIn("links to ../deal/plant.md, which is not there", found("See [the plant](../deal/plant.md) [F-008].\n")[0])
+        self.assertIn("links to ../assets/plant.md, which is not there", found("See [the plant](../assets/plant.md) [F-008].\n")[0])
         self.assertEqual(found("Revenue was KES 4,060m in 2025 [F-008].\n"), [])
-        self.assertEqual(found("The officer asked on 12/11/2026 for 150 words on the plant.\n", "Internal/wiki/work/working-notes.md"), [])
+        self.assertEqual(found("The analyst asked on 12/11/2026 for 150 words on the plant.\n", "Internal/wiki/work/working-notes.md"), [])
+        run("add", deal, self.handed({"deal": {"avoid": ["cheap loan"]}}))  # a wording the analyst asked to keep out
+        self.assertIn("holds a wording to avoid: cheap loan", found("The loan is cheap for a company with revenue of KES 4,060m [F-008].\n")[0])
+        self.assertEqual(found("The loan is in euros [F-008]. Milk is cheap.\n"), [])  # the words are not in one sentence
         # The drafts are read the same way.
         self.assertIn("Internal/outputs/fp.md", found("Revenue was KES 5,555m [F-008].\n", "Internal/outputs/fp.md")[0])
         self.assertEqual(found("Revenue was KES 5,555m [F-008].\n", "Internal/outputs/fp.md"),  # a draft that went out is left alone
@@ -349,20 +360,25 @@ class Deal(unittest.TestCase):
 
     def test_few_pages_and_a_view_for_a_browser(self):
         wiki = os.path.join(self.deal, "Internal", "wiki")  # a page for the deal, the borrower and the project only
-        self.assertEqual([sorted(os.listdir(os.path.join(wiki, shelf))) for shelf in ("deal", "parties")],
-                         [["deal.md", "second-uht-line.md"], ["cedar-foods-ltd.md"]])
+        self.assertEqual([sorted(os.listdir(os.path.join(wiki, shelf))) for shelf in ("opportunity", "assets", "parties")],
+                         [["opportunity.md"], ["second-uht-line.md"], ["cedar-foods-ltd.md"]])
         contents = files.read(self.deal, "Internal/wiki/index.md")
         self.assertIn("- [Cedar Foods Ltd](parties/cedar-foods-ltd.md): Cedar Foods Ltd is a dairy processor in Nakuru, Kenya, "
                       "and the borrower of the proposed EUR 12m loan.\n", contents)
         self.assertIn("- P-003 Bluegate Supermarkets: party, customer", contents)
         self.assertEqual(pages.lead("# Blue\n\nBlue Co. Ltd sells milk under Decree No. 12 in Thika Town [F-001]. It is small.\n"),
                          "Blue Co. Ltd sells milk under Decree No. 12 in Thika Town.")  # cut at the sentence, not at an abbreviation
-        glance = files.read(self.deal, "Internal/wiki/deal/deal.md")
+        glance = files.read(self.deal, "Internal/wiki/opportunity/opportunity.md")
         self.assertIn("- P-001 [Cedar Foods Ltd](../parties/cedar-foods-ltd.md): party, borrower. Borrows EUR 12m senior loan "
                       "(R-001); sells to Bluegate Supermarkets (R-003).", glance)
         self.assertIn("**Challenged:** Currency risk ([Cedar Foods Ltd](../parties/cedar-foods-ltd.md)). The answers go against: "
                       "No more than a small part", glance)
         self.assertIn("(OBS_FX_008). Mitigants: 5 not known. Decision: D-002.", glance)
+        self.assertTrue(contents.rstrip().endswith("what is answered, what is open and what settles it."))  # the checks come last
+        checks = files.read(self.deal, "Internal/wiki/checks.md")
+        self.assertIn("| answered | Does the party earn any of its revenue in a foreign currency, or at prices that are set in one? "
+                      "`OBS_FX_001` | [Cedar Foods Ltd](parties/cedar-foods-ltd.md) | no [F-010] |  | Screening |", checks)
+        self.assertIn("until `OBS_FX_007` is answered: Does the party pay any of its costs in a foreign currency", checks)
         template, view = files.packaged("wiki.html"), files.read(self.deal, "Internal/wiki/wiki.html")
         loads = [mark for mark in ("://", "<link", " src=", "@import", "url(") if mark in template]
         self.assertEqual(loads, [])  # it loads nothing: no script, style, font or picture from elsewhere
@@ -370,7 +386,7 @@ class Deal(unittest.TestCase):
             self.assertIn('"wiki.html"', f.read())  # an installed copy of the tool needs the template too
         data = json.loads(view.split('<script id="data" type="application/json">')[1].split("</script>")[0])
         self.assertEqual(sorted(data["pages"]),  # every page, the contents page, the sources and the index of the documents
-                         ["../../Client folder/index.md", "deal/deal.md", "deal/second-uht-line.md", "index.md",
+                         ["../../Client folder/index.md", "assets/second-uht-line.md", "checks.md", "index.md", "opportunity/opportunity.md",
                           "parties/cedar-foods-ltd.md", "sources.md"])
         self.assertIn("- S-002 Annual report 2025: audited_annual_report, 2026-03-28, read: part, facts: 4. [Original](",
                       data["pages"]["sources.md"])
@@ -391,7 +407,7 @@ class Deal(unittest.TestCase):
         with open(os.path.join(deal, "Internal", "wiki", "topics", "history.md"), "w", encoding="utf-8") as f:
             f.write("---\ntitle: History\nabout: P-001\n---\n\nCedar Foods was founded in Nakuru [F-001].\n")
         self.assertIn("parties/cedar-foods-ltd.md", run("pages", deal)[1])  # a page about a topic is nobody's own page:
-        self.assertIn("[Cedar Foods Ltd](../parties/cedar-foods-ltd.md)", files.read(deal, "Internal/wiki/deal/deal.md"))  # made again
+        self.assertIn("[Cedar Foods Ltd](../parties/cedar-foods-ltd.md)", files.read(deal, "Internal/wiki/opportunity/opportunity.md"))  # made again
 
     def test_the_entry_sheet_shows_values_and_gaps(self):
         sheet = "\n".join(assess.sheet(self.memory(), standard.effective(self.deal)))

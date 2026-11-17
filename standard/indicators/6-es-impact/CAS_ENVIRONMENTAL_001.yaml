@@ -31,7 +31,7 @@ checks:
   evidence:
     best: [esia_report, operational_license, regulatory_document]
     supporting: [consultant_report, company_record, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Has an environmental impact assessment been done for your sites, or for the investment this loan would pay for? Please
     share the report and the authority's approval of it. If none was needed, who confirmed that?
   if_unknown: Without the assessment, nobody has set out what harm the operations can do.
@@ -49,7 +49,7 @@ checks:
   evidence:
     best: [operational_license, regulatory_document, consultant_report]
     supporting: [company_record, esms_policy]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Please share your environmental permits and your latest monitoring results for emissions, effluent and waste. Is
     any permit expired, under renewal or held in another name?
   note: Compare the monitoring results with the limits written in the permit itself. Record the expiry date of each permit.
@@ -69,7 +69,7 @@ checks:
   evidence:
     best: [regulatory_document, consultant_report, adverse_media_screen]
     supporting: [company_record, board_minutes]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: In the last three years, has there been a spill, a leak or any other environmental incident at your sites? Has an
     environmental authority fined you, sent you a notice or told you to stop work? What happened, and how did it end?
   note: A party that says yes is believed. A party that says no is believed once its incident log, the authority's record
@@ -85,7 +85,7 @@ checks:
   evidence:
     best: [consultant_report, esia_report, audited_annual_report]
     supporting: [company_record, board_minutes, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Do you know of any contamination of soil or water at your sites, or at sites you used before? Do you have to clean
     up, dismantle or restore any site, now or when operations end? Is there a provision for it in your accounts?
   if_unknown: Old contamination tends to come to light at a sale, an expansion or an enforcement.
@@ -105,7 +105,7 @@ checks:
   evidence:
     best: [consultant_report]
     supporting: [esms_policy, organizational_chart, company_record]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Who in your company is responsible for environmental and social matters, and to whom does that person report? Please
     share your environmental and social policy and procedures, and the latest monitoring report made under them.
   note: A policy on paper is not a system. Look for monitoring records made under it in the last twelve months. A current
@@ -121,7 +121,7 @@ checks:
   evidence:
     best: [consultant_report, esia_report, technical_feasibility, insurance_broker_report]
     supporting: [company_record, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Have your main sites been assessed for flood, drought, heat, storm or rising sea level? Who did the assessment, and
     what did it find?
   note: An assessment that finds a high hazard is still a yes. Record the hazards found, so that the operations and the
@@ -139,7 +139,7 @@ checks:
   evidence:
     best: [consultant_report, audited_annual_report]
     supporting: [company_record, regulatory_document, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Do you measure your greenhouse gas emissions? If so, please share the latest figures and say who calculated them.
   note: Record also the yearly emissions expected of what the loan pays for, where they have been estimated.
 - id: OBS_ENV_008
@@ -161,7 +161,7 @@ checks:
   evidence:
     best: [esap, facility_agreement]
     supporting: [term_sheet, board_minutes, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: The plan counts once the party has signed it or it is part of the facility agreement. A draft is not an agreement.
     An action that needs money counts only if the money is in the party's budget or in the loan.
 - id: OBS_ENV_009
@@ -178,6 +178,6 @@ checks:
   evidence:
     best: [consultant_report, audited_annual_report, insurance_policy]
     supporting: [management_accounts, company_record, material_contract, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: An indemnity is worth what the one who gave it can pay. A provision is not cash. Say when the money will be needed
     and where it will come from.

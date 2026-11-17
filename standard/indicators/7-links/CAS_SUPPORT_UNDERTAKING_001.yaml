@@ -26,7 +26,7 @@ checks:
   evidence:
     best: [guarantee_agreement, jv_agreement]
     supporting: [term_sheet]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   note: Answer from the wording of the document, not from its title. "Comfort letter", "letter of support" and "keepwell"
     are used for very different promises. Choose no_firm_promise where the letter states an intention or a policy only.
 - id: OBS_SUPPORTLTR_002
@@ -40,7 +40,7 @@ checks:
   evidence:
     best: [guarantee_agreement, jv_agreement, legal_opinion]
     supporting: [term_sheet]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: An undertaking given only to the borrower, to its board or to its auditors leaves the claim with the borrower.
   leads_to:
   - {indicator: CAS_REPAYMENT_THESIS_001, is: false, reason: An undertaking that the lender cannot enforce is not a second
@@ -55,7 +55,7 @@ checks:
   evidence:
     best: [guarantee_agreement, jv_agreement]
     supporting: [term_sheet]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
 - id: OBS_SUPPORTLTR_004
   question: When the giver was asked in the past to do what an undertaking of this kind promised, for the borrower or for
     another company, what did it do?
@@ -69,7 +69,7 @@ checks:
   evidence:
     best: [adverse_media_screen, audited_annual_report, credit_rating_report]
     supporting: [board_minutes, bank_statement, public_source, press_article, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Ask other lenders to the giver's group, and search court records and the press. If the search finds nothing, record
     what was searched, where and when.
 - id: OBS_SUPPORTLTR_005
@@ -83,7 +83,7 @@ checks:
   evidence:
     best: [legal_opinion]
     supporting: [guarantee_agreement, jv_agreement, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: Without an opinion the undertaking is counted as a statement of intent, and not as a second way out.
 - id: OBS_SUPPORTLTR_006
   question: Has the giver's board, or the body that its articles require, approved the giving of the undertaking?
@@ -95,5 +95,5 @@ checks:
   evidence:
     best: [board_resolution, shareholder_resolution, legal_opinion]
     supporting: [memorandum_and_articles, board_minutes]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: An undertaking signed by a manager without approval can be disowned by the giver when it is relied on.

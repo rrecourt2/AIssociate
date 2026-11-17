@@ -27,7 +27,7 @@ checks:
   evidence:
     best: [technical_feasibility, consultant_report, adverse_media_screen]
     supporting: [company_record, public_source, press_article]
-    stated: [correspondence, call, officer_note, management_presentation]
+    stated: [correspondence, call, analyst_note, management_presentation]
   ask: Which comparable jobs has this firm done in the last five years? For each, was it finished on time, did the plant
     pass its tests, and who at the client can confirm it?
   note: For a builder, delivered means built and handed over. For an operator, it means run for at least a full year. Removal
@@ -45,7 +45,7 @@ checks:
   evidence:
     best: [audited_annual_report, credit_rating_report, epc_contract, om_agreement]
     supporting: [management_accounts, technical_feasibility, internal_memo, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   if_unknown: Damages and warranties are worth nothing if the firm that owes them cannot pay.
   note: Take the accounts of the company that signs the contract, not those of its group. Where liability has no cap, set
     the net worth against the contract price. Three times is a guide. What counts is that paying the cap would not break
@@ -62,7 +62,7 @@ checks:
   evidence:
     best: [epc_contract]
     supporting: [technical_feasibility, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is the construction contract a fixed-price, fixed-date contract for the whole of the works? If the works are split,
     who answers for the gaps between the contracts?
   note: Where the works are split between several contracts, the answer is no unless one party has signed to answer for
@@ -80,7 +80,7 @@ checks:
   evidence:
     best: [om_agreement]
     supporting: [technical_feasibility, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Where the contract is shorter, record when it ends, whether it renews by itself, and on what price.
 - id: OBS_BUILDOP_005
   question: If the builder or operator fails to perform, do the contract and a direct agreement with the lender allow it
@@ -92,7 +92,7 @@ checks:
   evidence:
     best: [epc_contract, om_agreement, material_contract, legal_opinion]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A direct agreement is signed by the builder or operator with the lender. It lets the lender step into the contract
     or appoint a substitute before the contract can be ended. A right to replace is worth little where only this firm can
     do the work (its own technology, a licence, the only local presence). Say whether other firms could take over.
@@ -110,7 +110,7 @@ checks:
   evidence:
     best: [registry_extract, audited_annual_report]
     supporting: [organizational_chart, shareholder_register, beneficial_ownership_declaration, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Is the builder or the operator part of the sponsor's group, or owned by any of the same people?
   note: A sponsor that controls both sides of the contract decides whether damages are claimed, a bond is called or the
     contract is ended.
@@ -131,7 +131,7 @@ checks:
   evidence:
     best: [epc_contract, om_agreement, guarantee_agreement]
     supporting: [technical_feasibility, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: Say which kind, who issued it, its amount as a share of the contract price, and when it expires. Set the amount
     against the damages the firm can owe. A bond that lapses at handover does not cover defects.
   leads_to:
@@ -150,6 +150,6 @@ checks:
   evidence:
     best: [security_agreement, material_contract, legal_opinion]
     supporting: [term_sheet, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: An assignment that takes effect only after the borrower defaults under the loan comes late. Say from when the lender
     can act.

@@ -29,7 +29,7 @@ checks:
   evidence:
     best: [internal_memo]
     supporting: [term_sheet, conditions_precedent_checklist]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: Start from the tool's own list of claims that are challenged or not tested. An open point that the approval paper
     mentions but ties to nothing counts as a no.
@@ -44,7 +44,7 @@ checks:
   evidence:
     best: [facility_agreement, term_sheet, conditions_precedent_checklist]
     supporting: [internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   note: A condition such as "insurance in place" passes only if it names what has to be delivered (the policy, the broker's
     letter). One that says only "to the lender's satisfaction" does not pass.
 - id: OBS_COND_003
@@ -58,7 +58,7 @@ checks:
   evidence:
     best: [audited_annual_report, facility_agreement, registry_extract, company_certificate]
     supporting: [management_accounts, interim_financial_statements, internal_memo, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask_whom: lender
   note: Ask at signing and again before each disbursement. If the review finds nothing, record what was looked at and when
     (the latest accounts, the registry, the press, the signed terms against the approved terms).
@@ -72,7 +72,7 @@ checks:
   evidence:
     best: [conditions_precedent_checklist, legal_opinion]
     supporting: [internal_memo, correspondence]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
 - id: OBS_COND_005
   question: Has any condition precedent been waived, or deferred to a date after disbursement?
@@ -83,7 +83,7 @@ checks:
   evidence:
     best: [conditions_precedent_checklist, internal_memo]
     supporting: [correspondence]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: Record which condition, why it was let go, and what it was there to protect.
 - id: OBS_COND_006
@@ -96,7 +96,7 @@ checks:
   evidence:
     best: [bank_statement, consultant_report, audited_annual_report]
     supporting: [company_record, company_certificate, management_accounts, annual_report, prospectus]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Please show how the money drawn so far was spent, with the invoices and the proof of payment for the larger items.
   note: The borrower's own certificate of use is its word. Trace the larger payments to invoices and bank statements, or
     rely on an engineer's or auditor's report that did.
@@ -111,7 +111,7 @@ checks:
   evidence:
     best: [audited_annual_report, interim_financial_statements, company_certificate]
     supporting: [internal_memo, correspondence, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
   note: Compare the date each report was received with the date it was due. Late figures are often the first sign that the
     figures are bad.
@@ -126,7 +126,7 @@ checks:
   evidence:
     best: [consultant_report, registry_extract, regulatory_document]
     supporting: [company_record, company_certificate, internal_memo]
-    stated: [correspondence, call, officer_note]
+    stated: [correspondence, call, analyst_note]
   ask: Which of the agreed actions are complete, which are late, and what shows it for each?
   note: Complete means that the thing itself is there (the registered charge, the permit, the policy), not that work on
     it has started.
@@ -145,7 +145,7 @@ checks:
   evidence:
     best: [internal_memo, facility_agreement]
     supporting: [conditions_precedent_checklist, correspondence]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask_whom: lender
-  note: For a change to what was approved, that is usually the level that approved the loan. An officer's own decision to
+  note: For a change to what was approved, that is usually the level that approved the loan. An analyst's own decision to
     let a condition go is not an approval.

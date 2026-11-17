@@ -31,7 +31,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [call, officer_note, management_presentation]
+    stated: [call, analyst_note, management_presentation]
   ask: What was your gross margin last year, that is gross profit as a percentage of revenue? If you do not have the figure,
     revenue and cost of sales are enough.
   note: Where the accounts show no cost of sales, as for many service businesses, use the operating margin before depreciation
@@ -46,7 +46,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: Say which year it was and what caused it. Use the same definition of margin as in OBS_COST_001. For a party with
     fewer than five years of accounts, say how many years the answer covers.
 - id: OBS_COST_002
@@ -59,7 +59,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, financial_model, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: Which of your costs would stay the same for a year if your sales fell by a quarter (rent, salaried staff, depreciation,
     interest), and which would fall with them (raw materials, commissions, freight)?
   note: 'Fixed costs are those that stay for a year when volume falls. Mostly means more than about half of all costs: that
@@ -77,7 +77,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   ask: What was your gross margin in each of the last three years? If it fell, what was behind the fall?
   if_unknown: Without the two earlier years there is no trend, and one year's margin proves little.
   note: Use the same definition of gross profit in both years, and give both figures. A difference too small to count in
@@ -99,7 +99,7 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, annual_report, prospectus]
-    stated: [call, officer_note, management_presentation]
+    stated: [call, analyst_note, management_presentation]
   note: For a party with fewer than five years of accounts, answer for the years there are and say how many.
 - id: OBS_COST_008
   question: 'In any of the last three years, did items outside the ordinary business make up more than about a quarter of
@@ -112,5 +112,5 @@ checks:
   evidence:
     best: [audited_annual_report]
     supporting: [management_accounts, company_record, annual_report, prospectus]
-    stated: [call, officer_note]
+    stated: [call, analyst_note]
   note: A quarter is a guide. Gains that brought in no cash, such as revaluations, are asked about in The accounts (OBS_ACC_008).
