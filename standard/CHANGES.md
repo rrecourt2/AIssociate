@@ -18,7 +18,7 @@ No check is added or dropped: 551 checks as before.
 
 **Open, for a practitioner to confirm.** One value is the main route, and some checks have two: the party is asked and a register is searched, or the company is asked first and the terms settle it. The second route is not recorded. The tests that count the proposed loan and do not wait for its terms are tagged `company`, and have to be answered again once the terms are known.
 
-**A deal that runs on 4.2.2.** `upgrade` lists every check as changed, because each gained a field. A source of kind `officer_note` is of a kind the standard no longer has: change it to `analyst_note`, and `said_by: officer` to `analyst`.
+**A deal that runs on 4.2.2.** `upgrade` says that every check changed, because each gained a field. It takes the record to the new names: a source of kind `officer_note` becomes `analyst_note`, and `officer` becomes `analyst` where a fact says who said it and where a decision says who took it or who owns it. The standard carries the list of such names under `renamed`. With tool 0.6.0 it also moves the pages of the wiki to the new shelves and repoints the links between them. The words in the pages themselves stay as they were written.
 
 ### Version 4.2.2: notes from the third round of the trial
 

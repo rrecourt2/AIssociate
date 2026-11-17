@@ -104,7 +104,16 @@ class Deal(unittest.TestCase):
         os.makedirs(os.path.join(deal, "Internal", "memory"))
         os.replace(os.path.join(deal, files.MEMORY), os.path.join(deal, files.OLD_MEMORY))
         self.assertIn("Move it with: upgrade", run("status", deal)[1])
-        self.assertIn("Moved the record to Internal/record/record.json", run("upgrade", deal)[1])
+        wiki = os.path.join(deal, "Internal", "wiki")  # and its pages are on the shelves of an earlier version
+        os.makedirs(os.path.join(wiki, "deal"))
+        os.replace(os.path.join(wiki, "assets", "second-uht-line.md"), os.path.join(wiki, "deal", "second-uht-line.md"))
+        os.replace(os.path.join(wiki, "opportunity", "opportunity.md"), os.path.join(wiki, "deal", "deal.md"))
+        with open(os.path.join(wiki, "deal", "deal.md"), "a", encoding="utf-8") as f:
+            f.write("\nSee [the line](second-uht-line.md) [F-008].\n")
+        said = run("upgrade", deal)[1]
+        self.assertIn("Moved the record to Internal/record/record.json", said)
+        self.assertIn("Moved the pages of the wiki to the shelves this version uses", said)
+        self.assertIn("See [the line](../assets/second-uht-line.md) [F-008].", files.read(deal, "Internal/wiki/opportunity/opportunity.md"))
         self.assertEqual(run("check", deal)[1].strip(), "No problems found.")
 
     def test_roles_come_from_links(self):
