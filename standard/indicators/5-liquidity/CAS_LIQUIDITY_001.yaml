@@ -24,6 +24,7 @@ checks:
 - id: OBS_LIQ_006
   question: How much cash and bank deposits does the party hold today that it is free to use to pay its own debts?
   answer: number
+  settled_by: company
   unit: currency
   why: The starting figure. Cash that is pledged, blocked, held where it cannot be brought back, or held for others is left
     out. OBS_LIQ_008 tests whether it has been.
@@ -41,6 +42,7 @@ checks:
     (debt repayments and interest, taxes, wages, suppliers, committed capital spending and declared dividends) in every
     month, from its free cash, its undrawn committed credit lines and the cash its business brings in, without new borrowing?
   answer: yes_no
+  settled_by: company
   assumption: The party's free cash, committed lines and cash from its business cover what falls due in each of the next
     twelve months
   disproved_by: 'no'
@@ -64,6 +66,7 @@ checks:
     favour of a lender, held in a country or in a subsidiary from which it cannot be brought back, or held on behalf of
     customers or others?'
   answer: yes_no
+  settled_by: company
   assumption: The cash in the party's balance sheet is the party's own to use
   disproved_by: 'yes'
   look_in: [03.01.a, 04.01.b, 04.02.b]
@@ -78,6 +81,7 @@ checks:
   question: 'Is every undrawn credit line that the party counts on for the next twelve months committed: the bank is bound
     by a signed agreement to pay out on request, cannot cancel at will, and the line does not end within those twelve months?'
   answer: yes_no
+  settled_by: company
   assumption: The credit lines the party counts on are committed, not merely available
   disproved_by: 'no'
   look_in: [04.01.b, 04.03.a]
@@ -94,6 +98,7 @@ checks:
   question: In the last two years, has the party paid wages, taxes or suppliers late for lack of cash, or needed money from
     its owners or its bank at short notice to pay them?
   answer: yes_no
+  settled_by: company
   assumption: The party has had the cash to pay what fell due over the last two years
   disproved_by: 'yes'
   due_by: concept
@@ -114,6 +119,7 @@ checks:
   question: 'Is the shortfall covered by money that is promised in writing and has not been counted: a signed undertaking
     by an owner to pay in cash, or a standby line signed with a bank?'
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: Money that is promised in writing covers the shortfall
   disproved_by: 'no'

@@ -20,6 +20,7 @@ checks:
 - id: OBS_FIP_001
   question: What share of the institution's gross loans is non-performing at its latest reporting date?
   answer: number
+  settled_by: company
   unit: percent
   why: The headline figure of loan quality. It is read against the institution's own past, against the banks in its market,
     and against what the other checks say about how loans are classified.
@@ -37,6 +38,7 @@ checks:
 - id: OBS_FIP_008
   question: Does the institution count as non-performing every loan on which a payment is more than ninety days overdue?
   answer: yes_no
+  settled_by: company
   assumption: Loans that have stopped paying are counted as bad loans
   disproved_by: 'no'
   why: Ninety days is the international convention (the Basel Committee's definition of default). An institution that waits
@@ -56,6 +58,7 @@ checks:
   question: What share of the gross loan book consists of loans that were rescheduled, refinanced or otherwise restructured
     because the borrower could not pay as agreed, and that are counted as performing?
   answer: number
+  settled_by: company
   unit: percent
   assumption: Few loans are kept out of the bad-loan figure by restructuring them
   flag_when: above 5
@@ -78,6 +81,7 @@ checks:
   question: Do the institution's loan-loss provisions alone cover at least about half of its non-performing loans, and do
     provisions together with collateral at its forced-sale value cover them in full?
   answer: yes_no
+  settled_by: company
   assumption: The loss in the non-performing loans is provided for
   disproved_by: 'no'
   look_in: [03.01.a, 07.01.a, 05.02.a]
@@ -97,6 +101,7 @@ checks:
   question: Does the institution have a written policy that fixes when a non-performing loan must be written off, and do
     its write-offs of the last two years follow it?
   answer: yes_no
+  settled_by: company
   assumption: Bad loans are written off under a fixed rule, neither kept on the books nor removed to flatter the figures
   disproved_by: 'no'
   look_in: [02.05.a, 03.01.a, 03.01.e]
@@ -113,6 +118,7 @@ checks:
   question: Over the last three years, has the institution's loan book grown at more than about twice the rate of bank lending
     in its market?
   answer: yes_no
+  settled_by: company
   assumption: The loan book has grown at a pace at which its quality can already be seen
   disproved_by: 'yes'
   why: Loans go bad a year or two after they are made. A book that grows fast is young, so its bad-loan ratio stays low
@@ -128,6 +134,7 @@ checks:
 - id: OBS_FIP_003
   question: Does any one economic sector, or any one region, account for more than about a quarter of the loan book?
   answer: yes_no
+  settled_by: company
   assumption: No single sector or region could, by its own downturn, turn a large part of the loan book bad
   disproved_by: 'yes'
   look_in: [03.01.a, 07.01.a, 10.03.a]
@@ -144,6 +151,7 @@ checks:
   question: Do the institution's ten largest exposures, with connected borrowers counted as one, add up to more than its
     regulatory capital?
   answer: yes_no
+  settled_by: company
   assumption: The failure of a handful of large borrowers would not take away the institution's capital
   disproved_by: 'yes'
   look_in: [07.01.a, 03.01.a, 10.03.a]
@@ -160,6 +168,7 @@ checks:
   question: Are more than about half of the institution's loans in foreign currency owed by borrowers who do not earn that
     currency?
   answer: yes_no
+  settled_by: company
   assumption: The institution lends foreign currency mainly to borrowers who earn it
   disproved_by: 'yes'
   why: A borrower who earns local currency and owes foreign currency owes more after a devaluation and earns the same. The

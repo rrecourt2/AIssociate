@@ -24,6 +24,7 @@ checks:
     at other banks that are repayable within a month, and government securities that are not pledged) as a percentage of
     its customer deposits and other funding repayable within twelve months?
   answer: number
+  settled_by: company
   unit: percent
   why: The first cushion against withdrawals. It is read against the regulatory minimum (OBS_FIL_006), against the institution's
     own lowest point of the year, and against how concentrated and how short its funding is.
@@ -42,6 +43,7 @@ checks:
   question: Has the institution met every liquidity requirement its regulator sets (such as a liquid asset ratio, a liquidity
     coverage ratio and the reserve requirement) at every reporting date of the last twelve months?
   answer: yes_no
+  settled_by: company
   assumption: The institution has kept its liquidity above the regulatory minimum throughout the year
   disproved_by: 'no'
   due_by: concept
@@ -58,6 +60,7 @@ checks:
 - id: OBS_FIL_002
   question: Do the twenty largest depositors hold more than about a quarter of the institution's deposits?
   answer: yes_no
+  settled_by: company
   assumption: No small group of depositors could drain the institution by leaving
   disproved_by: 'yes'
   look_in: [07.01.a, 03.01.a, 10.03.a]
@@ -73,6 +76,7 @@ checks:
   question: Are the institution's loans larger than its customer deposits, its funding with more than a year left to run
     and its equity taken together?
   answer: yes_no
+  settled_by: company
   assumption: The loans are funded by money that stays, namely deposits, long-term funding and equity
   disproved_by: 'yes'
   why: Loans cannot be called in when funding leaves. Where loans exceed the funding that stays, the difference is financed
@@ -89,6 +93,7 @@ checks:
   question: Does the wholesale funding that falls due within twelve months (loans from banks, funds and development lenders,
     bonds and money-market borrowing, at home and abroad) exceed the institution's unpledged liquid assets?
   answer: yes_no
+  settled_by: company
   assumption: The institution could repay the wholesale funding that falls due within a year even if none of it were renewed
   disproved_by: 'yes'
   why: Wholesale lenders are few, well informed and quick. They do not renew when there is doubt, and funding from abroad
@@ -108,6 +113,7 @@ checks:
   question: 'What share of the institution''s total funding (all its liabilities) is owed to other banks: interbank deposits,
     money-market borrowing and repurchase agreements?'
   answer: number
+  settled_by: company
   unit: percent
   why: Other banks are the first to withdraw. A high or a rising share means that the institution cannot fund itself from
     its customers.
@@ -125,6 +131,7 @@ checks:
   question: Is the institution's net open position in foreign currency, all currencies taken together and with items off
     the balance sheet, above the limit its regulator sets or, where there is none, above about a fifth of its capital?
   answer: yes_no
+  settled_by: company
   assumption: A move in the exchange rate would cost the institution only a small part of its capital
   disproved_by: 'yes'
   why: An open position turns a move in the exchange rate straight into a gain or a loss. A position that is closed in the
@@ -144,6 +151,7 @@ checks:
   question: In the last three years, has the institution missed a payment to a lender, breached a financial covenant in
     a loan agreement, or asked a lender for a waiver or an extension?
   answer: yes_no
+  settled_by: company
   assumption: The institution has paid and performed as agreed under its own borrowings
   disproved_by: 'yes'
   due_by: concept
@@ -160,6 +168,7 @@ checks:
   question: Is the institution admitted to a standing lending facility of its central bank, and does it hold unpledged assets
     today that the central bank accepts as collateral?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: The central bank would lend to the institution against assets it holds today
   disproved_by: 'no'
@@ -181,6 +190,7 @@ checks:
 - id: OBS_FIL_010
   question: Have the lenders concerned confirmed in writing that the breach is cured or waived?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: The lenders concerned have confirmed that the breach is cured or waived
   disproved_by: 'no'

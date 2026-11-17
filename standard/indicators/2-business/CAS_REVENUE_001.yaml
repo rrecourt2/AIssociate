@@ -20,6 +20,7 @@ checks:
 - id: OBS_REV_001
   question: Does the party earn revenue from sales today?
   answer: yes_no
+  settled_by: company
   why: 'Opens the topic. A business with no revenue yet is a different deal: its customers are judged from signed contracts
     and a market study, not from a sales record. OBS_BUYER_CONC_001 and OBS_REV_008 are asked either way.'
   due_by: screening
@@ -36,6 +37,7 @@ checks:
   question: Does any single customer bring in about a tenth or more of the party's revenue, or would it under contracts
     already signed?
   answer: yes_no
+  settled_by: company
   why: A customer of this size has to be in the structure, where its own ability and obligation to pay are examined. A yes
     does not go against the claim. Whether the party could lose its largest customer is tested in OBS_REV_008.
   due_by: concept
@@ -60,6 +62,7 @@ checks:
   question: If the largest customer stopped buying and its volume were not replaced for twelve months, would the party's
     cash flow still cover its debt service?
   answer: yes_no
+  settled_by: company
   assumption: The party can lose its largest customer for a year and still service its debt
   disproved_by: 'no'
   why: The claim is about what the loss of one customer would do to debt service, not about how large the customer is.
@@ -79,6 +82,7 @@ checks:
 - id: OBS_REV_003
   question: Do the three largest customers together bring in more than half of the party's revenue?
   answer: yes_no
+  settled_by: company
   assumption: The party would keep most of its revenue if it lost its three largest customers
   disproved_by: 'yes'
   due_by: concept
@@ -97,6 +101,7 @@ checks:
   question: Does one product, or one market (a country or a kind of customer), bring in more than half of the party's gross
     profit?
   answer: yes_no
+  settled_by: company
   assumption: The party's gross profit does not hang on one product or one market
   disproved_by: 'yes'
   when:
@@ -114,6 +119,7 @@ checks:
 - id: OBS_REV_004
   question: By what percentage a year did the party's revenue change, on average, over the last three full financial years?
   answer: number
+  settled_by: company
   unit: percent
   assumption: The party's revenue has not fallen over the last three years
   flag_when: below 0
@@ -134,6 +140,7 @@ checks:
   question: Is revenue in the party's strongest quarter of the year regularly at least one and a half times revenue in its
     weakest quarter?
   answer: yes_no
+  settled_by: company
   why: Seasonal revenue means that cash and borrowing swing through the year. Debt, liquidity and repayment dates are then
     read against the low season, not against the year-end.
   when:
@@ -152,6 +159,7 @@ checks:
   question: What share of the party's receivables is owed by government bodies (unpaid sales to the state, subsidies, tax
     and duty refunds)?
   answer: number
+  settled_by: company
   unit: percent
   assumption: The party does not wait on government bodies for a large part of what it is owed
   flag_when: above 20
@@ -173,6 +181,7 @@ checks:
   question: What share of a year's revenue has the party collected from customers before delivery (advances received, contract
     liabilities)?
   answer: number
+  settled_by: company
   unit: percent
   why: A prepayment is a debt owed in goods. It funds the business for as long as orders keep coming. When they stop, the
     party has to deliver or repay with no new advances to fund it, and customers that have prepaid stand beside the lender
@@ -191,6 +200,7 @@ checks:
   question: What share of the party's trade receivables is backed by a letter of credit, a bank guarantee, credit insurance
     or collateral?
   answer: number
+  settled_by: company
   unit: percent
   mitigant: true
   assumption: Most of what customers owe the party is backed by a bank, an insurer or collateral

@@ -18,6 +18,7 @@ checks:
 - id: OBS_COMPSUPPORT_002
   question: Which events oblige the giver of the support to pay or to act?
   answer: choice
+  settled_by: terms
   options: [completion_delay, cost_overrun, performance_test_failure, debt_service_shortfall, event_of_default, other, unclear]
   many: true
   assumption: The undertaking states the events that oblige its giver to pay or to act
@@ -37,6 +38,7 @@ checks:
   question: Is the support unlimited in amount, or capped at no less than the cost overrun in the independent engineer's
     downside case?
   answer: yes_no
+  settled_by: terms
   assumption: The amount of the support covers a plausible cost overrun
   disproved_by: 'no'
   look_in: [04.02.a, 05.01.a, 03.02.b]
@@ -49,6 +51,7 @@ checks:
 - id: OBS_COMPSUPPORT_003
   question: Which events end the support?
   answer: choice
+  settled_by: terms
   options: [project_completion, financial_completion, commercial_operation_date, completion_certificate, dsra_funded, facility_repaid,
     other, unclear]
   many: true
@@ -67,6 +70,7 @@ checks:
 - id: OBS_COMPSUPPORT_004
   question: What proof does the undertaking require before the support is released?
   answer: choice
+  settled_by: terms
   options: [independent_engineer_certificate, completion_certificate, lender_approval, rating_letter, operating_test_report,
     other, unclear]
   many: true
@@ -86,6 +90,7 @@ checks:
   question: Could the lender itself enforce the undertaking against its giver (it is signed, the lender is a party to it
     or holds it by assignment, and counsel confirms that it binds the giver)?
   answer: yes_no
+  settled_by: expert
   assumption: The lender can enforce the undertaking against its giver
   disproved_by: 'no'
   look_in: [08.01.a, 04.02.a, 04.02.b]

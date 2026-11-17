@@ -16,6 +16,7 @@ checks:
   question: 'Is the party, or any of its directors or senior managers, a politically exposed person: someone who holds or
     has held a prominent public office, or a close relative or a close associate of such a person?'
   answer: yes_no
+  settled_by: screening
   why: To be politically exposed is not a fault. It decides how closely the lender has to look. A no is checked by OBS_PEP_006
     against a screening.
   due_by: screening
@@ -35,6 +36,7 @@ checks:
   question: 'What is the tie: does the person hold the office, or is the person a close relative or a close associate of
     the one who does?'
   answer: choice
+  settled_by: screening
   options: [direct, family, close_associate]
   many: true
   why: The closer the tie and the higher the office, the closer the look. Name the person, the office and the years in it.
@@ -50,6 +52,7 @@ checks:
   question: Did a screening against a database of politically exposed persons, or a search of public sources, find a political
     tie that the party had not declared?
   answer: yes_no
+  settled_by: screening
   assumption: The party has declared every political tie of its own, of its directors and of its senior managers
   disproved_by: 'yes'
   due_by: concept
@@ -65,6 +68,7 @@ checks:
   question: Does the business that the lender finances hold a licence, a concession, a public contract, a subsidy or a loan
     from a state bank that the person's office grants, renews or can influence?
   answer: yes_no
+  settled_by: company
   assumption: The business does not depend on anything that the politically exposed person's office can give or take away
   disproved_by: 'yes'
   due_by: concept
@@ -83,6 +87,7 @@ checks:
   question: 'Has the lender examined the person more closely and put the result on file: where the person''s wealth comes
     from, what the person receives from the party, and the approval of the lender''s senior management?'
   answer: yes_no
+  settled_by: lender
   assumption: The lender has examined the person's wealth and role, and its senior management has approved the relationship
   disproved_by: 'no'
   when:
@@ -92,12 +97,12 @@ checks:
     best: [adverse_media_screen, consultant_report, internal_memo]
     supporting: [kyc_package]
     stated: [call, analyst_note]
-  ask_whom: lender
   note: This closer look is often called enhanced due diligence. The file has to show all three parts.
 - id: OBS_PEP_004
   question: While the loan is outstanding, does the lender look again at least once a year at the person's office and at
     the party's dealings with it?
   answer: yes_no
+  settled_by: lender
   assumption: The lender looks again at the political tie at least once a year
   disproved_by: 'no'
   due_by: monitoring
@@ -108,12 +113,12 @@ checks:
     best: [aml_screening, adverse_media_screen]
     supporting: [internal_memo]
     stated: [call, analyst_note]
-  ask_whom: lender
   note: Once a year is a guide. An election, a change of government or a new public contract is a reason to look at once.
 - id: OBS_PEP_007
   question: Was that licence, contract, subsidy or loan won in an open procedure (a public tender, or a published rule that
     applies to everyone), and has the lender seen the record of the award?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: What the business holds from the state was awarded in an open procedure, and the record shows it
   disproved_by: 'no'

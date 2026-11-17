@@ -20,6 +20,7 @@ checks:
   question: 'Which way does the lender rely on the tie between this owner and the company it owns or sponsors: on money
     coming down from the owner, on cash coming up from the company, on both, or on neither?'
   answer: choice
+  settled_by: lender
   options: [support_from_owner, cash_from_owned, both, neither]
   why: Most ties in a chain of owners carry nothing that the lender counts on. Then the answer is neither, and only OBS_GROUP_010
     is still asked about the tie. Any other answer also asks what the owner owes on its own account.
@@ -29,7 +30,6 @@ checks:
     best: [financial_model, term_sheet]
     supporting: [internal_memo, financial_projections, organizational_chart]
     stated: [call, analyst_note]
-  ask_whom: lender
   note: Answer from the financial model and the credit paper, not from memory. An equity injection, a shareholder loan or
     a promise to cover cost overruns in the projections means support_from_owner. Debt of the owner that is serviced from
     dividends, fees or loans from the company means cash_from_owned. "The company" stands for whatever is owned or sponsored.
@@ -37,6 +37,7 @@ checks:
   question: How much debt does the owner owe on its own account (loans, bonds and leases in its own name), at the latest
     balance sheet date?
   answer: number
+  settled_by: company
   unit: currency
   why: This is the debt that the cash coming up from the company has to help service, and that the owner pays before it
     can support the company. The consolidated accounts do not show it, because they add the company's debt to the owner's.
@@ -57,6 +58,7 @@ checks:
   question: How much cash did the owner receive from the company in the last financial year (dividends, fees, interest,
     and loans that the company repaid or gave to it)?
   answer: number
+  settled_by: company
   unit: currency
   why: Set against what the owner owes, this shows how much of the owner's debt service the company carries, and whether
     what comes up is enough.
@@ -77,6 +79,7 @@ checks:
   question: 'Has the owner bound itself in writing to support the company: by a guarantee of the loan, or by a signed undertaking
     to put money in?'
   answer: yes_no
+  settled_by: terms
   assumption: The owner is bound in writing to support the company
   disproved_by: 'no'
   why: Support that rests on the owner's goodwill is given when it suits the owner. Only a signed promise can be claimed.
@@ -97,6 +100,7 @@ checks:
   question: 'Would the company''s failure hurt the owner itself: would the owner lose about a fifth or more of its own assets
     or revenue, see its own loans fall due through a cross-default, or have its own name or licence damaged?'
   answer: yes_no
+  settled_by: company
   assumption: The company's failure would cost the owner more than supporting it
   disproved_by: 'no'
   due_by: concept
@@ -114,6 +118,7 @@ checks:
   question: When the company was last short of money (a loss, a cost overrun, a covenant breach, a payment it could not
     make), did the owner put money in?
   answer: choice
+  settled_by: company
   options: [put_money_in, did_not, never_short]
   assumption: The owner has put money in when the company was short
   flag_when: is did_not
@@ -133,6 +138,7 @@ checks:
   question: Could the owner, from its own cash and unused committed credit lines and after paying its own debt due in the
     next twelve months, cover one year of the company's debt service?
   answer: yes_no
+  settled_by: company
   assumption: The owner has the means to support the company when the company is short
   disproved_by: 'no'
   when:
@@ -151,6 +157,7 @@ checks:
     may be distributed, a regulator''s approval, exchange control, a minority shareholder''s veto, a tax on the payment,
     or a covenant or lock-up in the company''s own loans?'
   answer: yes_no
+  settled_by: company
   assumption: Nothing stands between the company's spare cash and the owner
   disproved_by: 'yes'
   due_by: concept
@@ -168,6 +175,7 @@ checks:
   question: Does the company owe debt of its own (loans, bonds, leases, guarantees it has given) that is paid from its cash
     and assets before anything reaches the owner?
   answer: yes_no
+  settled_by: company
   assumption: No lender of the company stands between the company's cash and the owner
   disproved_by: 'yes'
   why: A lender to the owner is paid from what is left after the company's own lenders. If the company fails, they take
@@ -190,6 +198,7 @@ checks:
   question: In the last five years, did the owner take cash out of the company (dividends, loans to itself, fees, or purchases
     at prices above the market) in a year in which the company made a loss, breached a covenant or paid its creditors late?
   answer: yes_no
+  settled_by: company
   assumption: The owner leaves cash in the company when the company is weak
   disproved_by: 'yes'
   why: An owner that drew cash from a weak company has shown whose interest comes first. For a lender to the company it
@@ -210,6 +219,7 @@ checks:
   question: Is the company's cash swept into, or mixed with, the cash of the owner or the group (a cash pool, a common treasury,
     shared bank accounts), so that its balance is a claim on the group and not money in its own account?
   answer: yes_no
+  settled_by: company
   assumption: The company's cash is in its own accounts and under its own control
   disproved_by: 'yes'
   when:
@@ -229,6 +239,7 @@ checks:
   question: Does the owner, or a holding company between the owner and the company, owe debt that it can service only with
     dividends, fees or loans from the company?
   answer: yes_no
+  settled_by: company
   assumption: The owner does not need the company's cash to service its own debt
   disproved_by: 'yes'
   why: An owner that needs the company's cash to pay its own lenders takes it out whatever state the company is in. That
@@ -249,6 +260,7 @@ checks:
   question: Do the lender's loan terms bind the company itself to limits on dividends, on loans and guarantees to the owner
     and the group, and on taking part in a cash pool?
   answer: yes_no
+  settled_by: terms
   mitigant: true
   assumption: The loan terms limit what the owner can take out of the company
   disproved_by: 'no'
@@ -270,6 +282,7 @@ checks:
   question: 'Does the lender hold a direct claim on the company: a guarantee from it, security over its assets, or the company
     as a co-borrower?'
   answer: yes_no
+  settled_by: terms
   mitigant: true
   assumption: The lender can claim against the company itself, beside the company's own lenders
   disproved_by: 'no'

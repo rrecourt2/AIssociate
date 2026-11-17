@@ -19,6 +19,7 @@ checks:
   question: Has the party prepared financial projections (a financial model, a business plan with figures, or a budget for
     several years)?
   answer: yes_no
+  settled_by: company
   why: Opens the topic. A no does not close it. The party's record against its own budget (OBS_PROJ_008) and the downside
     case (OBS_PROJ_006) are asked either way.
   due_by: concept
@@ -32,6 +33,7 @@ checks:
 - id: OBS_PROJ_002
   question: What period do the projections cover?
   answer: choice
+  settled_by: company
   options: [1_year, 3_year, 5_year, beyond_5]
   why: A forecast that stops before the loan is repaid says nothing about the last payments.
   when:
@@ -46,6 +48,7 @@ checks:
   question: 'Are the assumptions behind the projections written down, so that each can be checked against a source: volumes,
     prices, costs, capital spending, working capital, interest and exchange rates?'
   answer: yes_no
+  settled_by: company
   assumption: The projections rest on assumptions that are written down and can be checked
   disproved_by: 'no'
   due_by: concept
@@ -63,6 +66,7 @@ checks:
   question: 'Has someone independent of the party, and of whoever built the projections, reviewed them: the arithmetic of
     the model and the sources of its inputs?'
   answer: yes_no
+  settled_by: expert
   assumption: Someone independent of the party has tested the projections
   disproved_by: 'no'
   when:
@@ -80,6 +84,7 @@ checks:
   question: How do the revenue growth and the margin in the projections compare with what the party achieved in the last
     five years?
   answer: choice
+  settled_by: company
   options: [conservative, in_line, aggressive]
   assumption: The projections ask for nothing the party has not achieved before
   flag_when: is aggressive
@@ -99,6 +104,7 @@ checks:
   question: Did the party's revenue or operating profit in the last financial year fall short of its own budget or forecast
     for that year by more than about a tenth?
   answer: yes_no
+  settled_by: company
   assumption: The party has met its own forecasts
   disproved_by: 'yes'
   why: The best test of a forecast is the forecaster's record. A party that missed its own budget by a wide margin last
@@ -117,6 +123,7 @@ checks:
   question: Is all debt service still paid when due in a downside case that sets revenue, margin and timing no better than
     the worst the party has seen in the last five years?
   answer: yes_no
+  settled_by: lender
   assumption: Debt service is still paid in a downside case
   disproved_by: 'no'
   why: The base case is what the party hopes for. The lender is repaid in the case that happens.
@@ -125,7 +132,6 @@ checks:
     best: [internal_memo, consultant_report]
     supporting: [financial_model]
     stated: [call, analyst_note]
-  ask_whom: lender
   if_unknown: Nobody knows how much can go wrong before a payment is missed.
   note: A case that trims the base case by a few percent is not a downside. For a business without five years behind it,
     use the worst that businesses of the same kind have seen and say which. Run the case with this facility drawn in full
@@ -136,6 +142,7 @@ checks:
   question: By what share can revenue fall below the base case, with costs behaving as they did in the party's past, before
     a payment of debt service is missed?
   answer: number
+  settled_by: expert
   unit: percent
   why: The room for error, in one figure. It is read against the largest fall in revenue the party has had in a year.
   look_in: [03.02.b]

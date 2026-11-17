@@ -18,6 +18,7 @@ checks:
 - id: OBS_REQUEST_001
   question: 'What is the lender asked for: how much, in which currency, for how long and for what purpose?'
   answer: text
+  settled_by: terms
   why: Everything else is read against the request. The answer also puts the facility into the structure.
   calls_for:
   - {answered: true, kind: facility}
@@ -31,6 +32,7 @@ checks:
   question: 'Does the money pay for a project or an asset that can be named: something that is built, bought or expanded,
     such as a plant, a production line or a site?'
   answer: yes_no
+  settled_by: terms
   why: The checks on a project are asked of the project that the loan pays for, and of no other. A yes puts that project
     or asset into the structure, linked to the facility. A no means that the money goes into the business as a whole.
   calls_for:
@@ -52,6 +54,7 @@ checks:
 - id: OBS_INVESTOR_ROLE_001
   question: Where would the lender rank against the others who have put money into the business?
   answer: choice
+  settled_by: terms
   options: [senior_secured, senior_unsecured, subordinated, mezzanine, preferred_equity, common_equity, co_invest, guarantee]
   why: The rank says who is paid before the lender when there is not enough for everyone, and so what has to be known about
     those who stand ahead.
@@ -69,6 +72,7 @@ checks:
   question: Does the business already have other financing in place (loans from banks or other lenders, bonds, leases, shareholder
     loans)?
   answer: yes_no
+  settled_by: company
   why: Opens the topic. The new loan has to fit beside what is already there. A "no" is checked against the accounts and
     the registry under existing debt.
   calls_for:
@@ -88,6 +92,7 @@ checks:
   question: 'What does the financing of the business consist of: for each loan or other financing the provider, the amount,
     the rank, the security and the final maturity, and the equity the owners have paid in?'
   answer: text
+  settled_by: company
   why: Shows what stands ahead of the lender, beside it and behind it, and when the others must be repaid.
   due_by: concept
   when:
@@ -104,18 +109,19 @@ checks:
   question: Are the amount, the currency, the tenor and the rank that are asked for all within what the lender's own policies
     and limits allow for this country, this sector and this client?
   answer: yes_no
+  settled_by: lender
   assumption: The lender can provide what is asked for under its own policies and limits
   disproved_by: 'no'
   evidence:
     best: [internal_memo]
     stated: [analyst_note, call]
-  ask_whom: lender
   note: This is about the lender's own products and limits. For the country limit, ask whoever keeps the limits and record
     the date. Whether the lender is the right source of the money is asked under impact and additionality.
 - id: OBS_USE_001
   question: Is the use of the money set out item by item, each with an amount, so that every item can later be checked against
     an invoice, a contract or a payment?
   answer: yes_no
+  settled_by: terms
   assumption: The use of the money is specific enough to be checked after it is paid out
   disproved_by: 'no'
   due_by: concept
@@ -131,6 +137,7 @@ checks:
   question: Does any part of the money go to shareholders, related parties or existing lenders (to repay a loan, buy shares,
     pay a dividend or settle an amount owed to them)?
   answer: yes_no
+  settled_by: terms
   assumption: All of the money goes into the business, and none of it pays out someone who is already in it
   disproved_by: 'yes'
   calls_for:
@@ -154,6 +161,7 @@ checks:
   question: Do the committed sources of money (this loan, other loans and the owners' own money) cover the whole cost of
     what is planned, including an allowance for cost overruns and the working capital needed until the plan pays for itself?
   answer: yes_no
+  settled_by: company
   assumption: The whole plan is funded from committed sources, with room for overruns and for working capital
   disproved_by: 'no'
   due_by: concept
@@ -177,6 +185,7 @@ checks:
   question: Is at least about a third of the cost of the plan paid in cash by the owners or from the business's own retained
     cash, before the lender's money or in step with it, and not in kind, by revaluing assets or with borrowed money?
   answer: yes_no
+  settled_by: company
   assumption: The owners carry a share of the plan in cash and stand to lose it first
   disproved_by: 'no'
   due_by: concept
@@ -198,6 +207,7 @@ checks:
   question: Is everything that is paid out owed to a lender that is neither a shareholder nor a related party, on a loan
     that was being paid as agreed (no missed payment, waiver or rescheduling in the last twelve months)?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: Only outside lenders are repaid, on loans that were being paid as agreed, so the lender replaces a creditor
     and neither rescues one nor pays out an owner

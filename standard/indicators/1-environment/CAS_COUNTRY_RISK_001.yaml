@@ -19,6 +19,7 @@ checks:
   question: In which country is the borrower incorporated, in which are its main assets, and from which does it earn the
     revenue that services the loan?
   answer: text
+  settled_by: company
   why: Every other check of this topic is asked about one of these countries. Where they differ, each is looked at for what
     happens there.
   look_in: [02.01.c, 02.01.a, 03.01.a]
@@ -32,6 +33,7 @@ checks:
   question: Is the government of the country from which the loan is serviced in default on its foreign debt, restructuring
     it, or drawing emergency financing to meet its payments abroad?
   answer: yes_no
+  settled_by: public
   assumption: The state is paying its own foreign creditors and is not short of foreign currency
   disproved_by: 'yes'
   why: A state that cannot pay its own foreign creditors usually rations foreign currency for everyone else.
@@ -49,6 +51,7 @@ checks:
   question: In the last five years, has armed conflict or civil unrest stopped businesses from operating in the region where
     the main assets are, or has the state seized privately owned assets in the sector or forced their sale?
   answer: yes_no
+  settled_by: public
   assumption: The business can keep operating where its main assets are, and keep owning them
   disproved_by: 'yes'
   look_in: [10.03.a]
@@ -62,6 +65,7 @@ checks:
   question: In the last ten years, has the country delayed or blocked private payments abroad, frozen bank deposits, or
     forced debts or deposits in foreign currency to be converted into local currency?
   answer: yes_no
+  settled_by: public
   assumption: For the last ten years the country has let private borrowers pay foreign lenders without interruption
   disproved_by: 'yes'
   why: A base rate. A country that has done this within memory has the rules and the habit to do it again.
@@ -76,6 +80,7 @@ checks:
   question: Under the rules and the practice of today, do exchange controls or a shortage of foreign currency delay or limit
     the conversion of local currency and its transfer abroad for debt service?
   answer: yes_no
+  settled_by: public
   assumption: Local currency can be converted and sent abroad for debt service without delay or limit
   disproved_by: 'yes'
   due_by: concept
@@ -92,6 +97,7 @@ checks:
   question: Could a foreign lender obtain a judgment or an arbitral award against the borrower on the loan, have it recognised
     in the borrower's country and collect on it there within about three years?
   answer: yes_no
+  settled_by: expert
   assumption: A foreign lender can enforce its loan claim through the country's courts within about three years
   disproved_by: 'no'
   due_by: diligence
@@ -109,6 +115,7 @@ checks:
   question: Is debt service paid from an account outside the country, into which buyers pay export proceeds or other foreign-currency
     receipts before the money enters the country?
   answer: yes_no
+  settled_by: terms
   mitigant: true
   assumption: Debt service is paid from foreign currency that is collected and held outside the country
   disproved_by: 'no'
@@ -129,6 +136,7 @@ checks:
     names that risk, or (for a block on transfers only) by treatment as a preferred creditor that the country honoured the
     last time it restricted payments?
   answer: yes_no
+  settled_by: lender
   mitigant: true
   assumption: Political risk cover, or treatment as a preferred creditor, protects the lender against the event
   disproved_by: 'no'
@@ -143,6 +151,5 @@ checks:
     best: [insurance_policy, guarantee_agreement, dfi_facility_document]
     supporting: [term_sheet, legal_opinion, internal_memo]
     stated: [call, analyst_note]
-  ask_whom: lender
   note: 'Cover must name the risk: a block on conversion and transfer, expropriation, or political violence. Treatment as
     a preferred creditor rests on practice, and it does not help against conflict or expropriation.'

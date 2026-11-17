@@ -16,6 +16,7 @@ checks:
   question: Does the party buy from, sell to, lend to, borrow from, guarantee for or share costs with related parties (its
     shareholders, directors and managers, their families, and companies that any of them own or control)?
   answer: yes_no
+  settled_by: company
   why: Opens the topic. A "no" is not the end of it. OBS_RP_005 checks it against the audited accounts.
   due_by: screening
   calls_for:
@@ -31,6 +32,7 @@ checks:
 - id: OBS_RP_006
   question: What kinds of dealings does the party have with related parties?
   answer: choice
+  settled_by: company
   options: [sales, purchases, loans_given, loans_received, guarantees_given, fees_and_shared_costs, leases, asset_transfers,
     guarantees_and_security_received, pay_and_advances_to_insiders]
   many: true
@@ -62,6 +64,7 @@ checks:
   question: What is the total yearly value of the party's dealings with related parties (sales, purchases, fees, rents and
     interest), as a percentage of its revenue?
   answer: number
+  settled_by: company
   unit: percent
   why: Says how much of the business runs through related parties, and so how much hangs on the prices between them. A price
     set between related parties can be moved at will. Set too high, it takes cash out of the party. Set too low, it flatters
@@ -81,6 +84,7 @@ checks:
   question: Are the prices and terms of the party's dealings with related parties the same as it gets, or would get, from
     unrelated parties?
   answer: yes_no
+  settled_by: company
   assumption: Related parties get no better prices or terms from the party than strangers would
   disproved_by: 'no'
   due_by: concept
@@ -100,6 +104,7 @@ checks:
   question: Must each dealing with a related party be approved by directors or shareholders who have no interest in it,
     under a written policy, the articles or a shareholder agreement?
   answer: yes_no
+  settled_by: company
   assumption: Those who gain from a dealing with a related party do not decide on it alone
   disproved_by: 'no'
   when:
@@ -115,6 +120,7 @@ checks:
   question: What do related parties owe the party (loans, advances and trade receivables), as a percentage of its tangible
     equity?
   answer: number
+  settled_by: company
   unit: percent
   assumption: What related parties owe the party is a small part of the party's own capital
   flag_when: above 10
@@ -135,6 +141,7 @@ checks:
   question: What was the highest balance of loans and advances that related parties owed the party during the last financial
     year, as a multiple of the balance at the year-end?
   answer: number
+  settled_by: company
   unit: ratio
   assumption: The year-end balance shows what related parties owe the party during the year
   flag_when: above 1.5
@@ -156,6 +163,7 @@ checks:
 - id: OBS_RP_DEMAND_001
   question: Can the party call back what it has lent to related parties, and could they pay?
   answer: choice
+  settled_by: company
   options: [demandable_and_liquid, demandable_illiquid_borrower, term_loan, no_terms]
   assumption: The party can get back what it has lent to related parties
   flag_when: is demandable_illiquid_borrower or no_terms
@@ -178,6 +186,7 @@ checks:
   question: Does the note on related parties in the audited accounts name every related party, dealing and balance that
     the party has told the lender about, or that the lender knows of from other sources?
   answer: yes_no
+  settled_by: company
   assumption: The audited accounts disclose all the party's dealings and balances with related parties
   disproved_by: 'no'
   look_in: [03.01.a, 03.01.e, 02.04.a]
@@ -192,6 +201,7 @@ checks:
   question: In the last 24 months, has a business, a subsidiary or a plant been moved into or out of the party (through
     a sale to or a purchase from a related party, a merger, a demerger, a carve-out or a scheme of arrangement)?
   answer: yes_no
+  settled_by: company
   assumption: The party is still the business that its past accounts describe, with nothing moved into it or out of it
   disproved_by: 'yes'
   why: A transfer between related parties can take a business or an asset out of the lender's reach, at a price that the

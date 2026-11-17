@@ -19,6 +19,7 @@ checks:
 - id: OBS_FIG_001
   question: What is the institution's standing with its prudential supervisor today?
   answer: choice
+  settled_by: company
   options: [normal, enhanced_monitoring, corrective_action, conservatorship, not_supervised]
   assumption: The supervisor has placed no special measure on the institution
   flag_when: is enhanced_monitoring or corrective_action or conservatorship
@@ -48,6 +49,7 @@ checks:
     restricted its business, or ordered it in writing to correct a breach of the rules on capital, liquidity, lending limits,
     provisioning or money-laundering controls?
   answer: yes_no
+  settled_by: company
   assumption: In the last three years the supervisor has found no breach that it met with a fine, a restriction or a written
     order
   disproved_by: 'yes'
@@ -66,6 +68,7 @@ checks:
   question: Do the institution's loans and guarantees to its shareholders, directors and managers, and to parties connected
     with them, exceed the limit its regulator sets for such lending?
   answer: yes_no
+  settled_by: company
   assumption: Lending to insiders stays within the limit the regulator sets
   disproved_by: 'yes'
   look_in: [03.01.a, 07.01.a, 03.01.e]
@@ -85,6 +88,7 @@ checks:
   question: Does a risk committee of the board meet at least once a quarter and keep minutes, and does the head of risk
     report to it directly, not through the people who make the loans?
   answer: yes_no
+  settled_by: company
   assumption: Risk is overseen at board level, apart from the people who make the loans
   disproved_by: 'no'
   look_in: [02.02.a, 02.05.a, 07.01.a]
@@ -99,6 +103,7 @@ checks:
   question: Can a shareholder, a director or the chief executive approve a loan alone, or overturn a refusal by the credit
     committee or the risk function?
   answer: yes_no
+  settled_by: company
   assumption: No single person can push a loan through against the credit process
   disproved_by: 'yes'
   look_in: [02.05.a, 07.01.a, 03.01.e]
@@ -115,6 +120,7 @@ checks:
   question: Has the supervisor confirmed in writing that the measure is lifted or the finding closed, or that the institution
     is meeting each deadline of the agreed plan?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: The supervisor has confirmed that its concern is resolved, or is being resolved on schedule
   disproved_by: 'no'

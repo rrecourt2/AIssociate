@@ -19,6 +19,7 @@ checks:
 - id: OBS_DEBT_001
   question: Does the party owe money to banks, other lenders, lessors or its shareholders?
   answer: yes_no
+  settled_by: company
   why: Opens the topic. A "no" is not the end of it. OBS_DEBT_007 checks it against the accounts and the registry.
   due_by: screening
   calls_for:
@@ -39,6 +40,7 @@ checks:
 - id: OBS_DEBT_002
   question: What is the total debt outstanding, including leases and shareholder loans?
   answer: number
+  settled_by: company
   unit: currency
   why: The starting figure for leverage and for debt service.
   due_by: concept
@@ -56,6 +58,7 @@ checks:
   question: In the last three years, has the party missed a payment, breached a covenant, asked a lender for a waiver or
     a standstill, or had a loan rescheduled?
   answer: yes_no
+  settled_by: company
   assumption: The party has paid and performed as agreed under its loans
   disproved_by: 'yes'
   due_by: concept
@@ -73,6 +76,7 @@ checks:
   question: Do the audited accounts, the security registry or a credit report show borrowings, leases or charges that the
     party has not mentioned?
   answer: yes_no
+  settled_by: public
   assumption: The party has told the lender about all its debt
   disproved_by: 'yes'
   look_in: [03.01.a, 02.01.c]
@@ -86,6 +90,7 @@ checks:
   question: Has the party guaranteed the debt of someone else, or given security for it, for amounts that together come
     to more than about a tenth of the party's own debt?
   answer: yes_no
+  settled_by: company
   assumption: The party answers for little debt other than its own and that of the group that repayment relies on
   disproved_by: 'yes'
   applies_to: [borrower, repayment_source]
@@ -104,6 +109,7 @@ checks:
   question: Is the party's debt that falls due within twelve months larger than its stock and trade receivables together,
     so that part of it finances fixed assets, losses or loans to others?
   answer: yes_no
+  settled_by: company
   assumption: Debt that falls due within a year finances only stock and receivables that turn into cash within the year
   disproved_by: 'yes'
   why: Short-term lines that finance stock and receivables are repaid when the goods are sold and the customers pay. Short-term
@@ -122,6 +128,7 @@ checks:
 - id: OBS_DEBT_MIT_001
   question: Have the lenders concerned confirmed in writing that the missed payment or breach is cured or waived?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: The lenders concerned have confirmed that the default is cured or waived
   disproved_by: 'no'

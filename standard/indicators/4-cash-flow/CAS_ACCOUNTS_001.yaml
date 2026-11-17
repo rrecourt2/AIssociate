@@ -21,6 +21,7 @@ checks:
   question: Has an external auditor audited the party's annual accounts for each of the last three financial years, or for
     every year since it was formed if that is shorter?
   answer: yes_no
+  settled_by: company
   assumption: An external auditor has audited the party's accounts for each of the last three years
   disproved_by: 'no'
   due_by: screening
@@ -39,6 +40,7 @@ checks:
 - id: OBS_ACC_002
   question: Which firm audits the party's accounts, and since which financial year?
   answer: text
+  settled_by: company
   why: The weight of an audit depends on who signs it. A firm that is registered, known and has no tie to the owners counts
     for more than one that nobody can find.
   due_by: concept
@@ -56,6 +58,7 @@ checks:
     of about the party's size, and is it free of any other tie to the party or its owners (no family tie, no shareholding,
     no bookkeeping for the party)?
   answer: yes_no
+  settled_by: public
   assumption: The auditor is registered, experienced with companies of this size and independent of the party and its owners
   disproved_by: 'no'
   why: An audit is worth what the auditor is worth. A one-person firm that is tied to the owner, or that also keeps the
@@ -77,6 +80,7 @@ checks:
   question: Does the auditor's report on the latest accounts carry a qualified or adverse opinion, a disclaimer, an emphasis
     of matter, or a paragraph on doubt that the party can continue as a going concern?
   answer: yes_no
+  settled_by: company
   assumption: The auditor's report on the latest accounts is clean, with no modified opinion, no emphasis of matter and
     no doubt about going concern
   disproved_by: 'yes'
@@ -96,6 +100,7 @@ checks:
 - id: OBS_ACC_004
   question: Which companies do the accounts used for the analysis cover, set against the party the lender relies on?
   answer: choice
+  settled_by: company
   options: [party_alone, party_and_subsidiaries, wider_group, part_only, combined_unaudited]
   assumption: The accounts cover the party the lender relies on, no more and no less
   flag_when: is wider_group or part_only or combined_unaudited
@@ -124,6 +129,7 @@ checks:
 - id: OBS_ACC_005
   question: How many months have passed since the year-end of the latest audited accounts?
   answer: number
+  settled_by: company
   unit: months
   assumption: The latest audited accounts are no more than one audit cycle old
   flag_when: above 18
@@ -145,6 +151,7 @@ checks:
   question: In the last three years, has the party's auditor resigned, declined to stand again, or been replaced for a reason
     other than a rotation that the law or the party's own rules require?
   answer: yes_no
+  settled_by: company
   assumption: No auditor has left the party early in the last three years
   disproved_by: 'yes'
   why: An auditor who leaves early has often disagreed with management about the figures. The reason is in the resignation
@@ -164,6 +171,7 @@ checks:
   question: In the last three years, has the party restated earlier figures to correct an error, or changed an accounting
     policy by its own choice, in a way that changed reported profit or equity?
   answer: yes_no
+  settled_by: company
   assumption: The figures of the last three years were drawn up on one basis and have not been corrected afterwards
   disproved_by: 'yes'
   why: A restatement means that earlier accounts were wrong. A change of policy that the party chose (a longer life for
@@ -184,6 +192,7 @@ checks:
     before tax: revaluations of property or investments, fair-value gains on crops, livestock or other biological assets,
     unrealised currency gains, or costs and interest capitalised instead of charged to profit?'
   answer: yes_no
+  settled_by: company
   assumption: The profit the party reports was earned in cash, not written up
   disproved_by: 'yes'
   why: Debt is serviced from cash. A revaluation gain, or a cost moved to the balance sheet, raises profit and equity and
@@ -203,6 +212,7 @@ checks:
   question: Do the party's management accounts for the latest audited year agree with the audited accounts for that year,
     with every difference of more than a few percent in revenue, profit or debt explained?
   answer: yes_no
+  settled_by: company
   assumption: The party's management accounts agree with its audited accounts for the same period
   disproved_by: 'no'
   why: After the audited year-end the lender works from management accounts. If they did not match the audit for the year
@@ -221,6 +231,7 @@ checks:
   question: Does the revenue in the accounts agree, within a few percent, with the turnover declared in the party's value
     added or sales tax returns and with the receipts on its bank statements for the same year?
   answer: yes_no
+  settled_by: company
   assumption: The tax returns and the bank statements bear out the revenue in the accounts
   disproved_by: 'no'
   why: The tax authority and the bank keep records that the party does not control. Where an audit carries little weight,

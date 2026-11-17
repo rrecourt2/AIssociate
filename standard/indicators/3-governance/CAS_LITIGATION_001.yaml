@@ -16,6 +16,7 @@ checks:
 - id: OBS_LIT_001
   question: Is a court case, an arbitration or a written claim pending against the party?
   answer: yes_no
+  settled_by: company
   why: Opens the topic. A no is checked by OBS_LIT_007 against the registers and the accounts, and OBS_LIT_004 asks about
     investigations whatever the answer.
   due_by: screening
@@ -31,6 +32,7 @@ checks:
 - id: OBS_LIT_002
   question: What is the total amount claimed against the party in all pending cases, with interest and costs?
   answer: number
+  settled_by: company
   unit: currency
   why: The starting figure. OBS_LIT_006 asks what it would mean if it had to be paid.
   due_by: concept
@@ -48,6 +50,7 @@ checks:
   question: If the party lost every pending case at the amount claimed, could it pay and still meet what it owes its lenders
     (and, for a guarantor, what it has guaranteed)?
   answer: yes_no
+  settled_by: company
   assumption: The party could lose every pending case and still pay its lenders
   disproved_by: 'no'
   when:
@@ -63,6 +66,7 @@ checks:
   question: Do the latest audited accounts carry a provision for every case the party's lawyers expect it to lose, at the
     amount they expect?
   answer: yes_no
+  settled_by: company
   assumption: The accounts already carry the losses that the party's own lawyers expect
   disproved_by: 'no'
   applies_to: [borrower, repayment_source]
@@ -80,6 +84,7 @@ checks:
   question: Is a regulator, a competition authority or a prosecutor investigating the party, or has one given notice that
     it will?
   answer: yes_no
+  settled_by: company
   assumption: No authority has an inquiry open that could end in a penalty or the loss of a licence
   disproved_by: 'yes'
   due_by: concept
@@ -99,6 +104,7 @@ checks:
   question: Does a search of the court and insolvency registers, a credit report or the lawyers' letter to the auditor show
     a case, a judgment or an attachment against the party that it had not mentioned?
   answer: yes_no
+  settled_by: screening
   assumption: The party has told the lender of every case, judgment and attachment against it
   disproved_by: 'yes'
   look_in: [08.01.a, 10.03.a, 02.06.d]
@@ -112,6 +118,7 @@ checks:
   question: Is the amount at stake covered by insurance, or by an indemnity from someone able to pay it, and has the insurer
     or the giver of the indemnity confirmed cover for these cases in writing?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: Someone other than the party will pay if the cases are lost, and has said so in writing
   disproved_by: 'no'

@@ -161,28 +161,32 @@ Decisions and questions to the client are recorded as well. A question is record
 
 The standard gives the work its rigour. The wiki gives it depth: what the business is, how it works, how its parts relate, what is particular about it, and how its context shows in its figures. It is a wiki, not the financial proposal. It describes, objectively and in context. The FP concludes, and is condensed from it. The analyst reads the FP, not the wiki, so there is no review duty. When the analyst corrects something in a draft or in chat, the AI corrects the page and the fact behind it.
 
-Seven shelves, two levels deep:
+Eight shelves, two levels deep, and the page of checks after them:
 
 | Shelf | One page per |
 |---|---|
-| Deal | the deal, and each plant, line, project, facility or contract that has a name |
+| Opportunity | the opportunity itself: one page, the way in |
+| Assets and projects | plant, line, project or contract that has a name |
 | Parties | company, group or person that needs one |
 | People | group of people: the client's side, our side, other lenders and advisers |
 | Context | what surrounds the company: its history, its market and competitors, its products and how they are made, the country |
 | Topics | subject of analysis |
-| Terms | term under negotiation |
+| Deal | term under negotiation, once terms are on paper: the term sheet, the security, the covenants |
 | Work | piece of work, such as a consultant to hire or a site visit, and the working notes |
 
-- **A page for each subject a reader would look up.** The wiki holds the larger context, also where no check asks for it: a plant, a machine, a project, a product, the history of the company, its market, a customer that matters. A subject earns a page when two or more sources bear on it or other pages keep mentioning it. As a guide there are about as many pages as sources, or somewhat more. Not a page: a check, a single figure, a document retold, an account of what was done. The tool creates a page only for the deal, for each borrower, repayment source, guarantor and sponsor, and for each financed project.
-- **The contents page is the map.** It gives the first sentence of every page. An assistant reads the contents page and the page of the deal first, and opens another page only when the task needs it. A long wiki is then no burden.
+It is an opportunity until terms are on paper, and a deal from then on. The folder as a whole is called the deal folder throughout.
+
+- **A page for each subject a reader would look up.** The wiki holds the larger context, also where no check asks for it: a plant, a machine, a project, a product, the history of the company, its market, a customer that matters. A subject earns a page when two or more sources bear on it or other pages keep mentioning it. As a guide there are about as many pages as sources, or somewhat more. Not a page: a check, a single figure, a document retold, an account of what was done. The tool creates a page only for the opportunity, for each borrower, repayment source, guarantor and sponsor, and for each financed project.
+- **The contents page is the map.** It gives the first sentence of every page. An assistant reads the contents page and the page of the opportunity first, and opens another page only when the task needs it. A long wiki is then no burden.
 - **One page lists every source**: what it is, how far it was read, how many facts rest on it, and links to its original and its extract.
+- **One page lists every check**, as an add-on at the foot of the contents page: the due diligence list. The tool writes it from the record. It gives the open checks by what settles them and by stage, the names for the screening, and then every check by pillar and claim with its state, its answer or what it waits for, what settles it and the stage it is ideally answered by. In the view for a browser, buttons choose which states show. A reader sees at once what is left and whether it matters.
 - **A page describes before it lists.** What the thing is, how it works, how it relates to the rest, what is particular about it, how the context shows in the figures, and only then the assumptions and the open points. A project or an asset gets a real page: what, where, how big, by when, who pays, how far it has come.
 - **A few details that show understanding**, each specific to this business, each tied to a figure, each with a source. No filler.
 
 Every page has the same parts:
 
 1. **What it is.** One to three plain sentences. The first can stand alone, and is the page's line on the contents page.
-2. **At a glance.** Filled in by the tool, and kept short. The page of the deal: the stage, the loan with the parties and the project at its centre, the claims by pillar and one line per claim that is challenged or contested. The page of a subject: its roles, its links that have not ended, and its challenged claims, questions and decisions. Any other page: one line that names what it is about. Names link to their pages.
+2. **At a glance.** Filled in by the tool, and kept short. The page of the opportunity: the stage, the loan with the parties and the project at its centre, the claims by pillar and one line per claim that is challenged or contested. The page of a subject: its roles, its links that have not ended, and its challenged claims, questions and decisions. Any other page: one line that names what it is about. Names link to their pages.
 3. **What we know.** The description, with the ID of the fact or source each sentence rests on.
 4. **Assumptions and open points.** Each assumption with what it rests on. Then what is unknown, and what was looked for and not found.
 
@@ -192,6 +196,8 @@ The tool lists the sources at the foot and says where one was not read in full. 
 
 - It reports a citation of something that does not exist, a link to a page that is not there, a page that no other page links to, a page with text and no citation, and a number that no record cited in the same paragraph holds. The working notes say how to work and are not asked for citations.
 - It reports a citation of a fact that was replaced or is disputed, unless the sentence starts with a plain word that marks it: "Outdated:" or "Disputed:". New information is merged in. What it replaces stays visible only where that matters.
+- It reports a quotation that is not in the text of its source. A fact can carry the few words of the source that carry it, and the tool confirms that the words are there. No model is involved.
+- It reports a sentence that holds a wording the analyst asked to keep out. The deal carries the list.
 - It does not judge whether a sentence says what its fact says.
 
 Other rules for a page:
@@ -357,7 +363,7 @@ These rules are checked by a test that fails when the code breaks one:
 - No network access, no starting of other programs, no `eval`, no reading of environment variables, no deleting.
 - One module touches the disk. It writes through three functions, and each refuses a path outside the deal folder.
 - No function longer than 100 lines.
-- The whole tool stays under 2,000 lines of Python, in at most seven files.
+- The whole tool stays under 2,250 lines of Python, in at most seven files.
 
 The view for a browser is one more file, `bankability2/wiki.html`: about 250 lines of HTML, CSS and plain JavaScript that load nothing from the network. A test checks that it names no address and no outside file.
 

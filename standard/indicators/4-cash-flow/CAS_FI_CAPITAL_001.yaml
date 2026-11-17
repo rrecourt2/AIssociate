@@ -20,6 +20,7 @@ checks:
   question: What is the institution's total capital adequacy ratio (regulatory capital as a percentage of risk-weighted
     assets) at its latest reporting date?
   answer: number
+  settled_by: company
   unit: percent
   why: The starting figure. It is read against the minimum the regulator sets (OBS_FIC_002) and against what the loan book
     may still cost (OBS_FIC_006).
@@ -37,6 +38,7 @@ checks:
   question: By how many percentage points does the total capital adequacy ratio exceed the minimum the regulator requires
     of this institution, with all buffers and any add-on set for it alone?
   answer: number
+  settled_by: company
   unit: percent
   assumption: The capital ratio stands further above the regulatory minimum than one bad year of loan losses would take
     away
@@ -59,6 +61,7 @@ checks:
   question: If the non-performing loans that are not covered by provisions were written off against capital today, would
     the capital adequacy ratio stay above the regulatory minimum?
   answer: yes_no
+  settled_by: company
   assumption: Capital stays above the minimum after the bad loans that are not provided for are taken off
   disproved_by: 'no'
   due_by: concept
@@ -77,6 +80,7 @@ checks:
   question: Set against its profit and its capital headroom, how much has the institution paid out to its shareholders over
     the last three financial years?
   answer: choice
+  settled_by: company
   options: [no_dividends, conservative, moderate, aggressive]
   assumption: The institution keeps most of its profit as capital
   flag_when: is aggressive
@@ -98,6 +102,7 @@ checks:
   question: Does the institution's business plan keep its capital adequacy ratio above the regulatory minimum in every year
     of the plan, counting only retained profit and new capital that is already committed in writing?
   answer: yes_no
+  settled_by: company
   assumption: The capital the institution has, or is sure to get, can carry the growth in lending it plans
   disproved_by: 'no'
   look_in: [01.01.b, 03.02.a, 07.01.a]
@@ -114,6 +119,7 @@ checks:
 - id: OBS_FIC_004
   question: Does part of the institution's regulatory capital consist of subordinated debt (tier 2 capital)?
   answer: yes_no
+  settled_by: company
   why: To have none is no fault. Where there is some, it takes losses only once the institution has failed. Under the Basel
     rules it also counts for less in each of its last five years, so its maturity dates show when the capital ratio will
     fall without any loss.
@@ -130,6 +136,7 @@ checks:
   question: Have the shareholders bound themselves in writing to pay in new capital of a stated amount by a stated date
     (a signed subscription, a rights issue that is approved and underwritten, or a support undertaking)?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: The shareholders are bound to pay in the capital that is missing
   disproved_by: 'no'

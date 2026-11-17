@@ -22,6 +22,7 @@ checks:
 - id: OBS_COV_001
   question: Which financial covenants does the facility carry?
   answer: choice
+  settled_by: terms
   options: [debt_service_coverage, leverage_ratio, interest_cover, current_ratio, minimum_net_worth, debt_to_equity, loan_to_value,
     other, none]
   many: true
@@ -37,6 +38,7 @@ checks:
   question: As results fall from the lender's base case towards the point where cash flow no longer covers debt service,
     when is a financial covenant first breached?
   answer: choice
+  settled_by: lender
   options: [already_in_base_case, before_cash_falls_short, not_before_cash_falls_short, no_financial_covenant]
   assumption: A financial covenant is breached while the debt is still being serviced, and none is breached in the base
     case
@@ -49,7 +51,6 @@ checks:
     best: [term_sheet, facility_agreement, internal_memo]
     supporting: [financial_model, financial_projections, management_accounts]
     stated: [correspondence, call, analyst_note]
-  ask_whom: lender
   if_unknown: If no downside case has been run against the covenant levels, nobody knows when they would warn.
   note: Run the lender's downside case with the covenant's own definitions. It shows how far results have to fall before
     the first breach, and how many test periods lie between the breach and the first period in which cash flow no longer
@@ -58,6 +59,7 @@ checks:
   question: Are the financial covenants tested on the accounts of every party that repayment relies on (consolidated where
     it relies on a group), and not only on the borrower's own accounts?
   answer: yes_no
+  settled_by: terms
   assumption: The covenants are measured where the cash flow that repays the loan is earned
   disproved_by: 'no'
   look_in: [04.01.a, 04.01.b]
@@ -72,6 +74,7 @@ checks:
   question: Do the terms of the facility oblige the borrower to deliver audited annual accounts, interim accounts and a
     compliance certificate that shows the covenant calculations, each by a stated date?
   answer: yes_no
+  settled_by: terms
   assumption: The lender is entitled to the figures it needs to test the covenants, by fixed dates
   disproved_by: 'no'
   look_in: [04.01.a, 04.01.b]
@@ -85,6 +88,7 @@ checks:
   question: Do the terms of the facility forbid the borrower to give security to anyone else (a negative pledge) and limit
     the new debt it may take on, with every exception capped at a stated amount?
   answer: yes_no
+  settled_by: terms
   assumption: No other creditor can take security or add debt ahead of the lender without the lender's consent
   disproved_by: 'no'
   due_by: concept
@@ -101,6 +105,7 @@ checks:
   question: Do the terms of the facility make dividends and other payments to the owners, sales of assets, and loans or
     guarantees to related parties subject to the lender's consent or to a stated test?
   answer: yes_no
+  settled_by: terms
   assumption: Cash and assets cannot leave the borrower for its owners or related parties unless the lender agrees or a
     stated test is met
   disproved_by: 'no'
@@ -117,6 +122,7 @@ checks:
   question: Does a breach of a financial covenant give the lender the right to stop further drawings and to demand repayment,
     once any stated cure period has run out?
   answer: yes_no
+  settled_by: terms
   assumption: A covenant breach gives the lender the right to act
   disproved_by: 'no'
   look_in: [04.01.a, 04.01.b]
@@ -130,6 +136,7 @@ checks:
   question: Can the owners cure a breach of a financial covenant with new money without a limit on how often, or in test
     periods that follow one another?
   answer: yes_no
+  settled_by: terms
   assumption: The owners cannot cover up repeated breaches with new money
   disproved_by: 'yes'
   look_in: [04.01.a, 04.01.b]
@@ -143,6 +150,7 @@ checks:
   question: Do the terms of the facility give the lender the right to demand repayment if control of the borrower passes
     to someone else without its consent, or if a guarantor or sponsor that the lender relies on ceases to own the borrower?
   answer: yes_no
+  settled_by: terms
   assumption: The lender can leave if the owners it lent to are replaced
   disproved_by: 'no'
   look_in: [04.01.a, 04.01.b]
@@ -156,6 +164,7 @@ checks:
   question: Does a default under another loan of the borrower, or of a party that repayment relies on, give the lender the
     right to call its own loan at once (a cross-default clause)?
   answer: yes_no
+  settled_by: terms
   assumption: When another lender can call its loan, the lender can call its own
   disproved_by: 'no'
   look_in: [04.01.b, 04.01.a]
@@ -169,6 +178,7 @@ checks:
 - id: OBS_COV_008
   question: Does the compliance certificate for the latest test date show every financial covenant within its limit?
   answer: yes_no
+  settled_by: company
   assumption: The borrower is within its financial covenants at the latest test date
   disproved_by: 'no'
   due_by: monitoring

@@ -20,6 +20,7 @@ checks:
   question: Security aside, would the lender's claim be paid ahead of, beside or behind the other loan if the party became
     insolvent?
   answer: choice
+  settled_by: terms
   options: [ahead, beside, behind]
   assumption: The lender's claim is paid no later than the other loan
   flag_when: is behind
@@ -41,6 +42,7 @@ checks:
   question: 'Does the other lender hold security over, or control of, anything the lender counts on: the assets offered
     to the lender as security, the assets that produce the cash, or the accounts the revenue is paid into?'
   answer: yes_no
+  settled_by: company
   assumption: What the lender counts on is free of the other lender's security and control
   disproved_by: 'yes'
   due_by: concept
@@ -57,6 +59,7 @@ checks:
   question: Is the party free under the other loan agreement to take the lender's loan and to give the lender's security,
     either without asking or with a consent the other lender has given in writing?
   answer: yes_no
+  settled_by: company
   assumption: Taking the lender's loan and giving its security breaks no promise made to the other lender
   disproved_by: 'no'
   look_in: [04.01.b, 10.02.a, 04.03.a]
@@ -73,6 +76,7 @@ checks:
   question: Does the other loan fall due in a single payment, or come up for renewal, before the lender's loan is repaid,
     for an amount the party could not repay from one year's cash flow after its other debt service?
   answer: yes_no
+  settled_by: company
   assumption: The other loan can be repaid from cash flow as it falls due, without a refinancing, while the lender's loan
     is outstanding
   disproved_by: 'yes'
@@ -90,6 +94,7 @@ checks:
   question: Can the other lender cancel its loan or demand repayment at any time without a default (an uncommitted line,
     an overdraft, a loan repayable on demand)?
   answer: yes_no
+  settled_by: company
   assumption: The other loan stays in place until its agreed maturity unless the party defaults
   disproved_by: 'yes'
   look_in: [04.01.b, 03.01.a, 04.03.a]
@@ -105,6 +110,7 @@ checks:
   question: Are the other loan's covenants tighter than the lender's own, so that they would be breached first (tighter
     levels, more frequent testing, or events of default that the lender's agreement lacks)?
   answer: yes_no
+  settled_by: company
   assumption: The other lender gets no default before the lender does
   disproved_by: 'yes'
   look_in: [04.01.b, 04.01.a, 04.03.a]
@@ -120,6 +126,7 @@ checks:
   question: Have the lenders agreed in writing that the other lender will not call its loan or enforce its security for
     a fixed period without the lender's consent (a standstill), and that the lender has a vote on enforcement?
   answer: yes_no
+  settled_by: terms
   mitigant: true
   assumption: An agreement between the lenders gives the lender a vote and holds the other lender back for a fixed period
   disproved_by: 'no'
@@ -139,6 +146,7 @@ checks:
   question: Has the other lender agreed in writing that no principal is repaid on its loan before the lender's loan is repaid
     in full, and that nothing at all is paid on it while the lender's loan is in default?
   answer: yes_no
+  settled_by: terms
   mitigant: true
   assumption: The other lender has agreed in writing to be paid after the lender
   disproved_by: 'no'

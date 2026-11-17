@@ -22,7 +22,8 @@ subject_kinds:
 - id: asset
   prefix: A
   title: Asset
-  description: A plant, a site, a property or another asset.
+  description: A plant, a site, a property or another asset. An asset that is part of another asset is examined with the
+    whole and is asked no checks.
 - id: project
   prefix: J
   title: Project

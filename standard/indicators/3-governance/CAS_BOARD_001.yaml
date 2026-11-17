@@ -21,6 +21,7 @@ checks:
   question: Does the party have a board of directors, or a supervisory board, that meets as a body of its own and is not
     simply its management?
   answer: yes_no
+  settled_by: company
   why: Opens the topic. Without a board, OBS_BOARD_006 asks who oversees management in its place.
   due_by: screening
   look_in: [02.01.b, 02.05.c, 02.01.c]
@@ -36,6 +37,7 @@ checks:
   question: Does the board have at least one member who is not an employee of the party, is not a significant shareholder
     nor the relative or nominee of one, and does no other business with the party?
   answer: yes_no
+  settled_by: company
   assumption: At least one member of the board is independent of management and of the significant shareholders
   disproved_by: 'no'
   due_by: concept
@@ -55,6 +57,7 @@ checks:
 - id: OBS_BOARD_004
   question: Did the board meet at least four times in each of the last two financial years?
   answer: yes_no
+  settled_by: company
   assumption: The board meets at least once a quarter, so that it knows the business between year-ends
   disproved_by: 'no'
   when:
@@ -69,6 +72,7 @@ checks:
   question: Are minutes kept of every board meeting, signed by the chair, and do they record what was decided and who voted
     against?
   answer: yes_no
+  settled_by: company
   assumption: What the board decides, and who disagreed, is on record
   disproved_by: 'no'
   when:
@@ -83,6 +87,7 @@ checks:
   question: In the last three years, has the board, or the body that oversees management in its place, turned down, sent
     back or changed a proposal from management or from the main shareholder?
   answer: yes_no
+  settled_by: company
   why: Shows whether the approval of the board is more than a formality.
   look_in: [02.02.a, 02.02.c]
   evidence:
@@ -97,6 +102,7 @@ checks:
   question: 'Does another body oversee management in the board''s place: a supervisory or advisory committee, a partners''
     meeting, or the board of the parent?'
   answer: yes_no
+  settled_by: company
   assumption: Where the party has no board, another body oversees its management
   disproved_by: 'no'
   when:

@@ -20,6 +20,7 @@ checks:
 - id: OBS_WAYOUT_001
   question: 'What is the first way out: whose cash flow repays the loan, and what does that cash flow come from?'
   answer: text
+  settled_by: company
   why: The party named here is the one the analysis has to follow, whether or not it is the borrower.
   calls_for:
   - answered: true
@@ -34,6 +35,7 @@ checks:
 - id: OBS_WAYOUT_002
   question: How do businesses of this kind, in this country, usually fail to repay their loans?
   answer: text
+  settled_by: lender
   why: The answer says where to look first. It comes from the lender's own experience and from what is known about the sector,
     not from the client.
   look_in: [01.03.a]
@@ -41,13 +43,13 @@ checks:
     best: [credit_rating_report, market_study]
     supporting: [internal_memo]
     stated: [analyst_note, public_source, press_article]
-  ask_whom: lender
   note: Name the two or three usual causes, for example a fall in the price of the product, a late start of operations,
     a customer that pays late or a currency that loses value. Each cause points at an indicator to look at first.
 - id: OBS_WAYOUT_003
   question: Is the cash that repays the loan earned by the borrower itself, and not by a subsidiary, a parent, a sister
     company or another party that would first have to pass it on?
   answer: yes_no
+  settled_by: company
   assumption: The cash that repays the loan is earned by the borrower itself
   disproved_by: 'no'
   due_by: concept
@@ -70,6 +72,7 @@ checks:
   question: 'What does the first way out rest on: cash flow the business has already earned, cash flow due under signed
     contracts, both together, or cash flow that is only projected?'
   answer: choice
+  settled_by: company
   options: [contracted, projected, historical, mixed]
   assumption: Repayment rests on cash flow that already exists, either earned in past years or due under signed contracts
   flag_when: is projected
@@ -95,6 +98,7 @@ checks:
   question: Which few assumptions must hold for the first way out to work (for example a price, a volume, the renewal of
     a contract, a completion date, an exchange rate)?
   answer: text
+  settled_by: lender
   why: These are the assumptions the rest of the analysis sets out to disprove. If one of them fails, the first way out
     fails.
   due_by: concept
@@ -102,12 +106,12 @@ checks:
   evidence:
     supporting: [financial_model, financial_projections, internal_memo]
     stated: [business_plan, call, analyst_note]
-  ask_whom: lender
   note: Keep the list short. A list of ten has not yet been thought through.
 - id: OBS_WAYOUT_005
   question: 'What is the second way out: where would the money come from if the first way out failed (the sale of assets
     held as security, a guarantor, the owners, a refinancing, the sale of the business)?'
   answer: text
+  settled_by: terms
   why: A lender that cannot name its second way out has only one. A refinancing or a sale of the business counts only if
     someone would still lend to the business, or buy it, after the first way out has failed.
   look_in: [04.01.a, 04.02.a, 04.02.b]
@@ -118,6 +122,7 @@ checks:
 - id: OBS_COLLATERAL_001
   question: 'What is the loan secured on: one asset, several assets, the whole business, or nothing?'
   answer: choice
+  settled_by: terms
   options: [single_asset, multi_asset, enterprise, unsecured]
   assumption: The loan is secured on assets, so that the lender is paid from them ahead of other creditors
   flag_when: is unsecured
@@ -142,6 +147,7 @@ checks:
   question: If the first way out failed for its most likely reason, would the second way out still bring in enough to repay
     what is owed?
   answer: yes_no
+  settled_by: lender
   assumption: The second way out would still repay the loan if the first failed for its most likely reason
   disproved_by: 'no'
   due_by: concept
@@ -151,7 +157,6 @@ checks:
     best: [valuation_report, audited_annual_report, consultant_report]
     supporting: [financial_model, internal_memo, annual_report, prospectus]
     stated: [call, analyst_note]
-  ask_whom: lender
   note: First name the most likely reason. Then ask what the security would fetch, or what the guarantor could pay, in that
     case. A plant built for one customer is worth little once that customer is gone. A guarantor that lives on the borrower's
     dividends has nothing when the borrower stops paying them. Where there is no second way out, the answer is no.
@@ -159,6 +164,7 @@ checks:
   question: Has a party whose own income does not depend on the borrower's business promised in writing to pay the lender
     if the borrower cannot (a guarantee, a completion undertaking or a standby letter of credit from a bank)?
   answer: yes_no
+  settled_by: terms
   mitigant: true
   assumption: A party whose income does not depend on the borrower's business has promised to pay if the borrower cannot
   disproved_by: 'no'
@@ -181,6 +187,7 @@ checks:
   question: Is every party that earns the cash bound to the loan as co-borrower or guarantor, or is its cash paid into an
     account that the lender controls?
   answer: yes_no
+  settled_by: terms
   mitigant: true
   assumption: The parties that earn the cash are bound to the loan, or their cash reaches an account the lender controls
   disproved_by: 'no'

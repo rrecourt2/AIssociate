@@ -14,7 +14,7 @@ import yaml
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
-from bankability2.standard import problems  # noqa: E402  the tool's own check of a standard
+from bankability2.standard import ROUTES, problems  # noqa: E402  the tool's own check of a standard
 
 JSON_PATH = os.path.join(HERE, "..", "bankability2", "standard.json")
 TIERS = ("best", "supporting", "stated")
@@ -84,8 +84,7 @@ def check_lines(check, std_names):
     for key, label in (("ask", "How to ask"), ("if_unknown", "If unknown"), ("note", "Note")):
         if key in check:
             lines.append(f"- **{label}:** {check[key]}")
-    if check.get("ask_whom") == "lender":
-        lines.append("- **Asked of:** the lender, not the client")
+    lines.append(f"- **Settled by:** {ROUTES[check.get('settled_by', 'company')]}")
     for lead in check.get("leads_to", []):
         lines.append(f"- **Leads to:** [{lead['indicator']}]({lead['indicator']}.md) when the answer {said(lead)}. {lead['reason']}.")
     return lines + [""]

@@ -21,6 +21,7 @@ checks:
   question: Has the party's board passed a resolution that approves its part in this transaction, the documents it will
     sign and the persons who sign them?
   answer: yes_no
+  settled_by: company
   assumption: The board has approved the transaction and named who signs
   disproved_by: 'no'
   look_in: [02.02.a]
@@ -37,6 +38,7 @@ checks:
   question: Do the party's articles, as they stand today, allow its directors to commit it to this transaction at this amount,
     without exceeding any cap on borrowing, guarantees or security?
   answer: yes_no
+  settled_by: company
   assumption: The articles do not put this transaction beyond what the directors may commit the party to
   disproved_by: 'no'
   due_by: diligence
@@ -54,6 +56,7 @@ checks:
   question: Do the articles, a shareholders' agreement or company law require the shareholders to approve this transaction,
     and if so, have they approved it?
   answer: choice
+  settled_by: company
   options: [not_required, given, required_and_not_given]
   assumption: No approval by the shareholders is missing
   flag_when: is required_and_not_given
@@ -71,6 +74,7 @@ checks:
   question: Does this transaction need an approval from, or a registration with, an authority (for example the central bank
     or an exchange-control or investment authority for a loan from abroad), and if so, is it in place?
   answer: choice
+  settled_by: expert
   options: [not_required, obtained, required_and_not_obtained]
   assumption: No approval or registration by an authority is missing
   flag_when: is required_and_not_obtained
@@ -90,6 +94,7 @@ checks:
   question: Are the persons who sign the documents authorised to bind the party for this amount, by the board resolution
     or a power of attorney, and within any signing limit?
   answer: yes_no
+  settled_by: company
   assumption: Those who sign have the power to bind the party for this amount
   disproved_by: 'no'
   look_in: [02.02.a, 08.01.a, 02.01.c]
@@ -104,6 +109,7 @@ checks:
   question: Has counsel given a legal opinion, on which the lender may rely, that the party has taken every corporate action
     needed to authorise the documents and that they are validly signed?
   answer: yes_no
+  settled_by: expert
   assumption: Independent counsel has confirmed that the documents are duly authorised and validly signed
   disproved_by: 'no'
   when:

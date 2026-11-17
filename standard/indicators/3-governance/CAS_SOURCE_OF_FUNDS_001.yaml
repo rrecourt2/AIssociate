@@ -16,6 +16,7 @@ checks:
   question: 'Is the party to put money or assets into the business as part of this financing: equity, a shareholder loan,
     or a promise to pay in later?'
   answer: yes_no
+  settled_by: company
   why: Opens the topic. The checks on the source are asked only of a party that puts something in. OBS_SOF_005 is asked
     of every owner.
   due_by: screening
@@ -30,6 +31,7 @@ checks:
   question: Has the party stated in writing where that money comes from (which business, sale, inheritance or loan) and
     from which account it will be paid?
   answer: yes_no
+  settled_by: company
   assumption: The party has named the source of the money it puts in
   disproved_by: 'no'
   due_by: concept
@@ -47,6 +49,7 @@ checks:
   question: Do the party's accounts, tax returns or other records of its wealth show that it could have earned or saved
     that amount from the source it names?
   answer: yes_no
+  settled_by: company
   assumption: The amount is within what the named source could have produced
   disproved_by: 'no'
   when:
@@ -62,6 +65,7 @@ checks:
   question: Do documents from someone other than the party (a bank's statement, a sale agreement, a notary's deed) show
     the money in the party's own account and coming from the source it names?
   answer: yes_no
+  settled_by: company
   assumption: Documents from third parties bear out the source and show the money in the party's own hands
   disproved_by: 'no'
   when:
@@ -77,6 +81,7 @@ checks:
   question: 'Does the money reach the business by a roundabout way: from a third party''s account, through several accounts
     or countries without a business reason, or in cash?'
   answer: yes_no
+  settled_by: company
   assumption: The money comes straight from the party's own account to the business
   disproved_by: 'yes'
   when:
@@ -91,6 +96,7 @@ checks:
   question: Has the party borrowed the money for its stake in the business, or does anyone have a right to get that money
     back from the party or from the business (a loan to the owner, a put option, a promised return)?
   answer: yes_no
+  settled_by: company
   assumption: The party's stake is paid for with its own money, and nobody can claim it back
   disproved_by: 'yes'
   due_by: concept

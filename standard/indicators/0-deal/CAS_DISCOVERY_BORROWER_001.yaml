@@ -19,6 +19,7 @@ checks:
   question: 'What kind of party is the borrower: a company that runs a business itself, a holding company that owns other
     companies, a vehicle set up for one project or asset, or a fund?'
   answer: choice
+  settled_by: company
   options: [operating_entity, holding_company, spv, fund_vehicle]
   why: The kind of party says where the cash is earned and what stands between that cash and the lender.
   calls_for:
@@ -41,6 +42,7 @@ checks:
 - id: OBS_BORROWER_003
   question: Is the borrower part of a larger group, with a parent, subsidiaries or sister companies under the same owners?
   answer: yes_no
+  settled_by: company
   why: In a group, money and obligations move between companies. The companies that matter for repayment have to be in the
     structure.
   calls_for:
@@ -62,6 +64,7 @@ checks:
 - id: OBS_TRANSACTION_TOPOLOGY_001
   question: Which parties, projects, assets, facilities and contracts are part of the proposed deal?
   answer: text
+  settled_by: terms
   why: The answer is entered as the structure, with each party, asset and contract as a subject and each relation between
     them as a link. The checks follow from the structure.
   calls_for:
@@ -79,6 +82,7 @@ checks:
   question: Does any party support another party or the loan, through a guarantee, a support undertaking, completion support
     or cash shared between projects (a cash sweep, shared reserves)?
   answer: yes_no
+  settled_by: terms
   why: Each support is a link with its own checks. It has to be in the structure before it can be relied on.
   calls_for:
   - is: true
@@ -99,6 +103,7 @@ checks:
   question: Does repayment depend on one contract or a few contracts (for example a sales or offtake contract, a concession,
     a lease or a supply contract), so that the loss of one of them would put debt service in doubt?
   answer: yes_no
+  settled_by: company
   why: Such a contract, and the party on the other side of it, belong in the structure and are examined on their own.
   calls_for:
   - {is: true, kind: contract}
@@ -117,6 +122,7 @@ checks:
   question: Could the borrower, or another party that repayment relies on, still change before signing (a company that is
     yet to be set up, a guarantor or a buyer that is not yet chosen, a group that is being reorganised)?
   answer: yes_no
+  settled_by: company
   why: A party that is not yet decided is entered in the structure without a name. The checks follow the role, so they wait
     for whoever takes it, and nothing is lost when the party changes.
   look_in: [04.01.a, 02.03.a]
@@ -129,6 +135,7 @@ checks:
   question: Do the borrower's own accounts show that it carries on the business itself, with its own employees and with
     operating assets that it owns or leases?
   answer: yes_no
+  settled_by: company
   assumption: The borrower carries on the business itself, with its own staff and assets
   disproved_by: 'no'
   due_by: concept
@@ -151,6 +158,7 @@ checks:
     it, and that the client has not mentioned (for example a holding company, a collection agent, a marketing or trading
     company, or the owner of the site or of a licence)?
   answer: yes_no
+  settled_by: company
   assumption: Every party that the cash passes through, or that could stop it, has been named and is in the structure
   disproved_by: 'yes'
   due_by: diligence

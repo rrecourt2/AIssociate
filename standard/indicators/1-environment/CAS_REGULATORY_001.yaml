@@ -19,6 +19,7 @@ checks:
 - id: OBS_REG_001
   question: Does the party need a licence, a permit or a concession from an authority to carry on its main business?
   answer: yes_no
+  settled_by: company
   why: Opens the topic. A "no" is not the end of it. OBS_REG_002 and OBS_REG_004 are asked whatever the answer.
   due_by: screening
   look_in: [07.01.a, 08.01.a]
@@ -32,6 +33,7 @@ checks:
   question: Does the party hold, in force today and in its own name, every licence, permit and concession that the law requires
     for its main business?
   answer: yes_no
+  settled_by: company
   assumption: The party holds, in force and in its own name, every licence its business needs
   disproved_by: 'no'
   look_in: [07.01.a, 08.01.a, 06.05.a]
@@ -49,6 +51,7 @@ checks:
   question: In the last three years, has a regulator or a licensing authority sent the party a warning, a notice of breach,
     a fine or an order to show cause?
   answer: yes_no
+  settled_by: company
   assumption: No authority has found the party in breach of its licences or of the rules of its sector in the last three
     years
   disproved_by: 'yes'
@@ -69,6 +72,7 @@ checks:
   question: Does any licence, permit or concession that the business depends on expire, or come up for renewal, before the
     final maturity of the loan?
   answer: yes_no
+  settled_by: company
   assumption: Every licence the business depends on runs beyond the final maturity of the loan
   disproved_by: 'yes'
   when:
@@ -84,6 +88,7 @@ checks:
   question: Can any licence or concession be withdrawn, or does it need a fresh approval, when the ownership of the party
     changes or when a lender enforces its security?
   answer: yes_no
+  settled_by: expert
   assumption: The licences stay with the business through a change of ownership and through enforcement of security
   disproved_by: 'yes'
   due_by: diligence
@@ -102,6 +107,7 @@ checks:
   question: Has a law, a regulation or a change to licence terms been proposed, or passed but not yet brought into force,
     that would raise the party's costs, cap its prices or restrict its main business?
   answer: yes_no
+  settled_by: public
   assumption: No rule now proposed or passed would restrict the party's business or cut its margin
   disproved_by: 'yes'
   look_in: [07.01.a, 08.01.a, 10.03.a]
@@ -117,6 +123,7 @@ checks:
   question: Does the licence or the law give the party a right to renewal if it has met its conditions, or has the same
     licence been renewed at every expiry so far without a break?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: Renewal is a right, or has been granted at every expiry so far
   disproved_by: 'no'
@@ -134,6 +141,7 @@ checks:
   question: Has the authority concerned confirmed in writing that the breach is put right, or that the missing licence is
     now granted?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: The authority concerned has confirmed that the breach is put right
   disproved_by: 'no'

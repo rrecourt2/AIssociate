@@ -20,6 +20,7 @@ checks:
   question: In the last five years, has the builder or operator delivered work of the same technology and of about the same
     size as this job, on time and performing as specified?
   answer: yes_no
+  settled_by: expert
   assumption: The builder or operator has delivered comparable work on time and to specification
   disproved_by: 'no'
   due_by: concept
@@ -39,6 +40,7 @@ checks:
   question: Is the net worth of the builder or operator, in its latest audited accounts, at least three times the most it
     can owe under the contract (the cap on its liability)?
   answer: yes_no
+  settled_by: company
   assumption: The builder or operator could pay the most it can owe under the contract and stay in business
   disproved_by: 'no'
   look_in: [03.01.a, 06.02.a, 06.03.a]
@@ -54,6 +56,7 @@ checks:
   question: Does the builder take on the whole of the works for a fixed price and a fixed completion date, as the one party
     responsible for design, supply and construction?
   answer: yes_no
+  settled_by: company
   assumption: One builder answers for the whole of the works, at a fixed price and by a fixed date
   disproved_by: 'no'
   due_by: concept
@@ -73,6 +76,7 @@ checks:
   question: Does the operator's contract run at least until the final maturity of the loan, with no right for the operator
     to end it earlier at its own choice?
   answer: yes_no
+  settled_by: company
   assumption: The operator is bound for the life of the loan
   disproved_by: 'no'
   applies_to: [operates]
@@ -86,6 +90,7 @@ checks:
   question: If the builder or operator fails to perform, do the contract and a direct agreement with the lender allow it
     to be removed and another firm to take over the work?
   answer: yes_no
+  settled_by: company
   assumption: A builder or operator that fails can be removed and replaced, by the project or by the lender
   disproved_by: 'no'
   look_in: [06.02.a, 06.03.a, 06.01.a]
@@ -99,6 +104,7 @@ checks:
 - id: OBS_BUILDOP_006
   question: Is the builder or operator owned or controlled by the sponsor, the borrower or their owners?
   answer: yes_no
+  settled_by: company
   assumption: The builder or operator is independent of the sponsor and the borrower, so the contract will be enforced against
     it
   disproved_by: 'yes'
@@ -121,6 +127,7 @@ checks:
   question: Is the performance of the builder or operator backed by security that can be called without its consent (a bank
     bond or letter of credit, money retained from its payments, or a guarantee from its parent)?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: Security that can be called stands behind the performance of the builder or operator
   disproved_by: 'no'
@@ -141,6 +148,7 @@ checks:
   question: Are the rights under the contract, and under its bonds and guarantees, assigned to the lender, so that the lender
     can claim damages and call the security without the sponsor or the borrower acting?
   answer: yes_no
+  settled_by: terms
   mitigant: true
   assumption: The lender can enforce the contract and call its security itself
   disproved_by: 'no'

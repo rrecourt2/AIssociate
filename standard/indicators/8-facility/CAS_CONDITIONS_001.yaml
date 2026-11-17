@@ -22,6 +22,7 @@ checks:
   question: Does every claim that is challenged or not tested at approval have against it a condition precedent, a covenant,
     or an agreed action with an owner and a date?
   answer: yes_no
+  settled_by: lender
   assumption: Nothing is left open at approval without a condition, a covenant or an agreed action
   disproved_by: 'no'
   due_by: approval
@@ -30,13 +31,13 @@ checks:
     best: [internal_memo]
     supporting: [term_sheet, conditions_precedent_checklist]
     stated: [call, analyst_note]
-  ask_whom: lender
   note: Start from the tool's own list of claims that are challenged or not tested. An open point that the approval paper
     mentions but ties to nothing counts as a no.
 - id: OBS_COND_002
   question: Are the conditions precedent listed in the term sheet or the facility agreement, each worded so that a named
     document or a fact that can be looked up shows whether it is met?
   answer: yes_no
+  settled_by: terms
   assumption: Each condition precedent can be checked against a document or a fact
   disproved_by: 'no'
   due_by: approval
@@ -52,6 +53,7 @@ checks:
     relies on, their owners or managers, the structure of the deal, a licence or a contract, or the terms as documented
     against the terms approved?'
   answer: yes_no
+  settled_by: lender
   assumption: Nothing that the approval rested on has changed since it was given
   disproved_by: 'yes'
   look_in: [03.01.b, 04.01.b, 02.01.c]
@@ -59,13 +61,13 @@ checks:
     best: [audited_annual_report, facility_agreement, registry_extract, company_certificate]
     supporting: [management_accounts, interim_financial_statements, internal_memo, annual_report, prospectus]
     stated: [correspondence, call, analyst_note]
-  ask_whom: lender
   note: Ask at signing and again before each disbursement. If the review finds nothing, record what was looked at and when
     (the latest accounts, the registry, the press, the signed terms against the approved terms).
 - id: OBS_COND_004
   question: Before each disbursement so far, was every condition for it met, or waived or deferred in writing, with the
     document that shows it on file?
   answer: yes_no
+  settled_by: lender
   assumption: No money moved while a condition was neither met nor formally let go
   disproved_by: 'no'
   look_in: [08.01.b, 08.01.a]
@@ -73,10 +75,10 @@ checks:
     best: [conditions_precedent_checklist, legal_opinion]
     supporting: [internal_memo, correspondence]
     stated: [call, analyst_note]
-  ask_whom: lender
 - id: OBS_COND_005
   question: Has any condition precedent been waived, or deferred to a date after disbursement?
   answer: yes_no
+  settled_by: lender
   assumption: No condition precedent was waived or deferred
   disproved_by: 'yes'
   look_in: [08.01.b, 10.02.a]
@@ -84,11 +86,11 @@ checks:
     best: [conditions_precedent_checklist, internal_memo]
     supporting: [correspondence]
     stated: [call, analyst_note]
-  ask_whom: lender
   note: Record which condition, why it was let go, and what it was there to protect.
 - id: OBS_COND_006
   question: Do payment records show that the money drawn so far was spent on the purposes named in the facility agreement?
   answer: yes_no
+  settled_by: company
   assumption: The money was used for the agreed purpose
   disproved_by: 'no'
   due_by: monitoring
@@ -104,6 +106,7 @@ checks:
   question: Have all accounts, compliance certificates and other reports that fell due under the facility agreement in the
     last twelve months arrived complete and by their due dates?
   answer: yes_no
+  settled_by: lender
   assumption: The borrower reports in full and on time
   disproved_by: 'no'
   due_by: monitoring
@@ -112,13 +115,13 @@ checks:
     best: [audited_annual_report, interim_financial_statements, company_certificate]
     supporting: [internal_memo, correspondence, annual_report, prospectus]
     stated: [call, analyst_note]
-  ask_whom: lender
   note: Compare the date each report was received with the date it was due. Late figures are often the first sign that the
     figures are bad.
 - id: OBS_COND_008
   question: Is every agreed action whose date has passed (a condition deferred to after disbursement, an action plan item,
     an undertaking with a date) complete?
   answer: yes_no
+  settled_by: company
   assumption: Agreed actions are completed by their dates
   disproved_by: 'no'
   due_by: monitoring
@@ -134,6 +137,7 @@ checks:
   question: Was the waiver, the deferral or the change approved at the level that the lender's rules require for it, and
     does whatever it leaves open have an owner and a date?
   answer: yes_no
+  settled_by: lender
   mitigant: true
   assumption: The waiver, deferral or change was approved at the level the lender's rules require, and what it leaves open
     has an owner and a date
@@ -146,6 +150,5 @@ checks:
     best: [internal_memo, facility_agreement]
     supporting: [conditions_precedent_checklist, correspondence]
     stated: [call, analyst_note]
-  ask_whom: lender
   note: For a change to what was approved, that is usually the level that approved the loan. An analyst's own decision to
     let a condition go is not an approval.

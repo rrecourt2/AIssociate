@@ -23,6 +23,7 @@ checks:
     after tax, after the change in working capital and after the capital spending needed to keep the business as it is,
     before interest and repayments?'
   answer: number
+  settled_by: company
   unit: currency
   why: The top line of the cover. It starts from cash, not from profit, and takes off what must be spent before any lender
     is paid.
@@ -39,6 +40,7 @@ checks:
   question: How much interest and principal must the party pay on all its debt, this loan included, in the first full year
     in which this loan is being repaid?
   answer: number
+  settled_by: company
   unit: currency
   why: The bottom line of the cover. The first year after any grace period is used, because a year in which only interest
     is paid flatters the cover.
@@ -57,6 +59,7 @@ checks:
   question: How many times did the party's cash flow available for debt service in the last financial year cover the debt
     service of the first full year of repayment, this loan included?
   answer: number
+  settled_by: company
   unit: times
   assumption: Last year's cash flow covers the service of all the party's debt, this loan included, with room to spare
   flag_when: below 1.2
@@ -79,6 +82,7 @@ checks:
   question: In the lender's base case, what is the lowest yearly cover of debt service by cash flow available for debt service
     over the life of the loan?
   answer: number
+  settled_by: lender
   unit: times
   assumption: In every year of the base case the cash flow covers debt service with room to spare
   flag_when: below 1.2
@@ -93,7 +97,6 @@ checks:
     best: [internal_memo, consultant_report]
     supporting: [financial_model, financial_projections]
     stated: [call, analyst_note]
-  ask_whom: lender
   if_unknown: Until the lowest cover is known, nobody has shown that the loan can be repaid from cash flow in every year.
   note: Say which year the lowest cover falls in. Work out the cash flow as in OBS_DS_001 and the debt service as in OBS_DS_002,
     year by year. The base case is the lender's own, or one an independent adviser has checked. The party's model as received
@@ -102,6 +105,7 @@ checks:
   question: Would the party's cash flow available for debt service in the worst of the last five financial years have covered
     that same debt service in full?
   answer: yes_no
+  settled_by: company
   assumption: The cash flow of a bad year still covers the service of all the party's debt
   disproved_by: 'no'
   why: The claim is about a bad year, not an average one. The party's own worst recent year is a bad year that has already
@@ -122,6 +126,7 @@ checks:
   question: What is the party's total debt after this loan, as a multiple of its EBITDA (profit before interest, tax, depreciation
     and amortisation) of the last financial year?
   answer: number
+  settled_by: company
   unit: times
   assumption: After this loan the party owes no more than about four years of its EBITDA
   flag_when: above 4
@@ -144,6 +149,7 @@ checks:
   question: Over the last three financial years taken together, was the party's cash from operations (before interest and
     tax) less than about two thirds of its EBITDA (profit before interest, tax, depreciation and amortisation)?
   answer: yes_no
+  settled_by: company
   assumption: The party's profit turns into cash
   disproved_by: 'yes'
   why: EBITDA counts sales that are not yet collected and stock that is not yet sold. Where cash from operations stays well
@@ -161,6 +167,7 @@ checks:
   question: Do the loan terms require a debt service reserve account that is funded in cash before the first repayment,
     holds at least the next payment of interest and principal, and is pledged to the lender?
   answer: yes_no
+  settled_by: terms
   mitigant: true
   assumption: A funded reserve pays the lender while the party's cash flow recovers
   disproved_by: 'no'
@@ -178,6 +185,7 @@ checks:
   question: Has an owner or sponsor undertaken in writing to pay in cash when the party's cash flow falls short of its debt
     service?
   answer: yes_no
+  settled_by: terms
   mitigant: true
   assumption: An owner or sponsor has bound itself to cover a shortfall in debt service
   disproved_by: 'no'

@@ -20,6 +20,7 @@ checks:
   question: What was the institution's return on average assets (profit after tax as a percentage of average total assets)
     in the last financial year?
   answer: number
+  settled_by: company
   unit: percent
   why: The headline measure of a bank's earnings. It is read against the last three years, against the banks in its market,
     and against the growth of the balance sheet. Profit that does not keep pace with that growth does not build capital.
@@ -35,6 +36,7 @@ checks:
   question: Would the institution's profit before loan-loss charges and tax of the last financial year have covered a loan-loss
     charge as heavy, as a share of the loan book, as in the worst of its last five financial years?
   answer: yes_no
+  settled_by: company
   assumption: The institution's earnings absorb a bad year of loan losses without a loss
   disproved_by: 'no'
   why: Profit before loan-loss charges is the first cushion. What it cannot absorb comes out of capital. The institution's
@@ -54,6 +56,7 @@ checks:
   question: Over the last three financial years, has the institution's net interest margin (net interest income as a percentage
     of average earning assets) widened, held or narrowed?
   answer: choice
+  settled_by: company
   options: [widened, stable, narrowed]
   why: The margin is where a bank's profit starts. A margin that narrows means dearer funding, cheaper lending or more loans
     that pay no interest, and each of them points to another indicator. A margin that widens fast can mean riskier lending.
@@ -71,6 +74,7 @@ checks:
   question: What was the institution's cost-to-income ratio (operating costs before loan-loss charges, as a percentage of
     operating income) in the last financial year?
   answer: number
+  settled_by: company
   unit: percent
   why: The ratio says how much of each unit of income is left to pay for loan losses and to build capital. It is read against
     banks of the same kind in the same market. A branch network that serves small borrowers costs more than a bank that
@@ -84,6 +88,7 @@ checks:
   question: 'Did more than about a third of the institution''s profit before tax in the last financial year come from gains
     that need not come again: trading and revaluation gains, currency gains, the sale of assets, or the release of provisions?'
   answer: yes_no
+  settled_by: company
   assumption: The profit comes from lending and fees, which come again each year
   disproved_by: 'yes'
   look_in: [03.01.a, 03.01.i]
@@ -97,6 +102,7 @@ checks:
   question: In the last financial year, was more than about a tenth of the institution's interest income booked but not
     received in cash (interest accrued on loans in arrears or under a grace period, or added to the loan balance)?
   answer: yes_no
+  settled_by: company
   assumption: The interest the institution reports as income is paid to it in cash
   disproved_by: 'yes'
   why: Interest that is booked and not paid is profit on paper. It raises capital in the accounts without adding any, and

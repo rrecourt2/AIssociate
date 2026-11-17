@@ -22,13 +22,13 @@ checks:
     law, that these risks are weighed in the credit decision, or that the deal meets a safeguard standard and shows a development
     impact?'
   answer: choice
+  settled_by: lender
   options: [none, integration, dfi_impact]
   why: Sets how deep the rest of this pillar has to go, and whether impact has to be shown at all.
   evidence:
     best: [corporate_governance_policy, private_placement_memorandum]
     supporting: [internal_memo]
     stated: [call, analyst_note]
-  ask_whom: lender
   note: '''none'' means the law of the country is the only standard. ''integration'' means the risks are weighed in the
     credit decision, without a fixed standard to meet. ''dfi_impact'' means the deal must meet a safeguard standard, such
     as the IFC Performance Standards, and the lender must be able to show what the loan achieves.'
@@ -39,18 +39,19 @@ checks:
   question: 'Which exclusion lists apply to the deal: the lender''s own, and any list of those who fund the lender, of other
     financiers in the deal, or of a guarantor or insurer of the loan?'
   answer: text
+  settled_by: lender
   why: OBS_ES_001 is answered against these lists. A list that is not named here is not checked.
   evidence:
     best: [corporate_governance_policy, private_placement_memorandum, dfi_facility_document]
     supporting: [internal_memo, term_sheet]
     stated: [call, analyst_note]
-  ask_whom: lender
   note: 'Name each list and its version or date. Where no list applies, say so. Where another financier applies a stricter
     environmental or social standard, name it: the strictest is the one the borrower has to meet.'
 - id: OBS_ES_001
   question: Does the business that the loan finances, including the companies the borrower controls, carry on any activity
     that is on an exclusion list that applies to the deal?
   answer: yes_no
+  settled_by: company
   assumption: No part of the business carries on an activity that an applicable exclusion list forbids
   disproved_by: 'yes'
   look_in: [03.01.a, 07.01.a, 02.06.d]
@@ -69,6 +70,7 @@ checks:
 - id: OBS_ES_002
   question: Which environmental and social topics arise from what the business does and from where it does it?
   answer: choice
+  settled_by: expert
   options: [labour, pollution, community_health_and_safety, land_and_resettlement, biodiversity, indigenous_peoples, cultural_heritage]
   many: true
   why: Says where the rest of this pillar has to look. The topics are those of IFC Performance Standards 2 to 8.
@@ -91,6 +93,7 @@ checks:
     a country and sector that a public list names for child or forced labour, or in a region where natural forest is still
     being cleared?
   answer: yes_no
+  settled_by: public
   assumption: Neither the sites nor the main supplies of the business lie in a setting known for armed conflict, for child
     or forced labour, or for forest clearing
   disproved_by: 'yes'
@@ -110,6 +113,7 @@ checks:
 - id: OBS_ES_004
   question: 'Which environmental and social risk category does the lender give the deal: A, B, C or FI?'
   answer: choice
+  settled_by: lender
   options: [A, B, C, FI]
   assumption: The harm the deal could do is limited in extent, can largely be reversed and can be dealt with by known measures
   flag_when: is A
@@ -121,7 +125,6 @@ checks:
     best: [internal_memo, consultant_report]
     supporting: [esia_report, executive_summary]
     stated: [call, analyst_note]
-  ask_whom: lender
   note: A is harm that is diverse, irreversible or without precedent. B is limited harm, mostly at the site, that known
     measures can deal with. C is little or no harm. FI is money passed on through a financial intermediary, where the risk
     sits in the loans the intermediary makes. A category given at screening is provisional. Say who set it and when.
@@ -130,6 +133,7 @@ checks:
     social risk, under a written procedure with a named person in charge, and can it show loans that it refused or made
     subject to conditions on those grounds?
   answer: yes_no
+  settled_by: company
   assumption: The financial intermediary screens its own lending for excluded activities and for environmental and social
     risk, and acts on the result
   disproved_by: 'no'
@@ -149,6 +153,7 @@ checks:
   question: Has a specialist who is independent of the borrower assessed the deal against the environmental and social standard
     that the lender applies, covering every topic that arises?
   answer: yes_no
+  settled_by: expert
   mitigant: true
   assumption: An independent assessment against the lender's standard covers every topic that arises
   disproved_by: 'no'

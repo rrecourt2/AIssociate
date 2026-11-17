@@ -19,6 +19,7 @@ checks:
   question: 'What is the project: what is built or bought, where, for how much, by when, who pays for it, and what does
     it add to the business?'
   answer: text
+  settled_by: company
   why: Opens the topic. The tests that follow ask whether the project can be built and run as planned. This answer says
     what the plan is, and the page on the project starts from it.
   due_by: screening
@@ -35,6 +36,7 @@ checks:
 - id: OBS_FEAS_001
   question: Is there a written feasibility study for the project that covers its design, its site, its cost and its schedule?
   answer: yes_no
+  settled_by: company
   assumption: The plan for the project rests on a written feasibility study
   disproved_by: 'no'
   due_by: screening
@@ -50,6 +52,7 @@ checks:
   question: Is the project's core technology in commercial operation elsewhere, at about the scale of this project and under
     conditions like those it will meet?
   answer: yes_no
+  settled_by: expert
   assumption: The core technology already works in commercial operation at this scale
   disproved_by: 'no'
   due_by: concept
@@ -68,6 +71,7 @@ checks:
   question: Does the project hold the rights of way and the connections it needs (the way in to the site, and the connections
     to water and transport) under signed agreements that run beyond the final maturity of the loan?
   answer: yes_no
+  settled_by: company
   assumption: The project holds its access and its connections for the life of the loan
   disproved_by: 'no'
   due_by: concept
@@ -88,6 +92,7 @@ checks:
   question: Does the cost estimate rest on signed contracts or binding bids for the larger part of the cost, and carry a
     contingency for the part that is not fixed?
   answer: yes_no
+  settled_by: company
   assumption: Most of the cost is fixed by contracts or binding bids, and a contingency covers the rest
   disproved_by: 'no'
   look_in: [01.02.a, 06.02.a, 05.01.a]
@@ -104,6 +109,7 @@ checks:
   question: Has a technical expert who is independent of the sponsor, the builder and the equipment suppliers reviewed the
     project's design, cost and schedule, and confirmed that it can be built and run as planned?
   answer: yes_no
+  settled_by: expert
   assumption: An independent technical expert has confirmed that the project can be built and run as planned
   disproved_by: 'no'
   look_in: [05.01.a, 10.03.a]
@@ -119,6 +125,7 @@ checks:
   question: Does the feasibility study or the independent expert's review name a technical risk that is still open, with
     no agreed fix, no party that bears it and no allowance in the cost or the schedule?
   answer: yes_no
+  settled_by: expert
   assumption: Every technical risk the studies found has a fix, a party that bears it or an allowance in the budget
   disproved_by: 'yes'
   when:
@@ -136,6 +143,7 @@ checks:
   question: Does the supplier of the technology warrant the plant's output and availability for at least two years after
     handover, in a signed contract, with damages if they are not reached?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: The supplier must pay if the technology does not perform in its first years of operation
   disproved_by: 'no'

@@ -16,6 +16,7 @@ checks:
   question: Does this customer bring in about a tenth or more of the seller's revenue, now or in the projections, or do
     the projections for repayment rest on its contract?
   answer: yes_no
+  settled_by: company
   why: Opens the topic. Below that size the loss of one customer is absorbed in the seller's revenue as a whole, which is
     tested under revenue and customers.
   due_by: screening
@@ -29,6 +30,7 @@ checks:
 - id: OBS_OFFTAKER_002
   question: What share of the seller's revenue comes from this customer?
   answer: number
+  settled_by: company
   unit: percent
   why: The share says how much of the debt service is lost with the customer. It also checks the answer to OBS_OFFTAKER_001.
   due_by: screening
@@ -43,6 +45,7 @@ checks:
 - id: OBS_OFFTAKER_006
   question: Does the customer buy under a signed contract that fixes a volume or a price for more than a year ahead?
   answer: yes_no
+  settled_by: company
   why: Decides whether the checks on the contract are asked. A customer that buys order by order is held only by its own
     interest, and then what counts is whether it can be replaced.
   due_by: concept
@@ -60,6 +63,7 @@ checks:
 - id: OBS_OFFTAKER_009
   question: What is the customer's credit standing?
   answer: choice
+  settled_by: public
   options: [investment_grade, rated_BB, rated_B_or_below, unrated_strong, unrated_weak, unknown]
   assumption: The customer's ability to pay is known, and it is not weak
   flag_when: is rated_B_or_below or unrated_weak or unknown
@@ -84,6 +88,7 @@ checks:
   question: Over the last twelve months, has the customer paid the seller within the agreed payment term or, where it has
     not yet bought from the seller, paid its other suppliers under comparable contracts on time?
   answer: yes_no
+  settled_by: company
   assumption: The customer pays on time
   disproved_by: 'no'
   due_by: concept
@@ -102,6 +107,7 @@ checks:
   question: If this customer stopped buying, could the seller sell the same volume to other buyers within about six months,
     at a price no more than about a tenth lower?
   answer: yes_no
+  settled_by: expert
   assumption: The seller could place this volume with other buyers within a season, without a large cut in price
   disproved_by: 'no'
   when:
@@ -119,6 +125,7 @@ checks:
   question: In the last three years, has the customer cut the price it pays, lengthened its payment term, charged the seller
     rebates or fees that were not agreed, or dropped a product of the seller, without the seller's consent?
   answer: yes_no
+  settled_by: company
   assumption: The customer has kept to the prices and terms it agreed with the seller
   disproved_by: 'yes'
   why: A large customer that buys without a long contract can use its weight through price cuts, rebates, longer payment
@@ -139,6 +146,7 @@ checks:
   question: If the customer ends the contract early, takes less than the agreed volume or pays late, does the contract oblige
     it to pay a stated amount (a termination payment, a take-or-pay or minimum payment, interest on late payment)?
   answer: yes_no
+  settled_by: company
   assumption: The contract makes the customer pay if it ends the contract early, takes less or pays late
   disproved_by: 'no'
   when:
@@ -155,6 +163,7 @@ checks:
     credit insurance, an escrow or collection account that the lender controls, or an assignment of the receivables to the
     lender?'
   answer: yes_no
+  settled_by: terms
   mitigant: true
   assumption: The customer's payments are backed by more than its own promise to pay
   disproved_by: 'no'

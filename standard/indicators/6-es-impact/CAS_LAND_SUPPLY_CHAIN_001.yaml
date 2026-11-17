@@ -25,6 +25,7 @@ checks:
   question: Does the party hold every site that its operations need under a title or a lease that is registered in its own
     name and runs beyond the final maturity of the loan?
   answer: yes_no
+  settled_by: company
   assumption: The party holds the land it needs under a registered right that outlasts the loan
   disproved_by: 'no'
   due_by: concept
@@ -46,6 +47,7 @@ checks:
   question: In the last ten years, was any land that the party now uses, or that the loan would pay for, acquired from people
     who lived on it, farmed it or earned their living from it, so that they had to move or lost that living?
   answer: yes_no
+  settled_by: expert
   assumption: No one had to give up a home or a living for the land the party uses
   disproved_by: 'yes'
   due_by: concept
@@ -63,6 +65,7 @@ checks:
     claim made to the party or reported in the press (for example a competing title, an unpaid seller, heirs, an overlapping
     concession or a claim for restitution)?
   answer: yes_no
+  settled_by: screening
   assumption: No one contests the party's right to its land
   disproved_by: 'yes'
   look_in: [08.01.a, 02.01.c, 02.06.d]
@@ -81,6 +84,7 @@ checks:
   question: Do indigenous peoples, or people who farm, graze, fish or gather by custom without a registered right, live
     on or use the party's sites or the land and water that its operations affect?
   answer: yes_no
+  settled_by: expert
   assumption: No indigenous people and no customary users depend on the land or water that the operations use or affect
   disproved_by: 'yes'
   look_in: [07.02.a, 07.02.d, 10.03.a]
@@ -97,6 +101,7 @@ checks:
     what they lost, and with the consent of indigenous peoples where the lender's standard asks for it), and has someone
     independent of the party confirmed that the plan was carried out?
   answer: yes_no
+  settled_by: expert
   mitigant: true
   assumption: Those who lost land or its use were consulted and compensated under a written plan, and someone independent
     has confirmed that it was carried out
@@ -116,6 +121,7 @@ checks:
   question: What share of the party's main raw materials, by volume, can be traced to the farm, the forest or the mine where
     they were produced?
   answer: number
+  settled_by: company
   unit: percent
   why: A party can only answer for the supply it can trace. The answers to OBS_SUPPLYCHAIN_002 and OBS_SUPPLYCHAIN_003 are
     worth no more than this share.
@@ -137,6 +143,7 @@ checks:
   question: Has natural forest, or another habitat that is protected or of high conservation value, been cleared after the
     cut-off date that the lender applies, on land the party uses or on land of the suppliers of its main raw materials?
   answer: yes_no
+  settled_by: expert
   assumption: No natural forest or protected habitat was cleared after the lender's cut-off date for the party's land or
     for its main raw materials
   disproved_by: 'yes'
@@ -158,6 +165,7 @@ checks:
   question: In the last three years, has an audit, an authority, a customer, a civil society group or the press found child
     labour or forced labour among the suppliers of the party's main raw materials or goods?
   answer: yes_no
+  settled_by: screening
   assumption: No child labour or forced labour has been found among the party's main suppliers
   disproved_by: 'yes'
   when:
@@ -180,6 +188,7 @@ checks:
     child and forced labour, with a certificate that is in force and an audit by an accredited third party in the last twelve
     months?
   answer: yes_no
+  settled_by: public
   mitigant: true
   assumption: A certification that is in force, and audited by a third party within the last year, covers the raw materials
     concerned
@@ -199,6 +208,7 @@ checks:
   question: Does the party run a system that maps the suppliers concerned down to the place of production, checks them at
     least once a year against records of forest loss and findings on labour, and stops buying from those that fail?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: The party traces the supply concerned, checks it at least once a year and stops buying from suppliers that
     fail

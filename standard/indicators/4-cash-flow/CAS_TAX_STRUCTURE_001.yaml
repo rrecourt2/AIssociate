@@ -21,6 +21,7 @@ checks:
   question: 'Has the party filed every tax return that fell due in the last three years: income tax, value added or sales
     tax, and payroll taxes?'
   answer: yes_no
+  settled_by: company
   assumption: The party has filed its tax returns when due
   disproved_by: 'no'
   due_by: concept
@@ -37,6 +38,7 @@ checks:
   question: Does the party owe tax that is past its due date, or is it paying off tax arrears under a plan agreed with the
     tax authority?
   answer: yes_no
+  settled_by: company
   assumption: The party has paid its taxes when due
   disproved_by: 'yes'
   why: Unpaid tax is borrowing from the state without its consent. A business that falls behind on tax is usually short
@@ -57,6 +59,7 @@ checks:
     dispute open now, for an amount (with penalties and interest) above about a tenth of the party's yearly profit before
     tax?
   answer: yes_no
+  settled_by: company
   assumption: The tax authority claims no amount from the party, beyond what the party declared, that would take more than
     about a tenth of a year's profit
   disproved_by: 'yes'
@@ -79,6 +82,7 @@ checks:
     rate that ends before this loan is repaid, or that depends on conditions the party is not meeting now (a level of investment,
     jobs or exports)?
   answer: yes_no
+  settled_by: company
   assumption: The tax savings that matter to the party's cash flow last as long as the loan
   disproved_by: 'yes'
   why: When a tax holiday ends, tax takes a share of the cash flow that the loan was sized on. A regime that is granted
@@ -100,6 +104,7 @@ checks:
   question: 'Does tax arise across a border in the party''s dealings: tax withheld on interest, dividends or fees, prices
     set with related parties abroad, or a taxable presence in another country?'
   answer: yes_no
+  settled_by: company
   why: Tax across a border takes cash on its way to the lender or on its way up from a subsidiary. Prices between related
     parties in different countries are what tax authorities challenge most often.
   look_in: [03.01.a, 03.01.d, 08.01.a]
@@ -120,6 +125,7 @@ checks:
   question: Is the full amount that the tax authority claims, with penalties and interest, either paid or provided for in
     the latest audited accounts?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: What the tax authority claims is already paid or counted in the accounts
   disproved_by: 'no'

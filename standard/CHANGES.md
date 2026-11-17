@@ -2,7 +2,23 @@
 
 ## Version 4: a new framework
 
-Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room and the stages are unchanged from version 3. Version 4.0.1 is version 4.0.0 after two reviews. Version 4.1.0 is version 4.0.1 after its first trial on a real company, version 4.1.1 is 4.1.0 after a second pass of that trial, version 4.2.0 follows an assessment of which open checks of that deal are material, version 4.2.1 is 4.2.0 after a review, and version 4.2.2 adds notes from the third round of the trial. The five come first here, the latest on top. The sections after them describe version 4 as it stood at 4.0.1.
+Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room and the stages are unchanged from version 3. Version 4.0.1 is version 4.0.0 after two reviews. Version 4.1.0 is version 4.0.1 after its first trial on a real company, version 4.1.1 is 4.1.0 after a second pass of that trial, version 4.2.0 follows an assessment of which open checks of that deal are material, version 4.2.1 is 4.2.0 after a review, version 4.2.2 adds notes from the third round of the trial, and version 4.3.0 says what settles each check. The six come first here, the latest on top. The sections after them describe version 4 as it stood at 4.0.1.
+
+### Version 4.3.0: what settles each check
+
+After the third round an assistant divided the open checks of the trial deal by hand into a few pieces of work: one request to the company, one screening of names, the terms of the loan, the lender's own answers, and a little public search. The standard now carries that division, so that the tool can print it.
+
+- **`settled_by` on every check.** It names the main route to an answer: `company` (its documents or its answers), `screening` (a search on a name), `terms` (the terms of this financing once they are on paper), `lender` (the lender itself), `expert` (counsel, an engineer, a valuer, a consultant) or `public` (registries, statistics, regulations, the press). Three readers tagged the 551 checks and a fourth read every tag: 360 company, 70 terms, 53 expert, 30 lender, 22 public, 16 screening.
+- **`ask_whom` is gone.** `settled_by: lender` says the same.
+- **"Analyst" for "officer".** The kind of source `officer_note` is now `analyst_note`.
+- **The first pillar is called "The opportunity".** It is an opportunity until terms are on paper.
+- **A part of an asset is examined with the whole.** An asset that is `part_of` another asset is asked no checks. A line or a machine inside a plant can then be recorded as what it is.
+
+No check is added or dropped: 551 checks as before.
+
+**Open, for a practitioner to confirm.** One value is the main route, and some checks have two: the party is asked and a register is searched, or the company is asked first and the terms settle it. The second route is not recorded. The tests that count the proposed loan and do not wait for its terms are tagged `company`, and have to be answered again once the terms are known.
+
+**A deal that runs on 4.2.2.** `upgrade` lists every check as changed, because each gained a field. A source of kind `officer_note` is of a kind the standard no longer has: change it to `analyst_note`, and `said_by: officer` to `analyst`.
 
 ### Version 4.2.2: notes from the third round of the trial
 

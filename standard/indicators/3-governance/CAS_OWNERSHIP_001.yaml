@@ -18,6 +18,7 @@ checks:
   question: 'Does more than one shareholder have a say in how the party is run: a holding of about a tenth or more, a seat
     on the board or a right of veto?'
   answer: yes_no
+  settled_by: company
   why: With one shareholder there is nobody to fall out with. With several, the lender needs to know how they decide and
     what happens when they disagree.
   due_by: screening
@@ -32,6 +33,7 @@ checks:
   question: 'Are there circular or cross holdings: does the party, or a company it controls, hold shares in any of its own
     owners?'
   answer: yes_no
+  settled_by: company
   assumption: No part of the party's shareholding is circular
   disproved_by: 'yes'
   due_by: concept
@@ -48,6 +50,7 @@ checks:
   question: Have the shareholders agreed in writing how they decide together, how shares may change hands and how a deadlock
     is broken (in a shareholders' agreement or in the articles)?
   answer: yes_no
+  settled_by: company
   assumption: The shareholders have written rules for deciding, for transfers of shares and for deadlock
   disproved_by: 'no'
   due_by: concept
@@ -63,6 +66,7 @@ checks:
   question: 'Do the shareholders'' agreement or the articles give minority shareholders rights of their own: a veto on named
     decisions, a seat on the board, pre-emption, tag-along or protection against dilution?'
   answer: yes_no
+  settled_by: company
   why: These rights cut both ways for a lender. They keep the majority from taking value out, and they can block a decision
     the loan needs, such as new security or new capital. Where the lender itself takes shares, they are its own protection.
   when:
@@ -80,6 +84,7 @@ checks:
   question: Is there now, or has there been in the last five years, a dispute among the party's shareholders, or between
     a shareholder and the party, that went to a lawyer, a court or an arbitrator, or that left a decision blocked?
   answer: yes_no
+  settled_by: company
   assumption: The shareholders have not been in dispute with each other or with the party in the last five years
   disproved_by: 'yes'
   due_by: concept
@@ -99,6 +104,7 @@ checks:
 - id: OBS_OWN_008
   question: Are any of the party's shares pledged, charged or under an option in favour of someone other than the lender?
   answer: yes_no
+  settled_by: company
   assumption: No one else can take over the party's shares by enforcing a pledge or an option
   disproved_by: 'yes'
   look_in: [02.01.c, 02.04.a, 04.02.b]
@@ -120,6 +126,7 @@ checks:
   question: Is a sale of shares, the entry of a new investor, a listing, a merger or a handover between generations planned
     or under way that would change who controls the party?
   answer: yes_no
+  settled_by: company
   assumption: Those who control the party today will control it for the life of the loan
   disproved_by: 'yes'
   due_by: concept
@@ -140,6 +147,7 @@ checks:
   question: Over the last three financial years taken together, did dividends, share buy-backs and loans or advances to
     shareholders exceed the party's profit after tax?
   answer: yes_no
+  settled_by: company
   assumption: Over the last three years the shareholders took out no more than the party earned
   disproved_by: 'yes'
   look_in: [03.01.a, 02.02.c]

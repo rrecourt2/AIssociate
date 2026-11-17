@@ -19,6 +19,7 @@ checks:
 - id: OBS_OPS_001
   question: What share of its production or delivery capacity did the party use over the last full financial year?
   answer: number
+  settled_by: company
   unit: percent
   why: Capacity in use cuts both ways. High use leaves no room for the growth in the projections without new investment.
     Low use means that fixed costs are spread over little output.
@@ -35,6 +36,7 @@ checks:
   question: Can the party's existing plant, equipment and staff produce the highest yearly volume in the projections, counting
     new capacity only where its cost and funding are in the same projections?
   answer: yes_no
+  settled_by: company
   assumption: The capacity that the projections need is in place, or is paid for in the plan
   disproved_by: 'no'
   look_in: [05.01.a, 03.02.b, 03.02.a]
@@ -52,6 +54,7 @@ checks:
   question: Would the loss of one site, one production line or one machine stop more than half of the party's output for
     longer than a month?
   answer: yes_no
+  settled_by: company
   assumption: No single site, line or machine carries most of the party's output
   disproved_by: 'yes'
   due_by: concept
@@ -73,6 +76,7 @@ checks:
   question: In the last 24 months, did a failure of power, water or transport (grid outages, a water shortage, a closed
     road, port or rail line) stop or cut the party's production or deliveries for more than a week in total?
   answer: yes_no
+  settled_by: company
   assumption: Failures of power, water or transport have not cut the party's production or deliveries
   disproved_by: 'yes'
   look_in: [05.01.a, 03.01.a]
@@ -89,6 +93,7 @@ checks:
   question: In any of the last three financial years, did the party's output or deliveries fall short of its own budget
     for that year by more than about a tenth?
   answer: yes_no
+  settled_by: company
   assumption: The party has produced and delivered what it planned in each of the last three years
   disproved_by: 'yes'
   look_in: [03.01.a, 05.01.a]
@@ -104,6 +109,7 @@ checks:
   question: In the last three years, because of quality or safety, was a product of the party recalled, a whole batch or
     shipment rejected by a customer, the product taken off a customer's list, or its sale stopped by an authority?
   answer: yes_no
+  settled_by: company
   assumption: The party's products have met the quality and safety that its customers and the authorities require
   disproved_by: 'yes'
   look_in: [07.01.a, 03.01.a]
@@ -119,6 +125,7 @@ checks:
   question: Does the party's production depend on a plant that someone else owns or runs, or on a brand, a technology or
     a franchise that it uses under licence from someone else?
   answer: yes_no
+  settled_by: company
   assumption: The party owns or controls the plant, the technology and the brands it produces with
   disproved_by: 'yes'
   calls_for:
@@ -141,6 +148,7 @@ checks:
   question: Does the party have a second site or line, or a back-up (stand-by power, a second water source, another route
     or a contract manufacturer), that could carry at least half of its normal output within a month of a failure?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: A second site or a back-up can carry at least half of the party's output when the main one fails
   disproved_by: 'no'
@@ -159,6 +167,7 @@ checks:
   question: Do property and business interruption policies in force cover the cost of rebuilding the site or line as new
     and the gross profit lost for as long as the rebuilding would take?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: Insurance pays for rebuilding the site or line and for the profit lost meanwhile
   disproved_by: 'no'

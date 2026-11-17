@@ -13,6 +13,7 @@ checks:
   question: Has the lender screened the party, its directors and its senior managers against every sanctions list the lender
     must follow, and kept the result with its date and the lists used?
   answer: yes_no
+  settled_by: lender
   assumption: The party and the people who direct it have been screened against every list the lender must follow
   disproved_by: 'no'
   look_in: [02.06.b, 02.06.a]
@@ -20,7 +21,6 @@ checks:
     best: [aml_screening]
     supporting: [kyc_package, internal_memo]
     stated: [call, analyst_note]
-  ask_whom: lender
   if_unknown: A party that has not been screened is not known to be clear.
   note: The lists usually include those of the United Nations, the European Union, the United States and the United Kingdom,
     and those of the lender's own country. Owners and controllers are parties of their own and get this check themselves.
@@ -29,6 +29,7 @@ checks:
   question: Is the party, or any of its directors or senior managers, named on a sanctions list, or owned or controlled
     by someone who is?
   answer: yes_no
+  settled_by: screening
   assumption: Neither the party nor anyone who directs, owns or controls it is under sanctions
   disproved_by: 'yes'
   look_in: [02.06.b, 02.06.a]
@@ -43,6 +44,7 @@ checks:
   question: In the last three years, has the party sold to, bought from, shipped through, banked in or been paid from a
     country or territory under an embargo on trade or payments, or dealt with a person or a company on a sanctions list?
   answer: yes_no
+  settled_by: company
   assumption: The party's business does not touch a country under embargo or a person under sanctions
   disproved_by: 'yes'
   due_by: concept
@@ -60,6 +62,7 @@ checks:
   question: Were all those dealings allowed under the sanctions that bind the party and the lender (a licence, an exemption,
     a wind-down period), as confirmed in writing by a lawyer or by the authority?
   answer: yes_no
+  settled_by: expert
   mitigant: true
   assumption: Every dealing with a country under embargo or a person under sanctions was allowed, and a lawyer or the authority
     has confirmed it
@@ -78,6 +81,7 @@ checks:
   question: Does the party screen its customers, suppliers and banks against sanctions lists before it deals with them,
     under a written policy?
   answer: yes_no
+  settled_by: company
   mitigant: true
   assumption: The party's own screening would find and stop a dealing with a person under sanctions
   disproved_by: 'no'

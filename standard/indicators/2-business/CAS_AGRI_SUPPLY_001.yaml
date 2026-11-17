@@ -19,6 +19,7 @@ checks:
   question: What share of the crop or other farm produce that the party processes or trades, by volume, does it buy from
     farmers or outgrowers that it does not control?
   answer: number
+  settled_by: company
   unit: percent
   why: Produce from the party's own farms is in its hands. Produce bought from independent farmers can go to another buyer
     in any season. The larger this share, the more the check on side-selling, and the check on advances under Working capital,
@@ -35,6 +36,7 @@ checks:
   question: In any of the last five seasons, did farmers that the party had contracted or financed deliver less than about
     four fifths of the agreed volume because they sold to other buyers?
   answer: yes_no
+  settled_by: company
   assumption: The farmers that the party contracts or finances deliver their crop to it, also in seasons when other buyers
     pay more
   disproved_by: 'yes'
@@ -52,6 +54,7 @@ checks:
     the party took in during its best season of the last five, or is the extra volume contracted with named farmers, cooperatives
     or suppliers who have it to sell?
   answer: yes_no
+  settled_by: company
   assumption: The farm produce that the projections count on has been delivered before, or is contracted with those who
     have it
   disproved_by: 'no'
@@ -73,6 +76,7 @@ checks:
   question: What was the party's lowest yearly harvest or intake in the last ten years, as a percentage of the average of
     those years?
   answer: number
+  settled_by: company
   unit: percent
   why: The gap between the worst year and the average is the size of a bad season for this party. The downside case in the
     projections should be at least as bad.
@@ -88,6 +92,7 @@ checks:
   question: In the last five years, has drought, flood, frost, a pest or a disease cut the party's harvest or intake in
     a season to less than about four fifths of its average?
   answer: yes_no
+  settled_by: company
   assumption: The party's harvest or intake has held up through the weather, pests and disease of the last five years
   disproved_by: 'yes'
   due_by: concept
@@ -107,6 +112,7 @@ checks:
     or was a certificate that it needs in order to sell (food safety, organic, plant health or export approval) suspended
     or withdrawn?
   answer: yes_no
+  settled_by: company
   assumption: The party's product meets the food safety and plant health rules of its markets, and the party has kept the
     certificates it needs in order to sell
   disproved_by: 'yes'
@@ -124,6 +130,7 @@ checks:
     from spoiling on the way in and on the way out: collection, cooling and testing at intake between the farm and the plant,
     and storage and (for a product that spoils) the cold chain until the product is sold?'
   answer: yes_no
+  settled_by: company
   assumption: The party controls the collection, the storage and the cold chain that its raw produce and its product need
   disproved_by: 'no'
   look_in: [05.01.a, 06.05.a, 06.01.a]
@@ -140,6 +147,7 @@ checks:
 - id: OBS_AGRI_009
   question: In which months of the year is the party's cash lowest and its borrowing highest, and what causes it?
   answer: text
+  settled_by: company
   why: An agribusiness buys its crop in a few weeks and sells it over many months. Its debt and its liquidity are read at
     that peak, and repayment dates are set after the crop is sold.
   look_in: [03.01.b, 03.01.i]
@@ -154,6 +162,7 @@ checks:
 - id: OBS_AGRI_MIT_001
   question: What protects the party against a bad season?
   answer: choice
+  settled_by: company
   options: [irrigation, sourcing_from_several_regions, crop_or_weather_insurance, none]
   many: true
   mitigant: true

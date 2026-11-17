@@ -17,6 +17,7 @@ checks:
 - id: OBS_INS_001
   question: Does the party hold insurance?
   answer: yes_no
+  settled_by: company
   why: 'Opens the topic. A yes says nothing about what is covered: OBS_INS_005 checks it against the policies whatever the
     answer here.'
   due_by: screening
@@ -30,6 +31,7 @@ checks:
 - id: OBS_INS_002
   question: Which kinds of insurance does the party hold?
   answer: choice
+  settled_by: company
   options: [property, machinery_breakdown, business_interruption, liability, goods_in_transit, key_person, other]
   many: true
   why: 'The kinds held are set against the losses the party could not absorb: damage to its assets, the profit lost while
@@ -48,6 +50,7 @@ checks:
   question: Do the policy schedules, or a confirmation from the insurer or the broker, show that the party's policies are
     in force today and that all premiums due are paid?
   answer: yes_no
+  settled_by: company
   assumption: The party's insurance is in force and paid for
   disproved_by: 'no'
   due_by: concept
@@ -64,6 +67,7 @@ checks:
   question: Do the sums insured cover the cost of replacing the party's operating assets as new, and at least twelve months
     of lost gross profit?
   answer: yes_no
+  settled_by: company
   assumption: The sums insured would pay for replacing the assets and for the profit lost while they are replaced
   disproved_by: 'no'
   when:
@@ -84,6 +88,7 @@ checks:
   question: Do the policies exclude, or leave uninsured, a peril that could stop the party's operations at its sites (for
     example fire, flood, earthquake, machinery breakdown, riot or political violence)?
   answer: yes_no
+  settled_by: company
   assumption: The perils that could stop the party's operations at its sites are insured
   disproved_by: 'yes'
   when:
@@ -100,6 +105,7 @@ checks:
   question: Is the insurer that carries the property and business interruption cover rated investment grade for financial
     strength, or is the risk passed on to reinsurers that are?
   answer: yes_no
+  settled_by: public
   assumption: The insurer, or the reinsurers behind it, can pay a claim of the size insured
   disproved_by: 'no'
   when:
@@ -117,6 +123,7 @@ checks:
   question: In the last five years, has an insurer refused a claim by the party, paid less than was claimed after a dispute,
     or cancelled or declined to renew a policy?
   answer: yes_no
+  settled_by: company
   assumption: Insurers have paid the party's claims and kept its cover
   disproved_by: 'yes'
   when:

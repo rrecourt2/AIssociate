@@ -1,6 +1,6 @@
 # Audit note
 
-For whoever reviews Bankability 2 before it is used inside an institution. Version 0.5.2, 16 November 2026.
+For whoever reviews Bankability 2 before it is used inside an institution. Version 0.6.0, 17 November 2026.
 
 ## What the tool is
 
@@ -42,7 +42,7 @@ The file holds the whole record of the deal. It is internal, like the folder it 
 - any module other than `files.py` uses `open` or `os`;
 - `files.py` uses anything of `os` other than `os.path`, `os.replace`, `os.makedirs`, `os.walk` and `os.sep`;
 - a function in `files.py` other than `write`, `move` and `make_folder` changes the disk or opens a file for anything but reading, or one of those three does not check its path;
-- the tool grows beyond seven Python files, 2,000 lines, or 100 lines in one function.
+- the tool grows beyond seven Python files, 2,250 lines, or 100 lines in one function.
 
 ## The record of changes
 
