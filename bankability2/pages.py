@@ -406,10 +406,11 @@ def refresh(deal, memory, std, rows, held):
     texts = {"index.md": "\n".join(index), "sources.md": sources, **{path[cut:]: text for path, text in sorted(pages.items())},
              client: documents(memory["deal"]["name"], listed, std)}
     cited = set(ID.findall(" ".join(text for path, text in texts.items() if path != "sources.md")))
+    past = {"facts": "outdated", "sources": "replaced", "links": "ended"}  # history goes in only where a page cites it
+    kept = {table: {rid: record for rid, record in memory[table].items()
+                    if rid in cited or record.get("state") != past.get(table)} for table in TABLES}
     data = {"name": memory["deal"]["name"], "revision": memory["log"][-1]["n"], "shelves": SHELVES, "pages": texts,
-            "documents": client, "where": where,  # a fact or a source that was replaced goes in only where a page cites it
-            **{table: {rid: record for rid, record in memory[table].items()
-                       if rid in cited or record.get("state") not in ("outdated", "replaced")} for table in TABLES}}
+            "documents": client, "where": where, **kept}
     filled = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")  # so that no text can end the script it sits in
     files.write(deal, f"{files.WIKI}/wiki.html", files.packaged("wiki.html").replace("{{DATA}}", filled))
     return created, changed, len(pages) - len(created) - len(changed)
