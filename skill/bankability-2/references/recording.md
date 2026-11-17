@@ -59,7 +59,7 @@ One per document, call, email or note. `title` and `kind` are required.
 ```
 
 - `file` is the path of the document in the deal folder, and `kind` a kind of source. The rest is optional.
-- The kind decides the folder, and `show kinds` names it. Most kinds go to `Client folder/<file name>`, which the tool lists in `Client folder/index.md`: also an email with the client (`correspondence`), and a screening or a report the lender ordered. A call, the analyst's note, a press article and a public source go to `Internal/sources/`. What must stay inside the deal team is an `internal_memo`, which goes there too.
+- The kind decides the folder, and `show kinds` names it, with what each kind is for. What the company itself published counts as the client's, also when nothing has been shared yet. Where no kind fits, use `other`. Most kinds go to `Client folder/<file name>`, which the tool lists in `Client folder/index.md`: also an email with the client (`correspondence`), and a screening or a report the lender ordered. A call, the analyst's note, a press article and a public source go to `Internal/sources/`. What must stay inside the deal team is an `internal_memo`, which goes there too.
 - An `extract` goes to `Internal/sources/extracts/`. Give that path as `extract` on the source.
 - The tool never overwrites. Where a name is taken, it refuses that document: give it a name of its own and file it again.
 
@@ -93,13 +93,13 @@ Record what would go into a table or a system field: names, amounts, dates, term
 - `client`: what a party to the deal says about itself, its plans or its prospects, also in its own prospectus, report or website, or through the press. A favourable answer on that alone is someone's own word.
 - `analyst`: what the analyst told you.
 - `third_party`: what a journalist, a researcher or an authority reports on their own account.
-- `inference`: what the document does not itself say: a conclusion, a figure you worked out, a borrower the note does not name.
+- `inference`: what the document does not itself say: a conclusion, a figure you worked out, a borrower the note does not name. An answer that rests only on inferences never counts as the best evidence.
 
 An admission against the speaker's own case is believed: "our margin fell in 2025". An explanation that blames an outside cause is not one: "it fell because milk prices rose in the drought". Record it as `client`.
 
 ### Quotations and places
 
-- **Give every fact you take from a document a `quote`**: the few words that carry the fact, copied from the source's extract, or from the original where that is a .md, .txt or .html file. Capitals, spacing, Markdown marks and the bars of a table do not count. Every other character does. For a figure, quote the phrase or the row that holds it. An inference has none, and nor has a fact from a source without a text, such as what the analyst told you.
+- **Give every fact you take from a document a `quote`**: the few words that carry the fact, copied from the source's extract, or from the original where that is a .md, .txt or .html file. Capitals, spacing, line breaks, Markdown marks and the bars of a table do not count. Every other character does. For a figure, quote the phrase or the row that holds it. An inference has none, and nor has a fact from a source without a text, such as what the analyst told you.
 - **`check` reports** a quotation that is not in the text of its source, and a source that facts quote and that has no text to check against.
 - **`place` names the page**, and the browser view opens the original there. Where the printed page numbers differ from the pages of the PDF, set `page_offset` on the source and cite the printed page: `"place": "page 19"`. A place that says `PDF p.21` is taken as it stands.
 

@@ -214,7 +214,7 @@ def show_kinds(std):
     place = folders(std)
     print("## Kinds of source, and the folder each is filed in\n")
     for kind in std["source_kinds"]:
-        print(f"- {kind['id']}: {kind['title']}. Folder: {place.get(kind.get('slot'), 'Internal/sources')}")
+        print(f"- {kind['id']}: {kind['title']}. Folder: {place.get(kind.get('slot'), 'Internal/sources')}. {kind['description']}")
     print("\n## Kinds of subject, and the letter its IDs start with\n")
     for kind in std["subject_kinds"]:
         print(f"- {kind['id']} ({kind['prefix']}): {kind['description']}")
@@ -368,9 +368,9 @@ def file_problems(deal, memory):
 
 
 def plain(text):
-    """A text as a quotation is compared: without the marks of Markdown and HTML or the bars of a table, in one case,
-    with single spaces."""
-    return " ".join(re.sub(r"<[^>]+>|[*_`|]", "", text).split()).casefold()
+    """A text as a quotation is compared: without the marks of Markdown, the tags of HTML or the bars of a table, in one
+    case, with single spaces. A tag starts with a letter and ends on its line: a stray < in a text takes nothing with it."""
+    return " ".join(re.sub(r"</?[A-Za-z][^<>\n]*>|[*_`|]", "", text).split()).casefold()
 
 
 def quote_problems(deal, memory):

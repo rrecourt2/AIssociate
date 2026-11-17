@@ -172,6 +172,7 @@ class Deal(unittest.TestCase):
         self.assertTrue("-1 answered" in said and "+1 open" in said)  # what the set did to the checks
         self.assertIn("- F-014: its quotation is not in the text of S-003", run("check", deal)[1])
         self.assertEqual(plain("| **Revenue** | 4,060 |"), "revenue 4,060")  # compared without marks, bars or capitals
+        self.assertEqual(plain("noise <\nRevenue <b>4,060</b> > 3,720"), "noise < revenue 4,060 > 3,720")  # a stray < takes nothing
         run("add", deal, self.handed({"decisions": [{"decision": "Kept.", "reason": "Small.", "about": "P-003", "rests_on": ["F-014"]}]}))
         run("pages", deal)  # a record that no page cites is in the view all the same, unless it is history
         self.assertIn('"D-003"', files.read(deal, "Internal/wiki/wiki.html"))
@@ -243,6 +244,10 @@ class Deal(unittest.TestCase):
         self.assertNotIn(("OBS_FIC_001", "P-001"), rows)  # checks for banks do not apply
         self.assertIn(("OBS_AGRI_001", "P-001"), rows)  # checks for agribusiness do, because discovery said so
         self.assertEqual(rows["OBS_HEDGE_003", "P-001"]["action"], "D-002")  # a gap with an agreed action
+        memory = self.memory()  # what was concluded from the best document is supporting evidence, not the best
+        for fid in major["facts"]:
+            memory["facts"][fid]["said_by"] = "inference"
+        self.assertEqual(self.rows(memory)["OBS_BUYER_CONC_001", "P-001"]["evidence"], "supporting")
         memory = self.memory()  # a decision without an owner or a date settles a check, only for the subject it is about
         memory["decisions"]["D-900"] = {"decision": "Not examined.", "reason": "It carries little.", "covers": ["OBS_REV_004"]}
         self.assertEqual(self.rows(memory)["OBS_REV_004", "P-001"], rows["OBS_REV_004", "P-001"])  # about the deal: no effect here

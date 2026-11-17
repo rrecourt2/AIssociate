@@ -142,6 +142,8 @@ def answered_row(row, check, given, memory, std, today):
     stage = next(stage for stage in std["stages"] if stage["id"] == memory["deal"]["stage"])
     kinds = {memory["sources"][fact["source"]]["kind"] for fact in facts}
     tiers = [tier for tier in TIERS if kinds & set(check.get("evidence", {}).get(tier, []))]
+    if tiers[-1:] == ["best"] and all(fact.get("said_by") == "inference" for fact in facts):
+        tiers[-1] = "supporting"  # what was concluded or worked out from a document is never the best evidence
     row["evidence"] = tiers[-1] if tiers else "unlisted"
     if "assumption" in check:
         row["against"] = against(check, values[0])

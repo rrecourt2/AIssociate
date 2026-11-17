@@ -63,7 +63,7 @@ Each command that writes ends with `Wrote:` and the files it wrote. If your host
 
 ## How to work
 
-1. **Run `status`, then `check`**, to see what was wrong before you changed anything. In a new deal, answer the checks about the opportunity first: they decide which other checks apply.
+1. **Run `status`, then `check`**, to see what was wrong before you changed anything. In a new deal, answer the checks about the opportunity first: they decide which other checks apply. Then run `status <deal> --for DEAL` again, because an answer opens further checks.
 2. **Read what is new** with your own tools.
 3. **Record it** with `add`: every source, the facts that would go into a table or a system field, each with its quote, and any party or link that matters for repayment. Say which checks a fact answers: `status <deal> --for <ID>` lists the open checks of its subject.
 4. **Run `pages`** after every change to the record, then write or update the pages the new material touches.

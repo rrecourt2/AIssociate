@@ -1,10 +1,10 @@
 # Audit note
 
-For whoever reviews Bankability 2 before it is used inside an institution. Version 0.6.0, 17 November 2026.
+For whoever reviews Bankability 2 before it is used inside an institution. Version 0.6.1, 17 November 2026.
 
 ## What the tool is
 
-A command-line program of 2,224 lines of Python in seven files, in the folder `bankability2`. It uses the Python standard library only. It has no installer, no service, no background process and no configuration file. Beside the code the folder holds two files of data: the standard, and the template of the view for a browser.
+A command-line program of 2,226 lines of Python in seven files, in the folder `bankability2`. It uses the Python standard library only. It has no installer, no service, no background process and no configuration file. Beside the code the folder holds two files of data: the standard, and the template of the view for a browser.
 
 It is run by a person or by an AI assistant, one command at a time, on one deal folder. Each command reads files in that folder, computes, prints text, and in some cases writes files in that folder. Then it ends.
 
