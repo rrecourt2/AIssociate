@@ -4,6 +4,7 @@ import datetime
 import json
 import re
 import sys
+import unicodedata
 
 from . import __version__, assess, files, pages, standard, store
 from .files import Refused
@@ -72,9 +73,14 @@ def structure(memory, std, scope=None):
 def status(args):
     memory, std = load(args.deal)
     rows, scope = assess.assess(memory, std), None
-    if args.about:  # only what concerns one subject or link, and for a subject the links that touch it
+    pillar = {pillar["id"]: pillar["title"] for pillar in std["pillars"]}.get(args.about)
+    if pillar:  # only the checks of one pillar, and whom they are asked of
+        rows = [row for row in rows if std["by_id"][row["indicator"]]["pillar"] == args.about]
+        scope = {row["for"] for row in rows}
+    elif args.about:  # only what concerns one subject or link, and for a subject the links that touch it
         if args.about != store.DEAL and store.table_of(memory, args.about) not in ("subjects", "links"):
-            raise Refused(f"--for takes the ID of a subject or a link, or {store.DEAL}, and {args.about!r} is none of them")
+            raise Refused(f"--for takes the ID of a subject or a link, {store.DEAL}, or a pillar "
+                          f"({', '.join(pillar['id'] for pillar in std['pillars'])}), and {args.about!r} is none of them")
         scope = {args.about} | {lid for lid, link in memory["links"].items() if args.about in (link["from"], link["to"])}
         rows = [row for row in rows if row["for"] in scope]
     listed = files.read_json(args.deal, files.MANIFEST, {"documents": []})["documents"]
@@ -90,12 +96,13 @@ def status(args):
         print("\nThe record holds: " + ", ".join(f"{table} {len(memory[table])}" for table in store.TABLES) + ".")
         if deal.get("avoid"):
             print("Wordings to avoid: " + "; ".join(deal["avoid"]) + ".")
-        bare = sum(fact["state"] != "outdated" and fact.get("said_by") != "inference" and not fact.get("quote")
+        bare = sum(fact["state"] != "outdated" and fact.get("said_by") != "inference"
+                   and not (fact.get("quote") or fact.get("nothing_found"))  # a search that found nothing has no words to quote
                    and bool(memory["sources"][fact["source"]].get("where")) for fact in memory["facts"].values())
         if bare:
             print(f"Facts from a document that carry no quotation: {bare}.")
     if scope:
-        print(f"\nOnly what concerns {pages.name_of(args.about, memory)} ({args.about}).")
+        print(f"\nOnly what concerns {pillar or pages.name_of(args.about, memory)} ({args.about}).")
     structure(memory, std, None if args.about == store.DEAL else scope)
     entries = memory["log"][-5:] if args.since is None else [entry for entry in memory["log"] if entry["n"] > args.since]
     if scope is None or args.since is not None:
@@ -127,13 +134,13 @@ def status(args):
             print(f"- {pillar['title']}: " + (", ".join(f"{count} {name}" for name, count in zip(assess.VERDICTS, counts)
                                                         if count) or "no claim applies yet"))
     urgent = [line[2:] for line in pages.claim_lines(found, memory, std) if not line.startswith("- **Claims:**")]
-    lines = []
+    lines = {}  # one line for a check that stands the same for several subjects
     for row in todo["checks"]:
         waits = f"; {row['unlocks']} check{'s wait' if row['unlocks'] > 1 else ' waits'} on it" if row["unlocks"] else ""
-        state = ", ".join([row["state"], *row["flags"]])
-        check = std["checks"][row["check"]]
-        lines.append(f"{check['question']} ({pages.name_of(row['for'], memory)}; ideally by {titles[row['due_by']]}; "
-                     f"{state}{waits}) [{row['check']}: {standard.takes(check)}]")
+        rest = f"ideally by {titles[row['due_by']]}; {', '.join([row['state'], *row['flags']])}{waits}"
+        lines.setdefault((row["check"], rest), []).append(pages.name_of(row["for"], memory))
+    lines = [f"{std['checks'][cid]['question']} ({'; '.join(names)}; {rest}) [{cid}: {standard.takes(std['checks'][cid])}]"
+             for (cid, rest), names in lines.items()]
     limit = None if args.all else 15
     group("Claims that are challenged, contested or to look at again", urgent, limit)
     group("Structure still open", todo["structure"], limit)
@@ -167,7 +174,8 @@ def add(args):
                 source.setdefault("fingerprint", mark)
             else:
                 missing.append(source["where"])
-    was = assess.tally(assess.assess(memory, std))
+    before = assess.assess(memory, std)
+    was, wanted = assess.tally(before), assess.called_for(before, memory, std)
     try:
         entry, names = store.apply(memory, change, std)
     except (TypeError, KeyError, AttributeError) as error:  # nothing is written before apply returns
@@ -191,6 +199,11 @@ def add(args):
         print(f"Checks: {', '.join(moved)}.")
     for line in assess.stray(memory, std, rows, [*entry["added"], *entry["changed"]]):
         print(f"Note: {line}. It is recorded all the same.")
+    for call in assess.called_for(rows, memory, std):
+        if call not in wanted:
+            print(f"Note: the answer to {call['check']} for {call['for']} calls for {call['wanted']}, and there is none.")
+    for line in quote_problems(args.deal, memory, [*entry["added"], *entry["changed"]]):  # before a trial run is made real
+        print(f"Note: {line}.")
     cite = [path for path, text in pages.all_pages(args.deal).items()  # what a page says of a changed record may no longer hold
             if set(entry["changed"]) & set(pages.ID.findall(pages.own_text(text)))]
     if cite:
@@ -301,7 +314,8 @@ def show(args):
     elif what in std["checks"] or what in std["by_id"]:
         entry = std["checks"].get(what) or std["by_id"][what]
         print(json.dumps({key: value for key, value in entry.items() if key != "checks"}, indent=1, ensure_ascii=False))
-        print("\n".join(f"- {cid}: {check['question']}" for cid, check in std["checks"].items() if check["indicator"] == what))
+        print("\n".join(f"- {cid}: {check['question']} [{standard.takes(check)}]" for cid, check in std["checks"].items()
+                        if check["indicator"] == what))
         print("\n".join(pages.check_lines([row for row in rows if what in (row["check"], row["indicator"])], memory, std)))
     elif store.table_of(memory, what):
         print(json.dumps(memory[store.table_of(memory, what)][what], indent=1, ensure_ascii=False))
@@ -369,16 +383,16 @@ def file_problems(deal, memory):
 
 def plain(text):
     """A text as a quotation is compared: without the marks of Markdown, the tags of HTML or the bars of a table, in one
-    case, with single spaces. A tag starts with a letter and ends on its line: a stray < in a text takes nothing with it."""
-    return " ".join(re.sub(r"</?[A-Za-z][^<>\n]*>|[*_`|]", "", text).split()).casefold()
+    case, with single spaces, an accented letter in one spelling. A tag starts with a letter and ends on its line."""
+    return " ".join(re.sub(r"</?[A-Za-z][^<>\n]*>|[*_`|]", "", unicodedata.normalize("NFC", text)).split()).casefold()
 
 
-def quote_problems(deal, memory):
+def quote_problems(deal, memory, only=None):
     """Quotations that are not in the text of their source: its extract, or its original where that is a text file."""
     found, texts = [], {}
     for fid, fact in memory["facts"].items():
         sid, source = fact["source"], memory["sources"][fact["source"]]
-        if not fact.get("quote") or fact["state"] == "outdated":
+        if not fact.get("quote") or fact["state"] == "outdated" or (only is not None and fid not in only):
             continue
         if sid not in texts:
             paths = [source.get("extract"), *filter(re.compile(r"\.(md|txt|html?)$", re.I).search, [source.get("where") or ""])]
@@ -441,7 +455,7 @@ def file_documents(args):
                 or not isinstance(item.get("extract", ""), str)):
             raise Refused(f"a filing is a list, and each document in it needs a 'file' and a known 'kind': {item!r}\n"
                           f"Known kinds: {', '.join(kinds)}")
-    manifest = files.read_json(args.deal, files.MANIFEST, {"documents": []})
+    manifest, made = files.read_json(args.deal, files.MANIFEST, {"documents": []}), []
     for item in items:
         name, extract = (item.get(key, "").replace("\\", "/").split("/")[-1] for key in ("file", "extract"))
         slot = kinds[item["kind"]].get("slot")
@@ -466,7 +480,12 @@ def file_documents(args):
                                           **({"extract": f"{files.EXTRACTS}/{extract}"} if extract else {})})
         files.write_json(args.deal, files.MANIFEST, manifest)  # after each move, so the list never lags the folder
         print(f"{item['file']} -> {target}" + (f", with its extract {files.EXTRACTS}/{extract}" if extract else ""))
+        made.append({"ref": f"s{len(made) + 1}", "title": item.get("title", name), "kind": item["kind"], "where": target,
+                     **({"extract": f"{files.EXTRACTS}/{extract}"} if extract else {})})
     files.write(args.deal, f"{files.CLIENT}/index.md", pages.documents(memory["deal"]["name"], manifest["documents"], std))
+    if made:  # filing records nothing: the documents become sources with the next `add`
+        print("Filed, not yet recorded. As sources for `add`, each with its date, what was read and a note:\n"
+              + ",\n".join(json.dumps(source, ensure_ascii=False) for source in made))
     if refused:
         raise Refused("Not filed. The tool never overwrites a file: where a name is taken, give the document a name of its "
                       "own and file it again.\n" + "\n".join(refused))
@@ -576,7 +595,7 @@ def main(argv=None):
     sub.add_argument("--institution", help="the institution's layer of the standard, a JSON file")
     sub = command("status", status, "the structure, what changed and what to do next")
     sub.add_argument("--all", action="store_true", help="list every candidate")
-    sub.add_argument("--for", dest="about", metavar="ID", help="only what concerns this subject or link")
+    sub.add_argument("--for", dest="about", metavar="ID", help="only what concerns this subject, link or pillar")
     sub.add_argument("--since", type=int, help="show changes after this revision")
     sub.add_argument("--json", action="store_true")
     sub = command("add", add, "record a set of changes")

@@ -1,10 +1,10 @@
 # Audit note
 
-For whoever reviews Bankability 2 before it is used inside an institution. Version 0.6.1, 17 November 2026.
+For whoever reviews Bankability 2 before it is used inside an institution. Version 0.6.2, 17 November 2026.
 
 ## What the tool is
 
-A command-line program of 2,226 lines of Python in seven files, in the folder `bankability2`. It uses the Python standard library only. It has no installer, no service, no background process and no configuration file. Beside the code the folder holds two files of data: the standard, and the template of the view for a browser.
+A command-line program of 2,245 lines of Python in seven files, in the folder `bankability2`. It uses the Python standard library only. It has no installer, no service, no background process and no configuration file. Beside the code the folder holds two files of data: the standard, and the template of the view for a browser.
 
 It is run by a person or by an AI assistant, one command at a time, on one deal folder. Each command reads files in that folder, computes, prints text, and in some cases writes files in that folder. Then it ends.
 
@@ -37,7 +37,7 @@ The file holds the whole record of the deal. It is internal, like the folder it 
 
 `tests/test_audit.py` reads the source of the tool and fails if:
 
-- a module imports anything other than `argparse`, `datetime`, `hashlib`, `json`, `os`, `re` and `sys`, imports one of them under another name, or uses `from … import` for anything but the tool's own modules;
+- a module imports anything other than `argparse`, `datetime`, `hashlib`, `json`, `os`, `re`, `sys` and `unicodedata` (used once, to put an accented letter into one spelling before a quotation is compared), imports one of them under another name, or uses `from … import` for anything but the tool's own modules;
 - the code uses `eval`, `exec`, `compile`, `__import__`, `input`, `getattr`, `setattr`, `delattr`, `globals`, `locals` or `vars`;
 - any module other than `files.py` uses `open` or `os`;
 - `files.py` uses anything of `os` other than `os.path`, `os.replace`, `os.makedirs`, `os.walk` and `os.sep`;

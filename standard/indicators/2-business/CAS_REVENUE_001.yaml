@@ -133,7 +133,8 @@ checks:
     supporting: [management_accounts, interim_financial_statements, annual_report, prospectus]
     stated: [call, analyst_note, management_presentation]
   ask: What were your sales in each of the last three financial years?
-  note: 'Record each year as well as the average, since one bad year can hide in it. Where inflation is high, measure in
+  note: 'Three years of revenue give two changes: take the yearly rate from the first of the three years to the last.
+    Record each year as well as the average, since one bad year can hide in it. Where inflation is high, measure in
     volume or in a stable currency: growth below inflation is a fall. With fewer than three full years, use the years there
     are and say so.'
 - id: OBS_REV_005

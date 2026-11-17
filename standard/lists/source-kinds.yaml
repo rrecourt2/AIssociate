@@ -6,9 +6,9 @@ source_kinds:
   slot: 03.01.a
 - id: annual_report
   title: Annual report
-  description: 'The company''s annual report: its own account of its business, its year and its governance. It is
-    not itself audited, even where it sums up audited figures. A report that holds the full audited statements with
-    the auditor''s opinion is filed as audited financial statements.'
+  description: 'The company''s annual report or its sustainability report: its own account of its business, its year
+    and its governance. It is not itself audited, even where it sums up audited figures. A report that holds the full
+    audited statements with the auditor''s opinion is filed as audited financial statements.'
   slot: 01.01.b
 - id: management_accounts
   title: Management accounts
@@ -241,7 +241,8 @@ source_kinds:
   slot: 02.05.b
 - id: board_composition
   title: Board composition
-  description: Board of directors list, composition, and independence declarations
+  description: Board of directors list, composition, and independence declarations, or the company's own report on its
+    governance.
   slot: 02.05.c
 - id: proxy_statement
   title: Proxy statement
@@ -280,7 +281,8 @@ source_kinds:
   description: 'An internal paper of the lender: a credit memo, a committee paper or an analysis.'
 - id: public_source
   title: Public source
-  description: 'Public information other than a press article: a company website, a registry website or market data.'
+  description: 'Public information other than a press article: a page of a company''s website, a news release it
+    published, a research report by a broker or an analyst, a registry website or market data.'
 - id: press_article
   title: Press article
   description: An article in a newspaper, a magazine or a news service.
@@ -303,11 +305,13 @@ source_kinds:
 - id: company_record
   title: Company record
   description: 'A record, plan or report kept by the company: registers, ageing lists, exports from its systems,
-    internal risk and compliance reports, incident logs.'
+    internal risk and compliance reports, incident logs. What the company publishes about itself is a public source,
+    or has a kind of its own, as an annual report has.'
   slot: 10.03.a
 - id: regulatory_document
   title: Regulatory document
-  description: A filing with a regulator or an authority, or a letter, notice or order from one.
+  description: A filing with a regulator, an authority or a stock exchange, or a letter, notice or order from one. A
+    resolution that is published this way is filed as a resolution.
   slot: 07.01.a
 - id: consultant_report
   title: Consultant report

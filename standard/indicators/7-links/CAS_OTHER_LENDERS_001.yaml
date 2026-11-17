@@ -85,8 +85,9 @@ checks:
     best: [facility_agreement, audited_annual_report]
     supporting: [debt_schedule, management_accounts, annual_report, prospectus]
     stated: [correspondence, call, analyst_note]
-  note: A line that runs for a year and is then renewed falls due at its next renewal date. A loan that is repaid in instalments
-    from cash flow is a no.
+  note: A line that runs for a year and is then renewed falls due at its next renewal date. Where several lines of the
+    party come up for renewal in the same year, take them together. A loan that is repaid in instalments from cash flow
+    is a no.
   leads_to:
   - {indicator: CAS_DEBT_SERVICE_001, is: true, reason: 'The other loan is repaid or refinanced during the life of the lender''s
       loan, so that payment has to be in the cash flow'}

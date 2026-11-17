@@ -83,7 +83,7 @@ Parts 2 to 5 go under "What we know". On the page of the opportunity, write the 
 2. Which page is the place for what.
 3. What is left to do.
 
-What was done is in the log, not here. `check` asks this page for no citations.
+What was done is in the log, not here. `check` does not ask this page for citations, nor for the source of a figure. A citation it does carry is read like any other: one of a replaced or a disputed record is reported.
 
 ```markdown
 - 12 November 2026, analyst: "Write more about the second line. The committee will ask what it adds."
@@ -107,7 +107,7 @@ Filler is: praise, words about importance, what is true of every business of its
 
 ## Citing
 
-Put the ID of the fact or the source in square brackets after the sentence it supports: `[F-008]`, `[S-003]`, `[F-001, F-006]`. Cite a fact for a figure, a name, a date or a term, and the source itself for description that no fact holds. A decision or a question is cited the same way.
+Put the ID of the fact or the source in square brackets after the sentence it supports: `[F-008]`, `[S-003]`, `[F-001, F-006]`. Cite a fact for a figure, a name, a date or a term, and the source itself for description that no fact holds. A decision or a question is cited the same way. Name each ID: of a range such as `F-267 to F-271`, only the two ends are read.
 
 `check` reads a page paragraph by paragraph. A list item and a table row each count as one. It reports:
 

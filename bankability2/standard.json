@@ -1,6 +1,6 @@
 {
  "name": "Bankability Standard",
- "version": "4.3.0",
+ "version": "4.3.1",
  "description": "A standard for investment due diligence built on claims that can be disproved. It says what a deal folder holds and what must be known.",
  "licence": "MIT",
  "renamed": {
@@ -339,7 +339,7 @@
   {
    "id": "annual_report",
    "title": "Annual report",
-   "description": "The company's annual report: its own account of its business, its year and its governance. It is not itself audited, even where it sums up audited figures. A report that holds the full audited statements with the auditor's opinion is filed as audited financial statements.",
+   "description": "The company's annual report or its sustainability report: its own account of its business, its year and its governance. It is not itself audited, even where it sums up audited figures. A report that holds the full audited statements with the auditor's opinion is filed as audited financial statements.",
    "slot": "01.01.b"
   },
   {
@@ -687,7 +687,7 @@
   {
    "id": "board_composition",
    "title": "Board composition",
-   "description": "Board of directors list, composition, and independence declarations",
+   "description": "Board of directors list, composition, and independence declarations, or the company's own report on its governance.",
    "slot": "02.05.c"
   },
   {
@@ -744,7 +744,7 @@
   {
    "id": "public_source",
    "title": "Public source",
-   "description": "Public information other than a press article: a company website, a registry website or market data."
+   "description": "Public information other than a press article: a page of a company's website, a news release it published, a research report by a broker or an analyst, a registry website or market data."
   },
   {
    "id": "press_article",
@@ -778,13 +778,13 @@
   {
    "id": "company_record",
    "title": "Company record",
-   "description": "A record, plan or report kept by the company: registers, ageing lists, exports from its systems, internal risk and compliance reports, incident logs.",
+   "description": "A record, plan or report kept by the company: registers, ageing lists, exports from its systems, internal risk and compliance reports, incident logs. What the company publishes about itself is a public source, or has a kind of its own, as an annual report has.",
    "slot": "10.03.a"
   },
   {
    "id": "regulatory_document",
    "title": "Regulatory document",
-   "description": "A filing with a regulator or an authority, or a letter, notice or order from one.",
+   "description": "A filing with a regulator, an authority or a stock exchange, or a letter, notice or order from one. A resolution that is published this way is filed as a resolution.",
    "slot": "07.01.a"
   },
   {
@@ -8219,7 +8219,7 @@
       ]
      },
      "ask": "What were your sales in each of the last three financial years?",
-     "note": "Record each year as well as the average, since one bad year can hide in it. Where inflation is high, measure in volume or in a stable currency: growth below inflation is a fall. With fewer than three full years, use the years there are and say so."
+     "note": "Three years of revenue give two changes: take the yearly rate from the first of the three years to the last. Record each year as well as the average, since one bad year can hide in it. Where inflation is high, measure in volume or in a stable currency: growth below inflation is a fall. With fewer than three full years, use the years there are and say so."
     },
     {
      "id": "OBS_REV_005",
@@ -11767,7 +11767,7 @@
       ]
      },
      "ask": "Are the accounts you sent us for this company alone, for this company with its subsidiaries, or for a larger group? Which companies are in them, and which are left out?",
-     "note": "The note on the basis of consolidation lists what is in and what is out. Part only: a division, a branch, or one of several companies that together make up the party. Combined unaudited: figures that management added together for companies that do not report as one. Where consolidated accounts are used, ask for the party's own stand-alone accounts as well.",
+     "note": "The note on the basis of consolidation lists what is in and what is out. Part only: a division, a branch, or one of several companies that together make up the party. Combined unaudited: figures that management added together for companies that do not report as one. Where consolidated accounts are used, ask for the party's own stand-alone accounts as well. Where the party the lender relies on is itself a group, the consolidated accounts of that group are party alone.",
      "leads_to": [
       {
        "indicator": "CAS_GROUP_LINK_001",
@@ -21361,7 +21361,7 @@
        "analyst_note"
       ]
      },
-     "note": "A line that runs for a year and is then renewed falls due at its next renewal date. A loan that is repaid in instalments from cash flow is a no.",
+     "note": "A line that runs for a year and is then renewed falls due at its next renewal date. Where several lines of the party come up for renewal in the same year, take them together. A loan that is repaid in instalments from cash flow is a no.",
      "leads_to": [
       {
        "indicator": "CAS_DEBT_SERVICE_001",

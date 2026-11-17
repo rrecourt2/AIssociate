@@ -2,7 +2,18 @@
 
 ## Version 4: a new framework
 
-Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room and the stages are unchanged from version 3. Version 4.0.1 is version 4.0.0 after two reviews. Version 4.1.0 is version 4.0.1 after its first trial on a real company, version 4.1.1 is 4.1.0 after a second pass of that trial, version 4.2.0 follows an assessment of which open checks of that deal are material, version 4.2.1 is 4.2.0 after a review, version 4.2.2 adds notes from the third round of the trial, and version 4.3.0 says what settles each check. The six come first here, the latest on top. The sections after them describe version 4 as it stood at 4.0.1.
+Version 4 rebuilds the checks on the framework in [FRAMEWORK.md](FRAMEWORK.md). The data room and the stages are unchanged from version 3. Version 4.0.1 is version 4.0.0 after two reviews. Version 4.1.0 is version 4.0.1 after its first trial on a real company, version 4.1.1 is 4.1.0 after a second pass of that trial, version 4.2.0 follows an assessment of which open checks of that deal are material, version 4.2.1 is 4.2.0 after a review, version 4.2.2 adds notes from the third round of the trial, version 4.3.0 says what settles each check, and version 4.3.1 adds what a trial on a second company showed. The seven come first here, the latest on top. The sections after them describe version 4 as it stood at 4.0.1.
+
+### Version 4.3.1: what a second company showed
+
+Assistants with only the skill built the record of a second company, listed on a stock exchange, from what it had published. Their reports named a few places where the standard left a choice open. No check is added, dropped or asked differently.
+
+- **What a listed company publishes has a kind.** A page of its website, a news release and a broker's research report are public sources, and the description of `public_source` now says so. A sustainability report is filed as an annual report, the company's own report on its governance as board composition, and a notice filed with a stock exchange as a regulatory document. An assistant had filed website pages as company records, which many checks count as supporting evidence: `company_record` now says that it is for what the company keeps, not for what it publishes about itself.
+- **Three years of revenue give two changes.** The note of `OBS_REV_004` says how the average is taken.
+- **Lines that come up for renewal in the same year are taken together.** The note of `OBS_LENDER_004` says so: one by one each could be repaid from a year's cash flow, together they could not.
+- **Where the party is a group**, its consolidated accounts are "party alone" for `OBS_ACC_004`.
+
+**A deal that runs on 4.3.0.** `upgrade` lists three checks as changed, each by its note. A source that was filed under a kind that fits less well can be changed in place: send its `id` with the new `kind`. It keeps its ID and its place in the folder.
 
 ### Version 4.3.0: what settles each check
 

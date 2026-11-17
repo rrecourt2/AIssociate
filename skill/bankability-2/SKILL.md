@@ -42,8 +42,8 @@ The deal folder comes right after the command: `show "<deal folder>" facts`. Bel
 
 | Command | Use it to |
 |---|---|
-| `status <deal>` | See the structure, what changed, where the claims stand, what settles the open checks and every candidate for what to do next. `--for <ID>` keeps to one subject or link, or to `DEAL`, the opportunity itself. `--all` gives the full lists. `--since <revision>` lists what changed after it. |
-| `add <deal> changes.json` | Record what you learned. It prints the ID of each new record, what the set did to the checks ("Checks: +3 answered, -2 open.") and the pages to read again. `--try` prints the same and writes nothing. See [recording](references/recording.md). |
+| `status <deal>` | See the structure, what changed, where the claims stand, what settles the open checks and every candidate for what to do next. `--for <ID>` keeps to one subject or link, to `DEAL`, the opportunity itself, or to one pillar, such as `business`. `--all` gives the full lists. `--since <revision>` lists what changed after it. |
+| `add <deal> changes.json` | Record what you learned. It prints the ID of each new record, what the set did to the checks ("Checks: +3 answered, -2 open."), a `Note:` for a quotation that is not in its source and for a link an answer calls for, and the pages that cite a record the set changed. `--try` prints the same and writes nothing. See [recording](references/recording.md). |
 | `show <deal> claims` | Every claim by pillar, one line each: where it stands and what that rests on. |
 | `show <deal> facts` | One line per fact that is current or disputed. Add IDs or words to keep to a subject (`facts P-001`), a link (`facts R-003`), a source (`facts S-004`), a check (`facts OBS_REV_001`) or a word (`facts capacity`): outdated facts that match are then listed too. A fact named by its ID (`facts F-012 F-015`) is printed whole, with its quote: name the facts you are about to cite. |
 | `show <deal> sources`, `subjects`, `links`, `decisions`, `questions` | Every record of that kind, one line each. |
@@ -55,7 +55,7 @@ The deal folder comes right after the command: `show "<deal folder>" facts`. Bel
 | `pages <deal>` | Create the pages the structure calls for, fill in the tool's parts of every page, and write the contents page, the sources page, `wiki.html` and the page of checks, `Internal/wiki/checks.md`. Send the analyst there when they ask what is left and whether it matters. See [pages](references/pages.md) and [standard](references/standard.md). |
 | `check <deal>` | See what looks wrong. On the pages and in the drafts: citations and links that lead nowhere, numbers no cited fact holds, wordings to avoid. In the record: a quotation that is not in its source, a record that names a replaced fact. In the folder: changed files. |
 | `adjust <deal> adjustment.json` | Change the standard for this deal. See [standard](references/standard.md). |
-| `file <deal> filing.json` | File documents and write the index of the client folder. It moves files, so it needs the whole deal folder on the machine. See [recording](references/recording.md). |
+| `file <deal> filing.json` | File documents and write the index of the client folder. It prints a source record for each document, to put into the next `add`. It moves files, so it needs the whole deal folder on the machine. See [recording](references/recording.md). |
 | `upgrade <deal>` | Bring an older deal folder in line with this tool and its standard, and write its pages again. |
 | `start <deal> --name <name>`, `doctor <deal>` | Create a deal folder: `--institution <file>` gives the institution's layer, which cannot be added later, and `--stage` a stage other than screening. Report where the tool runs and which standard the deal uses. |
 

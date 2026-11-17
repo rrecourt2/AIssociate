@@ -120,7 +120,8 @@ checks:
   note: 'The note on the basis of consolidation lists what is in and what is out. Part only: a division, a branch, or one
     of several companies that together make up the party. Combined unaudited: figures that management added together for
     companies that do not report as one. Where consolidated accounts are used, ask for the party''s own stand-alone accounts
-    as well.'
+    as well. Where the party the lender relies on is itself a group, the consolidated accounts of that group are party
+    alone.'
   leads_to:
   - {indicator: CAS_GROUP_LINK_001, is: party_and_subsidiaries, reason: Cash earned in subsidiaries has to come up to the
       party before it can pay the lender}

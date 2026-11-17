@@ -196,7 +196,7 @@ The tool lists the sources at the foot and says where one was not read in full. 
 
 - It reports a citation of something that does not exist, a link to a page that is not there, a page that no other page links to, a page with text and no citation, and a number that no record cited in the same paragraph holds. The working notes say how to work and are not asked for citations.
 - It reports a citation of a fact that was replaced or is disputed, unless the sentence starts with a plain word that marks it: "Outdated:" or "Disputed:". New information is merged in. What it replaces stays visible only where that matters.
-- It reports a quotation that is not in the text of its source. A fact can carry the few words of the source that carry it, and the tool confirms that the words are there. No model is involved.
+- It reports a quotation that is not in the text of its source. A fact can carry the few words of the source that carry it, and the tool confirms that the words are there. No model is involved. `add` tests the quotations of its set the same way, also in a trial run.
 - It reports a sentence that holds a wording the analyst asked to keep out. The deal carries the list.
 - It does not judge whether a sentence says what its fact says.
 

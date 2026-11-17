@@ -89,6 +89,7 @@ class Deal(unittest.TestCase):
             {"file": "Inbox/Scan.pdf", "kind": "business_plan", "extract": "Inbox/Scan.txt"}]))
         self.assertEqual(code, 1)
         self.assertIn("Not filed. The tool never overwrites a file", said)
+        self.assertIn('"where": "Client folder/Scan.pdf", "extract": "Internal/sources/extracts/Scan.txt"}', said)  # a source to add
         self.assertIn("Inbox/Cedar Foods teaser.md: Client folder/Cedar Foods teaser.md already exists", said)
         filed = files.read_json(deal, files.MANIFEST)["documents"][-1]
         self.assertEqual((filed["path"], filed["extract"]), ("Client folder/Scan.pdf", "Internal/sources/extracts/Scan.txt"))
@@ -168,11 +169,15 @@ class Deal(unittest.TestCase):
         self.assertEqual((memory["facts"]["F-020"]["answers"], memory["log"][-1]["changed"]), ([], {"F-020": {"answers": [answer]}}))
         self.assertIn("Pages that cite a record this set changed, to read again: Internal/wiki/opportunity/opportunity.md",
                       run("add", deal, self.handed({"facts": [{"id": "F-008", "place": "page 12"}]}))[1])
-        said = run("add", deal, self.handed({"facts": [{"id": "F-014", "answers": [], "quote": "Bluegate pays within 54 days."}]}))[1]
+        change = self.handed({"facts": [{"id": "F-014", "answers": [], "quote": "Bluegate pays within 54 days."}]})
+        said = run("add", deal, change, "--try")[1]  # a trial run tests the quotations of the set before anything is written
+        self.assertIn("Note: F-014: its quotation is not in the text of S-003", said)
         self.assertTrue("-1 answered" in said and "+1 open" in said)  # what the set did to the checks
+        run("add", deal, change)
         self.assertIn("- F-014: its quotation is not in the text of S-003", run("check", deal)[1])
         self.assertEqual(plain("| **Revenue** | 4,060 |"), "revenue 4,060")  # compared without marks, bars or capitals
         self.assertEqual(plain("noise <\nRevenue <b>4,060</b> > 3,720"), "noise < revenue 4,060 > 3,720")  # a stray < takes nothing
+        self.assertEqual(plain("Te\u0302\u0301t"), plain("T\u1ebft"))  # an accented letter, however the text spells it
         run("add", deal, self.handed({"decisions": [{"decision": "Kept.", "reason": "Small.", "about": "P-003", "rests_on": ["F-014"]}]}))
         run("pages", deal)  # a record that no page cites is in the view all the same, unless it is history
         self.assertIn('"D-003"', files.read(deal, "Internal/wiki/wiki.html"))
@@ -206,7 +211,11 @@ class Deal(unittest.TestCase):
         self.assertIn("x" * 300 + " ...", fact_lines(long, ["P-001"])[0])  # a long statement is cut in a list
         self.assertIn("x" * 400, fact_lines(long, ["F-1"])[0])  # and given in full when the fact is named
         self.assertIn('quote: "Revenue was KES 4,060m (2024: KES 3,720m)."', run("show", self.deal, "facts", "F-008")[1])
-        self.assertIn("- OBS_REV_001: ", run("show", self.deal, "CAS_REVENUE_001")[1])  # an indicator lists its checks
+        self.assertIn("- OBS_REV_001: Does the party earn revenue from sales today? [yes/no]",  # an indicator lists its checks
+                      run("show", self.deal, "CAS_REVENUE_001")[1])
+        said = run("status", self.deal, "--for", "es_impact", "--all")[1]  # one pillar, and one line for a check asked of two
+        self.assertIn("Only what concerns Environmental, social and impact (es_impact).", said)
+        self.assertIn("(Cedar Foods Ltd; Second UHT line; ideally by", said)
         self.assertIn("- OBS_GROUP_011:", run("show", self.deal, "own account")[1])  # a search also finds a check
         self.assertIn("- D-002: Cedar is to propose", run("show", self.deal, "decisions")[1])  # every record of one kind
         self.assertEqual(len(run("show", self.deal, "sample")[1].splitlines()), 10)  # ten facts to compare with their pages

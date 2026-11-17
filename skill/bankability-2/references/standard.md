@@ -1,6 +1,6 @@
 # The standard
 
-`show <deal> <ID>` prints a check of the standard in full, or an indicator with its checks.
+`show <deal> <ID>` prints a check of the standard in full, or an indicator with its checks and the answer each takes. `status <deal> --for <pillar> --all` lists the checks of one pillar that are to answer: the pillars are `deal`, `environment`, `business`, `governance`, `cash_flow`, `liquidity`, `es_impact`, `links` and `facility`.
 
 ## Claims
 
@@ -17,6 +17,8 @@ A claim, for each party or link it is made about:
 - is **contested**: two facts answer a test, or a question behind the claim, differently.
 
 A claim is to **look at again** when a source or an answer that bears on it came in after its tests were answered.
+
+In `status`, the line of a pillar counts each claim once, at its worst among the parties it is made about. `show claims` gives each party its own line.
 
 An answer against a claim is believed whatever it rests on. A favourable answer that rests only on what a party said is **someone's own word**, and a claim does not stand on that alone. So set `said_by` on every fact.
 
@@ -40,7 +42,7 @@ A check is asked about the opportunity, about whoever holds a role, about a subj
 
 ## Checks
 
-A check is answered by a fact, in its `answers`. In `status`, each open check ends with its ID and the answer it takes: `[OBS_ACC_001: yes/no]`, `[OBS_OFFTAKER_002: number, percent]`, `[OBS_LIFECYCLE_001: one of greenfield | expanding | established | distressed]`. "any of" in place of "one of" means that a list of options may be given. A check is in one of these states:
+A check is answered by a fact, in its `answers`. In `status`, a check that stands the same for several subjects has one line that names them all. Each open check ends with its ID and the answer it takes: `[OBS_ACC_001: yes/no]`, `[OBS_OFFTAKER_002: number, percent]`, `[OBS_LIFECYCLE_001: one of greenfield | expanding | established | distressed]`. "any of" in place of "one of" means that a list of options may be given. A check is in one of these states:
 
 - `open`: it can be answered now.
 - `waiting`: an earlier check comes first, or nobody holds the role yet, or it is a mitigant and no test has gone against its claim.
