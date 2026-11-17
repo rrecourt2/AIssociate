@@ -464,10 +464,17 @@ def upgrade(args):
     std = standard.effective(args.deal)  # with the layers of the institution and the deal on top
     store.note_outside_change(memory)
     memory["deal"]["standard"] = new["version"]
-    note = f"Standard changed from {old} to {new['version']}"
-    store.record(memory, "tool", note, changed={store.DEAL: {"standard": old}})
+    names, before = new.get("renamed", {}), {store.DEAL: {"standard": old}}
+    for table, key in (("sources", "kind"), ("facts", "said_by"), ("decisions", "by")):  # where a record uses such a name
+        for rid, record in memory[table].items():
+            if record.get(key) in names:
+                before[rid], record[key] = {key: record[key]}, names[record[key]]
+    store.record(memory, "tool", f"Standard changed from {old} to {new['version']}", changed=before)
     files.write_json(args.deal, files.MEMORY, memory)
     print(f"The deal now uses standard {new['version']}. It used {old}.")
+    if len(before) > 1:
+        print(f"Records taken to the names the standard now uses ({', '.join(f'{was} to {now}' for was, now in names.items())}): "
+              f"{len(before) - 1}.")
     gone = [f"{fid}: {answer['check']}" for fid, fact in memory["facts"].items() if fact["state"] != "outdated"
             for answer in fact.get("answers", []) if answer["check"] not in std["checks"]]
     print("Answers that name a check that no longer exists. They stay in the facts and no longer count:\n- "
@@ -476,7 +483,8 @@ def upgrade(args):
     for title, ids in (("New checks", now.keys() - was.keys()), ("Checks that are gone", was.keys() - now.keys()),
                        ("Checks that changed", [cid for cid in now.keys() & was.keys() if now[cid] != was[cid]])):
         if ids:  # with the indicator of each, where the check that took the place of a removed one is found
-            print(f"{title}: " + ", ".join(f"{cid} ({(now.get(cid) or was[cid])['indicator']})" for cid in sorted(ids)) + ".")
+            print(f"{title}: " + (f"{len(ids)} checks. `show <check>` has each." if len(ids) > 40 else ", ".join(
+                f"{cid} ({(now.get(cid) or was[cid])['indicator']})" for cid in sorted(ids)) + "."))
     for note in std["notes"]:
         print(f"Note: {note}")
 

@@ -379,7 +379,7 @@ def next_list(memory, std, rows, in_folder=(), scope=None):
     work.sort(key=lambda row: (order[row["due_by"]], near(row["for"]), -row["unlocks"]))
 
     slot_of = {kind["id"]: kind.get("slot") for kind in std["source_kinds"]}
-    filed = {slot_of[source["kind"]] for source in memory["sources"].values() if source["state"] == "current"} | set(in_folder)
+    filed = {slot_of.get(source["kind"]) for source in memory["sources"].values() if source["state"] == "current"} | set(in_folder)
     wanted = {}
     for row in work:
         for slot in std["checks"][row["check"]].get("look_in", []):
