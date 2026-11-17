@@ -90,6 +90,10 @@ def status(args):
         print("\nThe record holds: " + ", ".join(f"{table} {len(memory[table])}" for table in store.TABLES) + ".")
         if deal.get("avoid"):
             print("Wordings to avoid: " + "; ".join(deal["avoid"]) + ".")
+        bare = sum(fact["state"] != "outdated" and fact.get("said_by") != "inference" and not fact.get("quote")
+                   and bool(memory["sources"][fact["source"]].get("where")) for fact in memory["facts"].values())
+        if bare:
+            print(f"Facts from a document that carry no quotation: {bare}.")
     if scope:
         print(f"\nOnly what concerns {pages.name_of(args.about, memory)} ({args.about}).")
     structure(memory, std, None if args.about == store.DEAL else scope)
@@ -313,9 +317,13 @@ def show(args):
         if used:
             print("\n" + "\n".join(pages.check_lines([row for row in used if row["state"] != "not relevant"], memory, std)))
     else:
-        hits = [f"- {rid}: {summary(record)}" + f" ({record.get('state')})" * (record.get("state", "current") != "current")
-                for table in store.TABLES for rid, record in memory[table].items()
-                if what.lower() in json.dumps(record, ensure_ascii=False).lower()]
+        hits = []
+        for table in store.TABLES:
+            for rid, record in memory[table].items():  # with the fields that hold the words
+                keys = [key for key, value in record.items() if what.lower() in json.dumps(value, ensure_ascii=False).lower()]
+                if keys:
+                    hits.append(f"- {rid}: {summary(record)}" + f" ({record.get('state')})" * (record.get("state", "current")
+                                                                                              != "current") + f" [in {', '.join(keys)}]")
         hits += [f"- {cid}: {check['question']}" for cid, check in std["checks"].items()  # and the checks of the standard
                  if what.lower() in f"{check['question']} {check.get('assumption', '')}".lower()]
         print("\n".join(hits) or "Nothing found.")

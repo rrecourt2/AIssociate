@@ -333,7 +333,7 @@ def check_page(memory, std, rows, todo, where):
     def codes(ids):
         return " or ".join(f"`{cid}`" for cid in dict.fromkeys(ids))
 
-    def line(row):
+    def cells(row):
         check, waits = std["checks"][row["check"]], row.get("waits_for", [])
         if row["state"] in ("answered", "contested"):
             note = f"{shown(row.get('value', ''))}{' (**against the claim**)' * bool(row.get('against'))} [{', '.join(row['facts'])}]"
@@ -348,13 +348,20 @@ def check_page(memory, std, rows, todo, where):
             note = f"only if {codes(waits) or 'a test'} goes against the claim"
         else:
             note = f"until `{waits[0]}` is answered: {std['checks'][waits[0]]['question'][:80].rsplit(' ', 1)[0]} ..."
-        cells = [", ".join([row["state"], *row["flags"]]),
+        found = [", ".join([row["state"], *row["flags"]]),
                  f"{'Mitigant: ' * bool(check.get('mitigant'))}{check['question']} `{row['check']}`", name(row["for"]), note,
                  ROUTES[route(check)] if row["state"] in (*ORDER[:2], "waiting") else "", std["stage_titles"][row["due_by"]]]
-        return "| " + " | ".join(" ".join(str(cell).replace("|", "/").split()) for cell in cells) + " |"  # no cell ends early
+        return [" ".join(str(cell).replace("|", "/").split()) for cell in found]  # so that no cell ends early
+
+    def table(mine):
+        """One line for a check, its state and its answer: the subjects that share them stand together in one cell."""
+        merged = {}
+        for state, check, whom, *rest in map(cells, mine):
+            merged.setdefault((state, check, *rest), []).append(whom)
+        return ["| " + " | ".join([state, check, "; ".join(whom), *rest]) + " |" for (state, check, *rest), whom in merged.items()]
 
     counts, found, stage_of = tally(rows), claims(rows, memory, std), std["stage_ids"].index
-    work = [row for row in rows if row["state"] in ORDER[:2]]
+    work = [row for row in rows if row["state"] == "open"]
     stages = [stage for stage in std["stage_ids"] if any(row["due_by"] == stage for row in work)]
     lines = [f"# {memory['deal']['name']}: checks", "", "Every check of the standard as it stands for this opportunity, written by "
              f"the tool from the record. The opportunity is at the stage {std['stage_titles'][memory['deal']['stage']]}. A check is "
@@ -365,18 +372,21 @@ def check_page(memory, std, rows, todo, where):
              "**" + ", ".join(f"{counts[state]} {state}" for state in ORDER if state in counts) + ".** Answers that go against "
              f"their claim: {sum(bool(row.get('against')) for row in rows)}."]
     if work:
-        lines += ["", "## What settles the checks to answer", "",
-                  "| Settled by | " + " | ".join(std["stage_titles"][stage] for stage in stages) + " | All |",
-                  "|---|" + "---|" * (len(stages) + 1)]
+        lines += ["", "## What settles the open checks", "",
+                  "| Settled by | " + " | ".join(std["stage_titles"][stage] for stage in stages) + " | All | Mostly about |",
+                  "|---|" + "---|" * (len(stages) + 2)]
     for key, title in ROUTES.items():
-        due = [row["due_by"] for row in work if route(std["checks"][row["check"]]) == key]
-        if due:
+        mine = [row for row in work if route(std["checks"][row["check"]]) == key]
+        due, topics = [row["due_by"] for row in mine], [std["by_id"][row["indicator"]]["title"] for row in mine]
+        most = sorted(dict.fromkeys(topics), key=topics.count, reverse=True)[:4]  # the claims with the most open checks
+        if mine:
             lines.append(f"| {title[0].upper()}{title[1:]} | " + " | ".join(str(due.count(stage)) for stage in stages)
-                         + f" | {len(due)} |")
+                         + f" | {len(due)} | " + ", ".join(f"{topic} {topics.count(topic)}" for topic in most) + " |")
     screened = dict.fromkeys(memory["links"].get(row["for"], {}).get("from", row["for"]) for row in work  # a link: who gives it
                              if route(std["checks"][row["check"]]) == "screening")
     screened = [sid for sid in screened if memory["subjects"].get(sid, {}).get("kind") in ("party", "person", "group")]
-    lines += ["", "**Names for the screening:** " + ", ".join(map(name, screened)) + "."] * bool(screened)
+    lines += ["", "**Names for the screening:** " + ", ".join(map(name, screened)) + ". These are subjects of the record: add "
+              "the directors and managers that its facts name."] * bool(screened)
     for pillar in std["pillars"]:
         within = tally(row for row in rows if std["by_id"][row["indicator"]]["pillar"] == pillar["id"])
         lines += ["", f"## {pillar['title']}", "",
@@ -388,7 +398,7 @@ def check_page(memory, std, rows, todo, where):
                 stands = "; ".join(f"{claim['stands']} for {name(claim['for'])}" for claim in found if claim["indicator"] == ind["id"])
                 lines += ["", f"### {ind['title']}", "", f"*{ind['claim']}*" + f" Where it stands: {stands}." * bool(stands), "",
                           "| State | Check | For | Answer, or what it waits for | Settled by | Ideally by |", "|---|---|---|---|---|---|",
-                          *map(line, mine)]
+                          *table(mine)]
     lines += ["", "## Documents that are not in the folder", "",
               *(f"- {doc['title']} ({doc['slot']}): {doc['why']}" for doc in todo["documents"])] * bool(todo["documents"])
     return "\n".join([*lines, ""])

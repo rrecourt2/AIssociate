@@ -50,7 +50,7 @@ The deal folder comes right after the command: `show "<deal folder>" facts`. Bel
 | `show <deal> sample` | Ten facts that are not inferences, spread over the record, each whole with its quote, to compare with the page of the source each names. See [drafting](references/drafting.md). |
 | `show <deal> kinds` | The kinds of source, of subject and of link, with the folder or the role each gives. |
 | `show <deal> <ID>` | A record with every field and what uses it, a check in full, or an indicator with its checks. |
-| `show <deal> <words>` | A search of the record and of the questions of the checks: `show <deal> own account` finds the check that asks about it. |
+| `show <deal> <words>` | A search of the record, which names the fields that hold the words, and of the questions of the checks: `show <deal> own account` finds the check that asks about it. |
 | `show <deal> sheet`, `log` | The entry sheets for the bank's systems. The history. |
 | `pages <deal>` | Create the pages the structure calls for, fill in the tool's parts of every page, and write the contents page, the sources page, `wiki.html` and the page of checks, `Internal/wiki/checks.md`. Send the analyst there when they ask what is left and whether it matters. See [pages](references/pages.md) and [standard](references/standard.md). |
 | `check <deal>` | See what looks wrong. On the pages and in the drafts: citations and links that lead nowhere, numbers no cited fact holds, wordings to avoid. In the record: a quotation that is not in its source, a record that names a replaced fact. In the folder: changed files. |

@@ -64,7 +64,7 @@ tr[data-group="Answered"] .state { background: #d6ebda; color: #1d4d2b; }
 tr[data-group="Waiting"] .state { background: #dee6f0; color: #2b4462; }
 tr.against .state { background: #f4d3ce; color: #6d1e15; }
 .wide:has(.state) table { width: 100%; table-layout: fixed; }
-.wide:has(.state) th:nth-child(1) { width: 7rem; } .wide:has(.state) th:nth-child(3) { width: 9rem; }
+.wide:has(.state) th:nth-child(1) { width: 7rem; } .wide:has(.state) th:nth-child(3) { width: 16rem; }
 .wide:has(.state) th:nth-child(4) { width: 13rem; } .wide:has(.state) th:nth-child(5), .wide:has(.state) th:nth-child(6) { width: 6.5rem; }
 @media (max-width: 60rem) {
   body { display: block; } main { margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
@@ -242,8 +242,11 @@ function filters(rows) {  // on a page of checks: a mark on each state, and butt
     tr.dataset.group = Object.keys(GROUPS).find(name => GROUPS[name].includes(tr.cells[0].textContent.split(",")[0]));
     tr.cells[0].innerHTML = `<span class="state">${tr.cells[0].innerHTML}</span>`;
     tr.classList.toggle("against", /\(against the claim\)/.test(tr.cells[3].textContent));
+    tr.dataset.count = tr.cells[2].textContent.split("; ").length;  // a row may stand for several subjects: one a line
+    tr.cells[2].innerHTML = tr.cells[2].innerHTML.split("; ").join("<br>");
   }
-  const bar = document.createElement("p"), count = name => rows.filter(tr => name === "All" || tr.dataset.group === name).length;
+  const bar = document.createElement("p"), count = name => rows.filter(tr => name === "All" || tr.dataset.group === name)
+    .reduce((sum, tr) => sum + Number(tr.dataset.count), 0);
   bar.className = "filters";
   bar.innerHTML = [...Object.keys(GROUPS), "All"].map(name => `<button data-show="${name}">${name} <small>${count(name)}</small></button>`).join("");
   el("page").querySelector("h1").after(bar);

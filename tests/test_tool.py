@@ -394,6 +394,9 @@ class Deal(unittest.TestCase):
         self.assertIn("| answered | Does the party earn any of its revenue in a foreign currency, or at prices that are set in one? "
                       "`OBS_FX_001` | [Cedar Foods Ltd](parties/cedar-foods-ltd.md) | no [F-010] |  | Screening |", checks)
         self.assertIn("until `OBS_FX_007` is answered: Does the party pay any of its costs in a foreign currency", checks)
+        self.assertIn("| All | Mostly about |", checks)  # what settles the open checks, with the claims they are mostly about
+        self.assertIn("`OBS_ENV_002` | [Cedar Foods Ltd](parties/cedar-foods-ltd.md); [Second UHT line](assets/second-uht-line.md) |",
+                      checks)  # one row for a check that stands the same for two subjects
         template, view = files.packaged("wiki.html"), files.read(self.deal, "Internal/wiki/wiki.html")
         loads = [mark for mark in ("://", "<link", " src=", "@import", "url(") if mark in template]
         self.assertEqual(loads, [])  # it loads nothing: no script, style, font or picture from elsewhere

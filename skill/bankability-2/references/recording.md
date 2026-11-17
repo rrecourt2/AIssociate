@@ -120,7 +120,7 @@ An admission against the speaker's own case is believed: "our margin fell in 202
 
 ### Wordings to avoid
 
-When the analyst says that something is not to be said, set it on the deal: `{"deal": {"avoid": ["loan new line"]}}`. Each entry is a few words. The list you send replaces the old one, which `status` prints as "Wordings to avoid": send its entries again with the new one. `check` reports a sentence, a page title or a heading, on a page or in a draft, that holds all the words of one entry, in any order. The working notes are exempt.
+When the analyst says that something is not to be said, set it on the deal: `{"deal": {"avoid": ["loan new line"]}}`. Each entry is a few words. The list you send replaces the old one, which `status` prints as "Wordings to avoid": send its entries again with the new one. `check` reports a sentence, a page title or a heading, on a page or in a draft, that holds all the words of one entry, as whole words, in any order. A plural is another word, and a sentence that denies the thing is reported like one that says it. The working notes are exempt.
 
 ## Subjects and links
 
@@ -130,7 +130,7 @@ A subject is a party, a person, a facility, a contract, an asset, a project or a
 - A link needs `from`, `type` and `to`, and a `why`: why it matters for repayment. It starts as `proposed`. Set `state` to `confirmed` when a source confirms it, and to `ended` when it no longer holds. A link that is your inference stays `proposed`: say so in its `why`, and name the fact it rests on.
 - A new link brings the checks that fit the role, and the checks on the link itself. `status --for <ID>` shows them.
 - **A facility** is a loan that the lender is considering, and nothing else. `borrows`, `guarantees`, `supports` and `secures` count only when they point at one, and `status` says so where a link does not count.
-- **A person** is a subject of the kind `person`. Record a person who owns, controls or guarantees. Directors and managers who do none of these stay as facts about their company. A person who was recorded as a party is changed in place: send the `id` with `"kind": "person"`.
+- **A person** is a subject of the kind `person`. Record a person who owns, controls or guarantees. Directors and managers who do none of these stay as facts about their company. A person who was recorded as a party is changed in place: send the `id` with `"kind": "person"`. Any kind is changed this way, and the ID keeps its letter.
 - **An asset** is examined when repayment depends on it: answer `OBS_ASSET_007` for each plant. The checks on its condition are then asked, or fall away.
 - **A part of an asset**, such as a line or a machine inside a plant, is an asset with a `part_of` link to the plant. It is asked no checks: it is examined with the whole. It gets a page under `assets/` if it deserves one. Leave the link out, and say in the `note` what it belongs to, only where it has to be examined apart: it is security by itself, or it is leased.
 - **What the loan pays for.** Record a project or an asset that can be named, and link the facility to it: `{"from": "L-001", "type": "finances", "to": "J-001"}`. The checks on a project are asked only of a project the loan finances. Another project of the business may be a subject with a page and facts, without that link.
