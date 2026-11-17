@@ -295,7 +295,8 @@ def claims(rows, memory, std):
 
 def stray(memory, std, rows, facts=None):
     """Answers, in all facts or in the ones named, to a check that is not asked about that subject or link, or is
-    not relevant there. An answer for one party to a check about the deal is discovery for that party, and is left alone."""
+    not relevant there. An answer for one party to a check about the deal is discovery for that party, and is left alone.
+    And decisions, in all or in the ones named, that cover a check for a subject it is not asked of: they settle nothing."""
     by_key = {(row["check"], row["for"]): row for row in rows}
     ended = set(memory["subjects"]) - set(live(memory))  # what was answered about something that has ended is history
     ended |= {lid for lid, link in memory["links"].items() if not holds_still(link, memory)}
@@ -311,6 +312,15 @@ def stray(memory, std, rows, facts=None):
                 found.append(f"{fid} answers {answer['check']} for {about}, " + (
                     "where that check is not relevant" if row else "which is not asked that check"
                     if answer["check"] in std["checks"] else "and the standard has no such check any more"))
+    for did in memory["decisions"] if facts is None else facts:
+        decision = memory["decisions"].get(did, {})
+        about = decision.get("about", DEAL)
+        wide = about == DEAL and (decision.get("owner") or decision.get("due"))  # an agreed action for the deal covers them all
+        for cid in decision.get("covers", []) if about not in ended else []:
+            asked = sorted({row["for"] for row in rows if row["check"] == cid})
+            if (cid, about) not in by_key and not (wide and asked):
+                found.append(f"{did} covers {cid} for {about}, which is not asked that check"
+                             + (f": it is asked of {', '.join(asked)}" if asked else ""))
     return found
 
 

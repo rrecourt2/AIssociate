@@ -1,127 +1,85 @@
 # The standard
 
-The standard says what a deal folder holds and what must be known. It gives the work its rigour. `show <ID>` prints an indicator or a check in full. `standard/FRAMEWORK.md` in the repository explains how it is organised.
+`show <deal> <ID>` prints a check of the standard in full, or an indicator with its checks.
 
-## Work from the claims
+## Claims
 
-The standard holds 70 claims. An indicator is one claim: what the lender relies on, in a sentence that can turn out false. The checks behind it try to disprove it. The claims sit in nine pillars: the deal, then each party from its surroundings to its money, then the links, then the facility.
+The standard holds 70 claims in nine pillars. An indicator is one claim: what the lender relies on, in a sentence that can turn out false. Its checks try to disprove it. Start from the claims: `show claims` lists every claim that applies, and `show <indicator>` prints one with all its checks.
 
-Start from the claims, not from the checks.
+A **question** opens the topic or describes it. A **test** has an assumption, and one answer goes against it. A **mitigant** is asked once a test has gone against the claim: what limits the damage.
 
-- **`show claims`** lists every claim by pillar, one line each:
+A claim, for each party or link it is made about:
 
-  ```text
-  - Currency risk (Cedar Foods Ltd): challenged; tests answered 1 of 4; against OBS_FX_008; mitigants 5 not known; decision D-002 [CAS_FX_001]
-  ```
+- is **not tested**: no test is answered, or the answers rest only on someone's own word.
+- **stands so far**: nothing speaks against it, and work is left. A test is open, or an answer rests on someone's own word, on evidence the check does not list as supporting or best, or on evidence that is weak (`thin`) or out of date (`old`) for this stage.
+- **stands**: every test is answered in its favour, on evidence the check lists as supporting or best.
+- is **challenged**: a test went against it. Each mitigant holds, fails or is not known.
+- is **contested**: two facts answer a test, or a question behind the claim, differently.
 
-- **`status --for <ID>`** shows only what concerns one subject or link: its claims, its open checks, its questions. For a subject it includes the links that touch it. `status --for DEAL` keeps to the checks about the deal.
-- **`show <indicator>`** prints one claim with all its checks and what each rests on.
+A claim is to **look at again** when a source or an answer that bears on it came in after its tests were answered.
 
-A check has one of three jobs:
-
-- A **question** opens the topic or describes it.
-- A **test** has an assumption. One answer goes against it.
-- A **mitigant** is asked once a test has gone against the claim. It asks what limits the damage.
-
-For each claim, and each party or link it is made about, the tool says where it stands.
-
-| The claim | Means |
-|---|---|
-| is **not tested** | No test is answered, or the answers rest only on someone's own word. |
-| **stands so far** | Nothing speaks against it, and work is left: a test is not answered yet, or an answer rests on someone's own word, or on evidence that the check does not list as supporting or best, or that is weak (`thin`) or out of date (`old`) for this stage. `show claims` says how many answers are to strengthen. |
-| **stands** | Every test is answered in its favour, on evidence the check lists as supporting or best, and no answer needs more. |
-| is **challenged** | A test went against it. The tool lists the mitigants: each holds, fails or is not known. |
-| is **contested** | Two facts answer a test, or a question behind the claim, differently. |
-
-`status` shows the claims by pillar and lists those that are challenged, contested or to look at again. A claim is to look at again when a source or an answer came in after its tests were answered and the standard says that such a thing bears on it. A claim made about several parties counts once, at its worst.
-
-Who says something matters. An answer that goes against a claim is believed whatever it rests on. A favourable answer that rests only on what a party said is marked as **someone's own word**, and a claim does not stand on that alone. Set `said_by` on every fact.
+An answer against a claim is believed whatever it rests on. A favourable answer that rests only on what a party said is **someone's own word**, and a claim does not stand on that alone. So set `said_by` on every fact.
 
 ## Judgement
 
-The standard is a backbone. It does not replace the analysis.
-
-- **Size.** A test asks about what matters for repayment. Where the thing exists but is too small to matter, give the favourable answer and say in the fact how small it is: "One supplier credit in euros, KES 4m, 0.3% of all debt." The sizes named in questions, such as "about a tenth", are guides.
-- **Answer a test as soon as it is decided.** Some tests speak of "this loan included" or "after this loan". If the answer already goes against the assumption on the debt the party owes today, record it now and say that it is before the new loan. Answer again when the terms are known. An answer in favour waits for the terms: until the amount, the currency and the tenor are known, record today's figure as a fact and leave the test open.
-- **Read the open tests of a claim before you rely on it.** `show <deal> <indicator>` lists them. The record often decides one that nobody has answered yet.
-- **Not asked yet is not a no.** A test that asks whether something exists, such as a list of uses or a maintenance plan, is answered no when the company says there is none, or when the place that would hold it has been searched. While nobody has asked, it stays open.
-- **One case can decide a test against the claim. A favourable answer needs the whole.** If a test asks about five years and the documents cover three, a bad year among the three decides it. Three good years do not: record the figures, leave the test open and ask for the rest.
-- **Some questions ask for description**, not for a verdict: how the business earns its money (`OBS_BUSINESS_MODEL_001`), what is particular about it (`OBS_BUSINESS_MODEL_002`), what the project is (`OBS_FEAS_008`). Their answers are text and they feed the pages. Answer them early. Ask early as well what an owner owes and receives on its own account (`OBS_GROUP_011`, `OBS_GROUP_012`). `show <deal> <words>` finds the check that asks about something.
+- **Size.** Where the thing a test asks about is too small to matter for repayment, give the favourable answer and say in the fact how small it is: "One supplier credit in euros, KES 4m, 0.3% of all debt." A size named in a question, such as "about a tenth", is a guide.
+- **Answer a test as soon as it is decided.** If today's debt already goes against a test that speaks of "after this loan", record the answer now and say that it is before the new loan. An answer in favour waits for the terms: record today's figure as a fact and leave the test open.
+- **Not asked yet is not a no.** A test that asks whether something exists, such as a maintenance plan, is answered no when the company says there is none, or when the place that would hold it has been searched.
+- **One case can decide a test against the claim. A favourable answer needs the whole.** If a test asks about five years and the documents cover three, a bad year among the three decides it. Three good years do not: record the figures and ask for the rest.
+- **Read the open tests of a claim before you rely on it**, and answer those the record already decides.
+- **Some questions ask for description**: how the business earns its money (`OBS_BUSINESS_MODEL_001`), what is particular about it (`OBS_BUSINESS_MODEL_002`), what the project is (`OBS_FEAS_008`). Their answers feed the pages. Answer them early, and ask early what an owner owes and receives on its own account (`OBS_GROUP_011`, `OBS_GROUP_012`).
 
 ## Who is asked what
 
-A check is asked about the deal, about whoever holds a role, about a subject of a kind, or about a link.
+A check is asked about the opportunity, about whoever holds a role, about a subject of a kind, or about a link: see [recording](recording.md).
 
-- **The loan under review.** A facility is a loan the lender is considering. The roles of borrower and guarantor, and the checks on a guarantee or on security, arise only from links that point at a facility. Debt that already exists is a `lends_to` link and brings the checks on another lender. The checks on terms, covenants and conditions wait until terms are on paper (`OBS_TS_011`), and the checks on security until it is known what is offered (`OBS_SECPKG_001`). Leave such an opening question open while its answer is not known: what depends on it waits, and `status` lists the question as the thing to do. "None" is an answer only once that is settled, as for a loan that is to be unsecured.
-- **The perimeter.** The business and its money are examined once, on the party or group whose cash repays the loan. Five pillars are asked of the perimeter: environment, business, cash flow and debt, liquidity and financial risks, and environmental, social and impact. Related parties and a guarantor's capacity are asked the same way. A company that is a member of a group that is asked the same check is not asked it again.
-- **The legal entity.** People and governance is asked of each company: its owners, its integrity, its board, its standing. A group is not asked these. Each company you recorded as a member of a group is asked them in the group's place, whether it borrows or not: the parent of a borrowing subsidiary as well.
-- **The tie between them.** Where the borrower is not the whole perimeter, the links between the companies are examined for whether the cash can reach the lender.
-- **A person** is asked only what fits a person.
-- **An asset** is examined when repayment depends on it or it is offered as security (`OBS_ASSET_007`). A contract and a customer have a question of the same kind (`OBS_CONT_001`, `OBS_OFFTAKER_001`).
-- **A project** is checked only when the loan finances it. It is asked what is its own: whether it can be built and pay, its impact assessment and permits, its land, its neighbours. What concerns the whole business stays with the perimeter.
-- **An owner.** `owns` gives its role, and brings the checks on the tie between owner and company, only where it points at a party or a group. Who owns a plant or a project is recorded the same way and brings no checks. `sponsors` is for whoever stands behind the borrower or the financed project, and always brings them.
-
-See [recording](recording.md) for how to record each of these.
-
-## Discovery
-
-The checks of the first pillar are about the deal: what is asked for, how the loan is repaid, who is in it and what kind of business it is. Answer them first. Many other checks wait for them: `status` says how many.
-
-- The kind of credit (`OBS_SECTOR_001`) and the sector (`OBS_SECTOR_002`) decide which checks apply. Both go by where the profit comes from: a business that trades more than it makes, and earns most of its profit from what it makes, is a manufacturer. If one party is of another kind than the rest of the deal, record the answer for that party with `"for"`.
-- Some answers call for structure: a party, a link, an asset, a project or a contract. `status` lists these under "Structure still open". Add what is missing, and the link brings its own checks. If nothing needs to be added, record a decision that `covers` the check, with the reason and without an owner or a date. Name in `about` the subject whose answer it is: such a decision speaks of that subject only, or of the deal if it names none.
+- **The opportunity first.** The checks of the first pillar ask what is asked for, how the loan is repaid, who is in the deal and what kind of business it is. Answer them first: many other checks wait for them. The kind of credit (`OBS_SECTOR_001`) and the sector (`OBS_SECTOR_002`) decide which checks apply, and go by where the profit comes from. If one party is of another kind than the rest, record the answer for that party with `"for"`.
+- **Structure.** Some answers call for a party, a link, an asset, a project or a contract. `status` lists these under "Structure still open". Add what is missing, or record a decision that `covers` the check and says why nothing is needed, without an owner or a date. Name in `about` the subject whose answer it is.
+- **Opening questions.** The checks on terms, covenants and conditions wait until terms are on paper (`OBS_TS_011`), and the checks on security until it is known what is offered (`OBS_SECPKG_001`). Leave such a question open while its answer is not known. "None" is an answer only once that is settled, as for a loan that is to be unsecured.
+- **An asset, a contract and a customer** are examined when repayment depends on them. A question asks that first (`OBS_ASSET_007`, `OBS_CONT_001`, `OBS_OFFTAKER_001`).
 
 ## Checks
 
-A check answers by facts: put it in the fact's `answers`. In `status`, each open check ends with its ID and the answer it takes:
+A check is answered by a fact, in its `answers`. In `status`, each open check ends with its ID and the answer it takes: `[OBS_ACC_001: yes/no]`, `[OBS_OFFTAKER_002: number, percent]`, `[OBS_LIFECYCLE_001: one of greenfield | expanding | established | distressed]`. "any of" in place of "one of" means that a list of options may be given. A check is in one of these states:
 
-```text
-[OBS_ACC_001: yes/no]   [OBS_OFFTAKER_002: number, percent]   [OBS_LIFECYCLE_001: one of greenfield | expanding | established | distressed]   [OBS_REQUEST_001: text]
-```
+- `open`: it can be answered now.
+- `waiting`: an earlier check comes first, or nobody holds the role yet, or it is a mitigant and no test has gone against its claim.
+- `not relevant`: an earlier answer made it so.
+- `answered`: a fact answers it. `thin`: the evidence is weaker than is ideal at this stage. `old`: it is older than is ideal.
+- `contested`: two facts answer it differently, or the fact is disputed.
+- `parked`, `off`: switched off for now, or for this deal, or settled for one subject by a decision.
 
-"any of" in place of "one of" means that several options may be given, as a list.
+A reference point such as "above 20" is the standard's own, with its reason in `why`. `adjust` can change it.
 
-| State | Meaning |
-|---|---|
-| `open` | It can be answered now. `status` says by which stage the open checks are ideally answered. |
-| `waiting` | An earlier check comes first, or the role is not yet held by anyone. `status` says how many are mitigants, which are asked only if a test goes against its claim. |
-| `not relevant` | An earlier answer made it so. |
-| `answered` | A fact answers it. `thin`: the evidence is weaker than is ideal at this stage. `old`: it is older than is ideal. |
-| `contested` | Two facts answer it differently, or the fact is disputed. |
-| `parked`, `off` | Switched off for now, or for this deal, or settled for this one subject by a decision. |
+## What settles a check, and the page of checks
 
-For a test the tool also says whether the answer goes against the assumption. A reference point such as "above 20" is the standard's own, with its reason in `why`. It can be changed with `adjust`.
+Each check says in `settled_by` what settles it: `company` (its documents or its answers), `screening` (a search on a name), `terms` (the terms of the loan), `lender` (the lender itself), `expert` (counsel, an engineer, a valuer, a consultant) or `public` (public sources).
+
+`status` prints one line: "Open, by what settles them: the company 160, a screening 13, ...". Use it to tell the analyst what the open checks come down to: one request to the company, one screening, and so on.
+
+The tool writes the page of checks, `Internal/wiki/checks.md`, on every `pages`. It is listed last on the contents page and in the browser view, as "The due diligence list". It holds the count of checks in each state; a table of the open checks by what settles them and by stage; the names for the screening; then, pillar by pillar and claim by claim, every check with its state, whom it is asked of, its answer or what it waits for, what settles it while it is still to answer, and the stage it is ideally answered by; and last the documents that are not in the folder.
+
+In the browser view, buttons choose which states show: to answer, waiting, answered, not relevant or off, all. Never edit this page. Send the analyst there when they ask what is left and whether it matters.
 
 ## Evidence and kinds of source
 
-Evidence has three strengths: `best`, `supporting`, and `stated` for what someone said. Each check lists which kinds of source count as which. Each stage names the strength that is ideal by then. Nothing is demanded. The tool shows what an answer rests on.
+Evidence has three strengths: `best`, `supporting`, and `stated` for what someone said. Each check lists under `evidence` which kinds of source count as which. A kind it does not list counts as the weakest. Nothing is demanded.
 
-The kind you give a source therefore decides two things: the folder it is filed in, and how strong the evidence of its facts counts. `show kinds` lists every kind with its folder. Choose the kind for what the document is.
+So choose the kind of a source for what the document is. An annual report that is not itself audited is `annual_report`, not `audited_annual_report`, and counts as supporting, as a `prospectus` does.
 
-| The document | Its kind | Filed in | Counts as |
-|---|---|---|---|
-| Audited financial statements with the auditor's opinion | `audited_annual_report` | `Client folder` | Best evidence for most financial checks |
-| The company's annual report, which is not itself audited | `annual_report` | `Client folder` | Supporting |
-| A prospectus or another offering document | `prospectus` | `Client folder` | Supporting |
-| A newspaper or news-service article | `press_article` | `Internal/sources` | Supporting, where a check lists it |
-| A website, a registry website, market data | `public_source` | `Internal/sources` | Supporting, where a check lists it |
+## A decision that covers a check
 
-`show <check>` prints the kinds that the check lists under `evidence`. A kind it does not list shows as `unlisted` and counts as the weakest.
-
-## A gap with an agreed action, and a check settled for one subject
-
-A check can stay open with an agreed action: a condition, a covenant or a task with an owner and a date. Record a decision that `covers` the check and names the `owner` and the `due` date. See [recording](recording.md). The check then leaves the list of checks to answer and appears under "Gaps with an agreed action".
-
-A check can also be settled for one subject and stay asked of the others: one lender's ranking that cannot matter here, the papers of a customer that is too small to count. Record a decision that `covers` the check, with the reason and what it rests on, and without an owner or a date. Name in `about` the subject or the link the check is asked of, as `show <check>` prints it: for a check on an owner's tie that is the `owns` link, not the owner. The check then shows as `off` there. Do this on the analyst's word, as for a switch-off. `adjust` switches a check off for the whole deal, and a check the institution has locked cannot be settled this way.
-
-A check that opens others is answered, not settled: for a plant that carries little, answer `OBS_ASSET_007` no, and the checks on its condition fall away.
+- **A gap with an agreed action**: a condition, a covenant or a task. Record a decision that `covers` the check and names the `owner` and the `due` date. Name in `about` the subject or the link the check is asked of, or leave `about` out to cover the check for everyone it is asked of.
+- **Settled for one subject**: one lender's ranking cannot matter here, or a customer is too small to count. Record a decision that `covers` the check, with the reason, and without an owner or a date. Name in `about` the subject or the link the check is asked of, as `show <check>` prints it: for a check on an owner's tie that is the `owns` link, not the owner. The check then shows as `off` there, and stays asked of the others. Do this on the analyst's word. A check the institution has locked cannot be settled this way. `add` prints a `Note:` when a decision covers a check for a subject it is not asked of.
+- **A check that opens others is answered, not settled.** For a plant that carries little, answer `OBS_ASSET_007` no, and the checks on its condition fall away.
 
 ## Stages
 
-Stages are targets, not gates. "Ideally by concept" means the answer is ideally there for the concept note. Nothing waits for a stage. Move the deal with `{"deal": {"stage": "diligence"}}` in a set of changes.
+Stages are targets, not gates: nothing waits for a stage. A set of changes moves the deal to the next one: see [recording](recording.md).
 
 ## Adjusting
 
-The analyst adjusts the standard by saying so. You write the adjustment and hand it to `adjust`. Every adjustment needs a `reason`. Add `"by"` with who asked.
+The analyst adjusts the standard by saying so. You hand `adjust` a list. Every adjustment needs a `reason`. Add `"by"` with who asked.
 
 ```json
 [
@@ -132,32 +90,24 @@ The analyst adjusts the standard by saying so. You write the adjustment and hand
             "disproved_by": "no", "when": [{"check": "OBS_INPUT_001", "is": true}]}},
  {"do": "change", "target": "OBS_REV_003", "set": {"due_by": "concept"}, "reason": "Needed for the CIP."},
  {"do": "switch_off", "target": "CAS_COVERAGE_001", "strength": "not_now",
-  "reason": "Insurance is reviewed once the term sheet is agreed."},
- {"do": "switch_on", "target": "CAS_COVERAGE_001", "reason": "The term sheet is agreed."}
+  "reason": "Insurance is reviewed once the term sheet is agreed."}
 ]
 ```
 
-- **`add`** a check to an indicator (`to`), or a whole `indicator` with its `id`, `title`, `pillar`, `claim`, `due_by`, `applies_to` and `checks`. Copy the shape from `show` of an existing indicator. Give a new check an ID that starts with `DEAL_`. Write the assumption as what the lender relies on, so that the answer that disproves it is bad news.
-- **`change`** any field of a check or an indicator. Set a field to `null` to take it off.
-- **`switch_off`** a check or an indicator, in one of two strengths:
-  - `not_now`: it leaves the next list and comes back when the stage changes or when a check it follows gets a new answer.
-  - `not_for_this_deal`: it is off until someone switches it on.
-- **`switch_on`** undoes a switch-off.
+- **`add`** a check to an indicator (`to`), or a whole `indicator` with its `id`, `title`, `pillar`, `claim`, `due_by`, `applies_to` and `checks`. Copy the shape from `show` of an existing one. Give a new check an ID that starts with `DEAL_`, and its `settled_by`: without one it counts as settled by the company. Write the assumption as what the lender relies on, so that the answer that disproves it is bad news.
+- **`change`** any field of a check or an indicator. `null` takes a field off.
+- **`switch_off`** a check or an indicator. `not_now`: it comes back when the stage changes or when a check it follows gets a new answer. `not_for_this_deal`: it is off until a `switch_on`, which takes a `target` and a `reason`.
 
-The tool refuses an adjustment that names something unknown, lacks a reason, or touches what the institution has locked. A lock on an indicator covers its checks, and a lock on a check covers its indicator.
-
-An adjustment that should hold for every deal belongs in the institution's layer. Tell the analyst. Moving it there is their step.
+The tool refuses an adjustment that touches what the institution has locked. An adjustment that should hold for every deal belongs in the institution's layer: tell the analyst.
 
 ## A newer standard, or an older folder
 
-`upgrade` puts the standard that comes with the tool into the deal folder and records the change of version in the log. It prints the recorded answers that name a check which no longer exists: they stay in the facts and no longer count. It also lists the checks that are new, that are gone and that changed, each with its indicator. A check counts as changed when its own text changed or it moved to another indicator. For each answer that no longer counts, look at the new checks of the same indicator. Where the fact decides one, add that answer to the fact. Where none fits, take the old answer off: send the fact's `id` with its `answers` without it. Then read the changed checks that are already answered, because an answer may no longer fit its question.
+`upgrade` puts the standard that comes with the tool into the deal folder. It moves the pages of an older wiki to the folders this version uses, and takes the records to the names the standard now uses. It prints the answers that name a check which no longer exists, and the checks that are new, gone and changed, and writes the pages again.
 
-A folder made by an earlier version of the tool keeps its record in `Internal/memory/memory.json`. Every command then says so and names the remedy. `upgrade` moves the record to `Internal/record/record.json`. The documents of such a folder stay in the folders they were filed in, and the record still finds them. Only documents filed from then on go flat into `Client folder`.
-
-`doctor` says which version of the standard the tool carries and which the deal uses.
+- Such an answer no longer counts. Look at the new checks of the same indicator. Where the fact decides one, add that answer to the fact. Where none fits, send the fact's `id` with its `answers` without the old one.
+- Read the changed checks that are already answered: an answer may no longer fit its question.
+- Where a folder keeps its record in `Internal/memory/memory.json`, every command says so, and `upgrade` moves it.
 
 ## The institution's layer
 
-`Internal/standard/institution.json` holds what the institution set for all its deals: its names for the stages, its own checks, what it locked, and the fields of its systems. Do not change it.
-
-`show sheet` prints each system with its fields: the value, the fact and the source, or **missing**. To fill a field, add its ID to a fact's `fills`.
+`Internal/standard/institution.json` holds what the institution set for all its deals: its names for the stages, its own checks, what it locked, and the fields of its systems. Do not change it. `show sheet` prints each system with its fields: the value, the fact and the source, or **missing**. To fill a field, add its ID to a fact's `fills`.

@@ -88,6 +88,8 @@ def status(args):
     print(f"# {deal['name']}: stage {titles[deal['stage']]}, revision {store.revision(memory)}, standard {deal['standard']}")
     if scope is None:
         print("\nThe record holds: " + ", ".join(f"{table} {len(memory[table])}" for table in store.TABLES) + ".")
+        if deal.get("avoid"):
+            print("Wordings to avoid: " + "; ".join(deal["avoid"]) + ".")
     if scope:
         print(f"\nOnly what concerns {pages.name_of(args.about, memory)} ({args.about}).")
     structure(memory, std, None if args.about == store.DEAL else scope)
@@ -141,7 +143,7 @@ def status(args):
     if scope is None:
         group("System fields without a value", todo["fields"], limit)
     if todo["stray"]:
-        group("Answers to a check that is not asked or not relevant there", todo["stray"], limit)
+        group("Answers and decisions for a check that is not asked or not relevant there", todo["stray"], limit)
     if std["notes"] and scope is None:
         group("Notes on the standard", std["notes"], limit)
 
@@ -184,7 +186,7 @@ def add(args):
     if moved:
         print(f"Checks: {', '.join(moved)}.")
     for line in assess.stray(memory, std, rows, [*entry["added"], *entry["changed"]]):
-        print(f"Note: {line}. The answer is recorded all the same.")
+        print(f"Note: {line}. It is recorded all the same.")
     cite = [path for path, text in pages.all_pages(args.deal).items()  # what a page says of a changed record may no longer hold
             if set(entry["changed"]) & set(pages.ID.findall(pages.own_text(text)))]
     if cite:
@@ -250,9 +252,10 @@ def fact_lines(memory, terms):
     for fid, fact in memory["facts"].items():
         state = "" if fact["state"] == "current" else f" ({fact['state']})"
         value = f" {fact.get('label', 'Value')}: {fact.get('value')} {fact.get('unit', '')}".rstrip() + "."
-        answers = ", ".join(f"{answer['check']}: {pages.shown(answer['value'])[:60]}" for answer in fact.get("answers", []))
+        answers = ", ".join(f"{answer['check']}: {pages.shown(answer['value'])[:None if fid in ids else 60]}"
+                            for answer in fact.get("answers", []))
         where = [fact["source"], fact.get("place"), fact.get("as_of") and f"as of {fact['as_of']}", fact.get("said_by"),
-                 answers and f"answers {answers}"]
+                 answers and f"answers {answers}", fid in ids and fact.get("quote") and f'quote: "{fact["quote"]}"']
         line = (f"- {fid}{state} about {fact['about']}: {fact['statement']}{value if 'value' in fact else ''} "
                 f"({'; '.join(filter(None, where))})")
         named = fid in ids or any(re.search(rf"(?<!\w){re.escape(term)}(?!\w)", line, re.I) for term in words)
@@ -294,6 +297,7 @@ def show(args):
     elif what in std["checks"] or what in std["by_id"]:
         entry = std["checks"].get(what) or std["by_id"][what]
         print(json.dumps({key: value for key, value in entry.items() if key != "checks"}, indent=1, ensure_ascii=False))
+        print("\n".join(f"- {cid}: {check['question']}" for cid, check in std["checks"].items() if check["indicator"] == what))
         print("\n".join(pages.check_lines([row for row in rows if what in (row["check"], row["indicator"])], memory, std)))
     elif store.table_of(memory, what):
         print(json.dumps(memory[store.table_of(memory, what)][what], indent=1, ensure_ascii=False))
@@ -337,7 +341,8 @@ def file_problems(deal, memory):
     present = [path for path in files.listing(deal, files.CLIENT) if path not in (files.MANIFEST, files.CLIENT + "/index.md")]
     wheres = [source["where"] for source in memory["sources"].values() if source.get("where")]
     if (listed or wheres) and not present and not any(files.fingerprint(deal, where) for where in wheres):
-        return ["The documents are not in this copy of the folder, so files were not checked."]
+        return ["The documents are not in this copy of the folder, so files were not checked, "
+                "and a quotation only where its text is here."]
     found = [f"{path}: in the client folder but not in the manifest" for path in present if path not in listed]
     for path, doc in listed.items():
         mark = files.fingerprint(deal, path)
@@ -355,8 +360,9 @@ def file_problems(deal, memory):
 
 
 def plain(text):
-    """A text as a quotation is compared: without the marks of Markdown and HTML, in one case, with single spaces."""
-    return " ".join(re.sub(r"<[^>]+>|[*_`]", "", text).split()).casefold()
+    """A text as a quotation is compared: without the marks of Markdown and HTML or the bars of a table, in one case,
+    with single spaces."""
+    return " ".join(re.sub(r"<[^>]+>|[*_`|]", "", text).split()).casefold()
 
 
 def quote_problems(deal, memory):
@@ -462,26 +468,27 @@ def reshelve(deal):
     """Take the pages of a folder made before the shelves changed to their places, and repoint the links between them:
     the page of the deal becomes the page of the opportunity, the other pages of deal/ go to assets/, those of terms/ to deal/."""
     texts, cut = pages.all_pages(deal), len(files.WIKI) + 1
+    old = f"{files.WIKI}/deal/deal.md" in texts and f"{files.WIKI}/{pages.START}" not in texts
 
     def place(path):
         rel = path[cut:]
         return f"{files.WIKI}/" + (pages.START if rel == "deal/deal.md" else "assets/" + rel[5:] if rel.startswith("deal/")
                                    else "deal/" + rel[6:] if rel.startswith("terms/") else rel)
 
-    for path, text in texts.items() if f"{files.WIKI}/deal/deal.md" in texts else []:
+    for path, text in texts.items() if old else []:
         def repoint(found):
             target = files.beside(path, pages.decoded(found.group(1)))
             return f"]({'../' * place(path)[cut:].count('/')}{pages.encoded(place(target)[cut:])})" if target in texts else found.group()
 
         files.move(deal, path, place(path))
         files.write(deal, place(path), re.sub(r"\]\((?![a-z]+:)([^)#\s]+\.md)\)", repoint, text))
-    if f"{files.WIKI}/deal/deal.md" in texts:
+    if old:
         print("Moved the pages of the wiki to the shelves this version uses, and repointed the links between them.")
 
 
 def upgrade(args):
-    """Put the standard that comes with the tool into the deal folder, and say which answers it leaves without a check
-    and which checks are new, gone or changed.
+    """Put the standard that comes with the tool into the deal folder, say which answers it leaves without a check
+    and which checks are new, gone or changed, and write the pages again.
     A record that an earlier version of the tool kept elsewhere is first moved to its place."""
     if files.read(args.deal, files.MEMORY) is None and files.read(args.deal, files.OLD_MEMORY) is not None:
         files.move(args.deal, files.OLD_MEMORY, files.MEMORY)
@@ -491,6 +498,7 @@ def upgrade(args):
     new, old = files.packaged_standard(), memory["deal"]["standard"]
     if files.read_json(args.deal, files.BASE) == new:
         print(f"The deal already uses the standard that comes with the tool: {old}.")
+        refresh(args)
         return
     files.write_json(args.deal, files.BASE, new)
     std = standard.effective(args.deal)  # with the layers of the institution and the deal on top
@@ -512,13 +520,18 @@ def upgrade(args):
     print("Answers that name a check that no longer exists. They stay in the facts and no longer count:\n- "
           + "\n- ".join(gone) if gone else "Every recorded answer still names a check of the standard.")
     was, now = was["checks"], std["checks"]
+
+    def asked(check):  # what an answer depends on: not who settles the check, nor the evidence it lists
+        return {key: value for key, value in check.items() if key not in ("settled_by", "ask_whom", "evidence")}
+
     for title, ids in (("New checks", now.keys() - was.keys()), ("Checks that are gone", was.keys() - now.keys()),
-                       ("Checks that changed", [cid for cid in now.keys() & was.keys() if now[cid] != was[cid]])):
+                       ("Checks that changed", [cid for cid in now.keys() & was.keys() if asked(now[cid]) != asked(was[cid])])):
         if ids:  # with the indicator of each, where the check that took the place of a removed one is found
             print(f"{title}: " + (f"{len(ids)} checks. `show <check>` has each." if len(ids) > 40 else ", ".join(
                 f"{cid} ({(now.get(cid) or was[cid])['indicator']})" for cid in sorted(ids)) + "."))
     for note in std["notes"]:
         print(f"Note: {note}")
+    refresh(args)
 
 
 def doctor(args):

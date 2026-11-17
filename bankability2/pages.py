@@ -438,9 +438,10 @@ def refresh(deal, memory, std, rows, held):
         if ids and path.split("/")[0] not in BRIEF:
             where.setdefault(ids[0], path)
     created, changed = [], []
+    has_page = {rid for path, ids in named if path.split("/")[0] not in BRIEF for rid in ids}  # also one it shares
     wanted = [sid for sid, subject in memory["subjects"].items() if subject.get("name") and held.get(sid, set()) & MAIN]
     for rid in [DEAL, *wanted]:
-        if rid not in where:
+        if rid not in has_page:
             subject = memory["subjects"].get(rid, {"kind": "", "name": memory["deal"]["name"]})  # the opportunity is no subject
             shelf = "parties" if subject["kind"] in ("party", "group", "person") else "assets"
             slug = re.sub(r"[^a-z0-9]+", "-", subject["name"].lower()).strip("-") or rid.lower()
@@ -449,8 +450,8 @@ def refresh(deal, memory, std, rows, held):
                 path = f"{files.WIKI}/{shelf}/{slug}-{rid.lower()}.md"
             pages[path], where[rid] = SKELETON.format(title=subject["name"], about=rid), path[cut:]
             created.append(path)
-    for path, ids in named:  # what has no page of its own is found on the first page that names it
-        for rid in ids:
+    for path, ids in sorted(named, key=lambda page: page[0].split("/")[0] in BRIEF):  # what has no page of its own
+        for rid in ids:  # is found on the first page that names it: a page about subjects before one about a topic
             where.setdefault(rid, path)
     contents = {shelf: [] for shelf in SHELVES}
     for path, text in sorted(pages.items()):

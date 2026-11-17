@@ -306,7 +306,7 @@ The tool always outlines what to do and collect next. `status` lists every candi
 - questions without an answer, sent or not yet sent;
 - facts that rest on a source that was replaced;
 - system fields without a value;
-- answers to a check that is not asked about that subject, or is not relevant there.
+- answers to a check that is not asked about that subject, or is not relevant there, and decisions that cover a check for a subject it is not asked of.
 
 `status --for <ID>` keeps all of this to one subject or link. Each check in the list ends with its ID and the answer it takes.
 
@@ -326,7 +326,7 @@ The AI chooses what to show and how.
 | `check` | Reports what looks wrong: a broken log, an unsound adjustment, files that are missing or changed, a record that still names a replaced fact, and problems on the pages and in the drafts |
 | `adjust` | Applies a change to the deal's layer of the standard |
 | `file` | On the laptop only: moves documents into the client folder, lists them in the manifest and writes the index of the client folder |
-| `upgrade` | Puts the standard that comes with the tool into the deal folder, logs the change of version, names the answers whose check is gone, and lists the checks that are new, gone or changed. It also moves the record of a folder made by an earlier version to its new place. |
+| `upgrade` | Puts the standard that comes with the tool into the deal folder, logs the change of version, names the answers whose check is gone, and lists the checks that are new, gone or changed. It also moves the record and the pages of a folder made by an earlier version to their new places, and writes the pages again. |
 | `doctor` | Reports the environment it runs in |
 
 Every change adds an entry to a log. Each entry carries a fingerprint of the entry before it and of the record after the change, so that a change made outside the tool shows.
@@ -365,7 +365,7 @@ These rules are checked by a test that fails when the code breaks one:
 - No function longer than 100 lines.
 - The whole tool stays under 2,250 lines of Python, in at most seven files.
 
-The view for a browser is one more file, `bankability2/wiki.html`: about 250 lines of HTML, CSS and plain JavaScript that load nothing from the network. A test checks that it names no address and no outside file.
+The view for a browser is one more file, `bankability2/wiki.html`: about 300 lines of HTML, CSS and plain JavaScript that load nothing from the network. A test checks that it names no address and no outside file.
 
 [audit.md](audit.md) says what the tool does, what it can touch and how to verify a release.
 

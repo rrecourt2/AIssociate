@@ -13,7 +13,7 @@ ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 sys.path.insert(0, ROOT)
 
 from bankability2 import assess, files, pages, standard, store  # noqa: E402
-from bankability2.__main__ import fact_lines, main  # noqa: E402
+from bankability2.__main__ import fact_lines, main, plain  # noqa: E402
 
 EXAMPLE = os.path.join(ROOT, "examples", "cedar-foods")
 
@@ -114,6 +114,7 @@ class Deal(unittest.TestCase):
         self.assertIn("Moved the record to Internal/record/record.json", said)
         self.assertIn("Moved the pages of the wiki to the shelves this version uses", said)
         self.assertIn("See [the line](../assets/second-uht-line.md) [F-008].", files.read(deal, "Internal/wiki/opportunity/opportunity.md"))
+        self.assertIn("(opportunity/opportunity.md)", files.read(deal, "Internal/wiki/index.md"))  # the contents page is written again
         self.assertEqual(run("check", deal)[1].strip(), "No problems found.")
 
     def test_roles_come_from_links(self):
@@ -170,6 +171,7 @@ class Deal(unittest.TestCase):
         said = run("add", deal, self.handed({"facts": [{"id": "F-014", "answers": [], "quote": "Bluegate pays within 54 days."}]}))[1]
         self.assertTrue("-1 answered" in said and "+1 open" in said)  # what the set did to the checks
         self.assertIn("- F-014: its quotation is not in the text of S-003", run("check", deal)[1])
+        self.assertEqual(plain("| **Revenue** | 4,060 |"), "revenue 4,060")  # compared without marks, bars or capitals
         run("add", deal, self.handed({"decisions": [{"decision": "Kept.", "reason": "Small.", "about": "P-003", "rests_on": ["F-014"]}]}))
         run("pages", deal)  # a record that no page cites is in the view all the same, unless it is history
         self.assertIn('"D-003"', files.read(deal, "Internal/wiki/wiki.html"))
@@ -202,6 +204,8 @@ class Deal(unittest.TestCase):
         long = {"facts": {"F-1": {"state": "current", "about": "P-001", "statement": "x" * 400, "source": "S-001"}}}
         self.assertIn("x" * 300 + " ...", fact_lines(long, ["P-001"])[0])  # a long statement is cut in a list
         self.assertIn("x" * 400, fact_lines(long, ["F-1"])[0])  # and given in full when the fact is named
+        self.assertIn('quote: "Revenue was KES 4,060m (2024: KES 3,720m)."', run("show", self.deal, "facts", "F-008")[1])
+        self.assertIn("- OBS_REV_001: ", run("show", self.deal, "CAS_REVENUE_001")[1])  # an indicator lists its checks
         self.assertIn("- OBS_GROUP_011:", run("show", self.deal, "own account")[1])  # a search also finds a check
         self.assertIn("- D-002: Cedar is to propose", run("show", self.deal, "decisions")[1])  # every record of one kind
         self.assertEqual(len(run("show", self.deal, "sample")[1].splitlines()), 10)  # ten facts to compare with their pages
@@ -242,6 +246,8 @@ class Deal(unittest.TestCase):
         memory = self.memory()  # a decision without an owner or a date settles a check, only for the subject it is about
         memory["decisions"]["D-900"] = {"decision": "Not examined.", "reason": "It carries little.", "covers": ["OBS_REV_004"]}
         self.assertEqual(self.rows(memory)["OBS_REV_004", "P-001"], rows["OBS_REV_004", "P-001"])  # about the deal: no effect here
+        self.assertIn("D-900 covers OBS_REV_004 for DEAL, which is not asked that check: it is asked of P-001",  # and the tool says so
+                      assess.stray(memory, standard.effective(self.deal), self.rows(memory).values()))
         memory["decisions"]["D-900"]["about"] = "P-001"
         self.assertEqual(self.rows(memory)["OBS_REV_004", "P-001"]["state"], "off")
         memory["decisions"]["D-900"]["covers"] = ["OBS_SANC_001"]  # a check the institution has locked is not settled this way
@@ -417,6 +423,10 @@ class Deal(unittest.TestCase):
             f.write("---\ntitle: History\nabout: P-001\n---\n\nCedar Foods was founded in Nakuru [F-001].\n")
         self.assertIn("parties/cedar-foods-ltd.md", run("pages", deal)[1])  # a page about a topic is nobody's own page:
         self.assertIn("[Cedar Foods Ltd](../parties/cedar-foods-ltd.md)", files.read(deal, "Internal/wiki/opportunity/opportunity.md"))  # made again
+        os.remove(os.path.join(deal, "Internal", "wiki", "parties", "cedar-foods-ltd.md"))
+        line = files.read(deal, "Internal/wiki/assets/second-uht-line.md").replace("about: J-001", "about: J-001, P-001")
+        files.write(deal, "Internal/wiki/assets/second-uht-line.md", line)
+        self.assertNotIn("Created", run("pages", deal)[1])  # a page about subjects that names it second is its page
 
     def test_the_entry_sheet_shows_values_and_gaps(self):
         sheet = "\n".join(assess.sheet(self.memory(), standard.effective(self.deal)))
