@@ -155,6 +155,9 @@ class Deal(unittest.TestCase):
         self.assertEqual((memory["facts"]["F-020"]["answers"], memory["log"][-1]["changed"]), ([], {"F-020": {"answers": [answer]}}))
         self.assertIn("Pages that cite a record this set changed, to read again: Internal/wiki/deal/deal.md",
                       run("add", deal, self.handed({"facts": [{"id": "F-008", "place": "page 12"}]}))[1])
+        run("add", deal, self.handed({"decisions": [{"decision": "Kept.", "reason": "Small.", "about": "P-003", "rests_on": ["F-014"]}]}))
+        run("pages", deal)  # a record that no page cites is in the view all the same, unless it is history
+        self.assertIn('"D-003"', files.read(deal, "Internal/wiki/wiki.html"))
 
     def test_upgrade_brings_the_standard_of_the_tool(self):
         deal, newer = self.copy(), files.packaged_standard()

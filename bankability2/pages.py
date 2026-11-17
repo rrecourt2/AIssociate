@@ -408,7 +408,7 @@ def refresh(deal, memory, std, rows, held):
     cited = set(ID.findall(" ".join(text for path, text in texts.items() if path != "sources.md")))
     past = {"facts": "outdated", "sources": "replaced", "links": "ended"}  # history goes in only where a page cites it
     kept = {table: {rid: record for rid, record in memory[table].items()
-                    if rid in cited or record.get("state") != past.get(table)} for table in TABLES}
+                    if rid in cited or record.get("state", "current") != past.get(table)} for table in TABLES}
     data = {"name": memory["deal"]["name"], "revision": memory["log"][-1]["n"], "shelves": SHELVES, "pages": texts,
             "documents": client, "where": where, **kept}
     filled = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")  # so that no text can end the script it sits in
