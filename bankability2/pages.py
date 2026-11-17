@@ -8,7 +8,7 @@ import re
 
 from . import files
 from .assess import MAIN, VERDICTS, central, claims, holds_still, next_list, tally, view
-from .standard import ROUTES
+from .standard import ROUTES, route
 from .store import DEAL, TABLES, live, table_of
 
 SHELVES = {"opportunity": "Opportunity", "assets": "Assets and projects", "parties": "Parties", "people": "People",
@@ -107,6 +107,11 @@ def lead(text):
 def encoded(path):
     """A path as the target of a Markdown link."""
     return re.sub(r"[ ()#?%]", lambda found: f"%{ord(found.group()):02X}", path)
+
+
+def decoded(link):
+    """The target of a Markdown link as a path."""
+    return re.sub(r"%([0-9A-Fa-f]{2})", lambda code: chr(int(code.group(1), 16)), link)
 
 
 def name_of(rid, memory):
@@ -320,56 +325,72 @@ def source_lines(memory):
 
 
 def check_page(memory, std, rows, todo, where):
-    """Every check of the standard as it stands for this deal: first what is open and what settles it, then each claim
-    with its checks, what is to answer first. The view for a browser lets a reader choose which states to see."""
+    """Every check of the standard as it stands for this deal: first what is left to answer and what settles it, then each
+    claim with its checks, what is to answer first. The view for a browser lets a reader choose which states to see."""
     def name(rid):
         return linked(rid, memory, where, "checks.md")
 
-    def route(row):
-        return std["checks"][row["check"]].get("settled_by", "company")
+    def codes(ids):
+        return " or ".join(f"`{cid}`" for cid in dict.fromkeys(ids))
 
     def line(row):
         check, waits = std["checks"][row["check"]], row.get("waits_for", [])
         if row["state"] in ("answered", "contested"):
-            note = shown(row.get("value", "")) + (" (**against the claim**)" if row.get("against") else "") + f" [{', '.join(row['facts'])}]"
-        elif row["state"] != "waiting":
-            note = f"decision {row['action']}" if "action" in row else row.get("reason", "")
+            note = f"{shown(row.get('value', ''))}{' (**against the claim**)' * bool(row.get('against'))} [{', '.join(row['facts'])}]"
+        elif row["state"] == "not relevant":
+            note = "given the answer to " + codes([cond["check"] for cond in check.get("when", [])] or check.get("after", []))
+        elif row["state"] != "waiting":  # open, parked or off: the decision or the reason, where there is one
+            agreed = "agreed action" if row["state"] == "open" else "decision"
+            note = f"{agreed} {row['action']}" if "action" in row else row.get("reason", "")
         elif row["for"] in memory["subjects"] and not memory["subjects"][row["for"]].get("name"):
-            note = "until the party is named"
+            note = "until it is named"
+        elif check.get("mitigant") or not waits:
+            note = f"only if {codes(waits) or 'a test'} goes against the claim"
         else:
-            note = "only if a test goes against the claim" if check.get("mitigant") or not waits else (
-                f"until `{waits[0]}` is answered: {std['checks'][waits[0]]['question'][:70]} ...")
-        return (f"| {', '.join([row['state'], *row['flags']])} | {'Mitigant: ' * bool(check.get('mitigant'))}{check['question']} "
-                f"`{row['check']}` | {name(row['for'])} | {note} | {ROUTES[route(row)] if row['state'] in ORDER[:2] else ''} | "
-                f"{std['stage_titles'][row['due_by']]} |")
+            note = f"until `{waits[0]}` is answered: {std['checks'][waits[0]]['question'][:80].rsplit(' ', 1)[0]} ..."
+        cells = [", ".join([row["state"], *row["flags"]]),
+                 f"{'Mitigant: ' * bool(check.get('mitigant'))}{check['question']} `{row['check']}`", name(row["for"]), note,
+                 ROUTES[route(check)] if row["state"] in (*ORDER[:2], "waiting") else "", std["stage_titles"][row["due_by"]]]
+        return "| " + " | ".join(" ".join(str(cell).replace("|", "/").split()) for cell in cells) + " |"  # no cell ends early
 
-    counts, found = tally(rows), claims(rows, memory, std)
+    counts, found, stage_of = tally(rows), claims(rows, memory, std), std["stage_ids"].index
     work = [row for row in rows if row["state"] in ORDER[:2]]
     stages = [stage for stage in std["stage_ids"] if any(row["due_by"] == stage for row in work)]
-    lines = [f"# {memory['deal']['name']}: checks", "", "Every check of the standard as it stands for this opportunity, written by the "
-             "tool from the record. A check is open when it can be answered now. It is waiting when an earlier answer or a name "
-             "comes first, and not relevant when an earlier answer made it so.", "",
-             "**" + ", ".join(f"{counts[state]} {state}" for state in ORDER if state in counts) + ".**", "",
-             "## What settles the open checks", "",
-             "| Settled by | " + " | ".join(std["stage_titles"][stage] for stage in stages) + " | All |", "|---|" + "---|" * (len(stages) + 1)]
+    lines = [f"# {memory['deal']['name']}: checks", "", "Every check of the standard as it stands for this opportunity, written by "
+             f"the tool from the record. The opportunity is at the stage {std['stage_titles'][memory['deal']['stage']]}. A check is "
+             "open when it can be answered now. It is waiting when an earlier answer or a name comes first, and not relevant when "
+             "an earlier answer made it so. It is contested when two facts answer it differently, and off when a decision or an "
+             "adjustment set it aside. An answer is thin when its evidence is weaker than this stage asks for, and old when it is "
+             "older.", "",
+             "**" + ", ".join(f"{counts[state]} {state}" for state in ORDER if state in counts) + ".** Answers that go against "
+             f"their claim: {sum(bool(row.get('against')) for row in rows)}."]
+    if work:
+        lines += ["", "## What settles the checks to answer", "",
+                  "| Settled by | " + " | ".join(std["stage_titles"][stage] for stage in stages) + " | All |",
+                  "|---|" + "---|" * (len(stages) + 1)]
     for key, title in ROUTES.items():
-        due = [row["due_by"] for row in work if route(row) == key]
+        due = [row["due_by"] for row in work if route(std["checks"][row["check"]]) == key]
         if due:
-            lines.append(f"| {title[0].upper()}{title[1:]} | " + " | ".join(str(due.count(stage)) for stage in stages) + f" | {len(due)} |")
-    screened = dict.fromkeys(row["for"] for row in work if route(row) == "screening" and row["for"] in memory["subjects"])
+            lines.append(f"| {title[0].upper()}{title[1:]} | " + " | ".join(str(due.count(stage)) for stage in stages)
+                         + f" | {len(due)} |")
+    screened = dict.fromkeys(memory["links"].get(row["for"], {}).get("from", row["for"]) for row in work  # a link: who gives it
+                             if route(std["checks"][row["check"]]) == "screening")
+    screened = [sid for sid in screened if memory["subjects"].get(sid, {}).get("kind") in ("party", "person", "group")]
     lines += ["", "**Names for the screening:** " + ", ".join(map(name, screened)) + "."] * bool(screened)
     for pillar in std["pillars"]:
         within = tally(row for row in rows if std["by_id"][row["indicator"]]["pillar"] == pillar["id"])
-        lines += ["", f"## {pillar['title']}", "", ", ".join(f"{within[state]} {state}" for state in ORDER if state in within) + "."]
+        lines += ["", f"## {pillar['title']}", "",
+                  ", ".join(f"{within[state]} {state}" for state in ORDER if state in within) + "."] * bool(within)
         for ind in std["indicators"]:
-            mine = sorted((row for row in rows if row["indicator"] == ind["id"]), key=lambda row: ORDER.index(row["state"]))
+            mine = sorted((row for row in rows if row["indicator"] == ind["id"]),
+                          key=lambda row: (ORDER.index(row["state"]), stage_of(row["due_by"])))
             if ind["pillar"] == pillar["id"] and mine:
                 stands = "; ".join(f"{claim['stands']} for {name(claim['for'])}" for claim in found if claim["indicator"] == ind["id"])
                 lines += ["", f"### {ind['title']}", "", f"*{ind['claim']}*" + f" Where it stands: {stands}." * bool(stands), "",
                           "| State | Check | For | Answer, or what it waits for | Settled by | Ideally by |", "|---|---|---|---|---|---|",
                           *map(line, mine)]
-    lines += ["", "## Documents that are not in the folder", "", *(f"- {doc['title']} ({doc['slot']}): {doc['why']}" for doc in todo["documents"])
-              ] * bool(todo["documents"])
+    lines += ["", "## Documents that are not in the folder", "",
+              *(f"- {doc['title']} ({doc['slot']}): {doc['why']}" for doc in todo["documents"])] * bool(todo["documents"])
     return "\n".join([*lines, ""])
 
 
@@ -502,14 +523,15 @@ def problems(deal, memory):
         if len(ID.sub("", body).split()) > 40 and not notes and not any(table_of(memory, rid) for rid in cited):
             found.append(f"{path}: has text and cites nothing")
         for link in re.findall(r"\]\((?![a-z]+:)([^)#\s]+\.md)", text):  # a link to another page, also in the tool's parts
-            target = files.beside(path, re.sub(r"%([0-9A-Fa-f]{2})", lambda code: chr(int(code.group(1), 16)), link))
+            target = files.beside(path, decoded(link))
             if path in pages and target != path:
                 reached.add(target)
             if target.startswith(files.WIKI + "/") and target not in there:
                 found.append(f"{path}: links to {link}, which is not there")
         for words in [] if notes else memory["deal"].get("avoid", []):  # a wording to keep out: all its words in one sentence
             found += [f"{path}: \"{' '.join(sentence.split()[:6])} ...\" holds a wording to avoid: {words}"
-                      for block in [front(text).get("title", ""), *blocks(body)] for sentence in re.split(r"(?<=[.!?])\s+", block)
+                      for block in [front(text).get("title", ""), *re.findall(r"^#+\s*(.+)$", text, re.M), *blocks(body)]
+                      for sentence in re.split(r"(?<=[.!?])\s+", block)
                       if all(re.search(rf"(?<!\w){re.escape(word)}(?!\w)", sentence, re.I) for word in words.split())]
         stale = {}
         for block in blocks(body):

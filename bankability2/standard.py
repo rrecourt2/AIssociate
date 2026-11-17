@@ -15,6 +15,11 @@ FLAG = re.compile(r"^(above|below|at most|at least) (-?\d+(?:\.\d+)?)$|^is (not 
 EXPECTS = {"yes_no": "true or false", "number": "a number", "choice": "one of the check's options", "text": "text"}
 
 
+def route(check):
+    """What settles a check. A check that does not say, or that names something else, is taken to the company."""
+    return check["settled_by"] if check.get("settled_by") in ROUTES else "company"
+
+
 def takes(check):
     """The answer a check takes, as a person reads it: yes/no, a number with its unit, the options, or text."""
     if check["answer"] == "choice":

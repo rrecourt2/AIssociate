@@ -179,8 +179,10 @@ def problems_of(table, rid, fields, is_new, memory, known, std):
         if allowed and fields.get(key) is not None and fields[key] not in allowed:
             found.append(f"{key} {fields[key]!r} is not known. Known: {', '.join(sorted(allowed))}")
     found += [f"covers {cid!r}: not a check of the standard" for cid in as_list(fields.get("covers")) if cid not in std["checks"]]
-    if not isinstance(fields.get("page_offset", 0), int):
+    if type(fields.get("page_offset", 0)) is not int and fields["page_offset"] is not None:
         found.append("page_offset is a whole number: the page of the PDF less the page number printed on it")
+    if not isinstance(fields.get("quote", ""), (str, type(None))):
+        found.append("quote is text: the words as the source has them")
     for answer in as_list(fields.get("answers")):
         if not isinstance(answer, dict) or answer.get("check") not in std["checks"] or "value" not in answer:
             found.append(f"answer {answer!r} needs a known check and a value")
@@ -201,7 +203,7 @@ def apply(memory, change, std):
         errors.append(f"the record is at revision {revision(memory)}, not {change['base']}. Look at it again and resend.")
     deal = change.get("deal", {})
     errors += [f"deal: unknown field {key!r}" for key in deal if key not in ("name", "stage", "avoid")]
-    if not all(isinstance(words, str) and words.strip() for words in as_list(deal.get("avoid"))):
+    if not (isinstance(deal.get("avoid", []), list) and all(isinstance(words, str) and words.strip() for words in deal.get("avoid", []))):
         errors.append("deal: 'avoid' is a list of wordings, each a few words that one sentence must not hold together")
     if "stage" in deal and deal["stage"] not in std["stage_ids"]:
         errors.append(f"deal: unknown stage {deal['stage']!r}. Known: {', '.join(std['stage_ids'])}")

@@ -103,7 +103,7 @@ def status(args):
     if due:  # most open checks are work for a later stage
         print("Open, by the stage each is ideally answered by: "
               + ", ".join(f"{titles[stage]} {due.count(stage)}" for stage in std["stage_ids"] if stage in due) + ".")
-        routes = [std["checks"][row["check"]].get("settled_by", "company") for row in rows if row["state"] == "open"]
+        routes = [standard.route(std["checks"][row["check"]]) for row in rows if row["state"] == "open"]
         print("Open, by what settles them: " + ", ".join(f"{title} {routes.count(route)}" for route, title in standard.ROUTES.items()
                                                          if route in routes) + ".")
     waits = [row for row in rows if row["state"] == "waiting"]
@@ -282,12 +282,14 @@ def show(args):
         outdated = sum(fact["state"] == "outdated" for fact in memory["facts"].values())
         if outdated and len(args.what) == 1:
             print(f"\nOutdated facts not listed: {outdated}. Name one, or a word it holds, to see it.")
-    elif what == "sample":  # ten facts taken from a document, spread over the record, to compare with the page each names
+    elif what == "sample":  # ten facts that are not inferences, spread over the record, to compare with the place each names
         taken = [fid for fid, fact in memory["facts"].items() if fact["state"] == "current" and fact.get("said_by") != "inference"]
-        step = max(1, len(taken) // 10)  # another ten after each change to the record
-        print("\n".join(fact_lines(memory, taken[store.revision(memory) % step::step][:10])) or "Nothing found.")
+        some = min(10, len(taken))  # another ten after each change to the record
+        picked = [taken[(store.revision(memory) + i * len(taken) // some) % len(taken)] for i in range(some)]
+        print("\n".join(fact_lines(memory, picked) if picked else []) or "Nothing found.")
     elif what in store.TABLES:  # every record of one kind, one line each
-        print("\n".join(f"- {rid}: {summary(record)}" + f" ({record.get('state')})" * (record.get("state", "current") != "current")
+        print("\n".join(f"- {rid}: {pages.name_of(rid, memory) if what == 'links' else summary(record)}"
+                        + f" ({record.get('state')})" * (record.get("state", "current") != "current")
                         for rid, record in memory[what].items()) or "Nothing found.")
     elif what in std["checks"] or what in std["by_id"]:
         entry = std["checks"].get(what) or std["by_id"][what]
@@ -326,7 +328,7 @@ def refresh(args):
         print(f"Created {counted(len(created))} for you to write: {', '.join(created)}.")
     if changed or same:
         print(f"Updated the tool's parts of {counted(len(changed))}. {counted(same)} needed no change.")
-    print(f"Wrote the contents page, the sources page and the view for a browser: {files.WIKI}/wiki.html.")
+    print(f"Wrote the contents page, the sources page, the page of checks and the view for a browser: {files.WIKI}/wiki.html.")
 
 
 def file_problems(deal, memory):
@@ -352,6 +354,11 @@ def file_problems(deal, memory):
     return found
 
 
+def plain(text):
+    """A text as a quotation is compared: without the marks of Markdown and HTML, in one case, with single spaces."""
+    return " ".join(re.sub(r"<[^>]+>|[*_`]", "", text).split()).casefold()
+
+
 def quote_problems(deal, memory):
     """Quotations that are not in the text of their source: its extract, or its original where that is a text file."""
     found, texts = [], {}
@@ -361,11 +368,14 @@ def quote_problems(deal, memory):
             continue
         if sid not in texts:
             paths = [source.get("extract"), *filter(re.compile(r"\.(md|txt|html?)$", re.I).search, [source.get("where") or ""])]
-            texts[sid] = [" ".join(text.split()).casefold() for text in (files.read(deal, path) for path in paths if path) if text]
+            try:
+                texts[sid] = [plain(text) for text in (files.read(deal, path) for path in paths if path) if text]
+            except UnicodeDecodeError:
+                texts[sid] = found.append(f"{sid}: its text is not UTF-8, so its quotations were not checked") or []
             if not any(paths):
                 found.append(f"{sid}: facts quote it, and it has no extract to check them against")
-        if texts[sid] and not any(" ".join(fact["quote"].split()).casefold() in text for text in texts[sid]):
-            found.append(f"{fid}: its quotation is not in the text of {sid}")
+        if texts[sid] and not any(plain(fact["quote"]) in text for text in texts[sid]):
+            found.append(f"{fid}: its quotation is not in the text of {sid}. Copy the words as the text has them, with nothing left out")
     return found
 
 
@@ -448,6 +458,27 @@ def file_documents(args):
                       "own and file it again.\n" + "\n".join(refused))
 
 
+def reshelve(deal):
+    """Take the pages of a folder made before the shelves changed to their places, and repoint the links between them:
+    the page of the deal becomes the page of the opportunity, the other pages of deal/ go to assets/, those of terms/ to deal/."""
+    texts, cut = pages.all_pages(deal), len(files.WIKI) + 1
+
+    def place(path):
+        rel = path[cut:]
+        return f"{files.WIKI}/" + (pages.START if rel == "deal/deal.md" else "assets/" + rel[5:] if rel.startswith("deal/")
+                                   else "deal/" + rel[6:] if rel.startswith("terms/") else rel)
+
+    for path, text in texts.items() if f"{files.WIKI}/deal/deal.md" in texts else []:
+        def repoint(found):
+            target = files.beside(path, pages.decoded(found.group(1)))
+            return f"]({'../' * place(path)[cut:].count('/')}{pages.encoded(place(target)[cut:])})" if target in texts else found.group()
+
+        files.move(deal, path, place(path))
+        files.write(deal, place(path), re.sub(r"\]\((?![a-z]+:)([^)#\s]+\.md)\)", repoint, text))
+    if f"{files.WIKI}/deal/deal.md" in texts:
+        print("Moved the pages of the wiki to the shelves this version uses, and repointed the links between them.")
+
+
 def upgrade(args):
     """Put the standard that comes with the tool into the deal folder, and say which answers it leaves without a check
     and which checks are new, gone or changed.
@@ -455,6 +486,7 @@ def upgrade(args):
     if files.read(args.deal, files.MEMORY) is None and files.read(args.deal, files.OLD_MEMORY) is not None:
         files.move(args.deal, files.OLD_MEMORY, files.MEMORY)
         print(f"Moved the record to {files.MEMORY}. It was in {files.OLD_MEMORY}.")
+    reshelve(args.deal)
     memory, was = load(args.deal)
     new, old = files.packaged_standard(), memory["deal"]["standard"]
     if files.read_json(args.deal, files.BASE) == new:
@@ -465,10 +497,10 @@ def upgrade(args):
     store.note_outside_change(memory)
     memory["deal"]["standard"] = new["version"]
     names, before = new.get("renamed", {}), {store.DEAL: {"standard": old}}
-    for table, key in (("sources", "kind"), ("facts", "said_by"), ("decisions", "by")):  # where a record uses such a name
+    for table, key in (("sources", "kind"), ("facts", "said_by"), ("decisions", "by"), ("decisions", "owner")):  # where such a name is
         for rid, record in memory[table].items():
             if record.get(key) in names:
-                before[rid], record[key] = {key: record[key]}, names[record[key]]
+                before.setdefault(rid, {})[key], record[key] = record[key], names[record[key]]
     store.record(memory, "tool", f"Standard changed from {old} to {new['version']}", changed=before)
     files.write_json(args.deal, files.MEMORY, memory)
     print(f"The deal now uses standard {new['version']}. It used {old}.")
@@ -530,7 +562,8 @@ def main(argv=None):
     sub.add_argument("changes", help="a JSON file, or - for standard input")
     sub.add_argument("--try", dest="dry", action="store_true", help="say what the set would record, and write nothing")
     command("show", show, "look something up").add_argument(
-        "what", nargs="+", help="an ID, 'log', 'sheet', 'kinds', 'claims', 'facts', 'facts <IDs or words>', or words to search for")
+        "what", nargs="+", help="an ID, 'log', 'sheet', 'kinds', 'claims', 'sample', 'facts', 'facts <IDs or words>', the name of a "
+                                 "kind of record such as 'decisions', or words to search for")
     command("pages", refresh, "fill in the tool's parts of the wiki pages, and write the view for a browser")
     command("check", check, "report what looks wrong")
     command("adjust", adjust, "adjust the standard for this deal").add_argument("adjustment", help="a JSON file, or -")

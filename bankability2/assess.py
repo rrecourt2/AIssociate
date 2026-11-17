@@ -399,7 +399,7 @@ def next_list(memory, std, rows, in_folder=(), scope=None):
                       for sid, subject in kept("subjects") if not subject.get("name") and subject.get("state") != "ended"]
                      + [f"{lid}: {link['from']} {link['type']} {link['to']} is proposed, not confirmed"
                         for lid, link in kept("links") if link["state"] == "proposed" and holds_still(link, memory)]
-                     + [f"{memory['subjects'].get(call['for'], {}).get('name') or call['for'].replace(DEAL, 'The deal')}: "
+                     + [f"{memory['subjects'].get(call['for'], {}).get('name') or call['for'].replace(DEAL, 'The opportunity')}: "
                         f"the answer to {call['check']} calls for {call['wanted']}, and there is none"
                         for call in called_for(rows, memory, std)],
         "actions": [f"{did}: {decision['decision']} (owner: {decision.get('owner', 'not named')}; due: "

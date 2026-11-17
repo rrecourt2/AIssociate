@@ -62,6 +62,10 @@ main.broad { max-width: 78rem; }
 tr[data-group="To answer"] .state { background: #f4e2b8; color: #5b4300; }
 tr[data-group="Answered"] .state { background: #d6ebda; color: #1d4d2b; }
 tr[data-group="Waiting"] .state { background: #dee6f0; color: #2b4462; }
+tr.against .state { background: #f4d3ce; color: #6d1e15; }
+.wide:has(.state) table { width: 100%; table-layout: fixed; }
+.wide:has(.state) th:nth-child(1) { width: 7rem; } .wide:has(.state) th:nth-child(3) { width: 9rem; }
+.wide:has(.state) th:nth-child(4) { width: 13rem; } .wide:has(.state) th:nth-child(5), .wide:has(.state) th:nth-child(6) { width: 6.5rem; }
 @media (max-width: 60rem) {
   body { display: block; } main { margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
   nav { position: static; height: auto; border: 0; border-bottom: 1px solid var(--line); }
@@ -193,7 +197,8 @@ function card(id) {  // what the record holds under an ID: a fact with its value
     let html = key === "where" || key === "extract" ? file(value) : named(value);
     if (key === "value") html = esc(record.label ? record.label + ": " : "") + html + " " + esc(record.unit || "");
     const source = key === "source" && data.sources[value];
-    const at = page && Number(page[1]) + (/PDF\s+p/i.test(record.place) ? 0 : source.page_offset || 0);  // a printed page, unless it says PDF
+    const pdf = /PDF\s+pp?(?:ages?|\.)?\s*(\d+)/i.exec(record.place || "");  // a place may name the page of the PDF itself
+    const at = pdf ? pdf[1] : page && Number(page[1]) + (source && source.page_offset || 0);  // if not, it is a printed page
     if (source) html += [" " + esc(source.title) + (source.date ? ", " + esc(source.date) : ""),
       source.where && file(source.where, page ? "#page=" + at : ""), source.extract && file(source.extract)]
       .filter(Boolean).join("<br>");
@@ -205,7 +210,7 @@ function card(id) {  // what the record holds under an ID: a fact with its value
   el("card").hidden = false;
 }
 
-const bare = text => text.replace(/<!--.*?-->/g, " ").replace(/\]\([^)]*\)/g, "]").replace(/[*_#|`>\[\]]+/g, " ")
+const bare = text => text.replace(/<!--.*?-->/g, " ").replace(/\]\([^)]*\)/g, "]").replace(/[*#|`>\[\]]+/g, " ")
   .replace(/\s+/g, " ");  // the words of a page without its Markdown, for the search
 const starts = word => new RegExp("(?<![\\p{L}\\p{N}])" + word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "iu");  // at the start of a word
 
@@ -230,17 +235,20 @@ function menu() {  // the pages by shelf, or the pages that hold the words searc
 
 const GROUPS = {"To answer": ["open", "contested"], "Waiting": ["waiting"], "Answered": ["answered"],
   "Not relevant or off": ["not relevant", "off", "parked"]};
+let chosen = "To answer";  // the states that show on the page of checks, kept while the reader looks at other pages
 
 function filters(rows) {  // on a page of checks: a mark on each state, and buttons that choose which states show
   for (const tr of rows) {
     tr.dataset.group = Object.keys(GROUPS).find(name => GROUPS[name].includes(tr.cells[0].textContent.split(",")[0]));
     tr.cells[0].innerHTML = `<span class="state">${tr.cells[0].innerHTML}</span>`;
+    tr.classList.toggle("against", /\(against the claim\)/.test(tr.cells[3].textContent));
   }
   const bar = document.createElement("p"), count = name => rows.filter(tr => name === "All" || tr.dataset.group === name).length;
   bar.className = "filters";
   bar.innerHTML = [...Object.keys(GROUPS), "All"].map(name => `<button data-show="${name}">${name} <small>${count(name)}</small></button>`).join("");
   el("page").querySelector("h1").after(bar);
   const choose = name => {
+    chosen = name;
     for (const button of bar.children) button.classList.toggle("on", button.dataset.show === name);
     for (const tr of rows) tr.hidden = name !== "All" && tr.dataset.group !== name;
     for (const wide of new Set(rows.map(tr => tr.closest(".wide")))) {  // a table with no row left goes, with its claim and its heading
@@ -249,7 +257,7 @@ function filters(rows) {  // on a page of checks: a mark on each state, and butt
     }
   };
   bar.addEventListener("click", event => event.target.closest("button") && choose(event.target.closest("button").dataset.show));
-  choose("To answer");
+  choose(chosen);
 }
 
 function show() {  // open the page that the address names, or the contents page
@@ -260,7 +268,8 @@ function show() {  // open the page that the address names, or the contents page
     if (part.children.length < 2) part.remove();
     else part.open = part.querySelectorAll("li, tr").length <= 3;
   }
-  const states = [...el("page").querySelectorAll("tbody tr")].filter(tr => tr.closest("table").querySelector("th").textContent === "State");
+  const states = here === "checks.md" ? [...el("page").querySelectorAll("tbody tr")]
+    .filter(tr => tr.closest("table").querySelector("th").textContent === "State") : [];
   el("page").classList.toggle("broad", states.length > 0);
   if (states.length) filters(states);
   el("card").hidden = true;
