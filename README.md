@@ -55,10 +55,10 @@ The deal is invented. The steps under `examples/cedar-foods/changes` are what an
 - **`file`** puts the two documents of the client into `Cedar Foods/Client folder` and writes `index.md` there: the documents by the folders of the data room, and the slots that are still empty. The notes of the call go to `Cedar Foods/Internal/sources`.
 - **`add`** prints the ID it gave to each new record.
 - **`status`** shows where the claims stand in each pillar. Two are challenged: the margin fell, and the loan is in euros while all sales are in shillings. It lists what the answers call for and the structure lacks (the suppliers, the lenders, a guarantor with a name), one gap with an agreed action, and the checks to answer next. `status "Cedar Foods" --for P-001` keeps to the borrower.
-- **`pages`** creates three pages for an assistant to write: the deal, the borrower and the project the loan pays for. The line after it copies in the pages an assistant wrote for this deal, from `examples/cedar-foods/wiki`. `pages` then fills in the parts that the tool keeps and writes `Cedar Foods/Internal/wiki/wiki.html`. Open that file in a browser to read the wiki, the documents and the facts behind each citation.
-- **`check`** finds nothing wrong.
+- **`pages`** creates three pages for an assistant to write: the opportunity, the borrower and the project the loan pays for. The line after it copies in the pages an assistant wrote for this deal, from `examples/cedar-foods/wiki`. `pages` then fills in the parts that the tool keeps and writes `Cedar Foods/Internal/wiki/wiki.html`. Open that file in a browser to read the wiki, the documents and the facts behind each citation. The last entry in its menu is the due diligence list: every check with its state, its answer or what it waits for, and what settles it.
+- **`check`** finds nothing wrong. It also confirms that the quotation each fact carries is in the text of its source.
 
-More to look at: `show "Cedar Foods" claims` lists every claim by pillar, `show "Cedar Foods" facts` every current fact, `show "Cedar Foods" facts S-002` the facts from one source, and `show "Cedar Foods" kinds` the kinds of source, subject and link.
+More to look at: `show "Cedar Foods" claims` lists every claim by pillar, `show "Cedar Foods" facts` every current fact, `show "Cedar Foods" facts S-002` the facts from one source, `show "Cedar Foods" sample` ten facts to compare with their documents, and `show "Cedar Foods" kinds` the kinds of source, subject and link.
 
 ## The parts
 
