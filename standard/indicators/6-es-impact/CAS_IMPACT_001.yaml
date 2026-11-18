@@ -19,7 +19,6 @@ checks:
 - id: OBS_IMPACT_006
   question: Who is better off because of what the loan finances, in what way, and about how many are they?
   answer: text
-  settled_by: company
   why: This is the impact claim. Each group and each benefit named here needs an indicator in OBS_IMPACT_009.
   look_in: [01.01.a, 01.01.b]
   evidence:
@@ -34,7 +33,6 @@ checks:
   question: 'What does the lender add besides money: for example higher environmental, social or governance standards, advice,
     or the confidence that brings in other financiers?'
   answer: text
-  settled_by: lender
   why: A lender that brings only money is needed only where money is short. That is tested in OBS_IMPACT_008.
   evidence:
     best: [facility_agreement, dfi_facility_document]
@@ -46,7 +44,6 @@ checks:
     and an amount close to what the lender is asked for, or do commercial lenders make such loans to comparable borrowers
     in the same market?
   answer: yes_no
-  settled_by: company
   assumption: Commercial lenders would not finance this on terms the borrower could work with
   disproved_by: 'yes'
   look_in: [04.01.a, 10.02.a, 01.03.a]
@@ -64,7 +61,6 @@ checks:
   question: Does every impact claimed have an indicator with a baseline figure, a target, a date and a named source of data
     from which the borrower will report it?
   answer: yes_no
-  settled_by: terms
   assumption: Every impact claimed has an indicator, a baseline, a target and a source of data
   disproved_by: 'no'
   due_by: diligence
@@ -80,7 +76,6 @@ checks:
 - id: OBS_IMPACT_010
   question: Does the loan finance any activity that the lender treats as not aligned with the Paris Agreement?
   answer: yes_no
-  settled_by: lender
   assumption: Nothing the loan finances is, by the lender's own method, out of line with the Paris Agreement
   disproved_by: 'yes'
   due_by: screening
@@ -96,7 +91,6 @@ checks:
   question: What share of the loan amount counts as climate finance, for mitigation or adaptation, under the method the
     lender uses?
   answer: number
-  settled_by: lender
   unit: percent
   why: A lender with a climate target reports this share. It rests on what the money pays for, item by item.
   due_by: diligence
@@ -110,7 +104,6 @@ checks:
   question: Are figures available for the share of women among the owners, the board and senior management, the employees
     and the customers of the business?
   answer: yes_no
-  settled_by: company
   why: A lender with a gender target needs these figures before it can say whether the deal counts towards it. The 2X Challenge
     criteria are a common reference.
   due_by: diligence

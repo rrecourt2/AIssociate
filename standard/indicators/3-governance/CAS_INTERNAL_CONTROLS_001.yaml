@@ -17,7 +17,6 @@ checks:
   question: Does the party have written rules that say who may commit it, who may approve a payment and who may post to
     the books, with limits by amount?
   answer: yes_no
-  settled_by: company
   assumption: The party's rules for commitments, payments and entries in the books are written down
   disproved_by: 'no'
   due_by: concept
@@ -32,7 +31,6 @@ checks:
   question: Are ordering, approving, paying and recording done by different people, so that nobody can both make a payment
     and enter it in the books?
   answer: yes_no
-  settled_by: company
   assumption: Whoever makes a payment cannot also approve it or record it
   disproved_by: 'no'
   look_in: [03.01.e, 02.05.a, 02.03.a]
@@ -47,7 +45,6 @@ checks:
   question: Does every payment above a set amount need two people to release it at the bank, with no exception for the owner
     or the chief executive?
   answer: yes_no
-  settled_by: company
   assumption: No single person, the owner included, can release a large payment alone
   disproved_by: 'no'
   look_in: [03.01.e, 02.02.a, 02.05.a]
@@ -62,7 +59,6 @@ checks:
   question: 'Does someone who does not report to the head of finance check at least once a year that the controls work:
     an internal auditor, an outside firm or an audit committee?'
   answer: yes_no
-  settled_by: company
   assumption: Someone independent of the finance function checks that the controls work
   disproved_by: 'no'
   look_in: [03.01.e, 02.02.a, 02.03.a]
@@ -76,7 +72,6 @@ checks:
   question: In the last three years, has the party had a fraud, an unauthorised payment, or an unexplained loss of cash
     or stock?
   answer: yes_no
-  settled_by: company
   assumption: 'The controls have held: no fraud, unauthorised payment or unexplained loss in the last three years'
   disproved_by: 'yes'
   look_in: [03.01.e, 03.01.a, 02.02.a]
@@ -92,7 +87,6 @@ checks:
   question: Does the auditor's latest management letter, or the latest internal audit report, list weaknesses in the controls
     over cash, payments or the books that are still open?
   answer: yes_no
-  settled_by: company
   assumption: The weaknesses the auditors found in the controls over money and the books are closed
   disproved_by: 'yes'
   look_in: [03.01.e, 02.02.a]
@@ -108,7 +102,6 @@ checks:
   question: Has the cause of the failure been found and the control changed, and has the auditor or a later internal audit
     confirmed that the change works?
   answer: yes_no
-  settled_by: company
   mitigant: true
   assumption: The gap behind the failure is closed, and someone independent has confirmed it
   disproved_by: 'no'

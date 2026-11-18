@@ -22,7 +22,6 @@ checks:
 - id: OBS_FX_001
   question: Does the party earn any of its revenue in a foreign currency, or at prices that are set in one?
   answer: yes_no
-  settled_by: company
   why: Opens the revenue side. A "no" is not the end of it. OBS_FX_008 and OBS_FX_CAPEX_001 are asked whatever the answer,
     and the currency note in the audited accounts shows whether the answer is right.
   due_by: screening
@@ -37,7 +36,6 @@ checks:
 - id: OBS_FX_003
   question: In which foreign currencies does the party earn revenue?
   answer: choice
-  settled_by: company
   options: [USD, EUR, GBP, other]
   many: true
   why: Revenue covers a payment only in the same currency, or in one that moves with it.
@@ -53,7 +51,6 @@ checks:
 - id: OBS_FX_002
   question: What share of the party's revenue is earned in a foreign currency, or at prices set in one?
   answer: number
-  settled_by: company
   unit: percent
   why: The share says how much of the revenue can cover costs and debt in that currency.
   due_by: concept
@@ -70,7 +67,6 @@ checks:
   question: Does the party pay any of its costs in a foreign currency, or at prices that follow one (imported inputs, fuel,
     freight, licence fees)?
   answer: yes_no
-  settled_by: company
   why: Opens the cost side. A party that sells only at home can still be hit through what it buys.
   due_by: screening
   look_in: [03.01.a, 03.01.b]
@@ -85,7 +81,6 @@ checks:
   question: What share of the party's input costs is imported, or priced at import parity so that it rises when the local
     currency falls?
   answer: number
-  settled_by: company
   unit: percent
   assumption: A fall in the local currency would raise only a small part of the party's input costs
   flag_when: above 25
@@ -108,7 +103,6 @@ checks:
   question: Is more than about a tenth of the party's debt, the proposed loan included, owed in a currency other than the
     one in which the party earns the cash flow that services it?
   answer: yes_no
-  settled_by: company
   assumption: No more than a small part of the party's debt is owed in a currency other than that of the cash flow that
     services it
   disproved_by: 'yes'
@@ -136,7 +130,6 @@ checks:
     its worst twelve months of the last ten years, and the party raised its prices no faster than it did then, would its
     cash flow still cover the service of all its debt, the proposed loan included?
   answer: yes_no
-  settled_by: lender
   assumption: The party can service its debt after a fall of its earning currency as deep as the worst of the last ten years
   disproved_by: 'no'
   why: A mismatch says only that a fall in the currency raises the debt service in the party's own money. The test is whether
@@ -159,7 +152,6 @@ checks:
   question: Is any committed capital expenditure, or other large purchase commitment, priced in a currency other than that
     of the money set aside to pay for it?
   answer: yes_no
-  settled_by: company
   assumption: Capital expenditure and large purchase commitments are funded in the currency in which they are priced
   disproved_by: 'yes'
   look_in: [06.02.a, 06.04.a, 01.02.a]
@@ -174,7 +166,6 @@ checks:
   question: When the local currency falls, can the party raise its selling prices within one quarter to recover the rise
     in its input costs and in its debt service (for example because its prices are set in or linked to the foreign currency)?
   answer: choice
-  settled_by: company
   options: [full_passthrough, partial, administered_prices, none]
   mitigant: true
   assumption: The party recovers a currency-driven rise in its input costs and its debt service through its selling prices
@@ -199,7 +190,6 @@ checks:
   question: In each foreign currency, is the gap between what the party receives and what it pays in a year (costs, capital
     expenditure and debt service) smaller than about a fifth of its yearly operating cash flow?
   answer: yes_no
-  settled_by: company
   mitigant: true
   assumption: Receipts and payments in the same currency offset each other, so that only a small net amount is exposed
   disproved_by: 'no'
@@ -220,7 +210,6 @@ checks:
   question: What share of the party's net foreign-currency exposure of the next twelve months is covered by hedging contracts
     (forwards, swaps or options)?
   answer: number
-  settled_by: company
   unit: percent
   mitigant: true
   assumption: Hedging contracts cover most of the party's net foreign-currency exposure of the next twelve months
@@ -244,7 +233,6 @@ checks:
   question: 'Do the hedging contracts run for as long as the exposure they cover: for a loan in a foreign currency, to its
     final maturity?'
   answer: yes_no
-  settled_by: company
   mitigant: true
   assumption: The hedges run for as long as the exposure they cover
   disproved_by: 'no'
@@ -263,7 +251,6 @@ checks:
   question: Are the hedging contracts made under a signed master agreement with a supervised bank that is not part of the
     party's own group?
   answer: yes_no
-  settled_by: company
   mitigant: true
   assumption: The hedges are with a supervised bank outside the group, under a signed agreement
   disproved_by: 'no'

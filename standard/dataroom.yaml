@@ -208,8 +208,7 @@ folders:
       expected: sometimes
     - id: 04.03.b
       title: DFI / Multilateral Facility Documentation
-      holds: Development finance institution or multilateral facility agreements, commitment letters, or press confirmations
-        (IFC, DFC, DEG, FMO, EBRD, etc.).
+      holds: Development finance institution or multilateral facility agreements, commitment letters, or press confirmations.
       expected: sometimes
 - id: '05'
   title: Assets, Sites & Collateral

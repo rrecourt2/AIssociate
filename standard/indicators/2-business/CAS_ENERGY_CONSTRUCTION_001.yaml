@@ -20,7 +20,6 @@ checks:
   question: Has the project signed a construction contract, or a set of contracts, that covers all the works needed to complete
     it?
   answer: yes_no
-  settled_by: company
   assumption: A builder is bound by contract to carry out all the works
   disproved_by: 'no'
   due_by: screening
@@ -41,7 +40,6 @@ checks:
   question: Does the construction contract make handover depend on performance tests against stated figures (such as capacity,
     output or efficiency), with damages or a right to reject the works if the figures are not met?
   answer: yes_no
-  settled_by: company
   assumption: The builder must hand over works that pass stated performance tests, or pay
   disproved_by: 'no'
   when:
@@ -56,7 +54,6 @@ checks:
   question: Would the damages the builder must pay for delay, up to their cap, cover the interest and repayments that fall
     due during a delay of six months and that the existing business could not pay from its own cash flow?
   answer: yes_no
-  settled_by: company
   assumption: Damages for delay cover the debt service that falls due while the project is late and that the existing business
     cannot pay
   disproved_by: 'no'
@@ -75,7 +72,6 @@ checks:
   question: How does the construction budget compare with the cost incurred so far and an independent estimate of the cost
     to complete?
   answer: choice
-  settled_by: expert
   options: [within_budget, minor_overrun, material_overrun, no_comparison_available]
   assumption: The budget, with its contingency, covers the cost to complete as someone independent estimates it
   flag_when: is material_overrun or no_comparison_available
@@ -94,7 +90,6 @@ checks:
   question: Is the first repayment of principal due at least six months after the date on which the project is expected
     to be complete?
   answer: yes_no
-  settled_by: terms
   assumption: The first repayment falls due only after the project is complete and earning, with room for a delay
   disproved_by: 'no'
   look_in: [04.01.a, 06.02.a, 05.01.a]
@@ -108,7 +103,6 @@ checks:
 - id: OBS_ECON_008
   question: Has a sponsor or another party signed an undertaking to pay for cost overruns or to see the project completed?
   answer: yes_no
-  settled_by: terms
   mitigant: true
   assumption: A party other than the project is bound to pay for overruns or to complete the project
   disproved_by: 'no'

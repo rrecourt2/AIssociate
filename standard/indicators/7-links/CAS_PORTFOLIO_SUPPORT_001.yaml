@@ -19,7 +19,6 @@ checks:
 - id: OBS_PORTSUPPORT_001
   question: Is the support set out in a signed agreement that binds the supporting project?
   answer: yes_no
-  settled_by: terms
   assumption: The support is set out in a signed agreement that binds the supporting project
   disproved_by: 'no'
   due_by: screening
@@ -35,7 +34,6 @@ checks:
 - id: OBS_PORTSUPPORT_002
   question: What form does the support take?
   answer: choice
-  settled_by: terms
   options: [excess_cash_sweep, reserve_sharing, debt_service_support, cross_collateral, cross_default, other]
   many: true
   why: The form decides what moves between the projects. A sweep or a shared reserve moves cash. Cross-collateral gives
@@ -50,7 +48,6 @@ checks:
 - id: OBS_PORTSUPPORT_005
   question: Which events oblige the supporting project to pay?
   answer: choice
-  settled_by: terms
   options: [debt_service_shortfall, dscr_breach, construction_delay, cost_overrun, distribution_lockup, event_of_default,
     other, unclear]
   many: true
@@ -71,7 +68,6 @@ checks:
   question: Once a trigger event has occurred, must the supporting project pay without a further decision by its board or
     its owners?
   answer: yes_no
-  settled_by: terms
   assumption: The support is owed as soon as it is triggered, with no further decision
   disproved_by: 'no'
   due_by: concept
@@ -84,7 +80,6 @@ checks:
 - id: OBS_PORTSUPPORT_004
   question: Where does the support come in the supporting project's order of payments (its cash waterfall)?
   answer: choice
-  settled_by: terms
   options: [before_debt_service, after_opex_before_debt_service, after_debt_service_before_distributions, after_distributions,
     unclear]
   assumption: The support is paid before the supporting project pays anything to its owners
@@ -104,7 +99,6 @@ checks:
   question: Can the supporting project pay the support without the consent of its own lenders (no bar on payments to affiliates,
     and no lock-up that would stop it)?
   answer: yes_no
-  settled_by: company
   assumption: The supporting project's own lenders cannot stop the support from being paid
   disproved_by: 'no'
   look_in: [04.01.b, 04.02.c, 08.01.a]
@@ -120,7 +114,6 @@ checks:
 - id: OBS_PORTSUPPORT_006
   question: Which events end the support?
   answer: choice
-  settled_by: terms
   options: [project_completion, financial_completion, commercial_operation_date, facility_repaid, dsra_funded, lender_approval,
     other, unclear]
   many: true
@@ -139,7 +132,6 @@ checks:
   question: Do the supporting project and the supported project depend on the same customer, the same resource or the same
     tariff, so that one event would weaken both at once?
   answer: yes_no
-  settled_by: company
   assumption: The two projects would not be weakened by the same event
   disproved_by: 'yes'
   look_in: [06.01.a, 05.01.a, 03.02.b]

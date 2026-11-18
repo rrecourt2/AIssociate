@@ -12,7 +12,6 @@ checks:
   question: 'What kind of credit is this: a company repaid from its business as a whole, a project or single asset repaid
     from its own cash flow, a financial institution, or a fund?'
   answer: choice
-  settled_by: lender
   options: [corporate, project, financial_institution, fund]
   why: The answer decides which view applies. A company and a project are examined with the corporate view, and a bank or
     another lender with the bank module.
@@ -29,7 +28,6 @@ checks:
 - id: OBS_SECTOR_002
   question: Which sector is the business in?
   answer: choice
-  settled_by: company
   options: [agribusiness, manufacturing, trade_and_services, power, infrastructure, real_estate, financial_services, other]
   why: The sector switches on the checks that belong to it, such as those for power and for agribusiness.
   look_in: [03.01.a, 01.01.a]
@@ -46,7 +44,6 @@ checks:
   question: Is the business supervised as a financial institution, by a central bank or another financial regulator (as
     a bank, an insurer, a leasing or microfinance company, or a fund manager)?
   answer: yes_no
-  settled_by: company
   why: A supervised business answers to a regulator that can limit what it lends, pays out and repays.
   look_in: [07.01.a, 03.01.a]
   evidence:
@@ -63,7 +60,6 @@ checks:
 - id: OBS_VALUE_CHAIN_001
   question: Where does the business sit in its value chain?
   answer: choice
-  settled_by: company
   options: [primary_producer, manufacturer, trader, distributor, retailer, service_provider, developer, owner_operator,
     concessionaire, lender, fund_manager]
   why: The place in the chain says whom the business depends on. A trader depends on its suppliers and its bank lines, a
@@ -83,7 +79,6 @@ checks:
   question: 'How does the business earn its money: what does it buy, what does it do with it, whom does it sell to, and
     where does its margin come from?'
   answer: text
-  settled_by: company
   why: A sector and a place in the value chain are labels. The description says what the business does in fact, and every
     figure is read against it. The pages on the business start from this answer.
   look_in: [01.01.b, 03.01.a]
@@ -99,7 +94,6 @@ checks:
 - id: OBS_BUSINESS_MODEL_002
   question: What is particular about this business compared with others of its kind, and how does that show in its figures?
   answer: text
-  settled_by: company
   why: Two businesses in one sector can earn their money in different ways. What sets this one apart explains figures that
     would look wrong beside its peers, such as a thin margin in a business that trades more than it makes.
   due_by: concept
@@ -116,7 +110,6 @@ checks:
 - id: OBS_SECTOR_CONFIRM_003
   question: Is the largest revenue line in the latest audited accounts the activity that the business is described as?
   answer: yes_no
-  settled_by: company
   assumption: The largest source of revenue is the activity the business is described as
   disproved_by: 'no'
   due_by: concept
@@ -135,7 +128,6 @@ checks:
   question: Does more than half of the profit before tax come from something other than the stated business (for example
     trading gains, the sale or revaluation of property, financial income or dealings with related parties)?
   answer: yes_no
-  settled_by: company
   assumption: Most of the profit comes from the stated business
   disproved_by: 'yes'
   due_by: concept

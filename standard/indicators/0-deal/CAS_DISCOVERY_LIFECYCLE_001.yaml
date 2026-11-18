@@ -18,7 +18,6 @@ checks:
 - id: OBS_LIFECYCLE_001
   question: What stage is the business in?
   answer: choice
-  settled_by: company
   options: [greenfield, expanding, established, distressed]
   why: The stage says how much of the repayment story has already happened and how much is still a plan.
   calls_for:
@@ -41,7 +40,6 @@ checks:
   question: Is a capital spending programme planned or under way that the business cannot pay for from one year of its own
     operating cash flow, or that the projected revenue depends on?
   answer: yes_no
-  settled_by: company
   why: Such a programme has to be finished on time and on budget before the projected business exists, so it is examined
     as a project.
   calls_for:
@@ -60,7 +58,6 @@ checks:
     with the plan on top while today's business alone would still cover debt service (blended), or only by the business
     as it will be once the plan is carried out (future_state)?
   answer: choice
-  settled_by: company
   options: [current_state, future_state, blended]
   assumption: Repayment is shown on the business as it is today
   flag_when: is future_state
@@ -89,7 +86,6 @@ checks:
   question: Did the business make a loss in its latest financial year or in the current year to date, or is it paying suppliers,
     lenders, staff or taxes late today?
   answer: yes_no
-  settled_by: company
   assumption: The business makes a profit and pays what it owes on time today
   disproved_by: 'yes'
   due_by: concept
@@ -112,7 +108,6 @@ checks:
   question: Is the step from today's business to the projected business set out as a project, with a budget, a timetable
     and a named party that answers for its completion?
   answer: yes_no
-  settled_by: company
   mitigant: true
   assumption: The step from today's business to the projected one is a defined project, with a budget, a timetable and a
     party that answers for completion

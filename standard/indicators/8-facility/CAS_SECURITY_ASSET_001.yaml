@@ -16,7 +16,6 @@ checks:
 - id: OBS_SECASSET_001
   question: What kind of asset is it?
   answer: choice
-  settled_by: terms
   options: [real_estate, equipment, receivables, inventory, shares, cash_deposits, contract_rights, other]
   why: The kind of asset decides what proves ownership, where a charge is registered, how the asset is valued and whether
     it can be insured.
@@ -31,7 +30,6 @@ checks:
 - id: OBS_SECASSET_002
   question: Does a title document or a public register show the one who gives the security as the owner of the asset?
   answer: yes_no
-  settled_by: company
   assumption: The asset belongs to the one who gives it as security
   disproved_by: 'no'
   due_by: concept
@@ -52,7 +50,6 @@ checks:
   question: Has someone independent of the borrower and of the one who gives the security valued the asset within the last
     twelve months?
   answer: yes_no
-  settled_by: expert
   assumption: The value counted on rests on a recent valuation by someone independent
   disproved_by: 'no'
   look_in: [05.02.a, 10.03.a]
@@ -68,7 +65,6 @@ checks:
   question: What would the asset fetch in a forced sale, after the costs of the sale and after any claim that ranks ahead
     of the lender?
   answer: number
-  settled_by: expert
   unit: currency
   why: This is the figure the security package is measured with (OBS_SECPKG_006). The market value and the book value are
     both higher and neither is what a lender receives.
@@ -83,7 +79,6 @@ checks:
   question: Have assets of this kind been sold in this country in the last three years to buyers outside the business that
     used them, at prices that bear out the forced-sale value counted on?
   answer: yes_no
-  settled_by: expert
   assumption: There are buyers for the asset outside the business, and past sales bear out the value counted on
   disproved_by: 'no'
   look_in: [05.02.a, 10.03.a]
@@ -99,7 +94,6 @@ checks:
   question: Does the title document or a search of the registers show any charge, lien, lease, attachment or other claim
     on the asset besides the lender's own?
   answer: yes_no
-  settled_by: public
   assumption: The asset is free of any claim but the lender's
   disproved_by: 'yes'
   look_in: [02.01.c, 04.02.b, 08.01.a]
@@ -119,7 +113,6 @@ checks:
     selling it to a buyer of its choice (a limit on foreign ownership of land, a licence or concession that does not pass
     to a buyer, a consent not yet given)?
   answer: yes_no
-  settled_by: expert
   assumption: The lender or its agent may hold security over the asset and sell it to whoever pays most
   disproved_by: 'yes'
   look_in: [08.01.a, 07.01.a, 06.05.a]
@@ -133,7 +126,6 @@ checks:
   question: Can the lender take and sell the asset without first obtaining a court judgment (a private sale, taking the
     asset in payment, or a power of sale given in the security agreement)?
   answer: yes_no
-  settled_by: expert
   assumption: The lender can sell the asset without waiting for a court
   disproved_by: 'no'
   look_in: [08.01.a, 04.02.b]
@@ -147,7 +139,6 @@ checks:
   question: Is the lender's security over the asset registered, or otherwise made effective against other creditors, at
     first rank?
   answer: yes_no
-  settled_by: public
   assumption: The lender holds first-ranking security over the asset that is effective against other creditors
   disproved_by: 'no'
   due_by: legal
@@ -163,7 +154,6 @@ checks:
   question: Is the asset insured against loss and damage for at least its replacement value, and is the lender named on
     the policy as the one to whom a claim is paid (loss payee)?
   answer: yes_no
-  settled_by: company
   assumption: If the asset is lost or destroyed, the insurance money is enough to replace it and is paid to the lender
   disproved_by: 'no'
   due_by: disbursement

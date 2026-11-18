@@ -1,6 +1,6 @@
 # Cedar Foods Ltd: financing request
 
-Invented for the Bankability 2 example. No real company or data.
+Invented for the AIssociate example. No real company or data.
 
 Cedar Foods Ltd processes raw milk into UHT milk and yoghurt at its plant in Nakuru, Kenya. It is an operating company with about 420 employees.
 

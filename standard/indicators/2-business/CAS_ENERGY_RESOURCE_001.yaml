@@ -19,7 +19,6 @@ checks:
 - id: OBS_ERES_006
   question: Does the plant draw its energy from a natural resource at its site (sun, wind, water or heat from the ground)?
   answer: yes_no
-  settled_by: company
   why: Opens the topic. A yes leads to the checks on measurement and yield. A no means the plant burns fuel that has to
     be bought, and leads to the check on fuel supply (OBS_ERES_009).
   due_by: screening
@@ -34,7 +33,6 @@ checks:
   question: Is the yield estimate based on resource data for the site itself (measurements on site, or long-term records
     calibrated to the site) that cover at least one full year?
   answer: yes_no
-  settled_by: expert
   assumption: The yield estimate rests on data for this site, not on regional averages
   disproved_by: 'no'
   due_by: concept
@@ -54,7 +52,6 @@ checks:
   question: Has a specialist who is independent of the sponsor and the equipment supplier made or reviewed the energy yield
     assessment?
   answer: yes_no
-  settled_by: expert
   assumption: The yield estimate was made or checked by an independent specialist
   disproved_by: 'no'
   when:
@@ -71,7 +68,6 @@ checks:
   question: What is the P90 annual energy yield (the yield the plant should exceed in nine years out of ten) as a share
     of the P50 yield (the yield it is as likely to exceed as to miss)?
   answer: number
-  settled_by: expert
   unit: percent
   why: The gap between the two shows how uncertain the estimate is. The further the P90 lies below the P50, the weaker the
     central estimate is as a base for debt.
@@ -90,7 +86,6 @@ checks:
   question: Does the project still pay its debt service in full in every year of the loan if the yield is the single-year
     P90 instead of the P50?
   answer: yes_no
-  settled_by: expert
   assumption: The debt can be serviced in a year as poor as one in ten
   disproved_by: 'no'
   when:
@@ -110,7 +105,6 @@ checks:
   question: Do the projections lower the plant's output each year for the wear of the equipment, at a rate that the maker's
     warranty or an independent study supports?
   answer: yes_no
-  settled_by: expert
   assumption: The projections allow for the loss of output as the equipment ages
   disproved_by: 'no'
   look_in: [05.01.a, 03.02.b]
@@ -125,7 +119,6 @@ checks:
   question: Is the fuel the plant needs secured under a signed supply contract, for the quantity the projections count on
     and until the final maturity of the loan?
   answer: yes_no
-  settled_by: company
   assumption: A supplier is bound to deliver the fuel the projections count on, for the life of the loan
   disproved_by: 'no'
   due_by: concept

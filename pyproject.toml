@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bankability2"
-description = "Keeps the record of an investment deal."
+description = "The tool of the AIssociate plugin: keeps the record of an investment deal against the Bankability standard."
 requires-python = ">=3.9"
 license = {text = "MIT"}
 dependencies = []

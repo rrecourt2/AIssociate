@@ -20,7 +20,6 @@ checks:
 - id: OBS_EGEN_001
   question: What is the plant's installed or planned generating capacity?
   answer: number
-  settled_by: company
   unit: MW
   why: Capacity sets the scale of the project. With the capacity factor it gives the energy the projections sell.
   due_by: screening
@@ -36,7 +35,6 @@ checks:
   question: What capacity factor do the projections assume (the energy sold in a year as a share of what the plant would
     produce if it ran at full capacity all year)?
   answer: number
-  settled_by: company
   unit: percent
   why: The capacity factor turns capacity into energy sold. A figure above what the independent yield study or the plant's
     own record supports overstates revenue in every year.
@@ -50,7 +48,6 @@ checks:
 - id: OBS_EGEN_004
   question: Has the project signed a power purchase agreement, or another contract of sale, for its output?
   answer: yes_no
-  settled_by: company
   assumption: A buyer is bound by contract to buy the plant's output
   disproved_by: 'no'
   due_by: screening
@@ -76,7 +73,6 @@ checks:
   question: Under the purchase agreement, who bears the loss when the grid cannot take the plant's output (curtailment or
     a grid outage)?
   answer: choice
-  settled_by: company
   options: [buyer_pays, shared, project_bears, not_addressed]
   assumption: The buyer pays for energy the plant could have delivered but the grid could not take
   flag_when: is not buyer_pays
@@ -96,7 +92,6 @@ checks:
   question: Is the plant connected to the grid, or does it hold a signed connection agreement for its full capacity with
     a connection date no later than its planned start of operation?
   answer: yes_no
-  settled_by: company
   assumption: The plant can deliver its full output to the grid from the day it starts
   disproved_by: 'no'
   look_in: [06.01.a, 07.01.a]
@@ -113,7 +108,6 @@ checks:
   question: Does a grid study, or the grid operator's record for this area, show that more of the plant's output is likely
     to be curtailed (held back because the grid cannot take it) than the projections allow for?
   answer: yes_no
-  settled_by: expert
   assumption: The grid can take the plant's output, apart from the curtailment the projections already allow for
   disproved_by: 'yes'
   due_by: diligence
@@ -130,7 +124,6 @@ checks:
   question: Has the energy the plant delivered in each of the last three full years reached the yearly figure the projections
     count on?
   answer: yes_no
-  settled_by: company
   assumption: The plant's own record bears out the output the projections count on
   disproved_by: 'no'
   due_by: diligence

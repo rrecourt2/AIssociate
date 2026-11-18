@@ -16,7 +16,6 @@ checks:
 - id: OBS_SUPPORTLTR_001
   question: What does the giver of the undertaking promise to do?
   answer: choice
-  settled_by: terms
   options: [keep_ownership, keep_solvent, fund_shortfalls, complete_the_project, subordinate_its_claims, no_firm_promise]
   many: true
   why: The promise decides what the lender could claim. A promise to keep its shares or to keep the company solvent gives,
@@ -34,7 +33,6 @@ checks:
   question: Is the undertaking given to the lender, so that the lender can demand performance and sue the giver in its own
     name without going through the borrower?
   answer: yes_no
-  settled_by: terms
   assumption: The lender itself can hold the giver to the undertaking
   disproved_by: 'no'
   due_by: concept
@@ -51,7 +49,6 @@ checks:
   question: Can the giver withdraw the undertaking, or does it lapse, before the loan is repaid (an end date, a right to
     give notice, an end when the giver sells its shares in the borrower)?
   answer: yes_no
-  settled_by: terms
   assumption: The undertaking stays in force until the loan is repaid
   disproved_by: 'yes'
   look_in: [04.02.a, 02.02.g]
@@ -63,7 +60,6 @@ checks:
   question: When the giver was asked in the past to do what an undertaking of this kind promised, for the borrower or for
     another company, what did it do?
   answer: choice
-  settled_by: screening
   options: [performed, refused_or_withdrew, never_asked]
   assumption: The giver has never walked away from an undertaking of this kind
   flag_when: is refused_or_withdrew
@@ -80,7 +76,6 @@ checks:
   question: Does a legal opinion confirm that the undertaking binds the giver under the law that governs it, as a duty that
     a court would enforce and not as a statement of intent?
   answer: yes_no
-  settled_by: expert
   assumption: The undertaking is a binding promise under the law that governs it
   disproved_by: 'no'
   due_by: legal
@@ -93,7 +88,6 @@ checks:
 - id: OBS_SUPPORTLTR_006
   question: Has the giver's board, or the body that its articles require, approved the giving of the undertaking?
   answer: yes_no
-  settled_by: company
   assumption: The giver has approved the undertaking as its own rules require
   disproved_by: 'no'
   due_by: legal

@@ -17,7 +17,6 @@ checks:
 - id: OBS_SECPKG_001
   question: What is offered as security for the facility?
   answer: choice
-  settled_by: terms
   options: [real_estate, equipment, receivables, inventory, shares, cash_deposits, contract_rights, none]
   many: true
   why: Opens the topic. Each kind that is offered must appear in the structure as an asset that secures the facility, and
@@ -52,7 +51,6 @@ checks:
   question: 'What is the most the lender can be owed under the facility: the full amount committed, plus interest that is
     capitalised or can run unpaid, at its highest point?'
   answer: number
-  settled_by: terms
   unit: currency
   why: The security and any guarantee are measured against this figure, not against the amount drawn today.
   due_by: screening
@@ -66,7 +64,6 @@ checks:
   question: Can the payments due under the main contracts, or from the main customers, be assigned to the lender and paid
     into an account the lender controls?
   answer: yes_no
-  settled_by: company
   assumption: The revenue that repays the loan can be assigned to the lender and collected in an account it controls
   disproved_by: 'no'
   due_by: concept
@@ -91,7 +88,6 @@ checks:
   question: Is any of the security shared with other creditors, or does the lender rank behind another creditor on any of
     it?
   answer: yes_no
-  settled_by: terms
   assumption: The lender holds the security at first rank and for itself alone
   disproved_by: 'yes'
   due_by: concept
@@ -116,7 +112,6 @@ checks:
   question: Does the security cover the assets the business cannot run without (the plant, the site, the main contracts,
     the accounts the revenue is paid into)?
   answer: yes_no
-  settled_by: terms
   assumption: The security covers the assets that produce the cash, not only assets the business can do without
   disproved_by: 'no'
   why: A lender that holds only spare assets has no hold on the business. Whoever holds the assets it runs on decides what
@@ -138,7 +133,6 @@ checks:
   question: What would the security fetch in a forced sale, as a percentage of the most the lender can be owed under the
     facility?
   answer: number
-  settled_by: expert
   unit: percent
   assumption: A forced sale of the security would repay what the lender is owed
   flag_when: below 100
@@ -165,7 +159,6 @@ checks:
   question: Does a guarantee, or another promise to pay by someone other than the borrower (a standby letter of credit,
     credit insurance), cover within its own limit the part of the loan that a forced sale of the security would not repay?
   answer: yes_no
-  settled_by: terms
   mitigant: true
   assumption: A guarantee or another promise to pay covers what the security would not repay
   disproved_by: 'no'

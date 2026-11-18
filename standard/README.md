@@ -1,11 +1,11 @@
-# The Bankability Standard
+# The Bankability standard
 
-The standard says what a deal folder holds and what must be known about a deal. It is data only: lists, a data-room structure and checks. No meaning lives in code.
+The Bankability standard says what a deal folder holds and what must be known about a deal. It is data only: lists, a data-room structure and checks. No meaning lives in code.
 
-Version 4.3.1 holds 70 indicators with 551 checks in nine pillars, a data room of 10 folders with 64 slots, and 82 kinds of source.
+Version 4.4.0 holds 70 indicators with 551 checks in nine pillars, a data room of 10 folders with 64 slots, and 82 kinds of source.
 
 - [FRAMEWORK.md](FRAMEWORK.md) explains how the standard is organised, and why. Read it first.
-- [CHANGES.md](CHANGES.md) lists what changed: after two trials on a real company, and from the first Bankability's standard.
+- [CHANGES.md](CHANGES.md) lists what changed: after trials on three real companies, and from the first Bankability's standard.
 
 ## The files
 
@@ -26,7 +26,7 @@ standard/
 
 ## The lists
 
-A few fields in the lists decide who is asked what. The tool only applies them.
+A few fields in the lists decide who is asked what. AIssociate's tool only applies them.
 
 | List | Field | Meaning |
 |---|---|---|
@@ -81,7 +81,6 @@ A check has one of three jobs.
 | `look_in` | The data-room slots where the answer is usually found. |
 | `evidence` | Kinds of source by strength: `best`, `supporting`, and `stated` for what someone said. |
 | `ask` | How to put the question to the client. |
-| `settled_by` | What settles the check: `company` (its documents or answers), `screening` (a search on a name), `terms` (the terms of the loan), `lender` (the lender itself), `expert` (counsel, an engineer, a valuer, a consultant) or `public` (public sources). |
 | `if_unknown` | What not knowing means. |
 | `note` | A caution for whoever answers. |
 | `leads_to` | An indicator to look at when the answer is as given, with the reason. |

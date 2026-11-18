@@ -14,7 +14,6 @@ checks:
 - id: OBS_SUPPLIER_001
   question: What share of the buyer's need for this input does the supplier deliver?
   answer: number
-  settled_by: company
   unit: percent
   why: The share says how much of the buyer's production stops with the supplier.
   due_by: screening
@@ -29,7 +28,6 @@ checks:
   question: If this supplier stopped delivering, could the buyer get the same input in the volume it needs from other suppliers
     within three months, at a cost no more than about a tenth higher?
   answer: yes_no
-  settled_by: expert
   assumption: The buyer could replace the supplier within a quarter, without a large rise in cost
   disproved_by: 'no'
   due_by: concept
@@ -47,7 +45,6 @@ checks:
     to the buyer, a loss or a default in its own accounts, an insolvency or restructuring filing, or the loss of a licence
     it needs?'
   answer: yes_no
-  settled_by: screening
   assumption: The supplier is able to keep delivering
   disproved_by: 'yes'
   look_in: [10.03.a, 02.06.d]
@@ -61,7 +58,6 @@ checks:
   question: Does a signed contract oblige the supplier to deliver the volume the buyer needs, at a fixed price or under
     a price formula, until the final repayment date of the loan?
   answer: yes_no
-  settled_by: company
   assumption: The supplier is bound to deliver the volume the buyer needs, at an agreed price, until the loan is repaid
   disproved_by: 'no'
   why: Asked where the supplier cannot be replaced. Then the contract is all that holds it.
@@ -80,7 +76,6 @@ checks:
   question: Has the buyer paid the supplier in advance for more than about one month of deliveries (advances, deposits or
     loans), without a bank guarantee or other security for the money?
   answer: yes_no
-  settled_by: company
   assumption: The buyer's advances to the supplier are small or secured
   disproved_by: 'yes'
   look_in: [03.01.a, 03.01.b, 06.04.a]
@@ -97,7 +92,6 @@ checks:
     delivers, a second supplier that already delivers part of the need and is bound by contract to raise its deliveries,
     both, or neither?'
   answer: choice
-  settled_by: company
   options: [stock, second_source, both, neither]
   mitigant: true
   assumption: Stock or a second supplier would carry the buyer until the supplier is replaced

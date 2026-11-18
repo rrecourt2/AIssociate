@@ -1,14 +1,14 @@
 """Pack the skill: its instructions, the tool and the standard, in one zip.
 
-    python3 skill/package.py        writes dist/bankability-2.zip
+    python3 skill/package.py        writes dist/aissociate.zip
 """
 import os
 import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-SKILL = os.path.join(ROOT, "skill", "bankability-2")
+SKILL = os.path.join(ROOT, "skill", "aissociate")
 TOOL = os.path.join(ROOT, "bankability2")
-OUT = os.path.join(ROOT, "dist", "bankability-2.zip")
+OUT = os.path.join(ROOT, "dist", "aissociate.zip")
 
 
 def main():

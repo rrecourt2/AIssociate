@@ -21,7 +21,7 @@ TABLES = {
     "subjects": (None, ("kind",), ("name", "short", "note", "state")),  # the prefix comes from the kind of subject
     "links": ("R", ("from", "type", "to"), ("state", "why", "source", "note")),
     "decisions": ("D", ("decision", "reason"), ("about", "rests_on", "by", "covers", "owner", "due")),
-    "questions": ("Q", ("asked_of", "text"), ("about", "checks", "asked", "via", "state", "answered_by")),
+    "questions": ("Q", ("asked_of", "text"), ("about", "checks", "asked", "via", "state", "answered_by", "note")),
 }
 # Fields that hold IDs, and the tables those IDs may come from.
 REFERS = {"source": ("sources",), "via": ("sources",), "about": ("subjects", "links"), "from": ("subjects",),

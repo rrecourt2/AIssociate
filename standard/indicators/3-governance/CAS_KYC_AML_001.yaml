@@ -18,7 +18,6 @@ checks:
   question: In the last ten years, has a court or an authority fined or penalised the party, or debarred it from public
     contracts or from a development bank's financing, for fraud, bribery, money laundering, tax evasion or a breach of sanctions?
   answer: yes_no
-  settled_by: screening
   assumption: No court or authority has penalised or debarred the party for a financial crime in the last ten years
   disproved_by: 'yes'
   due_by: screening
@@ -38,7 +37,6 @@ checks:
     fraud, bribery, money laundering or another crime of dishonesty, or is any of them charged with one or under criminal
     investigation for one?
   answer: yes_no
-  settled_by: screening
   assumption: None of the people who direct or manage the party has been convicted of a crime of dishonesty, is charged
     with one or is under investigation for one
   disproved_by: 'yes'
@@ -56,7 +54,6 @@ checks:
   question: Has the lender searched the press, the court records and the development banks' lists of debarred firms and
     persons for the party, its directors and its senior managers, in the countries and the languages in which they are active?
   answer: yes_no
-  settled_by: lender
   assumption: The public record of the party and of the people who direct it has been searched
   disproved_by: 'no'
   due_by: concept
@@ -73,7 +70,6 @@ checks:
     the party, its directors or its senior managers that no court or authority has yet ruled on: a press report, a civil
     claim, a whistleblower''s account?'
   answer: yes_no
-  settled_by: screening
   assumption: No public allegation of financial crime hangs over the party or the people who direct it
   disproved_by: 'yes'
   due_by: concept
@@ -89,7 +85,6 @@ checks:
   question: Does the party have a written code of conduct or policy against bribery, approved by its board or its owners,
     with a named person who answers for it and a way for staff to report a breach without going through their own manager?
   answer: yes_no
-  settled_by: company
   assumption: The party has written rules against bribery, someone who answers for them and a way to report a breach
   disproved_by: 'no'
   applies_to: [borrower, repayment_source]
@@ -107,7 +102,6 @@ checks:
   question: Does the party have a written policy against money laundering, approved by its board or its owners, that says
     how it identifies whom it deals with, what it does about a suspicious payment and who is told?
   answer: yes_no
-  settled_by: company
   assumption: The party has written rules against money laundering that its board or owners have approved
   disproved_by: 'no'
   applies_to: [borrower, repayment_source]
@@ -125,7 +119,6 @@ checks:
   question: Does the party check who its customers, agents and other main counterparties are before it deals with them,
     and keep the record?
   answer: yes_no
-  settled_by: company
   assumption: The party knows whom it deals with and can show it
   disproved_by: 'no'
   applies_to: [borrower, repayment_source]
@@ -144,7 +137,6 @@ checks:
   question: 'How far has the matter been dealt with: closed by the authority or by an independent inquiry, those responsible
     removed, and the weakness behind it put right?'
   answer: choice
-  settled_by: company
   options: [full_remediation, partial_remediation, none]
   mitigant: true
   assumption: The matter is closed, those responsible have gone and the weakness behind it is put right

@@ -67,14 +67,14 @@ tr[data-group="Waiting"] .state { background: #dee6f0; color: #2b4462; }
 tr.against .state { background: #f4d3ce; color: #6d1e15; }
 .checks table { width: 100%; table-layout: fixed; }
 .checks th:nth-child(1) { width: 7rem; } .checks th:nth-child(3) { width: 17%; } .checks th:nth-child(4) { width: 21%; }
-.checks th:nth-child(5) { width: 7rem; } .checks th:nth-child(6) { width: 6.5rem; }
-@container (max-width: 62rem) {  /* no room for six columns: each check is a block, its cells under one another with their names */
+.checks th:last-child { width: 6.5rem; }
+@container (max-width: 62rem) {  /* no room for five columns: each check is a block, its cells under one another with their names */
   .checks table, .checks tbody, .checks tr, .checks td { display: block; }
   .checks tr { padding: 0.8rem 0; border-bottom: 1px solid var(--line); }
   .checks td { max-width: 48rem; padding: 0.1rem 0; border: 0; }
   .checks td:nth-child(2) { margin: 0.35rem 0; font-size: 0.95rem; }
   .checks td:nth-child(n+3)::before { content: attr(data-label) ": "; color: var(--soft); }
-  .checks td:nth-child(n+5) { display: inline-block; margin-right: 1.5rem; }
+  .checks td:last-child { display: inline-block; margin-right: 1.5rem; }
   .checks thead, .checks tr[hidden], .checks td[data-empty] { display: none; } }
 #toggle { display: none; }
 @media (max-width: 85rem) {  /* no room for a third column: the record that was asked for comes up from the foot */
@@ -112,7 +112,7 @@ const pages = {};
 for (const [path, raw] of Object.entries(data.pages)) {
   const top = /^---\n([\s\S]*?)\n---\n?/.exec(raw), text = top ? raw.slice(top[0].length) : raw;
   const title = (top && /^title:[ \t]*["']?(.*?\S)["']?[ \t]*$/m.exec(top[1]) || /^#\s+(.+)$/m.exec(text) || [0, path])[1];
-  const shelf = ["index.md", "sources.md", "checks.md", data.documents, ...data.drafts].includes(path) ? "" : path.includes("/") ? path.split("/")[0] : "other";
+  const shelf = ["index.md", "sources.md", "timeline.md", "checks.md", data.documents].includes(path) ? "" : path.includes("/") ? path.split("/")[0] : "other";
   pages[path] = {title, text, shelf};
 }
 let here = "index.md";  // the page that is open
@@ -123,10 +123,10 @@ function resolve(from, href) {  // where a relative link on a page leads, as a p
     if (part === ".." && parts.length && parts[parts.length - 1] !== "..") parts.pop();
     else if (part && part !== ".") parts.push(part);
   }
-  return parts.join("/").replace(/^\.\.\/wiki\//, "");  // a draft that links back into the wiki
+  return parts.join("/");
 }
 
-function link(words, href) {  // another page opens in this view, a document or a website in a new tab
+function link(words, href) {  // another page opens in this view, a document, a draft or a website in a new tab
   if (/^(https?|mailto):/i.test(href)) return `<a href="${esc(href)}" target="_blank" rel="noopener">${words}</a>`;
   const path = resolve(here, href);
   return pages[path] ? `<a href="#${encoded(path)}">${words}</a>` : `<a href="./${encoded(path)}" target="_blank">${words}</a>`;
@@ -245,7 +245,7 @@ function menu() {  // the pages by shelf, or the pages that hold the words searc
   const shelves = [...new Set([...Object.keys(data.shelves), ...shown.map(path => pages[path].shelf)])].filter(Boolean);
   el("menu").innerHTML = words.length ? shown.map(path => entry(path)).join("") || "<p>No page holds these words.</p>"
     : entry("index.md", "Contents") + entry("sources.md", "Sources") + entry(data.documents, "Documents") +
-      shelves.map(shelf).join("") + (data.drafts.length ? "<h2>Drafts</h2>" + data.drafts.map(path => entry(path)).join("") : "") +
+      (pages["timeline.md"] ? entry("timeline.md", "Timeline") : "") + shelves.map(shelf).join("") +
       (pages["checks.md"] ? "<h2>Checks</h2>" + entry("checks.md", "The due diligence list") : "");
 }
 

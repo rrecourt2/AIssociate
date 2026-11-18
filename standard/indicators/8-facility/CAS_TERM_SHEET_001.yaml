@@ -17,7 +17,6 @@ checks:
   question: 'How far have the terms of the facility got on paper: proposed by one side, agreed in a term sheet or heads
     of terms, or signed?'
   answer: choice
-  settled_by: terms
   options: [proposed, agreed, signed]
   why: Opens the topic. The tests below are tests of terms that are written down. While none are, leave this question
     open, and the tests wait for it.
@@ -35,7 +34,6 @@ checks:
   question: Does the term sheet state the amount, the currency, the tenor, the grace period, the repayment schedule, the
     interest rate and the fees, with none of them left open?
   answer: yes_no
-  settled_by: terms
   assumption: The main terms are written down and none is still to be agreed
   disproved_by: 'no'
   when:
@@ -50,7 +48,6 @@ checks:
   question: Set against a month-by-month cash flow, does any repayment fall due before the cash to pay it has come in (during
     a ramp-up, or ahead of the season's sales)?
   answer: yes_no
-  settled_by: terms
   assumption: Each repayment falls due after the cash that pays it has come in
   disproved_by: 'yes'
   when:
@@ -68,7 +65,6 @@ checks:
   question: 'Does repayment in full depend on a refinancing or a sale at maturity: a bullet, or a final instalment larger
     than the cash flow of its year can pay?'
   answer: yes_no
-  settled_by: terms
   assumption: The loan is repaid in full from cash flow by its final maturity, without a refinancing or a sale
   disproved_by: 'yes'
   due_by: concept
@@ -88,7 +84,6 @@ checks:
   question: Are the proposed tenor, grace period and repayment profile within what lenders have agreed for comparable loans
     in this sector and country?
   answer: yes_no
-  settled_by: lender
   why: Terms more generous than any precedent need a reason that belongs to this deal. Comparable means the same sector,
     the same country or region and the same kind of borrower.
   when:
@@ -103,7 +98,6 @@ checks:
   question: Does the price of the loan (margin and fees together) meet the return the lender requires for a credit of this
     risk, tenor and rank?
   answer: yes_no
-  settled_by: lender
   why: A price below the lender's own requirement means the risk is carried for less than it costs. This is the lender's
     judgement of its own loan, not a test of the borrower.
   due_by: approval
@@ -118,7 +112,6 @@ checks:
   question: Do the loan terms require the borrower to use surplus cash to prepay this loan (a cash sweep), so that the final
     payment shrinks in the years the business does well?
   answer: yes_no
-  settled_by: terms
   mitigant: true
   assumption: Surplus cash reduces the debt that would have to be refinanced
   disproved_by: 'no'

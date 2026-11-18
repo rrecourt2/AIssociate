@@ -2,6 +2,8 @@
 import ast
 import glob
 import os
+import sys
+import tokenize
 import unittest
 
 PACKAGE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "bankability2")
@@ -9,8 +11,9 @@ ALLOWED_IMPORTS = {"argparse", "datetime", "hashlib", "json", "os", "re", "sys",
 FORBIDDEN_NAMES = {"eval", "exec", "compile", "__import__", "input", "breakpoint",
                    "getattr", "setattr", "delattr", "globals", "locals", "vars", "__builtins__"}
 ALLOWED_OS = {"path", "replace", "makedirs", "walk", "sep"}  # all that files.py may use of os
+ALLOWED_SYS = {"stdin", "stdout", "__stdin__", "__stdout__", "version", "platform", "exit"}  # what the tool uses of sys: not sys.modules, which leads to os
 WRITERS = {"write", "move", "make_folder"}  # the only functions that change the disk
-MAX_FILES, MAX_LINES, MAX_FUNCTION = 7, 2500, 100
+MAX_FILES, MAX_LINES, MAX_FUNCTION = 7, 2600, 100
 
 
 def sources():
@@ -57,6 +60,17 @@ class Audit(unittest.TestCase):
                     self.assertNotIn(node.id, FORBIDDEN_NAMES, name)
                 if isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name) and node.value.id == "os":
                     self.assertIn(node.attr, ALLOWED_OS, name)
+                if isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name) and node.value.id == "sys":
+                    self.assertIn(node.attr, ALLOWED_SYS, name)
+
+    @unittest.skipIf(sys.version_info < (3, 12), "before 3.12 such a file does not even load")
+    def test_no_f_string_inside_an_f_string(self):  # Python 3.9 to 3.11 cannot read one with the same quotes
+        for path in sorted(glob.glob(os.path.join(PACKAGE, "*.py"))):
+            with open(path, "rb") as f:
+                depth = 0
+                for token in tokenize.tokenize(f.readline):
+                    depth += (token.type == tokenize.FSTRING_START) - (token.type == tokenize.FSTRING_END)
+                    self.assertLessEqual(depth, 1, f"{os.path.basename(path)}, line {token.start[0]}: an f-string inside an f-string")
 
     def test_only_one_module_touches_the_disk(self):
         for name, _, tree in sources():

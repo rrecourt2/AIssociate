@@ -23,7 +23,6 @@ checks:
   question: How many days pass, on average, between the party paying for its inputs and collecting the cash from its customers
     (days of stock plus days of receivables, less days of payables)?
   answer: number
-  settled_by: company
   unit: days
   why: The length of the cycle says how much cash each sale ties up, and for how long. It is read against earlier years
     and against businesses of the same kind.
@@ -42,7 +41,6 @@ checks:
   question: Do the party's customers pay, on average, within the credit terms the party gives them (days of receivables
     no longer than those terms)?
   answer: yes_no
-  settled_by: company
   assumption: Customers pay within the agreed terms
   disproved_by: 'no'
   due_by: concept
@@ -59,7 +57,6 @@ checks:
 - id: OBS_WC_005
   question: What share of the party's trade receivables, by value, is more than ninety days past its due date?
   answer: number
-  settled_by: company
   unit: percent
   assumption: Only a small part of the receivables is long overdue
   flag_when: above 10
@@ -78,7 +75,6 @@ checks:
   question: Was the stock in the latest annual accounts counted with the auditor or another independent party present, and
     valued at the lower of its cost and the price it can be sold for?
   answer: yes_no
-  settled_by: company
   assumption: The stock exists and is worth what the accounts say, and someone independent has checked both
   disproved_by: 'no'
   when:
@@ -101,7 +97,6 @@ checks:
   question: Is more than about a tenth of the stock, by value, older than one normal selling season or production cycle,
     or carried at a value that no sale contract and no current market price supports?
   answer: yes_no
-  settled_by: company
   assumption: The stock is current and can be sold for at least its value in the accounts
   disproved_by: 'yes'
   when:
@@ -123,7 +118,6 @@ checks:
     more than one season, or one normal delivery cycle, after they were paid, with neither the goods delivered nor the money
     returned?
   answer: yes_no
-  settled_by: company
   assumption: Advances to suppliers and farmers come back as goods or as cash within the season
   disproved_by: 'yes'
   look_in: [03.01.a, 10.03.a, 03.01.b]
@@ -143,7 +137,6 @@ checks:
   question: Do the credit lines that finance the party's seasonal stock and receivables fall due, or come up for the bank's
     review, before that stock and those receivables have turned into cash?
   answer: yes_no
-  settled_by: company
   assumption: The lines that finance the season stay in place until its stock and receivables have turned into cash
   disproved_by: 'yes'
   look_in: [04.01.b, 04.03.a, 03.01.b]

@@ -1,6 +1,8 @@
 [
  {"do": "switch_off", "target": "CAS_COVERAGE_001", "strength": "not_now", "by": "analyst",
   "reason": "Insurance is reviewed with the insurance adviser once the term sheet is agreed."},
+ {"do": "note", "target": "OBS_REV_004", "for": "P-001", "by": "assistant",
+  "reason": "The annual report gives revenue for 2025 and 2024 only (F-008). The figure for 2023 is to be asked of the CFO."},
  {"do": "add", "to": "CAS_INPUT_CONC_001", "by": "analyst",
   "reason": "The CFO put the 2025 margin drop down to milk prices.",
   "check": {"id": "DEAL_MILK_PRICE_001", "question": "Do the supply contracts with the cooperatives cap the raw milk price?",

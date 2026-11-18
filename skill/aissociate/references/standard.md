@@ -1,6 +1,6 @@
 # The standard
 
-`show <deal> <ID>` prints a check of the standard in full, or an indicator with its checks and the answer each takes. `status <deal> --for <pillar> --all` lists the checks of one pillar that are to answer: the pillars are `deal`, `environment`, `business`, `governance`, `cash_flow`, `liquidity`, `es_impact`, `links` and `facility`.
+`show <deal> <ID>` prints a check of the Bankability standard in full, or an indicator with its checks and the answer each takes. `status <deal> --for <pillar> --all` lists the checks of one pillar that are to answer: the pillars are `deal`, `environment`, `business`, `governance`, `cash_flow`, `liquidity`, `es_impact`, `links` and `facility`.
 
 ## Claims
 
@@ -20,7 +20,7 @@ A claim is to **look at again** when a source or an answer that bears on it came
 
 In `status`, the line of a pillar counts each claim once, at its worst among the parties it is made about. `show claims` gives each party its own line.
 
-An answer against a claim is believed whatever it rests on. A favourable answer that rests only on what a party said is **someone's own word**, and a claim does not stand on that alone. So set `said_by` on every fact.
+An answer against a claim is believed whatever it rests on. A favourable answer to a test is **someone's own word** where it rests only on what a party says of itself (`said_by: client`), or only on evidence the check lists as `stated`, such as the notes of a call, whoever recorded it. A claim does not stand on that alone. The page of checks and `show <check>` mark such an answer `own word`. A question has no favourable answer, so it is not marked. So set `said_by` on every fact.
 
 ## Judgement
 
@@ -54,13 +54,11 @@ A check is answered by a fact, in its `answers`. In `status`, a check that stand
 
 A reference point such as "above 20" is the standard's own, with its reason in `why`. `adjust` can change it.
 
-## What settles a check, and the page of checks
+## The page of checks
 
-Each check says in `settled_by` what settles it: `company` (its documents or its answers), `screening` (a search on a name), `terms` (the terms of the loan), `lender` (the lender itself), `expert` (counsel, an engineer, a valuer, a consultant) or `public` (public sources).
+Who or what settles a check depends on the deal, so the standard does not say: where it helps, say on an open check what is missing and who could give it, in a note (see "What is missing" below).
 
-`status` prints one line: "Open, by what settles them: the company 160, a screening 13, ...". Use it to tell the analyst what the open checks come down to: one request to the company, one screening, and so on. `status <deal> --for company --all` lists the checks behind the request to the company, and likewise for `screening`, `terms`, `lender`, `expert` and `public`.
-
-The tool writes the page of checks, `Internal/wiki/checks.md`, on every `pages`. It is listed last on the contents page and in the browser view, as "The due diligence list". It holds the count of checks in each state; a table of the open checks by what settles them and by stage, with the claims they are mostly about; the names for the screening; then, pillar by pillar and claim by claim, every check with its state, whom it is asked of (one row where it stands the same for several), its answer or what it waits for, what settles it while it is still to answer, and the stage it is ideally answered by; and last the documents that are not in the folder.
+The tool writes the page of checks, `Internal/wiki/checks.md`, on every `pages`. It is listed last on the contents page and in the browser view, as "The due diligence list". It holds the count of checks in each state and of the open checks by stage; "What matters most", below; "Names in the record", the parties and people that the record names; then, pillar by pillar and claim by claim, every check with its state, whom it is asked of (one row where it stands the same for several), its answer, what is missing or what it waits for, and the stage it is ideally answered by; and last the documents that are not in the folder.
 
 In the browser view, buttons choose which states show: to answer, waiting, answered, not relevant or off, all. Never edit this page. Send the analyst there when they ask what is left and whether it matters.
 
@@ -73,6 +71,15 @@ In the browser view, buttons choose which states show: to answer, waiting, answe
 ```
 
 The page of checks then starts with "What matters most": one row for each of these checks, with its reason, and each subject it is asked of with its state and its answer. `status` lists them under "What matters most" by their ID and reason, each with whom it is open or answered for. An answered check stays on the list, so the analyst sees what was decided. `"matters": null` takes the mark off. Review the marks when the stage changes or a large document comes in.
+
+**What is missing.** Where a check has to stay open, say for the subject it is asked of what is missing to answer it:
+
+```json
+{"do": "note", "target": "OBS_REV_004", "for": "P-001", "by": "assistant",
+ "reason": "Only figures for the group exist. The company's own figures are asked in Q-004."}
+```
+
+The note answers nothing and keeps the check on the list. It is shown beside the open check on the page of checks, in `status` where the check is among those listed (`--all` lists every one) and in `show <check>`, and no longer once the check is answered. A new note for the same check and subject replaces the old one. The records it names count as cited in the browser view and in `show <ID>`, which lists the check among what uses them, but not in `show <deal> uncited`, which is about the wiki's pages.
 
 ## Evidence and kinds of source
 
@@ -107,8 +114,9 @@ The analyst adjusts the standard by saying so. You hand `adjust` a list. Every a
 ]
 ```
 
-- **`add`** a check to an indicator (`to`), or a whole `indicator` with its `id`, `title`, `pillar`, `claim`, `due_by`, `applies_to` and `checks`. Copy the shape from `show` of an existing one. Give a new check an ID that starts with `DEAL_`, and its `settled_by`: without one it counts as settled by the company. Write the assumption as what the lender relies on, so that the answer that disproves it is bad news.
+- **`add`** a check to an indicator (`to`), or a whole `indicator` with its `id`, `title`, `pillar`, `claim`, `due_by`, `applies_to` and `checks`. Copy the shape from `show` of an existing one. Give a new check an ID that starts with `DEAL_`. Write the assumption as what the lender relies on, so that the answer that disproves it is bad news.
 - **`change`** any field of a check or an indicator. `null` takes a field off.
+- **`note`** on an open check what is missing for one subject: see "What is missing" above.
 - **`switch_off`** a check or an indicator. `not_now`: it comes back when the stage changes or when a check it follows gets a new answer. `not_for_this_deal`: it is off until a `switch_on`, which takes a `target` and a `reason`.
 
 The tool refuses an adjustment that touches what the institution has locked. An adjustment that should hold for every deal belongs in the institution's layer: tell the analyst.
@@ -119,6 +127,7 @@ The tool refuses an adjustment that touches what the institution has locked. An 
 
 - Such an answer no longer counts. Look at the new checks of the same indicator. Where the fact decides one, add that answer to the fact. Where none fits, send the fact's `id` with its `answers` without the old one.
 - Read the changed checks that are already answered: an answer may no longer fit its question.
+- A check that the deal's or the institution's own layer added with `settled_by` keeps that field, which nothing reads since standard 4.4.0; to take it out, `adjust` with `{"do": "change", "target": "<the check>", "set": {"settled_by": null}, "reason": "No longer read."}`.
 - Where a folder keeps its record in `Internal/memory/memory.json`, or its standard in `Internal/standard`, every command says so, and `upgrade` moves it to `Internal/record`. Then remove the empty folder yourself.
 
 ## The institution's layer

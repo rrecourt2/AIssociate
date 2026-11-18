@@ -20,7 +20,6 @@ checks:
 - id: OBS_MARKET_001
   question: In the party's main market, has the volume sold grown, stayed level or fallen over the last five years?
   answer: choice
-  settled_by: public
   options: [growing, level, falling]
   why: The trend so far is where any forecast starts. A forecast that breaks with it needs a reason.
   due_by: screening
@@ -39,7 +38,6 @@ checks:
   question: In the worst downturn of the last ten years, by how much did the market price of the party's main product fall
     from its peak to its lowest point?
   answer: number
-  settled_by: public
   unit: percent
   why: The size of the last downturn is the first measure of what the next one could do. It is the fall to set against the
     party's margin and its projections.
@@ -56,7 +54,6 @@ checks:
   question: Is the party's selling price set by a market or by its buyers, so that the party cannot raise it when its own
     costs rise?
   answer: yes_no
-  settled_by: company
   assumption: The party has a say in its selling price and can pass on a rise in its costs
   disproved_by: 'yes'
   look_in: [06.01.a, 01.03.a]
@@ -73,7 +70,6 @@ checks:
     its selling price and the price of its main input was narrowest), would the party''s revenue still cover its cash operating
     costs and its debt service, the proposed loan included?'
   answer: yes_no
-  settled_by: company
   assumption: The party covers its cash costs and its debt service at the lowest price, or the narrowest spread, of the
     last ten years
   disproved_by: 'no'
@@ -93,7 +89,6 @@ checks:
   question: In the last five years, has a direct competitor of the party, of similar size or larger, become insolvent, defaulted
     on its debt or had its debt restructured?
   answer: yes_no
-  settled_by: public
   assumption: Businesses of this kind and size in this market have serviced their debt through the last five years
   disproved_by: 'yes'
   why: A base rate. What brought down a business of the same kind in the same market is the first thing to rule out for
@@ -109,7 +104,6 @@ checks:
   question: Does the party's margin depend on an import tariff, a quota, an export ban or levy, a subsidy or a regulated
     price that the government can change or end during the life of the loan?
   answer: yes_no
-  settled_by: company
   assumption: The party's margin does not rest on a measure that the government can withdraw
   disproved_by: 'yes'
   look_in: [07.01.a, 03.01.a, 01.03.a]
@@ -129,7 +123,6 @@ checks:
   question: Is there a substitute product, a source of cheaper imports, or new capacity already announced or being built,
     that would take sales from the party or force its price down during the life of the loan?
   answer: yes_no
-  settled_by: public
   assumption: No substitute, import or new capacity now in sight would take the party's sales or force its price down
   disproved_by: 'yes'
   look_in: [01.03.a, 10.03.a]
@@ -145,7 +138,6 @@ checks:
   question: Over the last three years, has the party lost share in its main market (its sales grew more slowly than the
     market's, or fell faster)?
   answer: yes_no
-  settled_by: company
   assumption: The party has held its place against its competitors over the last three years
   disproved_by: 'yes'
   look_in: [01.03.a, 03.01.a]
@@ -162,7 +154,6 @@ checks:
   question: Does the party hold signed sales contracts, at a fixed or floor price and for volumes the buyer must take or
     pay for, that cover its debt service in each year of the loan?
   answer: yes_no
-  settled_by: company
   mitigant: true
   assumption: Sales under contract cover the debt service in each year of the loan
   disproved_by: 'no'

@@ -23,7 +23,6 @@ checks:
   question: Is there one input (a feedstock, a fuel, a utility, a component or goods for resale) that the party cannot produce
     or trade without, or one supplier that provides about a fifth or more of what it buys?
   answer: yes_no
-  settled_by: company
   why: 'Opens the topic. A no is not the end of it: OBS_INPUT_002 and OBS_INPUT_010 are read from the accounts whatever
     the answer here.'
   due_by: screening
@@ -47,7 +46,6 @@ checks:
 - id: OBS_INPUT_002
   question: What share of the party's cost of sales does its largest single bought-in input take?
   answer: number
-  settled_by: company
   unit: percent
   why: The share says how much of the margin a rise in the price of that one input can take. A processor, a miller, a dairy
     or a trader spends most of its cost of sales on one input, and that is sound as long as it can pass a rise on. OBS_INPUT_010
@@ -66,7 +64,6 @@ checks:
   question: In any of the last five financial years in which the price of the party's largest input rose by about a tenth
     or more, did its gross margin fall by about a fifth of its level or more (for example from 20 percent to 16)?
   answer: yes_no
-  settled_by: company
   assumption: The party has passed on rises in the price of its largest input, so that its margin held
   disproved_by: 'yes'
   why: What matters is not how large the input is in the costs but whether the gap between the selling price and the price
@@ -85,7 +82,6 @@ checks:
 - id: OBS_INPUT_003
   question: How many suppliers could deliver the critical input in the volume the party needs?
   answer: choice
-  settled_by: company
   options: [single_source, dual_source, multiple, commodity_market]
   assumption: The party could replace the supplier of its critical input
   flag_when: is single_source
@@ -108,7 +104,6 @@ checks:
 - id: OBS_INPUT_004
   question: Does a government body set the price of the critical input, or decide how much of it the party receives?
   answer: yes_no
-  settled_by: company
   assumption: The price and the volume of the critical input do not depend on a decision of government
   disproved_by: 'yes'
   when:
@@ -129,7 +124,6 @@ checks:
   question: Has the supply of the critical input been cut, reduced or suspended in the last 24 months, even for a short
     time?
   answer: yes_no
-  settled_by: company
   assumption: The critical input has reached the party without interruption over the last 24 months
   disproved_by: 'yes'
   when:
@@ -147,7 +141,6 @@ checks:
   question: Is there a court case, a dispute with an authority or a regulatory proceeding, pending or threatened, that could
     change the price the party pays for the critical input or stop its supply?
   answer: yes_no
-  settled_by: company
   assumption: No dispute or proceeding threatens the price or the supply of the critical input
   disproved_by: 'yes'
   when:
@@ -166,7 +159,6 @@ checks:
 - id: OBS_INPUT_MIT_001
   question: What limits the effect on the party of a rise in the price of the critical input?
   answer: choice
-  settled_by: company
   options: [price_fixed_by_contract, price_passed_on_under_sales_contracts, hedged, none]
   many: true
   mitigant: true
@@ -191,7 +183,6 @@ checks:
   question: Could the party keep producing within three months of losing the critical input, by switching to another input
     or to another plant?
   answer: yes_no
-  settled_by: company
   mitigant: true
   assumption: The party can keep producing without the critical input by switching within three months
   disproved_by: 'no'
@@ -213,7 +204,6 @@ checks:
   question: What share of the party's operating earnings comes from operations that do not need the critical input or its
     supplier?
   answer: number
-  settled_by: company
   unit: percent
   mitigant: true
   assumption: Most of the party's earnings come from operations that do not need the critical input

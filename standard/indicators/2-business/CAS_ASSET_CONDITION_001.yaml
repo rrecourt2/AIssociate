@@ -20,7 +20,6 @@ checks:
 - id: OBS_ASSET_005
   question: Who owns the asset?
   answer: choice
-  settled_by: company
   options: [party_that_uses_it, another_group_company, lessor_or_landlord, public_body, other]
   why: An asset that the party uses but does not own can be taken back, and the party cannot give it as security. The owner
     belongs in the structure, with an "owns" link to the asset.
@@ -40,7 +39,6 @@ checks:
   question: 'Does repayment depend on this asset: does it carry about a tenth or more of the output or the earnings that
     repay the loan, or is it offered as security?'
   answer: yes_no
-  settled_by: company
   why: An asset that carries little of the business and secures nothing is described and not examined. The checks on its
     condition, its upkeep and its remaining life are asked of the assets that repayment or the security rests on.
   due_by: screening
@@ -56,7 +54,6 @@ checks:
 - id: OBS_ASSET_001
   question: What condition is the asset in?
   answer: choice
-  settled_by: expert
   options: [new, good, fair, poor, end_of_life]
   assumption: The asset is in working condition and needs no major repair or replacement now
   flag_when: is poor or end_of_life
@@ -80,7 +77,6 @@ checks:
   question: Has someone independent of the party (an engineer, a surveyor or a valuer) inspected the asset and reported
     on its condition in the last three years?
   answer: yes_no
-  settled_by: expert
   assumption: Someone independent of the party has inspected the asset and reported on its condition
   disproved_by: 'no'
   when:
@@ -95,7 +91,6 @@ checks:
 - id: OBS_ASSET_003
   question: Is there a written maintenance plan for the asset, with a budget that is carried into the projections?
   answer: yes_no
-  settled_by: company
   assumption: Maintenance of the asset is planned, and its cost is in the projections
   disproved_by: 'no'
   when:
@@ -111,7 +106,6 @@ checks:
 - id: OBS_ASSET_004
   question: Has maintenance that was due on the asset been put off, so that a backlog has built up?
   answer: yes_no
-  settled_by: expert
   assumption: The maintenance that was due on the asset has been done
   disproved_by: 'yes'
   when:
@@ -128,7 +122,6 @@ checks:
 - id: OBS_ASSET_006
   question: Is the remaining useful life of the asset shorter than the time until the final repayment of the proposed loan?
   answer: yes_no
-  settled_by: expert
   assumption: The asset will last until the loan is repaid
   disproved_by: 'yes'
   when:
@@ -145,7 +138,6 @@ checks:
   question: Is the cost of the repair, overhaul or replacement that the asset needs included in the projections, with its
     funding named?
   answer: yes_no
-  settled_by: company
   mitigant: true
   assumption: The spending that the asset needs is in the projections and is funded
   disproved_by: 'no'

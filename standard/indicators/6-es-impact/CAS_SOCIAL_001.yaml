@@ -21,7 +21,6 @@ checks:
   question: Does the party meet the labour law of each country where it employs people, on written contracts, minimum wage,
     working hours and overtime pay, minimum age, social security contributions and the freedom to join a union?
   answer: yes_no
-  settled_by: company
   assumption: The party meets the labour law on contracts, pay, hours, minimum age, social security and the freedom to organise
   disproved_by: 'no'
   due_by: concept
@@ -39,7 +38,6 @@ checks:
   question: In the last three years, has a worker of the party, or of a contractor on its sites, died or been permanently
     disabled in an accident at work?
   answer: yes_no
-  settled_by: company
   assumption: No worker has died or been permanently disabled at the party's sites in the last three years
   disproved_by: 'yes'
   due_by: concept
@@ -60,7 +58,6 @@ checks:
     less protected against accidents than permanent staff who do the same work, or do they pay a fee for the job or leave
     their identity papers with the employer or a recruiter?
   answer: yes_no
-  settled_by: expert
   assumption: Workers who are not permanent staff get the same pay and protection for the same work, pay no fee for the
     job and keep their own papers
   disproved_by: 'yes'
@@ -80,7 +77,6 @@ checks:
   question: In the last three years, has the party had a strike, a lock-out, a collective dismissal, a claim brought by
     a group of workers before a court or a labour authority, or a fine or an order from the labour authority?
   answer: yes_no
-  settled_by: company
   assumption: The party has had three years without a collective labour dispute and without a sanction from the labour authority
   disproved_by: 'yes'
   applies_to: [borrower, repayment_source]
@@ -98,7 +94,6 @@ checks:
   question: Have people who live or work near the party's sites raised a complaint, a protest or a claim about its operations
     (for example about noise, dust, water, traffic, safety or a lost livelihood) that is not yet resolved?
   answer: yes_no
-  settled_by: expert
   assumption: No complaint, protest or claim from the people around the party's sites is unresolved
   disproved_by: 'yes'
   look_in: [07.02.a, 07.02.d, 02.06.d]
@@ -119,7 +114,6 @@ checks:
     use of force or without a check of their past conduct, or who have injured or detained a worker or a local person in
     the last three years?
   answer: yes_no
-  settled_by: expert
   assumption: Where armed guards, police or soldiers protect the party's sites, they are checked, bound by written rules
     on the use of force, and have harmed no one
   disproved_by: 'yes'
@@ -136,7 +130,6 @@ checks:
   question: Can workers and people near the party's sites raise a complaint through a channel that is written down, made
     known to them and open to anonymous use, and is each complaint logged with what was done about it?
   answer: yes_no
-  settled_by: company
   assumption: Workers and neighbours have a channel for complaints that they know of, and complaints are logged and answered
   disproved_by: 'no'
   applies_to: [borrower, repayment_source]
@@ -153,7 +146,6 @@ checks:
   question: Has the party agreed with the lender a written action plan that deals with every labour and community finding,
     with a responsible person, a budget and a date for each action?
   answer: yes_no
-  settled_by: terms
   mitigant: true
   assumption: An action plan agreed with the lender deals with every finding, with a person, a budget and a date for each
     action

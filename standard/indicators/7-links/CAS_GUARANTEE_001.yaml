@@ -12,7 +12,6 @@ checks:
 - id: OBS_GUARANTEE_KIND_001
   question: What does the guarantor promise to do?
   answer: choice
-  settled_by: terms
   options: [pay_on_demand, pay_after_enforcement, share_of_loss, performance_only]
   assumption: The guarantor promises to pay on first demand
   flag_when: is not pay_on_demand
@@ -29,7 +28,6 @@ checks:
 - id: OBS_GUARANTEE_CAP_001
   question: What is the most the guarantor can be made to pay?
   answer: number
-  settled_by: terms
   unit: currency
   why: The cap is set against what is owed under the facility and against the guarantor's own means.
   due_by: screening
@@ -42,7 +40,6 @@ checks:
   question: Does the guarantee cover everything owed under the facility (principal, interest, default interest, fees and
     enforcement costs) for the whole life of the loan?
   answer: yes_no
-  settled_by: terms
   assumption: The guarantee covers all that is owed, for as long as it is owed
   disproved_by: 'no'
   due_by: concept
@@ -55,7 +52,6 @@ checks:
   question: Could the guarantor refuse or delay payment by raising the borrower's defences, a set-off or a dispute about
     the loan?
   answer: yes_no
-  settled_by: terms
   assumption: The guarantor has given up the defences that would let it delay payment
   disproved_by: 'yes'
   look_in: [04.02.a, 08.01.a]
@@ -68,7 +64,6 @@ checks:
   question: Can the guarantee end or shrink before the loan is repaid (an expiry date, a release on a ratio or an event,
     a change to the loan made without the guarantor's consent)?
   answer: yes_no
-  settled_by: terms
   assumption: The guarantee stays in force until the loan is repaid
   disproved_by: 'yes'
   look_in: [04.02.a]
@@ -80,7 +75,6 @@ checks:
   question: Does the guarantor receive a benefit of its own from the loan it guarantees, or has counsel confirmed that the
     guarantee cannot be set aside for lack of benefit to the guarantor or as financial assistance?
   answer: yes_no
-  settled_by: expert
   assumption: The guarantee cannot be set aside for lack of benefit to the guarantor
   disproved_by: 'no'
   due_by: legal
@@ -95,7 +89,6 @@ checks:
   question: Could the lender enforce a claim under the guarantee where the guarantor's assets are, and collect within about
     two years?
   answer: yes_no
-  settled_by: expert
   assumption: A judgment or award against the guarantor can be enforced against its assets
   disproved_by: 'no'
   look_in: [08.01.a]
@@ -107,7 +100,6 @@ checks:
 - id: OBS_GUARANTEE_SIGNED_001
   question: Is the guarantee signed by the guarantor and in force?
   answer: yes_no
-  settled_by: terms
   assumption: The guarantee exists as a signed document
   disproved_by: 'no'
   due_by: disbursement
@@ -120,7 +112,6 @@ checks:
   question: Is the guarantee backed by something the lender can reach without going to court (cash collateral, a standby
     letter of credit, a pledge over the guarantor's assets)?
   answer: yes_no
-  settled_by: terms
   mitigant: true
   assumption: Something the lender can reach directly stands behind the guarantee
   disproved_by: 'no'

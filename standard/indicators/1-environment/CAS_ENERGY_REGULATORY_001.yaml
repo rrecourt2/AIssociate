@@ -20,7 +20,6 @@ checks:
 - id: OBS_EREG_002
   question: How is the price for the project's electricity set?
   answer: choice
-  settled_by: company
   options: [regulated_tariff, feed_in_tariff, auction_price, bilateral_contract, merchant, hybrid]
   assumption: The price is fixed, or set by a stated rule, and does not follow the market from day to day
   flag_when: is merchant or hybrid
@@ -42,7 +41,6 @@ checks:
   question: Is the tariff, or the formula that sets it, fixed until the final maturity of the loan, with no review before
     then that could lower it?
   answer: yes_no
-  settled_by: company
   assumption: The tariff or its formula is fixed until the loan is repaid
   disproved_by: 'no'
   due_by: diligence
@@ -57,7 +55,6 @@ checks:
   question: Has a change to the tariff, to grid access or dispatch rules, or to the taxes and incentives for power producers
     been proposed, or passed but not yet brought into force, that would lower the project's revenue or raise its costs?
   answer: yes_no
-  settled_by: public
   assumption: No change now proposed or passed would lower the project's revenue or raise its costs
   disproved_by: 'yes'
   look_in: [07.01.a, 08.01.a, 10.03.a]
@@ -72,7 +69,6 @@ checks:
   question: In the last ten years, has the government, the regulator or the state power buyer in this country cut a tariff
     that had been granted, reopened signed power contracts, or stopped paying under them?
   answer: yes_no
-  settled_by: public
   assumption: The country has kept to the tariffs and the power contracts it granted
   disproved_by: 'yes'
   look_in: [10.03.a, 08.01.a, 01.03.a]
@@ -88,7 +84,6 @@ checks:
   question: Does the project need a subsidy, a tax incentive or a tariff higher than the buyer pays for power from other
     sources to cover its debt service?
   answer: yes_no
-  settled_by: company
   assumption: The project can service its debt without a subsidy, a tax incentive or a tariff above what other power costs
     the buyer
   disproved_by: 'yes'
@@ -106,7 +101,6 @@ checks:
   question: Has the grid operator or an independent engineer confirmed that the plant meets, or as designed will meet, the
     technical rules for connection and operation (the grid code)?
   answer: yes_no
-  settled_by: expert
   assumption: The plant meets the grid code
   disproved_by: 'no'
   due_by: diligence
@@ -120,7 +114,6 @@ checks:
   question: Does a signed agreement or a law protect the project if the tariff or the rules change, through a clause that
     makes good the loss from a change in law, a stabilisation clause, or a government undertaking?
   answer: yes_no
-  settled_by: company
   mitigant: true
   assumption: A signed agreement or a law makes good the project's loss if the tariff or the rules change
   disproved_by: 'no'

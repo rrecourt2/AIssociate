@@ -25,7 +25,6 @@ checks:
   question: Under the law that governs it, can each kind of security in the package be validly created in favour of the
     lender or its security agent?
   answer: yes_no
-  settled_by: expert
   assumption: Each kind of security in the package can be validly created in favour of the lender
   disproved_by: 'no'
   due_by: concept
@@ -41,7 +40,6 @@ checks:
   question: Can the lender or its counsel name cases in the country where the assets are in which a lender enforced security
     of this kind through to a sale and received the proceeds?
   answer: yes_no
-  settled_by: lender
   assumption: Lenders have in practice enforced this kind of security in the country where the assets are, and been paid
   disproved_by: 'no'
   due_by: concept
@@ -56,7 +54,6 @@ checks:
   question: Do searches against each one who gives security show a charge over all its assets, a lien that arises by law
     (unpaid taxes or wages) or a court attachment that would rank ahead of the package?
   answer: yes_no
-  settled_by: public
   assumption: No earlier charge, lien or attachment over the giver's assets as a whole ranks ahead of the package
   disproved_by: 'yes'
   look_in: [02.01.c, 08.01.a, 03.01.a]
@@ -72,7 +69,6 @@ checks:
   question: Can each kind of security in the package be registered, or otherwise made to hold against other creditors and
     against a liquidator?
   answer: yes_no
-  settled_by: expert
   assumption: The security can be registered, and then holds against other creditors and in an insolvency
   disproved_by: 'no'
   look_in: [08.01.a, 07.01.a]
@@ -87,7 +83,6 @@ checks:
     (unpaid wages, taxes, the costs of the insolvency), suspend enforcement with no fixed end, or stop a foreign lender
     from enforcing or from taking the proceeds out of the country?
   answer: yes_no
-  settled_by: expert
   assumption: On default the lender can enforce the security and take the proceeds, with no claim put ahead of it by law
   disproved_by: 'yes'
   look_in: [08.01.a]
@@ -105,7 +100,6 @@ checks:
   question: Has counsel signed a legal opinion which confirms that the security is validly created, holds against other
     creditors and can be enforced, and which leaves out none of the assets the lender counts on?
   answer: yes_no
-  settled_by: expert
   assumption: A signed legal opinion confirms the whole security package
   disproved_by: 'no'
   due_by: legal
@@ -120,7 +114,6 @@ checks:
   question: Does the lender hold security that can be enforced outside the country and under another law (a pledge over
     shares in a holding company abroad, or over accounts abroad into which the revenue is paid)?
   answer: yes_no
-  settled_by: terms
   mitigant: true
   assumption: Part of the security can be enforced outside the country, under another law
   disproved_by: 'no'

@@ -8,7 +8,6 @@ import re
 
 from . import files
 from .assess import MAIN, VERDICTS, central, claims, holds_still, next_list, tally, view
-from .standard import ROUTES, route
 from .store import DEAL, TABLES, live, table_of
 
 SHELVES = {"opportunity": "Opportunity", "assets": "Assets and projects", "parties": "Parties", "people": "People",
@@ -22,10 +21,12 @@ DOOR = """<!DOCTYPE html>
 <title>Wiki</title>
 <p><a href="Internal/wiki/wiki.html">Open the wiki</a></p>
 """  # Wiki.html in the deal folder: the way in to the view for a browser
+TIMELINE = "# Timeline\n\nWhat was recorded, when (UTC) and by whom, "  # how the tool's timeline starts
 BEGIN, END = "<!-- tool:begin {} -->", "<!-- tool:end -->"
 PART = BEGIN + "((?!<!-- tool:begin).)*?" + END  # a begin marker, its lines and its own end marker
 ID = re.compile(r"\b[A-Z]-\d{3,}\b")
-NUMBER = re.compile(r"\d[\d,.]*\d|\d")
+NUMBER = re.compile(r"(\d[\d,.]*\d|\d)((?:\s?(?:thousand|million|billion|trillion|mn|bn|tn)|k|m)\b)?", re.I)  # k and m only against it
+SCALE = {"thousand": 1e3, "k": 1e3, "million": 1e6, "mn": 1e6, "m": 1e6, "billion": 1e9, "bn": 1e9, "trillion": 1e12, "tn": 1e12}
 ROUND = str.maketrans("[]", "()")  # square brackets in a title would end the link that carries it
 STALE = ("outdated", "disputed", "replaced")  # the states of a record that something newer took the place of
 # One of those words and a colon, at the start of a paragraph, of a sentence or of a bracket. What follows may cite a
@@ -141,19 +142,30 @@ def shown(value):
     return ", ".join(map(str, value)) if isinstance(value, list) else str(value)
 
 
+def shown_state(row):
+    """The state of a check for one subject, with its marks: thin, old, and own word for a favourable answer that rests
+    only on what a party says of itself."""
+    return ", ".join([row["state"], *row["flags"], *["own word"] * bool(row.get("own_word"))])
+
+
+def by_stage(rows, std):
+    """The open checks, counted by the stage each is ideally answered by: most are work for a later stage."""
+    due = [row["due_by"] for row in rows if row["state"] == "open"]
+    return ", ".join(f"{std['stage_titles'][stage]} {due.count(stage)}" for stage in std["stage_ids"] if stage in due)
+
+
 def check_lines(rows, memory, std):
-    """A table of checks with their state, their answer, the assumption they test and what they rest on."""
+    """A table of checks with their state, their answer or what is missing, the assumption they test and what they rest on."""
     lines = ["| Check | For | State | Answer | Assumption | Rests on |", "|---|---|---|---|---|---|"]
     for row in rows:
         check = std["checks"][row["check"]]
-        state = ", ".join([row["state"], *row["flags"]]) + (f", decision {row['action']}" if "action" in row else "")
+        state = shown_state(row) + (f", decision {row['action']}" if "action" in row else "")
         tested = ("Mitigant: " if check.get("mitigant") else "") + check.get("assumption", "")
         if "against" in row:
-            tested += " (**the answer goes against it**)" if row["against"] else (
-                " (**holds on this answer" + (", on someone's own word" if row.get("own_word") else "") + "**)")
+            tested += " (**the answer goes against it**)" if row["against"] else " (**holds on this answer**)"
         rests = ", ".join(row.get("facts", [])) + (f" ({row['evidence']})" if "evidence" in row else "")
         lines.append(f"| {row['check']} {check['question']} | {name_of(row['for'], memory)} | {state} | "
-                     f"{shown(row.get('value', ''))} | {tested} | {rests} |")
+                     f"{shown(row.get('value', ''))}{'missing: ' + row['missing'] if 'missing' in row else ''} | {tested} | {rests} |")
     return lines
 
 
@@ -278,8 +290,8 @@ def glance(ids, memory, std, rows, held, where, here):
                       for pillar in std["pillars"]]
         lines += ["", *challenges(mine, std, name)]
         if rid != DEAL:
-            lines += [f"- **Open question** {qid} to {q['asked_of']}: {q['text']}" for qid, q in memory["questions"].items()
-                      if q["state"] == "open" and q.get("about") == rid]
+            lines += [f"- **Open question** {qid} to {q['asked_of']}: {q['text']}" + f" Note: {q.get('note')}" * bool(q.get("note"))
+                      for qid, q in memory["questions"].items() if q["state"] == "open" and q.get("about") == rid]
             lines += [f"- **Decision** {did}: {d['decision']}" for did, d in memory["decisions"].items() if d.get("about") == rid]
         lines.append("")
     while lines and not lines[-1]:
@@ -332,8 +344,8 @@ def source_lines(memory):
 
 
 def check_page(memory, std, rows, todo, where):
-    """Every check of the standard as it stands for this deal: first what is left to answer and what settles it, then each
-    claim with its checks, what is to answer first. The view for a browser lets a reader choose which states to see."""
+    """Every check of the standard as it stands for this deal: first what matters most, then each claim with its checks,
+    what is to answer first. The view for a browser lets a reader choose which states to see."""
     def name(rid):
         return linked(rid, memory, where, "checks.md")
 
@@ -349,16 +361,16 @@ def check_page(memory, std, rows, todo, where):
         elif row["state"] != "waiting":  # open, parked or off: the decision or the reason, where there is one
             agreed = "agreed action" if row["state"] == "open" else "decision"
             note = f"{agreed} {row['action']}" if "action" in row else row.get("reason", "")
+            note += f"{'. ' * bool(note)}Missing: {row.get('missing')}" * ("missing" in row)
         elif row["for"] in memory["subjects"] and not memory["subjects"][row["for"]].get("name"):
             note = "until it is named"
         elif check.get("mitigant") or not waits:
             note = f"only if {codes(waits) or 'a test'} goes against the claim"
         else:
             note = f"until `{waits[0]}` is answered: {std['checks'][waits[0]]['question'][:80].rsplit(' ', 1)[0]} ..."
-        found = [", ".join([row["state"], *row["flags"]]),
+        found = [shown_state(row),
                  f"{'Mitigant: ' * bool(check.get('mitigant'))}{check['question']} `{row['check']}`"
-                 + f" *{check.get('matters')}*" * bool(check.get("matters")), name(row["for"]), note,
-                 ROUTES[route(check)] if row["state"] in (*ORDER[:2], "waiting") else "", std["stage_titles"][row["due_by"]]]
+                 + f" *{check.get('matters')}*" * bool(check.get("matters")), name(row["for"]), note, std["stage_titles"][row["due_by"]]]
         return [" ".join(str(cell).replace("|", "/").split()) for cell in found]  # so that no cell ends early
 
     def table(mine):
@@ -368,16 +380,17 @@ def check_page(memory, std, rows, todo, where):
             merged.setdefault((state, check, *rest), []).append(whom)
         return ["| " + " | ".join([state, check, "; ".join(whom), *rest]) + " |" for (state, check, *rest), whom in merged.items()]
 
-    counts, found, stage_of = tally(rows), claims(rows, memory, std), std["stage_ids"].index
-    work = [row for row in rows if row["state"] == "open"]
-    stages = [stage for stage in std["stage_ids"] if any(row["due_by"] == stage for row in work)]
-    head = ["| State | Check | For | Answer, or what it waits for | Settled by | Ideally by |", "|---|---|---|---|---|---|"]
+    counts, found, stage_of, due = tally(rows), claims(rows, memory, std), std["stage_ids"].index, by_stage(rows, std)
+    head = ["| State | Check | For | Answer, or what it waits for | Ideally by |", "|---|---|---|---|---|"]
     lines = [f"# {memory['deal']['name']}: checks", "", "Every check of the standard as it stands for this opportunity, at the stage "
              f"{std['stage_titles'][memory['deal']['stage']]}. Open: it can be answered now. Waiting: an earlier answer or a name "
              "comes first. Not relevant: an earlier answer made it so. Contested: two facts answer it differently. Off: a decision "
-             "or an adjustment set it aside. Thin or old: the evidence is weaker or older than this stage asks for.", "",
+             "or an adjustment set it aside. Thin or old: the evidence is weaker or older than this stage asks for. Own word: the "
+             "favourable answer to a test rests only on what a party says of itself, or only on evidence the check counts as "
+             "stated.", "",
              "**" + ", ".join(f"{counts[state]} {state}" for state in ORDER if state in counts) + ".** Answers that go against "
-             f"their claim: {sum(bool(row.get('against')) for row in rows)}."]
+             f"their claim: {sum(bool(row.get('against')) for row in rows)}."
+             + f" Open, by the stage each is ideally answered by: {due}." * bool(due)]
     marked = {}  # what was marked for this deal: one row for a check, with its reason, and each subject with its state
     for row in sorted(rows, key=lambda row: ORDER.index(row["state"])):  # what is to answer first
         if std["checks"][row["check"]].get("matters"):
@@ -386,24 +399,11 @@ def check_page(memory, std, rows, todo, where):
     for mine in marked.values():
         states = ", ".join(dict.fromkeys(state for state, _ in mine))
         whom = "; ".join(f"{c[2]}: {c[0]}" + (f", {c[3].replace('; ', ', ')}" if state in ("answered", "contested") else "") for state, c in mine)
-        key.append(f"| {states} | {mine[0][1][1]} | {whom} | {next((c[4] for _, c in mine if c[4]), '')} | {mine[0][1][5]} |")
-    lines += ["", "## What matters most", "", "| State | Check | For | Settled by | Ideally by |", "|---|---|---|---|---|", *key] * bool(key)
-    if work:
-        lines += ["", "## What settles the open checks", "",
-                  "| Settled by | " + " | ".join(std["stage_titles"][stage] for stage in stages) + " | All | Mostly about |",
-                  "|---|" + "---|" * (len(stages) + 2)]
-    for key, title in ROUTES.items():
-        mine = [row for row in work if route(std["checks"][row["check"]]) == key]
-        due, topics = [row["due_by"] for row in mine], [std["by_id"][row["indicator"]]["title"] for row in mine]
-        most = sorted(dict.fromkeys(topics), key=topics.count, reverse=True)[:4]  # the claims with the most open checks
-        if mine:
-            lines.append(f"| {title[0].upper()}{title[1:]} | " + " | ".join(str(due.count(stage)) for stage in stages)
-                         + f" | {len(due)} | " + ", ".join(f"{topic} {topics.count(topic)}" for topic in most) + " |")
-    screened = dict.fromkeys(memory["links"].get(row["for"], {}).get("from", row["for"]) for row in work  # a link: who gives it
-                             if route(std["checks"][row["check"]]) == "screening")
-    screened = [sid for sid in screened if memory["subjects"].get(sid, {}).get("kind") in ("party", "person")]
-    lines += ["", "**Names for the screening:** " + ", ".join(map(name, screened)) + "; and the directors and managers that "
-              "the facts about them name."] * bool(screened)
+        key.append(f"| {states} | {mine[0][1][1]} | {whom} | {mine[0][1][4]} |")
+    lines += ["", "## What matters most", "", "| State | Check | For | Ideally by |", "|---|---|---|---|", *key] * bool(key)
+    screened = [sid for sid, subject in live(memory).items() if subject["kind"] in ("party", "person") and subject.get("name")]
+    lines += ["", "## Names in the record", "", "The parties and people that the record names, for instance for a screening: "
+              + ", ".join(map(name, screened)) + "; and the directors and managers that the facts about them name."] * bool(screened)
     for pillar in std["pillars"]:
         within = tally(row for row in rows if std["by_id"][row["indicator"]]["pillar"] == pillar["id"])
         lines += ["", f"## {pillar['title']}", "",
@@ -420,9 +420,30 @@ def check_page(memory, std, rows, todo, where):
     return "\n".join([*lines, ""])
 
 
+def timeline(memory):
+    """The log of the record as a page: each revision, the newest first and by day, with who made it, its note and what it touched."""
+    lines, day = [TIMELINE + "the newest first: the tool writes this page from the log of the record."], None
+    for entry in reversed(memory["log"]):
+        if entry["at"][:10] != day:
+            day = entry["at"][:10]
+            lines += ["", f"## {day}", ""]
+        ids = [*entry.get("added", []), *entry.get("changed", {})]
+        kinds = [table_of(memory, rid) for rid in ids]
+        touched = [f"{kinds.count(t)} {t if kinds.count(t) > 1 else t[:-1]}" for t in TABLES if t in kinds] + ["the opportunity"] * (DEAL in ids)
+        lines.append(f"- **Revision {entry['n']}**, {entry['at'][11:16]}, {' '.join(entry['by'].split())}: {' '.join(entry['note'].split())}"
+                     + f" ({', '.join(touched)})" * bool(touched))
+    return "\n".join([*lines, ""])
+
+
+def own_timeline(deal):
+    """Whether the timeline is the tool's to write: there is no such page yet, or the tool wrote it. Before 0.9.0 it was an ordinary name."""
+    text = files.read(deal, f"{files.WIKI}/timeline.md")
+    return text is None or text.startswith(TIMELINE)
+
+
 def all_pages(deal):
     paths = [path for path in files.listing(deal, files.WIKI)
-             if path.endswith(".md") and path[len(files.WIKI) + 1:] not in ("index.md", "sources.md", "checks.md")]
+             if path.endswith(".md") and path[len(files.WIKI) + 1:] not in ("index.md", "sources.md", "checks.md", "timeline.md")]
     return {path: files.read(deal, path) for path in paths}
 
 
@@ -512,7 +533,8 @@ def refresh(deal, memory, std, rows, held):
         contents.setdefault(path[cut:].split("/")[0], []).append(
             f"- [{title}]({encoded(path[cut:])}): {lead(text)}")
     index = [f"# {memory['deal']['name']}: contents", "", "[Sources](sources.md) lists every source of the record. "
-             f"[Documents](../../{encoded(files.CLIENT)}/index.md) lists what the client shared.", ""]
+             f"[Documents](../../{encoded(files.CLIENT)}/index.md) lists what the client shared."
+             + " [Timeline](timeline.md) lists what was recorded, when and by whom." * own_timeline(deal), ""]
     for shelf, lines in contents.items():
         if lines:
             index += [f"## {SHELVES.get(shelf, shelf.capitalize())}", "", *lines, ""]
@@ -522,23 +544,26 @@ def refresh(deal, memory, std, rows, held):
     if others:
         index += ["## Subjects without a page", "", *others, ""]
     index += ["## Checks", "", "- [The due diligence list](checks.md): every check of the standard for this opportunity, with what "
-              "is answered, what is open and what settles it.", ""]
+              "is answered, what is open and what it waits for.", ""]
     listed = files.read_json(deal, files.MANIFEST, {"documents": []})["documents"]
     todo = next_list(memory, std, rows, in_folder={doc["slot"] for doc in listed})
-    sources, checks = "\n".join(source_lines(memory)), check_page(memory, std, rows, todo, where)
+    sources, checks, log = "\n".join(source_lines(memory)), check_page(memory, std, rows, todo, where), {}
+    if own_timeline(deal):  # never over a page of the analyst's of that name
+        log = {"timeline.md": timeline(memory)}
+        files.write(deal, f"{files.WIKI}/timeline.md", log["timeline.md"])
     files.write(deal, f"{files.WIKI}/index.md", "\n".join(index))
     files.write(deal, f"{files.WIKI}/sources.md", sources)
     files.write(deal, f"{files.WIKI}/checks.md", checks)
     client = f"../../{files.CLIENT}/index.md"  # the index of the client folder, as a path from the wiki folder
-    out = {"../" + path.split("/", 1)[1]: text for path, text in drafts(deal).items()}  # as paths from the wiki folder
     texts = {"index.md": "\n".join(index), "sources.md": sources, **{path[cut:]: pages[path] for path, _ in ordered},
-             client: documents(memory["deal"]["name"], listed, std), **out, "checks.md": checks}
-    cited = set(ID.findall(" ".join(text for path, text in texts.items() if path not in ("sources.md", "checks.md"))))
+             client: documents(memory["deal"]["name"], listed, std), **log, "checks.md": checks}
+    notes = [row.get("missing", "") for row in rows]  # a note on what is missing cites what it names
+    cited = set(ID.findall(" ".join([*(text for path, text in texts.items() if path not in ("sources.md", "checks.md")), *notes])))
     past = {"facts": "outdated", "sources": "replaced", "links": "ended"}  # history goes in only where a page cites it
     kept = {table: {rid: record for rid, record in memory[table].items()
                     if rid in cited or record.get("state", "current") != past.get(table)} for table in TABLES}
     data = {"name": memory["deal"]["name"], "revision": memory["log"][-1]["n"], "shelves": SHELVES, "pages": texts,
-            "documents": client, "drafts": list(out), "where": where, **kept}
+            "documents": client, "where": where, **kept}
     filled = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")  # so that no text can end the script it sits in
     files.write(deal, f"{files.WIKI}/wiki.html", files.packaged("wiki.html").replace("{{DATA}}", filled))
     files.write(deal, "Wiki.html", DOOR)
@@ -546,14 +571,26 @@ def refresh(deal, memory, std, rows, held):
 
 
 def numbers(text):
-    """The numbers in a text, leaving out those inside the ID of a record or a check, and inside a link's target."""
+    """The numbers in a text, leaving out those inside the ID of a record or a check, and inside a link's target. Each
+    as written, then with its scale word applied, and the step it is written to: "2.5bn" is (2.5, 2.5e9, 1e8)."""
     found = set()
-    for token in NUMBER.findall(re.sub(r"\]\([^)]*\)|\b[A-Z]+_\w+", " ", ID.sub("", text))):
+    for token, word in NUMBER.findall(re.sub(r"\]\([^)]*\)|\b[A-Z]+_\w+", " ", ID.sub("", text))):
+        token, scale = token.replace(",", "").rstrip("."), SCALE.get(word.strip().lower(), 1)
         try:
-            found.add(float(token.replace(",", "").rstrip(".")))
+            found.add((float(token), float(token) * scale, 10 ** -len(token.partition(".")[2]) * scale))
         except ValueError:
             pass
     return found
+
+
+def supported(figure, held):
+    """Whether the numbers that records hold bear out a figure: the same number, or one that rounds to it at the step it
+    is written to, with a scale word on either side: 4,060m is 4.1bn, not 4.0bn. The same digits pass unless both sides
+    carry a scale word and the two differ: 50bn is not 50 million."""
+    n, value, step = figure
+    bare = any(n == m and (value == n or scaled == m) for m, scaled, _ in held)  # the same digits, one side with no scale word
+    rounds = any(-step * 0.500001 <= scaled - value < step * 0.499999 for _, scaled, _ in held)  # a half rounds up
+    return bare or rounds  # the 0.000001 keeps an error of floating point, as in 4.06 * 1e9, from moving a figure over the edge
 
 
 def where_held(loose, holders):
@@ -579,7 +616,8 @@ def problems(deal, memory):
     holders = {}  # each number, and the facts that hold it
     for fid, fact in memory["facts"].items():
         if fact["state"] != "outdated":
-            for n in numbers(" ".join(str(fact.get(key, "")) for key in ("statement", "value", "unit", "as_of", "place", "quote"))):
+            said = " ".join(str(fact.get(key, "")) for key in ("statement", "value", "unit", "as_of", "place", "quote"))
+            for n in {n for n, _, _ in numbers(said)}:
                 holders.setdefault(n, []).append(fid)
     for path, text in sorted({**pages, **drafts(deal)}.items()):
         body = own_text(text)
@@ -609,11 +647,16 @@ def problems(deal, memory):
                     stale[cite.group()] = entry
                 source = memory["sources"].get(entry.get("source"), {})  # of a fact's source the title and the date count,
                 held += " ".join(f" {value}" for key, value in [*entry.items(), *source.items()]  # not its map of the document
-                                 if key not in ("fingerprint", "rev") and (key != "map" or "map" in entry))
-            loose = sorted(n for n in numbers(block) - numbers(held) if n >= 10 or n != int(n))
-            if loose and not notes:
-                found.append(f"{path}: \"{' '.join(block.split()[:6])} ...\" has {', '.join(f'{n:g}' for n in loose[:8])}, "
-                             f"which no record cited in that paragraph holds" + where_held(loose[:8], holders))
+                                 if key not in ("fingerprint", "rev", "value", "answers") and (key != "map" or "map" in entry))
+                unit = str(entry.get("unit", "")).split()[-1:]  # the scale word of a unit such as KES m goes with the value
+                held += f" {entry.get('value', '')}{''.join(unit)}"
+            held = numbers(held)  # a figure passes where a record cited beside it holds it, also rounded or with a scale word
+            loose = sorted({n for n, value, step in numbers(block) if (value >= 10 or n != int(n)) and not supported((n, value, step), held)})
+            if loose and not notes:  # where a cited record holds the same digits, it gives them another scale word
+                digits = {m for m, _, _ in held}
+                figures = [f"{n:g} with another scale word" if n in digits else f"{n:g}" for n in loose[:8]]
+                found.append(f"{path}: \"{' '.join(block.split()[:6])} ...\" has {', '.join(figures)}, "
+                             "which no record cited in that paragraph holds" + where_held(loose[:8], holders))
         found += [f"{path}: cites {rid}, which is {entry['state']}" + (f" (replaced by {entry['replaced_by']})" if entry.get(
             "replaced_by") else "") + f". Cite what took its place, or start the sentence with \"{entry['state'].capitalize()}:\""
             for rid, entry in stale.items()]

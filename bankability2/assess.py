@@ -226,6 +226,8 @@ def assess(memory, std, today=None):
             row["state"] = "waiting"  # for an earlier answer, for a condition, or for the seat to be filled
             earlier = after + [cond["check"] for cond in check.get("when", []) + ind.get("applies_when", [])]
             row["waits_for"] = [dep for dep in dict.fromkeys(earlier) if not (found.get((dep, target)) or found.get((dep, DEAL)))]
+        if row["state"] == "open" and target in check.get("missing", {}):
+            row["missing"] = check["missing"][target]  # a note on what is missing: it answers nothing, and goes with the answer
         return row["state"]
 
     asked = [(ind, check["id"], target) for ind in std["indicators"] for check in ind["checks"]

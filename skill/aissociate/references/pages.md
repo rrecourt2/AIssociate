@@ -5,8 +5,9 @@ The wiki gives the work its depth: what the business is, how it works, how its p
 ## How the wiki is read
 
 - **Every page starts with a lead that can stand alone.** The contents page, `Internal/wiki/index.md`, prints the first sentence of each page, and a reader opens the page only when that line says so.
-- **The tool writes the contents page**, folder by folder, and puts what matters most first in each folder. First comes the page of a party or a project with a main role in the deal. Then come the pages that cite the most facts behind a marked check or behind an answer that goes against a claim, then the pages that cite the most of the record. The menu of the browser view has the same order, and it moves as the record and the marks do. The tool also writes `sources.md`, which lists every source, and `checks.md`: see [standard](standard.md).
+- **The tool writes the contents page**, folder by folder, and puts what matters most first in each folder. First comes the page of a party or a project with a main role in the deal. Then come the pages that cite the most facts behind a marked check or behind an answer that goes against a claim, then the pages that cite the most of the record. The menu of the browser view has the same order, and it moves as the record and the marks do. The tool also writes `sources.md`, which lists every source, and `checks.md`: see [standard](standard.md). `timeline.md` lists, newest first, what was recorded, when and by whom, from the log of the record.
 - **Say each thing once**, on the page it belongs to, and link to it from elsewhere.
+- **A draft is not part of the wiki.** The analyst asks for a scan, a CIP or an FP, and you write it from the wiki and the record. It is the analyst's document, saved in `Internal/outputs`: see [drafting](drafting.md). A page may link to it as to any file.
 - **A person reads the same pages in a browser**, in `wiki.html`, which `Wiki.html` at the top of the deal folder opens. A click on a citation shows the record with every field. So write a source's `note`, a link's `why` and a decision's `reason` for a reader.
 
 ## Which pages
@@ -78,7 +79,7 @@ Parts 2 to 5 go under "What we know". On the page of the opportunity, write the 
 
 ## The working notes
 
-`work/working-notes.md`, with `about: DEAL`, says how to work on this deal. It has three parts and stays short, about 800 words. Take out what is done, also where a colleague wrote it:
+`work/working-notes.md`, with `about: DEAL`, says how to work on this deal. It has three parts and stays short, about 800 words as `pages` counts them, which leaves out the top lines, the headings, the citations and the parts the tool writes. Take out what is done, also where a colleague wrote it:
 
 1. The analyst's standing instructions, in their words, with dates. An instruction on how to write goes here only, never into the record.
 2. Which page is the place for what.
@@ -112,7 +113,7 @@ Put the ID of the fact or the source in square brackets after the sentence it su
 
 `check` reads a page paragraph by paragraph. A list item and a table row each count as one. It reports:
 
-- **A number that no record cited in the same paragraph holds.** A fact holds a number in its statement, value, date or place, and a source in its title or date. A question and a decision hold none. Decimals count: 16,415 is not 16,415.23. Whole numbers below 10 are let through. Every other number counts, also a year and the day of a date. So cite a fact as of the date you name, and write a figure the way its fact gives it: KES 4,060m, not KES 4.06bn. Where facts hold the number, `check` names up to three of them.
+- **A number that no record cited in the same paragraph holds.** A fact holds a number in its statement, value, date or place, and the scale word of its unit goes with its value: value 4060 with unit KES m holds 4,060m. A source holds the numbers in its title or date, a question or a decision those in its words. A figure passes when a cited record holds the same figure, or one that rounds to it at the precision the page writes; either side may carry a scale word (thousand or k, million or m or mn, billion or bn, trillion or tn). The short k and m count only when they are written against the number, as in 4,060m or 50k, so 8 m tall and 3 M&A deals carry none, while the longer words count with or without a space, and so does the unit of a fact such as KES m. So KES 4.1bn passes against KES 4,060m, and 2.5 against 2.49. A figure cut short does not pass: KES 4.0bn against KES 4,060m is reported, and so is 3.2 against 3.26. A half rounds up: 2.55 backs 2.6, and 2.5 is reported. Where the page and the record both give a scale word and the two differ, the figure is reported unless the amounts are equal: KES 4,060bn against KES 4,060m is reported, and so is 50bn against 50 million, while KES 4.06bn against KES 4,060m passes. A figure with no scale word on one side passes on the same digits, because a table may give its unit in its heading: there the scale is yours to read. So do digits that a cited record holds only in a date: EUR 12bn passes beside a fact as of 12 November. Whole numbers below 10 are let through unless a scale word follows them: 8 customers is not checked, EUR 8bn is. Every other number counts, also a year and the day of a date: cite a fact as of the date you name. Where facts hold the number, `check` names up to three of them.
 - **In a table**, give a figure its citation in its own row: `| Revenue | KES 4,060m | KES 3,480m | [F-008] [F-019] |`. The head row is not read.
 - **Only the record counts.** A number that is in a document and in no fact is reported even where you cite the source. Record the fact first.
 - **A citation that leads nowhere**, a link to a page that is not there, and a page with text and no citation at all.
@@ -120,8 +121,9 @@ Put the ID of the fact or the source in square brackets after the sentence it su
 
 ## When something changes
 
-- **Merge new information into the page.** Do not append a dated entry. Change the sentence, the figure and the citation.
+- **Merge new information into the page.** Do not append a dated entry. Change the sentence, the figure and the citation. The tool keeps no earlier text of a page or a draft: where the deal folder is in OneDrive or SharePoint, their version history has it.
 - **Find every page that carries the old figure.** `show <ID>` lists the pages that cite a record.
+- **Take in what is new.** `show <deal> uncited` lists, by source, the current facts that no page cites yet; a citation in a draft, or in a part the tool writes, does not count.
 - **Keep a replaced claim only where it matters** that it was once held. Write it as one sentence that starts with `Outdated:` for a replaced fact, `Disputed:` for a disputed one or `Replaced:` for a replaced source, and cite the record after that word:
 
   ```markdown

@@ -25,7 +25,6 @@ checks:
   question: What share of the party's debt, the proposed loan included, carries a floating rate or falls due for refinancing
     within twelve months?
   answer: number
-  settled_by: company
   unit: percent
   why: This is the debt whose cost follows the market. Short-term debt at a fixed rate counts, because it takes the new
     rate when it is rolled over.
@@ -41,7 +40,6 @@ checks:
     still cover the interest and the scheduled repayments on its debt as contracted, the proposed loan included and before
     any hedge?
   answer: yes_no
-  settled_by: company
   assumption: The party can service its debt after a rise in interest rates of three percentage points
   disproved_by: 'no'
   look_in: [03.01.a, 04.03.a, 03.02.b]
@@ -58,7 +56,6 @@ checks:
 - id: OBS_PRICE_001
   question: Does the party buy or sell a commodity whose price is set on a market and changes from day to day?
   answer: yes_no
-  settled_by: company
   why: Opens price risk. A "no" is not the end of it. OBS_PRICE_003 is asked whatever the answer, against the accounts.
   due_by: screening
   look_in: [03.01.a, 06.01.a, 06.04.a]
@@ -72,7 +69,6 @@ checks:
     sales at a fixed price for which the goods are neither bought nor hedged) so large that a price move of a fifth against
     it would cost more than the operating profit of the last full year?
   answer: yes_no
-  settled_by: company
   assumption: A price move of a fifth against the party's open position would cost less than a year's operating profit
   disproved_by: 'yes'
   when:
@@ -93,7 +89,6 @@ checks:
   question: Do the accounts or the party's position reports show futures, options or forward contracts that are larger than
     its physical purchases and sales, or in goods it does not deal in?
   answer: yes_no
-  settled_by: company
   assumption: The party uses futures, options and forward contracts only to cover its physical business
   disproved_by: 'yes'
   due_by: concept
@@ -109,7 +104,6 @@ checks:
   question: In the last five years, has a buyer or a supplier walked away from a forward contract at a fixed price with
     the party, or forced the party to renegotiate it, after the market price moved?
   answer: yes_no
-  settled_by: company
   assumption: The party's buyers and suppliers have honoured their forward contracts when the price moved against them
   disproved_by: 'yes'
   due_by: concept
@@ -127,7 +121,6 @@ checks:
   question: Has the party fixed or capped the interest rate on enough of its floating-rate debt, by a swap, a cap or a switch
     to a fixed rate, that it could service its debt after a rise of three percentage points?
   answer: yes_no
-  settled_by: company
   mitigant: true
   assumption: An interest hedge or a fixed rate keeps the debt service within the party's cash flow after a rise in rates
   disproved_by: 'no'
@@ -143,7 +136,6 @@ checks:
   question: Does the party have a written price-risk policy with position limits, and does someone who does not trade (finance,
     risk or the board) check the positions against those limits at least once a month?
   answer: yes_no
-  settled_by: company
   mitigant: true
   assumption: Position limits are written down and are checked by someone outside trading
   disproved_by: 'no'

@@ -23,7 +23,6 @@ checks:
 - id: OBS_COST_001
   question: What was the party's gross margin in the latest financial year (gross profit as a share of revenue)?
   answer: number
-  settled_by: company
   unit: percent
   why: The starting figure. It is read against the party's own worst year (OBS_COST_006) and against others in the same
     business, not against a fixed level.
@@ -40,7 +39,6 @@ checks:
 - id: OBS_COST_006
   question: What was the party's lowest gross margin in any of the last five financial years?
   answer: number
-  settled_by: company
   unit: percent
   why: A margin is read over a whole cycle. The lowest year shows what a bad year looks like for this business.
   due_by: concept
@@ -54,7 +52,6 @@ checks:
 - id: OBS_COST_002
   question: Are the party's costs mostly fixed or mostly variable?
   answer: choice
-  settled_by: company
   options: [fixed_dominant, variable_dominant, balanced]
   why: A business whose costs are mostly fixed loses profit faster than revenue when volume drops. The answer says how hard
     a fall in sales would hit.
@@ -73,7 +70,6 @@ checks:
 - id: OBS_COST_004
   question: Is the party's gross margin in the latest financial year lower than it was two years earlier?
   answer: yes_no
-  settled_by: company
   assumption: The party's margin has held over the last two years
   disproved_by: 'yes'
   due_by: concept
@@ -95,7 +91,6 @@ checks:
   question: Did the party make an operating profit (before interest and tax, and without one-off items) in each of the last
     five financial years?
   answer: yes_no
-  settled_by: company
   assumption: The party's ordinary business made a profit in every one of the last five years
   disproved_by: 'no'
   why: A margin that holds through good years and bad shows in the worst year. A loss in that year says how little room
@@ -110,7 +105,6 @@ checks:
   question: 'In any of the last three years, did items outside the ordinary business make up more than about a quarter of
     profit before tax: a gain on the sale of an asset, an insurance payout, a grant, a debt forgiven, or income from investments?'
   answer: yes_no
-  settled_by: company
   assumption: The party's profit comes from its ordinary business and can be expected again
   disproved_by: 'yes'
   why: A lender is repaid over years. Profit that came once will not come again to meet the next instalment.

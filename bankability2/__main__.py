@@ -102,15 +102,14 @@ def marked_lines(rows, memory, std):
 def status(args):
     memory, std = load(args.deal)
     rows, scope = assess.assess(memory, std), None
-    part = {**{pillar["id"]: pillar["title"] for pillar in std["pillars"]}, **standard.ROUTES}.get(args.about)
-    if part:  # only the checks of one pillar, or those that one route settles, and whom they are asked of
-        rows = [row for row in rows if args.about in (std["by_id"][row["indicator"]]["pillar"], standard.route(std["checks"][row["check"]]))]
+    part = {pillar["id"]: pillar["title"] for pillar in std["pillars"]}.get(args.about)
+    if part:  # only the checks of one pillar, and whom they are asked of
+        rows = [row for row in rows if std["by_id"][row["indicator"]]["pillar"] == args.about]
         scope = {row["for"] for row in rows}
     elif args.about:  # only what concerns one subject or link, and for a subject the links that touch it
         if args.about != store.DEAL and store.table_of(memory, args.about) not in ("subjects", "links"):
-            raise Refused(f"--for takes the ID of a subject or a link, {store.DEAL}, a pillar "
-                          f"({', '.join(pillar['id'] for pillar in std['pillars'])}) or what settles a check "
-                          f"({', '.join(standard.ROUTES)}), and {args.about!r} is none of them")
+            raise Refused(f"--for takes the ID of a subject or a link, {store.DEAL} or a pillar "
+                          f"({', '.join(pillar['id'] for pillar in std['pillars'])}), and {args.about!r} is none of them")
         scope = {args.about} | {lid for lid, link in memory["links"].items() if args.about in (link["from"], link["to"])}
         rows = [row for row in rows if row["for"] in scope]
     listed = files.read_json(args.deal, files.MANIFEST, {"documents": []})["documents"]
@@ -131,6 +130,9 @@ def status(args):
                    and bool(memory["sources"][fact["source"]].get("where")) for fact in memory["facts"].values())
         if bare:
             print(f"Facts from a document that carry no quotation: {bare}.")
+        loose = sum(map(len, uncited(args.deal, memory).values()))
+        if loose:
+            print(f"Facts that no page cites: {loose}. List them with: show <deal> uncited")
     if scope:
         print(f"\nOnly what concerns {part or pages.name_of(args.about, memory)} ({args.about}).")
     structure(memory, std, None if args.about == store.DEAL else scope)
@@ -139,16 +141,12 @@ def status(args):
         print("\n## What changed")
         for entry in entries:
             touched = len(entry["added"]) + len(entry["changed"])
-            print(f"- {entry['n']}. {entry['at'][:10]} {entry['by']}: {entry['note']} ({touched} records)")
+            print(f"- {entry['n']}. {entry['at'][:10]} {entry['by']}: {entry['note']} ({touched} record{'s' * (touched != 1)})")
     print("\n## Next\n\nChecks: " + (", ".join(f"{count} {state}" for state, count in assess.tally(rows).items())
                                     or "none apply yet") + ".")
-    due = [row["due_by"] for row in rows if row["state"] == "open"]
-    if due:  # most open checks are work for a later stage
-        print("Open, by the stage each is ideally answered by: "
-              + ", ".join(f"{titles[stage]} {due.count(stage)}" for stage in std["stage_ids"] if stage in due) + ".")
-        routes = [standard.route(std["checks"][row["check"]]) for row in rows if row["state"] == "open"]
-        print("Open, by what settles them: " + ", ".join(f"{title} {routes.count(route)}" for route, title in standard.ROUTES.items()
-                                                         if route in routes) + ".")
+    due = pages.by_stage(rows, std)
+    if due:
+        print(f"Open, by the stage each is ideally answered by: {due}.")
     waits = [row for row in rows if row["state"] == "waiting"]
     if waits:  # a check that waits needs no work now
         others = [row["for"] for row in waits if not std["checks"][row["check"]].get("mitigant")]
@@ -167,7 +165,8 @@ def status(args):
     lines = {}  # one line for a check that stands the same for several subjects
     for row in todo["checks"]:
         waits = f"; {row['unlocks']} check{'s wait' if row['unlocks'] > 1 else ' waits'} on it" if row["unlocks"] else ""
-        rest = f"ideally by {titles[row['due_by']]}; {', '.join([row['state'], *row['flags']])}{waits}"
+        rest = f"ideally by {titles[row['due_by']]}; {pages.shown_state(row)}{waits}"
+        rest += f"; missing: {row.get('missing')}" * ("missing" in row)
         lines.setdefault((row["check"], rest), []).append(pages.name_of(row["for"], memory))
     lines = [f"{std['checks'][cid]['question']} ({'; '.join(names)}; {rest}) [{cid}: {standard.takes(std['checks'][cid])}]"
              for (cid, rest), names in lines.items()]
@@ -245,6 +244,17 @@ def add(args):
             if set(entry["changed"]) & set(pages.ID.findall(pages.own_text(text)))]
     if cite:
         print("Pages that cite a record this set changed, to read again: " + ", ".join(cite))
+
+
+def uncited(deal, memory):
+    """The current facts that no page of the wiki cites, by source. A citation in a draft, or in a part the tool writes, does not count."""
+    cited = set(pages.ID.findall(" ".join(map(pages.own_text, pages.all_pages(deal).values()))))
+    found = {}
+    for fid, fact in memory["facts"].items():
+        if fact["state"] == "current" and fid not in cited:
+            words = fact.get("label") or " ".join(fact["statement"].split()[:8]) + " ..." * (len(fact["statement"].split()) > 8)
+            found.setdefault(fact["source"], []).append(f"- {fid}: {words}")
+    return found
 
 
 def summary(record):
@@ -382,6 +392,12 @@ def show(args):
         show_kinds(std)
     elif what == "claims":
         show_claims(memory, std, rows)
+    elif what == "uncited":  # what the pages have not taken in yet, by source in the order of their IDs
+        found = uncited(args.deal, memory)
+        print("\n\n".join(f"## {sid} {source['title']} ({len(found[sid])})\n" + "\n".join(found[sid])
+                          for sid, source in memory["sources"].items() if sid in found) or "Every current fact is cited on a page.")
+        if found:
+            print(f"\nFacts that no page cites: {sum(map(len, found.values()))}, from {len(found)} source{'s' * (len(found) != 1)}.")
     elif args.what[0] == "text":
         show_text(args.deal, memory, args.what[1:])
     elif args.what[0] == "dated":  # for the page of the history
@@ -402,7 +418,8 @@ def show(args):
                         for rid, record in memory[what].items()) or "Nothing found.")
     elif what in std["checks"] or what in std["by_id"]:
         entry = std["checks"].get(what) or std["by_id"][what]
-        print(json.dumps({key: value for key, value in entry.items() if key != "checks"}, indent=1, ensure_ascii=False))
+        shown = {key: value for key, value in entry.items() if key not in ("checks", "missing")}  # a note shows with the rows
+        print(json.dumps(shown, indent=1, ensure_ascii=False))
         print("\n".join(f"- {cid}: {check['question']} [{standard.takes(check)}]" for cid, check in std["checks"].items()
                         if check["indicator"] == what))
         print("\n".join(pages.check_lines([row for row in rows if what in (row["check"], row["indicator"])], memory, std)))
@@ -416,7 +433,7 @@ def show(args):
         for path, text in pages.all_pages(args.deal).items():
             if what in pages.own_text(text):
                 print(f"- page {path}")
-        used = [row for row in rows if row["for"] == what or what in row.get("facts", [])]
+        used = [row for row in rows if row["for"] == what or what in row.get("facts", []) + pages.ID.findall(row.get("missing", ""))]
         if used:
             print("\n" + "\n".join(pages.check_lines([row for row in used if row["state"] != "not relevant"], memory, std)))
     else:
@@ -443,8 +460,13 @@ def refresh(args):
         print(f"Created {counted(len(created))} for you to write: {', '.join(created)}.")
     if changed or same:
         print(f"Updated the tool's parts of {counted(len(changed))}. {counted(same)} needed no change.")
-    print(f"Wrote the contents page, the sources page, the page of checks and the view for a browser, {files.WIKI}/wiki.html, "
-          "which Wiki.html in the deal folder opens.")
+    words = {path[len(files.WIKI) + 1:]: sum(bool(re.search(r"\w", word)) for word in pages.ID.sub("", pages.own_text(text)).split())
+             for path, text in pages.all_pages(args.deal).items()}  # without the citations
+    print(f"Words you wrote: {sum(words.values()):,} in all; " + ", ".join(f"{path} {n:,}" for path, n in words.items()) + ".")
+    print(f"Wrote the contents page, the sources page, {'the timeline, ' * pages.own_timeline(args.deal)}the page of checks and the "
+          f"view for a browser, {files.WIKI}/wiki.html, which Wiki.html in the deal folder opens.")
+    if not pages.own_timeline(args.deal):
+        print(f"Wrote no timeline: {files.WIKI}/timeline.md is a page the tool did not write. Rename it, and pages writes the timeline.")
 
 
 def file_problems(deal, memory):
@@ -534,8 +556,10 @@ def check(args):
     found += quote_problems(args.deal, memory)
     found += [f"{did}: the decision names nothing it rests on" for did, decision in memory["decisions"].items()
               if not decision.get("rests_on")]
-    for table, keys in (("facts", ["statement"]), ("decisions", ["decision", "reason"]), ("links", ["why"]), ("subjects", ["note"])):
-        for rid, record in memory[table].items():  # a record that is still in use and names a fact that was replaced
+    notes = {cid: {"note": " ".join(check["missing"].values())} for cid, check in std["checks"].items() if "missing" in check}
+    for records, keys in ((memory["facts"], ["statement"]), (memory["decisions"], ["decision", "reason"]), (memory["links"], ["why"]),
+                          (memory["subjects"], ["note"]), (memory["questions"], ["note"]), (notes, ["note"])):  # notes: on what is missing
+        for rid, record in records.items():  # still in use, and names a fact that was replaced
             text = " ".join(str(record.get(key, "")) for key in keys)
             found += [f"{rid}: names {fid}, which is outdated (replaced by {fact.get('replaced_by')})"
                       for fid, fact in memory["facts"].items() if fact["state"] == "outdated" and fact.get("replaced_by") != rid
@@ -549,6 +573,9 @@ def adjust(args):
     items = items if isinstance(items, list) else [items]
     if not items or not all(isinstance(item, dict) for item in items):
         raise Refused("an adjustment is a JSON object, or a list of them")
+    named = [store.DEAL, *memory["subjects"], *memory["links"]]  # what a note on what is missing can be for
+    if any(item.get("do") == "note" and item.get("for") not in named for item in items):
+        raise Refused("a note names in 'for' the subject or the link the check is asked of, or DEAL: the standard was not changed")
     stamp = {"date": datetime.date.today().isoformat(), "rev": store.revision(memory), "stage": memory["deal"]["stage"]}
     items = [{**item, **stamp} for item in items]
     new = [note for note in standard.effective(args.deal, extra=items)["notes"] if note not in std["notes"]]
@@ -559,9 +586,12 @@ def adjust(args):
     files.write_json(args.deal, files.DEAL_LAYER, layer)
     done = "; ".join(f"{item['do']} {item.get('target') or (item.get('check') or item.get('indicator'))['id']}" for item in items)
     store.note_outside_change(memory)
-    store.record(memory, items[0].get("by", "unknown"), f"Adjusted the standard: {done}")
+    store.record(memory, ", ".join(dict.fromkeys(str(item.get("by", "unknown")) for item in items)), f"Adjusted the standard: {done}")
     files.write_json(args.deal, files.MEMORY, memory)
     print(f"Adjusted the standard for this deal: {done}.")
+    opened = {(row["check"], row["for"]) for row in assess.assess(memory, standard.effective(args.deal)) if row["state"] == "open"}
+    print("".join(f"Note: {item['target']} is not open for {item['for']}, so its note shows only while it is.\n" for item in items
+                  if item["do"] == "note" and (item["target"], item["for"]) not in opened), end="")
 
 
 def file_documents(args):
@@ -669,7 +699,7 @@ def upgrade(args):
     files.write_json(args.deal, files.MEMORY, memory)
     print(f"The deal now uses standard {new['version']}. It used {old}.")
     if len(before) > 1:
-        print(f"Records taken to the names the standard now uses ({', '.join(f'{was} to {now}' for was, now in names.items())}): "
+        print(f"Records taken to the names the standard now uses ({', '.join(was + ' to ' + now for was, now in names.items())}): "
               f"{len(before) - 1}.")
     gone = [f"{fid}: {answer['check']}" for fid, fact in memory["facts"].items() if fact["state"] != "outdated"
             for answer in fact.get("answers", []) if answer["check"] not in std["checks"]]
@@ -677,7 +707,7 @@ def upgrade(args):
           + "\n- ".join(gone) if gone else "Every recorded answer still names a check of the standard.")
     was, now = was["checks"], std["checks"]
 
-    def asked(check):  # what an answer depends on: not who settles the check, nor the evidence it lists
+    def asked(check):  # what an answer depends on: not the evidence a check lists, nor the settled_by of a standard before 4.4.0
         return {key: value for key, value in check.items() if key not in ("settled_by", "ask_whom", "evidence")}
 
     for title, ids in (("New checks", now.keys() - was.keys()), ("Checks that are gone", was.keys() - now.keys()),
@@ -692,7 +722,7 @@ def upgrade(args):
 
 def doctor(args):
     packaged = files.packaged_standard()["version"]
-    print(f"Bankability 2 version {__version__}, with standard {packaged}.")
+    print(f"bankability2, the tool of AIssociate, version {__version__}, with standard {packaged}.")
     print(f"Python {sys.version.split()[0]} on {sys.platform}.")
     if args.deal:
         memory = files.read_json(args.deal, files.MEMORY)
@@ -723,14 +753,14 @@ def main(argv=None):
     sub.add_argument("--institution", help="the institution's layer of the standard, a JSON file")
     sub = command("status", status, "the structure, what changed and what to do next")
     sub.add_argument("--all", action="store_true", help="list every candidate")
-    sub.add_argument("--for", dest="about", metavar="ID", help="only what concerns this subject or link, this pillar, or what settles a check")
+    sub.add_argument("--for", dest="about", metavar="ID", help="only what concerns this subject or link, or this pillar")
     sub.add_argument("--since", type=int, help="show changes after this revision")
     sub.add_argument("--json", action="store_true")
     sub = command("add", add, "record a set of changes")
     sub.add_argument("changes", help="a JSON file, or - for standard input")
     sub.add_argument("--try", dest="dry", action="store_true", help="say what the set would record, and write nothing")
     command("show", show, "look something up").add_argument(
-        "what", nargs="+", help="an ID, 'log', 'sheet', 'kinds', 'claims', 'sample', 'facts', 'facts <IDs or words>', 'dated', 'text <source>', the name of a "
+        "what", nargs="+", help="an ID, 'log', 'sheet', 'kinds', 'claims', 'sample', 'uncited', 'facts', 'facts <IDs or words>', 'dated', 'text <source>', the name of a "
                                  "kind of record such as 'decisions', or words to search for")
     command("pages", refresh, "fill in the tool's parts of the wiki pages, and write the view for a browser")
     command("check", check, "report what looks wrong").add_argument("page", nargs="?", help="only this page or draft")

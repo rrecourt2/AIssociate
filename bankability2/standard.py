@@ -6,18 +6,11 @@ from .files import Refused
 
 ANSWERS = ("yes_no", "number", "choice", "text")
 TIERS = ("stated", "supporting", "best")  # weakest first
-ROUTES = {"company": "the company", "screening": "a screening", "terms": "the terms of the loan", "lender": "the lender",
-          "expert": "an expert", "public": "public sources"}  # what settles a check, and how a reader is told
 STRENGTHS = ("not_now", "not_for_this_deal")
 FLAG = re.compile(r"^(above|below|at most|at least) (-?\d+(?:\.\d+)?)$|^is (not )?(\w+(?: or \w+)*)$")
 
 
 EXPECTS = {"yes_no": "true or false", "number": "a number", "choice": "one of the check's options", "text": "text"}
-
-
-def route(check):
-    """What settles a check. A check that does not say, or that names something else, is taken to the company."""
-    return check["settled_by"] if check.get("settled_by") in ROUTES else "company"
 
 
 def takes(check):
@@ -99,11 +92,14 @@ def adjust(std, item, layer):
         found["off"] = {key: item.get(key) for key in ("strength", "reason", "by", "date", "rev", "stage")}
     elif do == "switch_on":
         found.pop("off", None)
+    elif do == "note" and "question" in found and all(isinstance(item.get(key), str) for key in ("for", "reason")) and item["reason"]:
+        found.setdefault("missing", {})[item["for"]] = item["reason"]  # what is missing for one subject, while the check is open
     elif do == "lock" and layer == "institution" and item.get("reason"):
         found["locked"] = item["reason"]
     else:
         return (f"{do!r} on {target}: use add, change (with 'set'), switch_off (with 'strength' {' or '.join(STRENGTHS)} "
-                "and a 'reason'), switch_on, or lock (institution layer only, with a 'reason')")
+                "and a 'reason'), switch_on, note (on a check, with 'for' and a 'reason'), "
+                "or lock (institution layer only, with a 'reason')")
     return None
 
 
@@ -214,7 +210,6 @@ def problems(std):
             if "flag_when" in check:
                 need(cid, flag_fits(check), "flag_when does not fit the answer the check asks for")
                 need(cid, check.get("why"), "a reference point needs its reason in 'why'")
-            need(cid, check.get("settled_by", "company") in ROUTES, f"settled_by is one of: {', '.join(ROUTES)}")
             need(cid, not check.get("mitigant") or ("assumption" in check and check.get("when")),
                  "a mitigant needs an assumption, and a 'when' that says which test it answers")
             for call in check.get("calls_for", []):

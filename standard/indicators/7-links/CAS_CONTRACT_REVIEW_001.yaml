@@ -19,7 +19,6 @@ checks:
 - id: OBS_CONT_001
   question: Would the party be unable to service the loan if this contract ended or was not performed?
   answer: yes_no
-  settled_by: company
   why: Opens the review. A contract is in the structure because someone judged that repayment depends on it. This answer
     says so plainly, and most of the checks that follow are asked only if it does.
   due_by: screening
@@ -44,7 +43,6 @@ checks:
   question: 'What does the contract give the party and what does it ask of it: who the parties are, the term, the volume,
     the price or price formula, and the main duties of each side?'
   answer: text
-  settled_by: company
   why: The terms are set against what the projections assume (OBS_CONT_008).
   due_by: concept
   when:
@@ -58,7 +56,6 @@ checks:
 - id: OBS_CONT_005
   question: Does the contract end, or come up for renewal, before the final repayment date of the loan?
   answer: yes_no
-  settled_by: company
   assumption: The contract runs until the loan is repaid
   disproved_by: 'yes'
   due_by: concept
@@ -81,7 +78,6 @@ checks:
   question: Do the volume, the price and the term that the financial model takes from this contract match the signed contract,
     or the latest draft where it is not yet signed?
   answer: yes_no
-  settled_by: company
   assumption: The projections take from the contract no more than the contract gives
   disproved_by: 'no'
   when:
@@ -97,7 +93,6 @@ checks:
   question: Can the other side end the contract without a breach by the party, or change the price or the volume without
     the party's consent?
   answer: yes_no
-  settled_by: company
   assumption: The other side is held to the contract, its price and its volume for the whole term
   disproved_by: 'yes'
   when:
@@ -113,7 +108,6 @@ checks:
   question: Can the other side end or change the contract if the ownership of the party changes, or if the lender enforces
     its security over the party's shares or assets?
   answer: yes_no
-  settled_by: company
   assumption: The contract survives a change of ownership of the party and the enforcement of the lender's security
   disproved_by: 'yes'
   when:
@@ -131,7 +125,6 @@ checks:
   question: Does the contract name a governing law, and a court or arbitral tribunal, whose decision could be enforced against
     the other side where the other side has its assets?
   answer: yes_no
-  settled_by: expert
   assumption: A claim under the contract can be decided and enforced against the other side
   disproved_by: 'no'
   when:
@@ -148,7 +141,6 @@ checks:
     to the lender as security, or has the other side signed a direct agreement that gives the lender notice, time to cure
     and the right to step in or to put a new party in?'
   answer: yes_no
-  settled_by: terms
   mitigant: true
   assumption: The lender can take over the contract, or keep it alive, when it enforces
   disproved_by: 'no'

@@ -1,5 +1,7 @@
 # Bankability 2: design
 
+*AIssociate was called Bankability 2 while it was designed.*
+
 16 November 2026. This document describes Bankability 2 as it is built, and what is left for later. It gathers the decisions taken in the design interview of 13 and 14 November, and the owner's decisions after the three rounds of the trial on 15 and 16 November.
 
 The tool has run on a made-up deal and, in three rounds, on the public documents of a real company. It has not been tried in Microsoft Copilot Cowork, and not on a live deal with an analyst.
@@ -180,9 +182,10 @@ It is an opportunity until terms are on paper, and a deal from then on. The fold
 - **A page for each subject a reader would look up.** The wiki holds the larger context, also where no check asks for it: a plant, a machine, a project, a product, the history of the company, its market, a customer that matters. A subject earns a page when two or more sources bear on it or other pages keep mentioning it. As a guide there are about as many pages as sources, or somewhat more. Not a page: a check, a single figure, a document retold, an account of what was done. The tool creates a page only for the opportunity, for each borrower, repayment source, guarantor and sponsor, and for each financed project.
 - **The contents page is the map.** It gives the first sentence of every page. An assistant reads the contents page and the page of the opportunity first, and opens another page only when the task needs it. A long wiki is then no burden.
 - **What matters most comes first on each shelf**, in the contents page and in the menu of the view. The tool works the order out from the record: the page of a party or a project with a main role, then the pages that cite the most facts behind a marked check or behind an answer that goes against a claim. Nobody keeps the order by hand, and it moves when the record or the marks do.
-- **The view fits the window.** Where six columns of checks have no room, each check is a block with its cells under one another. In a narrow window the menu folds away above the page, and the record that a citation opens comes up from the foot.
+- **The view fits the window.** Where five columns of checks have no room, each check is a block with its cells under one another. In a narrow window the menu folds away above the page, and the record that a citation opens comes up from the foot.
 - **One page lists every source**: what it is, how far it was read, how many facts rest on it, and links to its original and its extract.
-- **One page lists every check**, as an add-on at the foot of the contents page: the due diligence list. The tool writes it from the record. It gives the open checks by what settles them and by stage, with the claims they are mostly about, the names for the screening, and then every check by pillar and claim, one row where a check stands the same for several subjects, with its state, its answer or what it waits for, what settles it and the stage it is ideally answered by. In the view for a browser, buttons choose which states show. A reader sees at once what is left and whether it matters.
+- **One page lists the log**: what was recorded, when and by whom, the newest first.
+- **One page lists every check**, as an add-on at the foot of the contents page: the due diligence list. The tool writes it from the record. It gives the count of checks in each state and of the open checks by stage, the checks marked as what matters most, the parties and people that the record names, and then every check by pillar and claim, one row where a check stands the same for several subjects, with its state, its answer, what is missing or what it waits for, and the stage it is ideally answered by. It does not say who or what settles a check: that depends on the deal, and the assistant says it, where it helps, in the note on an open check. In the view for a browser, buttons choose which states show. A reader sees at once what is left and whether it matters.
 - **What matters is marked for the deal, with a reason.** Most open checks are ordinary due diligence. An adjustment can give a check a sentence that says why the decision turns on it. The page of checks starts with those checks, and `status` lists them first. The standard itself ranks nothing: what is material differs from deal to deal, and the reason is written down by whoever judged it.
 - **A page describes before it lists.** What the thing is, how it works, how it relates to the rest, what is particular about it, how the context shows in the figures, and only then the assumptions and the open points. A project or an asset gets a real page: what, where, how big, by when, who pays, how far it has come.
 - **A few details that show understanding**, each specific to this business, each tied to a figure, each with a source. No filler.
@@ -220,7 +223,7 @@ Writing rules, taken from Wikipedia's list of signs of AI writing:
 5. Use "is" and "has".
 6. Give every number its unit, its date and the company it belongs to.
 
-**Reading it.** The pages are plain Markdown with ordinary relative links, so the folder opens in any Markdown reader, or as a vault in Obsidian. `pages` also writes `Internal/wiki/wiki.html`, which `Wiki.html` at the top of the deal folder opens: the whole wiki in one file for a browser, with a list of pages by shelf and of the drafts, a search box, links that open in the same view, the sources, the index of the client's documents, and citations that show the fact, its value, its date, its source and the place in the source when clicked, with a link that opens the original at that page. A long part that the tool fills in is folded away, so that the text comes first. It loads nothing from the network and opens by double click from a synced folder. Its template is one file of HTML, CSS and plain JavaScript. Python only fills in the data.
+**Reading it.** The pages are plain Markdown with ordinary relative links, so the folder opens in any Markdown reader, or as a vault in Obsidian. `pages` also writes `Internal/wiki/wiki.html`, which `Wiki.html` at the top of the deal folder opens: the whole wiki in one file for a browser, with a list of pages by shelf, a search box, links that open in the same view, the sources, the index of the client's documents, and citations that show the fact, its value, its date, its source and the place in the source when clicked, with a link that opens the original at that page. A long part that the tool fills in is folded away, so that the text comes first. It loads nothing from the network and opens by double click from a synced folder. Its template is one file of HTML, CSS and plain JavaScript. Python only fills in the data.
 
 ### 5.5 Preferences
 
@@ -367,7 +370,7 @@ These rules are checked by a test that fails when the code breaks one:
 - No network access, no starting of other programs, no `eval`, no reading of environment variables, no deleting.
 - One module touches the disk. It writes through three functions, and each refuses a path outside the deal folder.
 - No function longer than 100 lines.
-- The whole tool stays under 2,500 lines of Python, in at most seven files.
+- The whole tool stays under 2,600 lines of Python, in at most seven files.
 
 The view for a browser is one more file, `bankability2/wiki.html`: about 300 lines of HTML, CSS and plain JavaScript that load nothing from the network. A test checks that it names no address and no outside file.
 

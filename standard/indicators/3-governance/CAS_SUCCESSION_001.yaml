@@ -17,7 +17,6 @@ checks:
   question: 'Has the present management run this business, or one of the same kind and at least the same size, through a
     bad year: a fall in sales, a collapse in prices or a crisis in its market?'
   answer: yes_no
-  settled_by: company
   assumption: Management has been tested by a bad year in a business like this one
   disproved_by: 'no'
   due_by: concept
@@ -32,7 +31,6 @@ checks:
 - id: OBS_MGMT_002
   question: Has the chief executive or the head of finance changed in the last two years, and if so, how?
   answer: choice
-  settled_by: company
   options: [no_change, planned_handover, unplanned_departure, dismissal_or_dispute, reason_not_known]
   assumption: The people who built the record the lender relies on are still in charge, or handed over in a planned way
   flag_when: is unplanned_departure or dismissal_or_dispute or reason_not_known
@@ -51,7 +49,6 @@ checks:
   question: In the last ten years, has the chief executive, the head of finance or the controlling owner led a business
     that became insolvent or defaulted on its lenders?
   answer: yes_no
-  settled_by: screening
   assumption: None of those in charge has led a business into insolvency or default in the last ten years
   disproved_by: 'yes'
   look_in: [10.03.a, 02.06.d, 02.05.b]
@@ -65,7 +62,6 @@ checks:
   question: 'Does the business depend on one or two people for something nobody else at the party could take over within
     about six months: its main customers, its know-how, its licences or its bank lines?'
   answer: yes_no
-  settled_by: company
   assumption: The business would carry on if any one person left
   disproved_by: 'yes'
   due_by: concept
@@ -82,7 +78,6 @@ checks:
   question: Is there a second line of managers who already run finance, operations and sales day to day, without the key
     person signing off each decision?
   answer: yes_no
-  settled_by: company
   mitigant: true
   assumption: A second line of managers already runs the main functions
   disproved_by: 'no'
@@ -99,7 +94,6 @@ checks:
   question: Is there a written succession plan, approved by the board or the owners, that names who would take over from
     each key person?
   answer: yes_no
-  settled_by: company
   mitigant: true
   assumption: A named successor stands ready for each key role
   disproved_by: 'no'
@@ -115,7 +109,6 @@ checks:
 - id: OBS_SUCC_003
   question: Is the life and the ability to work of each key person insured, with the party or the lender as beneficiary?
   answer: yes_no
-  settled_by: company
   mitigant: true
   assumption: Insurance would pay the party, or the lender, if a key person died or could no longer work
   disproved_by: 'no'

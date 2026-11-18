@@ -23,7 +23,6 @@ checks:
   question: Did the party's revenue rise or fall by about a fifth or more in any of the last three years, without a cause
     that a document supports?
   answer: yes_no
-  settled_by: company
   assumption: Every large move in the party's revenue has a cause that a document supports
   disproved_by: 'yes'
   why: A jump in revenue can be one large order, a new customer, an acquisition, or sales booked early. A fall can be a
@@ -44,7 +43,6 @@ checks:
   question: Did the party's gross or operating margin move by about three percentage points or more in any of the last three
     years, without a cause that a document supports?
   answer: yes_no
-  settled_by: company
   assumption: Every large move in the party's margin has a cause that a document supports
   disproved_by: 'yes'
   why: A margin that moves by several points means that prices, input costs or the mix of products changed, or that costs
@@ -63,7 +61,6 @@ checks:
   question: Did the party's receivables or stock, counted in days of sales, grow by about a fifth or more in any of the
     last three years, without a cause that a document supports?
   answer: yes_no
-  settled_by: company
   assumption: Receivables and stock have grown in step with sales, or the cause is known and supported
   disproved_by: 'yes'
   why: Receivables that outgrow sales can mean customers who are not paying, or sales that were booked and not made. Stock
@@ -83,7 +80,6 @@ checks:
   question: Did the party's debt rise in any of the last three years by more than it spent in that year on fixed assets,
     acquisitions and added working capital, without a cause that a document supports?
   answer: yes_no
-  settled_by: company
   assumption: The money the party borrowed went into assets that are still there
   disproved_by: 'yes'
   why: Borrowed money that did not go into assets went somewhere else, such as into losses, to the owners or to related
@@ -102,7 +98,6 @@ checks:
   question: Did the party's cash from operations fall while its reported profit rose in any of the last three years, without
     a cause that a document supports?
   answer: yes_no
-  settled_by: company
   assumption: The party's cash and its profit have moved together, or the cause of the gap is known and supported
   disproved_by: 'yes'
   why: Profit that rises while cash falls is profit that has not been paid for. The gap is either tied up in receivables
@@ -123,7 +118,6 @@ checks:
     not explain (a revaluation, a dividend, capital paid in or taken out, a restatement, a merger), without a cause that
     a document supports?
   answer: yes_no
-  settled_by: company
   assumption: Every move in the party's equity beyond its profit or loss has a cause that a document supports
   disproved_by: 'yes'
   why: Equity is the cushion under the lender. A revaluation raises it without cash, and capital taken out lowers it without

@@ -23,7 +23,6 @@ checks:
     sites and for anything the loan finances, been carried out, and approved by the environmental authority where the law
     asks for its approval?
   answer: yes_no
-  settled_by: expert
   assumption: Every impact assessment that the law or the lender's risk category requires has been done and, where the law
     asks for it, approved
   disproved_by: 'no'
@@ -43,7 +42,6 @@ checks:
     air, discharge to water, waste, and the taking of water), and do its latest monitoring results meet the limits those
     permits set?
   answer: yes_no
-  settled_by: company
   assumption: The party holds its environmental permits and operates within their limits
   disproved_by: 'no'
   due_by: concept
@@ -62,7 +60,6 @@ checks:
   question: In the last three years, has the party had a spill, a release or another environmental incident that had to
     be reported to an authority, or received a fine, a notice of breach or an order to stop work on environmental grounds?
   answer: yes_no
-  settled_by: company
   assumption: The party's operations have run for three years without a reportable incident and without a sanction on environmental
     grounds
   disproved_by: 'yes'
@@ -82,7 +79,6 @@ checks:
   question: Is soil or groundwater known or suspected to be contaminated at any site that the party owns, leases or used
     to operate, or does the party owe a cost to clean up, decommission or restore a site?
   answer: yes_no
-  settled_by: expert
   assumption: No site of the party is contaminated, and the party owes no cost to clean up or restore one
   disproved_by: 'yes'
   look_in: [10.03.a, 07.02.a, 03.01.a]
@@ -102,7 +98,6 @@ checks:
   question: Has the party named a person who answers to senior management for environmental and social matters, and does
     it keep a written management system that sets out the risks, the procedures, the monitoring and who does what?
   answer: yes_no
-  settled_by: company
   assumption: A named person and a written system manage the party's environmental and social risks
   disproved_by: 'no'
   applies_to: [borrower, repayment_source]
@@ -120,7 +115,6 @@ checks:
   question: Has the exposure of the party's main sites to flood, drought, heat, storm and rising sea level over the life
     of the loan been assessed, site by site, from hazard data and not from experience alone?
   answer: yes_no
-  settled_by: expert
   assumption: The physical climate hazards at the party's main sites over the life of the loan have been assessed
   disproved_by: 'no'
   look_in: [10.03.a, 07.02.a, 08.03.b]
@@ -138,7 +132,6 @@ checks:
   question: Does the party measure its greenhouse gas emissions every year, at least those from its own operations and from
     the energy it buys?
   answer: yes_no
-  settled_by: company
   why: A lender that reports the emissions it finances needs the figure, and a party that measures them can show what the
     loan changes. To have to report emissions is not a fault.
   applies_to: [borrower, repayment_source]
@@ -153,7 +146,6 @@ checks:
   question: Has the party agreed with the lender a written action plan that deals with every environmental gap found, with
     a responsible person, a budget and a date for each action?
   answer: yes_no
-  settled_by: terms
   mitigant: true
   assumption: An action plan agreed with the lender closes every gap found, with a person, a budget and a date for each
     action
@@ -176,7 +168,6 @@ checks:
   question: Has a specialist who is independent of the party estimated the cost of the clean-up or restoration, and is that
     cost provided for in the audited accounts or covered by a funded reserve, an indemnity from a previous owner or insurance?
   answer: yes_no
-  settled_by: expert
   mitigant: true
   assumption: The cost of the clean-up or restoration is estimated by someone independent and is covered by a provision,
     a funded reserve, an indemnity or insurance

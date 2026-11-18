@@ -1,6 +1,6 @@
 # The framework
 
-How the standard is organised, and why. The lists and the checks are in the other files. This page is the thinking behind them.
+How the Bankability standard is organised, and why. The lists and the checks are in the other files. This page is the thinking behind them.
 
 ## 1. Start from repayment
 
@@ -87,7 +87,7 @@ A check has one of three jobs:
 - **A test** can disprove the claim. It states its own assumption and which answer disproves it, or a reference point with a reason.
 - **A mitigant** is asked once a test has gone against the claim. It asks what limits the damage.
 
-From the answers the tool works out where each claim stands, for each party or link it is asked about:
+From the answers AIssociate's tool works out where each claim stands, for each party or link it is asked about:
 
 | The claim | Means |
 |---|---|
