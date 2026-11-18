@@ -18,7 +18,7 @@ TABLES = {
     "facts": ("F", ("about", "statement", "source"),
               ("label", "value", "unit", "as_of", "place", "quote", "said_by", "nothing_found", "answers", "fills",
                "state", "replaced_by", "note")),
-    "subjects": (None, ("kind",), ("name", "note", "state")),  # the prefix comes from the kind of subject
+    "subjects": (None, ("kind",), ("name", "short", "note", "state")),  # the prefix comes from the kind of subject
     "links": ("R", ("from", "type", "to"), ("state", "why", "source", "note")),
     "decisions": ("D", ("decision", "reason"), ("about", "rests_on", "by", "covers", "owner", "due")),
     "questions": ("Q", ("asked_of", "text"), ("about", "checks", "asked", "via", "state", "answered_by")),
@@ -109,6 +109,10 @@ def place(memory, change, std, errors):
     prefixes = {kind["id"]: kind["prefix"] for kind in std["subject_kinds"]}
     names, placed = {}, []
     taken = {rid for table in TABLES for rid in memory[table]}
+    defaults = change.get("defaults", {})  # the fields each new record of a table takes where it gives none itself
+    if not (isinstance(defaults, dict) and all(table in TABLES and isinstance(given, dict) for table, given in defaults.items())):
+        errors.append(f"defaults: give, for a table such as facts, the fields its new records share. Tables: {', '.join(TABLES)}")
+        defaults = {}
     for table in TABLES:
         if not isinstance(change.get(table, []), list):
             errors.append(f"{table}: must be a list")
@@ -120,9 +124,10 @@ def place(memory, change, std, errors):
             fields = {key: value for key, value in item.items() if key not in ("id", "ref")}
             rid = item.get("id")
             if rid is None:
-                prefix = TABLES[table][0] or prefixes.get(item.get("kind"))
+                fields = {**defaults.get(table, {}), **fields}
+                prefix = TABLES[table][0] or prefixes.get(fields.get("kind"))
                 if prefix is None:
-                    errors.append(f"subjects: unknown kind {item.get('kind')!r}. Known: {', '.join(prefixes)}")
+                    errors.append(f"subjects: unknown kind {fields.get('kind')!r}. Known: {', '.join(prefixes)}")
                     continue
                 rid = next_id(prefix, taken)
                 taken.add(rid)
@@ -196,7 +201,7 @@ def problems_of(table, rid, fields, is_new, memory, known, std):
 def apply(memory, change, std):
     """Check a set of changes and apply all of it, or refuse all of it. Returns the log entry, and the ID that each
     "@name" in the set of changes was given."""
-    errors = [f"unknown key {key!r}" for key in change if key not in ("by", "note", "base", "op", "deal", *TABLES)]
+    errors = [f"unknown key {key!r}" for key in change if key not in ("by", "note", "base", "op", "deal", "defaults", *TABLES)]
     if change.get("op") and any(entry["op"] == change["op"] for entry in memory["log"]):
         return None, {}  # this set of changes was applied before
     if "base" in change and change["base"] != revision(memory):
@@ -231,6 +236,8 @@ def apply(memory, change, std):
         else:
             old = memory[table][rid]
             before = {key: old.get(key) for key in fields if old.get(key) != fields[key]}
+            if table == "facts" and "answers" in fields:  # answers sent again count as given now, also where they are the same
+                before["rev"], fields["rev"] = old["rev"], number
             old.update(fields)
             if before:
                 changed[rid] = before

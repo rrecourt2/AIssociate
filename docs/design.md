@@ -62,15 +62,16 @@ What Microsoft documents for Copilot Cowork in November 2026, none of it tested 
 
 ```text
 <Deal>/
+├── Wiki.html           opens Internal/wiki/wiki.html in a browser
 ├── Client folder/      can be shared with other lenders and consultants
 │   ├── …               every document the client shared, in this one folder
 │   ├── index.md        the documents by the folders of the data room, and the slots still empty
 │   └── manifest.json   one entry per document
 └── Internal/           the analyst and the deal team only
     ├── sources/        calls, emails, notes, press articles, internal memos, and extracts/
-    ├── record/         record.json: the record and its log; only the tool writes it
+    ├── record/         record.json: the record and its log, and the standard this deal uses with its adjustments
+    │                   (base.json, institution.json, deal.json); only the tool writes them
     ├── wiki/           deal, parties, people, context, topics, terms, work, with index.md and wiki.html
-    ├── standard/       the standard this deal uses, and its adjustments
     └── outputs/        drafts of the scan, the CIP and the FP
 ```
 
@@ -78,7 +79,7 @@ What Microsoft documents for Copilot Cowork in November 2026, none of it tested 
 - **The internal folder points into the client folder.** The client folder knows nothing about the internal one, so it can be handed to someone else as it is.
 - **The data room is an index, not a tree of folders.** The first version made ten folders with their sub-folders in every new deal, and the owner found that overwhelming. The standard still holds the data room as data: folders, sub-folders and slots. The kind of a document gives its slot. Every document sits in the one client folder, and `index.md` lists them by the folders of the data room and names the slots that are always expected and still empty.
 - **The manifest is the only seam.** It has one entry per document: its path, its slot in the data room, its kind, the party, the period, a fingerprint of the file, and the text extract made from it if there is one.
-- **Filing is done on the laptop.** Cowork cannot move or delete files. The `file` command moves a document that sits anywhere in the deal folder to the client folder, or to the internal sources if its kind has no slot. It never overwrites: a document whose name is taken is refused.
+- **Filing is done on the laptop.** Cowork cannot move or delete files. The `file` command moves a document that sits anywhere in the deal folder to the client folder, or to the internal sources if its kind has no slot or the client did not supply it. It never overwrites: a document whose name is taken is refused.
 - **Only folders that something writes to.** The entry sheets for the bank's systems are printed by `show sheet`. They have no folder.
 - **One sharing rule.** Share the client folder and nothing else.
 
@@ -219,7 +220,7 @@ Writing rules, taken from Wikipedia's list of signs of AI writing:
 5. Use "is" and "has".
 6. Give every number its unit, its date and the company it belongs to.
 
-**Reading it.** The pages are plain Markdown with ordinary relative links, so the folder opens in any Markdown reader, or as a vault in Obsidian. `pages` also writes `Internal/wiki/wiki.html`: the whole wiki in one file for a browser, with a list of pages by shelf, a search box, links that open in the same view, the sources, the index of the client's documents, and citations that show the fact, its value, its date, its source and the place in the source when clicked, with a link that opens the original at that page. A long part that the tool fills in is folded away, so that the text comes first. It loads nothing from the network and opens by double click from a synced folder. Its template is one file of HTML, CSS and plain JavaScript. Python only fills in the data.
+**Reading it.** The pages are plain Markdown with ordinary relative links, so the folder opens in any Markdown reader, or as a vault in Obsidian. `pages` also writes `Internal/wiki/wiki.html`, which `Wiki.html` at the top of the deal folder opens: the whole wiki in one file for a browser, with a list of pages by shelf and of the drafts, a search box, links that open in the same view, the sources, the index of the client's documents, and citations that show the fact, its value, its date, its source and the place in the source when clicked, with a link that opens the original at that page. A long part that the tool fills in is folded away, so that the text comes first. It loads nothing from the network and opens by double click from a synced folder. Its template is one file of HTML, CSS and plain JavaScript. Python only fills in the data.
 
 ### 5.5 Preferences
 

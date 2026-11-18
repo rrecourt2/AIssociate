@@ -7,7 +7,7 @@ The wiki gives the work its depth: what the business is, how it works, how its p
 - **Every page starts with a lead that can stand alone.** The contents page, `Internal/wiki/index.md`, prints the first sentence of each page, and a reader opens the page only when that line says so.
 - **The tool writes the contents page**, folder by folder, and puts what matters most first in each folder. First comes the page of a party or a project with a main role in the deal. Then come the pages that cite the most facts behind a marked check or behind an answer that goes against a claim, then the pages that cite the most of the record. The menu of the browser view has the same order, and it moves as the record and the marks do. The tool also writes `sources.md`, which lists every source, and `checks.md`: see [standard](standard.md).
 - **Say each thing once**, on the page it belongs to, and link to it from elsewhere.
-- **A person reads the same pages in a browser**, in `wiki.html`. A click on a citation shows the record with every field. So write a source's `note`, a link's `why` and a decision's `reason` for a reader.
+- **A person reads the same pages in a browser**, in `wiki.html`, which `Wiki.html` at the top of the deal folder opens. A click on a citation shows the record with every field. So write a source's `note`, a link's `why` and a decision's `reason` for a reader.
 
 ## Which pages
 
@@ -112,7 +112,7 @@ Put the ID of the fact or the source in square brackets after the sentence it su
 
 `check` reads a page paragraph by paragraph. A list item and a table row each count as one. It reports:
 
-- **A number that no record cited in the same paragraph holds.** A fact holds a number in its statement, value, date or place, and a source in its title or date. A question and a decision hold none. Decimals count: 16,415 is not 16,415.23. Whole numbers below 10 are let through. Every other number counts, also a year and the day of a date. So cite a fact as of the date you name, and write a figure the way its fact gives it: KES 4,060m, not KES 4.06bn.
+- **A number that no record cited in the same paragraph holds.** A fact holds a number in its statement, value, date or place, and a source in its title or date. A question and a decision hold none. Decimals count: 16,415 is not 16,415.23. Whole numbers below 10 are let through. Every other number counts, also a year and the day of a date. So cite a fact as of the date you name, and write a figure the way its fact gives it: KES 4,060m, not KES 4.06bn. Where facts hold the number, `check` names up to three of them.
 - **In a table**, give a figure its citation in its own row: `| Revenue | KES 4,060m | KES 3,480m | [F-008] [F-019] |`. The head row is not read.
 - **Only the record counts.** A number that is in a document and in no fact is reported even where you cite the source. Record the fact first.
 - **A citation that leads nowhere**, a link to a page that is not there, and a page with text and no citation at all.

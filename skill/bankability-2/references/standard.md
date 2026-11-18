@@ -16,7 +16,7 @@ A claim, for each party or link it is made about:
 - is **challenged**: a test went against it. Each mitigant holds, fails or is not known.
 - is **contested**: two facts answer a test, or a question behind the claim, differently.
 
-A claim is to **look at again** when a source or an answer that bears on it came in after its tests were answered. Read the new source against the tests of the claim. Where an answer changes, record it. Where none does, record the answer to one of its tests again: a new fact with the same answer, which says what you read it against and when, and which `replaces` the old one. Then repoint what cites the old fact. The claim counts as looked at once one of its tests is answered by a fact recorded after the source came in. A question of the claim does not count.
+A claim is to **look at again** when a source or an answer that bears on it came in after its tests were answered. Read the new source against the tests of the claim. Where an answer changes, record it. Where none does, send the fact that answers one of its tests again, with its `answers` as they are and a sentence added to its `statement` that says what you read it against and when. The claim counts as looked at once one of its tests is answered by a fact whose answers were sent after the source came in. A question of the claim does not count.
 
 In `status`, the line of a pillar counts each claim once, at its worst among the parties it is made about. `show claims` gives each party its own line.
 
@@ -72,7 +72,7 @@ In the browser view, buttons choose which states show: to answer, waiting, answe
  "reason": "Marked as material for this deal."}
 ```
 
-The page of checks then starts with "What matters most": these checks with their state, their answer and the reason, and `status` lists the open ones first. An answered check stays on the list, so the analyst sees what was decided. `"matters": null` takes the mark off. Review the marks when the stage changes or a large document comes in.
+The page of checks then starts with "What matters most": one row for each of these checks, with its reason, and each subject it is asked of with its state and its answer. `status` lists them under "What matters most" by their ID and reason, each with whom it is open or answered for. An answered check stays on the list, so the analyst sees what was decided. `"matters": null` takes the mark off. Review the marks when the stage changes or a large document comes in.
 
 ## Evidence and kinds of source
 
@@ -119,8 +119,8 @@ The tool refuses an adjustment that touches what the institution has locked. An 
 
 - Such an answer no longer counts. Look at the new checks of the same indicator. Where the fact decides one, add that answer to the fact. Where none fits, send the fact's `id` with its `answers` without the old one.
 - Read the changed checks that are already answered: an answer may no longer fit its question.
-- Where a folder keeps its record in `Internal/memory/memory.json`, every command says so, and `upgrade` moves it.
+- Where a folder keeps its record in `Internal/memory/memory.json`, or its standard in `Internal/standard`, every command says so, and `upgrade` moves it to `Internal/record`. Then remove the empty folder yourself.
 
 ## The institution's layer
 
-`Internal/standard/institution.json` holds what the institution set for all its deals: its names for the stages, its own checks, what it locked, and the fields of its systems. Do not change it. `show sheet` prints each system with its fields: the value, the fact and the source, or **missing**. To fill a field, add its ID to a fact's `fills`.
+`Internal/record/institution.json` holds what the institution set for all its deals: its names for the stages, its own checks, what it locked, and the fields of its systems. Do not change it. `show sheet` prints each system with its fields: the value, the fact and the source, or **missing**. To fill a field, add its ID to a fact's `fills`.

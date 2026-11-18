@@ -16,6 +16,12 @@ SHELVES = {"opportunity": "Opportunity", "assets": "Assets and projects", "parti
 BRIEF = ("people", "context", "topics", "deal", "work")  # a page on one of these gets one line that names what it is about
 START = "opportunity/opportunity.md"  # the page of the opportunity: the way in
 ORDER = ("contested", "open", "answered", "waiting", "parked", "off", "not relevant")  # what is to answer comes first
+DOOR = """<!DOCTYPE html>
+<meta charset="utf-8">
+<meta http-equiv="refresh" content="0; url=Internal/wiki/wiki.html">
+<title>Wiki</title>
+<p><a href="Internal/wiki/wiki.html">Open the wiki</a></p>
+"""  # Wiki.html in the deal folder: the way in to the view for a browser
 BEGIN, END = "<!-- tool:begin {} -->", "<!-- tool:end -->"
 PART = BEGIN + "((?!<!-- tool:begin).)*?" + END  # a begin marker, its lines and its own end marker
 ID = re.compile(r"\b[A-Z]-\d{3,}\b")
@@ -117,8 +123,9 @@ def decoded(link):
 def name_of(rid, memory):
     if rid == DEAL:
         return "the opportunity"
-    if rid in memory["subjects"]:
-        return memory["subjects"][rid].get("name") or f"the {memory['subjects'][rid]['kind']} not yet named ({rid})"
+    if rid in memory["subjects"]:  # the short name, where it has one
+        subject = memory["subjects"][rid]
+        return subject.get("short") or subject.get("name") or f"the {subject['kind']} not yet named ({rid})"
     if rid in memory["links"]:
         link = memory["links"][rid]
         return f"{name_of(link['from'], memory)} {link['type']} {name_of(link['to'], memory)}"
@@ -371,8 +378,16 @@ def check_page(memory, std, rows, todo, where):
              "or an adjustment set it aside. Thin or old: the evidence is weaker or older than this stage asks for.", "",
              "**" + ", ".join(f"{counts[state]} {state}" for state in ORDER if state in counts) + ".** Answers that go against "
              f"their claim: {sum(bool(row.get('against')) for row in rows)}."]
-    key = table(row for row in rows if std["checks"][row["check"]].get("matters"))  # what was marked for this deal, with why
-    lines += ["", "## What matters most", "", *head, *key] * bool(key)
+    marked = {}  # what was marked for this deal: one row for a check, with its reason, and each subject with its state
+    for row in sorted(rows, key=lambda row: ORDER.index(row["state"])):  # what is to answer first
+        if std["checks"][row["check"]].get("matters"):
+            marked.setdefault(row["check"], []).append((row["state"], cells(row)))
+    key = []
+    for mine in marked.values():
+        states = ", ".join(dict.fromkeys(state for state, _ in mine))
+        whom = "; ".join(f"{c[2]}: {c[0]}" + (f", {c[3].replace('; ', ', ')}" if state in ("answered", "contested") else "") for state, c in mine)
+        key.append(f"| {states} | {mine[0][1][1]} | {whom} | {next((c[4] for _, c in mine if c[4]), '')} | {mine[0][1][5]} |")
+    lines += ["", "## What matters most", "", "| State | Check | For | Settled by | Ideally by |", "|---|---|---|---|---|", *key] * bool(key)
     if work:
         lines += ["", "## What settles the open checks", "",
                   "| Settled by | " + " | ".join(std["stage_titles"][stage] for stage in stages) + " | All | Mostly about |",
@@ -409,6 +424,12 @@ def all_pages(deal):
     paths = [path for path in files.listing(deal, files.WIKI)
              if path.endswith(".md") and path[len(files.WIKI) + 1:] not in ("index.md", "sources.md", "checks.md")]
     return {path: files.read(deal, path) for path in paths}
+
+
+def drafts(deal):
+    """The drafts directly in the outputs folder. One in a sub-folder was sent or replaced, and is left alone."""
+    return {path: files.read(deal, path) for path in files.listing(deal, files.OUTPUTS)
+            if path.endswith(".md") and "/" not in path[len(files.OUTPUTS) + 1:]}
 
 
 def about(text):
@@ -509,22 +530,25 @@ def refresh(deal, memory, std, rows, held):
     files.write(deal, f"{files.WIKI}/sources.md", sources)
     files.write(deal, f"{files.WIKI}/checks.md", checks)
     client = f"../../{files.CLIENT}/index.md"  # the index of the client folder, as a path from the wiki folder
+    out = {"../" + path.split("/", 1)[1]: text for path, text in drafts(deal).items()}  # as paths from the wiki folder
     texts = {"index.md": "\n".join(index), "sources.md": sources, **{path[cut:]: pages[path] for path, _ in ordered},
-             client: documents(memory["deal"]["name"], listed, std), "checks.md": checks}
+             client: documents(memory["deal"]["name"], listed, std), **out, "checks.md": checks}
     cited = set(ID.findall(" ".join(text for path, text in texts.items() if path not in ("sources.md", "checks.md"))))
     past = {"facts": "outdated", "sources": "replaced", "links": "ended"}  # history goes in only where a page cites it
     kept = {table: {rid: record for rid, record in memory[table].items()
                     if rid in cited or record.get("state", "current") != past.get(table)} for table in TABLES}
     data = {"name": memory["deal"]["name"], "revision": memory["log"][-1]["n"], "shelves": SHELVES, "pages": texts,
-            "documents": client, "where": where, **kept}
+            "documents": client, "drafts": list(out), "where": where, **kept}
     filled = json.dumps(data, ensure_ascii=False).replace("<", "\\u003c")  # so that no text can end the script it sits in
     files.write(deal, f"{files.WIKI}/wiki.html", files.packaged("wiki.html").replace("{{DATA}}", filled))
+    files.write(deal, "Wiki.html", DOOR)
     return created, changed, len(pages) - len(created) - len(changed)
 
 
 def numbers(text):
+    """The numbers in a text, leaving out those inside the ID of a record or a check, and inside a link's target."""
     found = set()
-    for token in NUMBER.findall(text):
+    for token in NUMBER.findall(re.sub(r"\]\([^)]*\)|\b[A-Z]+_\w+", " ", ID.sub("", text))):
         try:
             found.add(float(token.replace(",", "").rstrip(".")))
         except ValueError:
@@ -532,14 +556,32 @@ def numbers(text):
     return found
 
 
+def where_held(loose, holders):
+    """For numbers that no record cited beside them holds: up to three facts that hold each, or else a fact that holds
+    the number with decimals."""
+    hints = []
+    for n in loose:
+        ids, first = holders.get(n, [])[:3], f"{n:g}" if len(loose) > 1 else "It"
+        near = [(m, fids[0]) for m, fids in holders.items() if n == int(n) == int(m)]
+        if ids:
+            hints.append(f"{first} is in " + " and ".join([", ".join(ids[:-1]), ids[-1]] if len(ids) > 1 else ids))
+        elif near:
+            hints.append(f"{near[0][1]} holds {near[0][0]:,}")
+    return "".join(f". {hint}" for hint in hints)
+
+
 def problems(deal, memory):
     """What looks wrong on the pages and in the drafts: citations and links that lead nowhere, citations of a record that
     was replaced and is not marked so, numbers that no record cited in the same paragraph holds, and a page that no
     other page links to."""
-    found, there, pages, reached = [], set(files.listing(deal, files.WIKI)), all_pages(deal), set()
-    drafts = {path: files.read(deal, path) for path in files.listing(deal, files.OUTPUTS)  # not those in a sub-folder
-              if path.endswith(".md") and "/" not in path[len(files.OUTPUTS) + 1:]}
-    for path, text in sorted({**pages, **drafts}.items()):
+    found, pages, reached = [], all_pages(deal), set()
+    there = set(files.listing(deal, files.WIKI) + files.listing(deal, files.OUTPUTS))
+    holders = {}  # each number, and the facts that hold it
+    for fid, fact in memory["facts"].items():
+        if fact["state"] != "outdated":
+            for n in numbers(" ".join(str(fact.get(key, "")) for key in ("statement", "value", "unit", "as_of", "place", "quote"))):
+                holders.setdefault(n, []).append(fid)
+    for path, text in sorted({**pages, **drafts(deal)}.items()):
         body = own_text(text)
         notes = path == f"{files.WIKI}/work/working-notes.md"  # they say how to work, and need not cite the record
         cited = list(dict.fromkeys(ID.findall(body)))
@@ -550,7 +592,7 @@ def problems(deal, memory):
             target = files.beside(path, decoded(link))
             if path in pages and target != path:
                 reached.add(target)
-            if target.startswith(files.WIKI + "/") and target not in there:
+            if target.startswith((files.WIKI + "/", files.OUTPUTS + "/")) and target not in there:
                 found.append(f"{path}: links to {link}, which is not there")
         for words in [] if notes else memory["deal"].get("avoid", []):  # a wording to keep out: all its words in one sentence
             found += [f"{path}: \"{' '.join(sentence.split()[:6])} ...\" holds a wording to avoid: {words}"
@@ -568,11 +610,10 @@ def problems(deal, memory):
                 source = memory["sources"].get(entry.get("source"), {})  # of a fact's source the title and the date count,
                 held += " ".join(f" {value}" for key, value in [*entry.items(), *source.items()]  # not its map of the document
                                  if key not in ("fingerprint", "rev") and (key != "map" or "map" in entry))
-            written = re.sub(r"\]\([^)]*\)|\b[A-Z]+_\w+", " ", ID.sub("", block))  # no IDs of records or checks, no link targets
-            loose = sorted(n for n in numbers(written) - numbers(held) if n >= 10 or n != int(n))
+            loose = sorted(n for n in numbers(block) - numbers(held) if n >= 10 or n != int(n))
             if loose and not notes:
                 found.append(f"{path}: \"{' '.join(block.split()[:6])} ...\" has {', '.join(f'{n:g}' for n in loose[:8])}, "
-                             f"which no record cited in that paragraph holds")
+                             f"which no record cited in that paragraph holds" + where_held(loose[:8], holders))
         found += [f"{path}: cites {rid}, which is {entry['state']}" + (f" (replaced by {entry['replaced_by']})" if entry.get(
             "replaced_by") else "") + f". Cite what took its place, or start the sentence with \"{entry['state'].capitalize()}:\""
             for rid, entry in stale.items()]

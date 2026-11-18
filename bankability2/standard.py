@@ -111,7 +111,9 @@ def effective(deal, extra=()):
     """The standard as this deal uses it. `extra` holds adjustments that are being tried out."""
     std = files.read_json(deal, files.BASE)
     if std is None:
-        raise Refused(f"{deal} is not a deal folder: it holds no {files.BASE}")
+        raise Refused(f"{deal} is not a deal folder: it holds no {files.BASE}" + (
+            ". Bring in that file too, or, where an earlier version kept the standard in Internal/standard, that folder, "
+            "then run: upgrade <folder>") * (files.read(deal, files.MEMORY) is not None))
     notes, std["systems"] = [], []
     for layer, path in (("institution", files.INSTITUTION), ("deal", files.DEAL_LAYER)):
         stored = files.read_json(deal, path, {})

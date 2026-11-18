@@ -9,11 +9,23 @@ import unicodedata
 from . import __version__, assess, files, pages, standard, store
 from .files import Refused
 
+TEXT = re.compile(r"\.(md|txt|html?)$", re.I)  # an original that is a text itself
+READ = re.compile(r"^[ \t]*\[read from the page\][ \t]*$.*?^[ \t]*\[end\][ \t]*$", re.I | re.M | re.S)  # rows written out from a scan
+PAGE = re.compile(r"\f|^=+[^=\n]*\bpage\s+(\d+)\b[^=\n]*=+[ \t]*$", re.I | re.M)  # where a page of a text starts
+
+
+def older(deal):
+    """A line for a folder that keeps its record or its standard where an earlier version of the tool put it."""
+    for path, old, what in ((files.MEMORY, files.OLD_MEMORY, "record"), (files.BASE, f"{files.OLD_STANDARD}/base.json", "standard")):
+        if files.read(deal, path) is None and files.read(deal, old) is not None:
+            return f"{deal} keeps its {what} where an earlier version of the tool put it. Move it with: upgrade <folder>"
+    return None
+
 
 def load(deal):
     memory = files.read_json(deal, files.MEMORY)
-    if memory is None and files.read(deal, files.OLD_MEMORY) is not None:
-        raise Refused(f"{deal} keeps its record where an earlier version of the tool put it. Move it with: upgrade <folder>")
+    if older(deal):
+        raise Refused(older(deal))
     if memory is None:
         raise Refused(f"{deal} holds no deal. The deal folder comes right after the command, as in: show <folder> facts. "
                       "To start a deal there: start <folder> --name <name>")
@@ -57,7 +69,8 @@ def structure(memory, std, scope=None):
     ended = [rid for table in ("subjects", "links") for rid, entry in memory[table].items() if entry.get("state") == "ended"]
     for sid, subject in store.live(memory).items():
         if scope is None or sid in scope:
-            print(f"- {sid} {subject.get('name') or 'not yet named'}: {subject['kind']}{shown_as.get(subject['kind'], '')}"
+            short = f" ({subject['short']})" if subject.get("short") else ""
+            print(f"- {sid} {subject.get('name') or 'not yet named'}{short}: {subject['kind']}{shown_as.get(subject['kind'], '')}"
                   + "".join(f", {role}" for role in sorted(held.get(sid, ()))))
     for lid, link in memory["links"].items():
         if (scope is None or lid in scope) and lid not in ended:
@@ -68,6 +81,22 @@ def structure(memory, std, scope=None):
     past = [rid for rid in ended if scope is None or rid in scope]
     if past:
         print(f"- Ended, and kept in the record: {', '.join(past)}")
+
+
+def marked_lines(rows, memory, std):
+    """One line for each check marked as what matters for this deal: its reason, and for whom it is open, answered or in
+    another state. Its question is in the list of checks below, and in show <ID>."""
+    found = {}
+    for row in sorted(rows, key=lambda row: pages.ORDER.index(row["state"])):
+        if std["checks"][row["check"]].get("matters"):
+            found.setdefault(row["check"], {}).setdefault(row["state"], []).append(  # a link by its ID, to keep the line short
+                row["for"] if row["for"] in memory["links"] else pages.name_of(row["for"], memory))
+    lines = []
+    for cid, states in found.items():
+        whom = "; ".join(f"{state} for {', '.join(names[:3])}" + f" and {len(names) - 3} more" * (len(names) > 3)
+                         for state, names in states.items())
+        lines.append(f"{cid}: {std['checks'][cid]['matters']} {whom[0].upper()}{whom[1:]}.")
+    return lines
 
 
 def status(args):
@@ -145,6 +174,7 @@ def status(args):
     limit = None if args.all else 15
     group("Claims that are challenged, contested or to look at again", urgent, limit)
     group("Structure still open", todo["structure"], limit)
+    group("What matters most", marked_lines(rows, memory, std), limit)
     group("Checks to answer or strengthen", lines, limit)
     group("Gaps with an agreed action", todo["actions"], limit)
     if scope is None:
@@ -155,6 +185,9 @@ def status(args):
     group("Questions without an answer", [f"{q['id']} to {q['asked_of']}, " + (f"asked {q['asked']}" if q.get("asked") else
                                           "not sent yet") + f": {q['text']}" for q in todo["questions"]], limit)
     group("Facts that rest on a replaced source", todo["replaced"], limit)
+    copied = copied_quotes(args.deal, memory) if scope is None else []
+    if copied:
+        group("Quotations to compare with the page", copied, limit)
     if scope is None:
         group("System fields without a value", todo["fields"], limit)
     if todo["stray"]:
@@ -229,7 +262,7 @@ def folders(std):
 def show_kinds(std):
     """The kinds of source with the folder each is filed in, the kinds of subject, and the kinds of link with their roles."""
     place = folders(std)
-    print("## Kinds of source, and the folder each is filed in\n")
+    print("## Kinds of source, and the folder each is filed in when the client supplied it\n")
     for kind in std["source_kinds"]:
         print(f"- {kind['id']}: {kind['title']}. Folder: {place.get(kind.get('slot'), 'Internal/sources')}. {kind['description']}")
     print("\n## Kinds of subject, and the letter its IDs start with\n")
@@ -265,25 +298,73 @@ def show_claims(memory, std, rows):
             print()
 
 
-def fact_lines(memory, terms):
+def fact_lines(memory, terms, dated=False):
     """One line per fact that is current or disputed. With IDs or words: every fact whose line holds one of them, such as
-    the facts about a subject, from a source or in answer to a check, a fact named by its ID, or the facts with a word."""
+    the facts about a subject, from a source or in answer to a check, a fact named by its ID, or the facts with a word.
+    Dated: only the current or disputed facts that have a date, in the order of that date, each line led by it."""
     lines, ids = [], {term.upper() for term in terms} & set(memory["facts"])  # a fact named by its ID: that fact, in full
     words = [term for term in terms if term.upper() not in ids]
-    for fid, fact in memory["facts"].items():
+    for fid, fact in sorted(memory["facts"].items(), key=lambda item: str(item[1].get("as_of"))) if dated else memory["facts"].items():
+        if dated and (not fact.get("as_of") or fact["state"] == "outdated"):
+            continue
         state = "" if fact["state"] == "current" else f" ({fact['state']})"
         value = f" {fact.get('label', 'Value')}: {fact.get('value')} {fact.get('unit', '')}".rstrip() + "."
         answers = ", ".join(f"{answer['check']}: {pages.shown(answer['value'])[:None if fid in ids else 60]}"
                             for answer in fact.get("answers", []))
-        where = [fact["source"], fact.get("place"), fact.get("as_of") and f"as of {fact['as_of']}", fact.get("said_by"),
+        where = [fact["source"], fact.get("place"), not dated and fact.get("as_of") and f"as of {fact['as_of']}", fact.get("said_by"),
                  answers and f"answers {answers}", fid in ids and fact.get("quote") and f'quote: "{fact["quote"]}"']
         line = (f"- {fid}{state} about {fact['about']}: {fact['statement']}{value if 'value' in fact else ''} "
                 f"({'; '.join(filter(None, where))})")
         named = fid in ids or any(re.search(rf"(?<!\w){re.escape(term)}(?!\w)", line, re.I) for term in words)
         if named or (not terms and fact["state"] != "outdated"):  # a long statement is cut in the list of all facts
             cut = not terms and len(fact["statement"]) > 300
-            lines.append(line.replace(fact["statement"], fact["statement"][:300] + " ...") if cut else line)
+            line = line.replace(fact["statement"], fact["statement"][:300] + " ...") if cut else line
+            lines.append(f"- {fact['as_of']} {line[2:]}" if dated else line)
     return lines
+
+
+def text_paths(source):
+    """Where the text of a source is: its extract, and its original where that is a text file."""
+    return ([source["extract"]] if source.get("extract") else []) + ([source["where"]] if TEXT.search(source.get("where") or "") else [])
+
+
+def text_pages(text):
+    """The text of each page, by its number. A page starts at a form feed, or at a line such as "===== page 14 =====".
+    A text without either is one page. What comes before the first page goes with it."""
+    found, number, start = {}, 1, 0
+    for mark in PAGE.finditer(text):
+        found[number] = found.get(number, "") + text[start:mark.start()]
+        number, start = int(mark.group(1)) if mark.group(1) else number + 1, mark.end()
+    found[number] = found.get(number, "") + text[start:]
+    return {n: part for n, part in found.items() if part.strip()} or {1: text}
+
+
+def show_text(deal, memory, terms):
+    """From the text of a source: one page, the lines that hold all the words with their page, or the pages."""
+    source = memory["sources"].get(terms[0].upper()) if terms else None
+    if source is None:
+        raise Refused("show text takes the ID of a source, then a page or words, as in: show <folder> text S-002 14")
+    path = text = None
+    for path in text_paths(source):  # the extract first
+        text = files.read(deal, path)
+        if text:
+            break
+    if not text:
+        raise Refused(f"{terms[0]} has no text in this copy of the folder: no extract, and no original in .md, .txt or .html")
+    parts = text_pages(text)
+    if len(terms) == 3 and terms[1].lower() in ("page", "p.", "p") and terms[2].isdigit():  # "page 14" as well as "14"
+        terms = [terms[0], terms[2]]
+    if len(terms) == 2 and terms[1].isdigit():
+        print(parts.get(int(terms[1]), "").strip() or f"{path} has no page {terms[1]}. Its pages run from {min(parts)} to {max(parts)}.")
+    elif len(terms) > 1:
+        words = [word.casefold() for word in terms[1:]]
+        hits = [f"- page {n}: {line.strip()}" for n, part in parts.items() for line in part.splitlines()
+                if all(word in line.casefold() for word in words)]
+        print("\n".join(hits[:40]) or "Nothing found.")
+        if len(hits) > 40:
+            print(f"And {len(hits) - 40} more lines hold these words.")
+    else:
+        print(f"The lines on each page of {path}: " + "; ".join(f"page {n}, {len(part.strip().splitlines())}" for n, part in parts.items()) + ".")
 
 
 def show(args):
@@ -301,6 +382,10 @@ def show(args):
         show_kinds(std)
     elif what == "claims":
         show_claims(memory, std, rows)
+    elif args.what[0] == "text":
+        show_text(args.deal, memory, args.what[1:])
+    elif args.what[0] == "dated":  # for the page of the history
+        print("\n".join(fact_lines(memory, args.what[1:], dated=True)) or "Nothing found.")
     elif args.what[0] == "facts" or (len(args.what) > 1 and all(term.upper() in memory["facts"] for term in args.what)):
         print("\n".join(fact_lines(memory, args.what[args.what[0] == "facts":])) or "Nothing found.")
         outdated = sum(fact["state"] == "outdated" for fact in memory["facts"].values())
@@ -358,7 +443,8 @@ def refresh(args):
         print(f"Created {counted(len(created))} for you to write: {', '.join(created)}.")
     if changed or same:
         print(f"Updated the tool's parts of {counted(len(changed))}. {counted(same)} needed no change.")
-    print(f"Wrote the contents page, the sources page, the page of checks and the view for a browser: {files.WIKI}/wiki.html.")
+    print(f"Wrote the contents page, the sources page, the page of checks and the view for a browser, {files.WIKI}/wiki.html, "
+          "which Wiki.html in the deal folder opens.")
 
 
 def file_problems(deal, memory):
@@ -369,14 +455,17 @@ def file_problems(deal, memory):
     if (listed or wheres) and not present and not any(files.fingerprint(deal, where) for where in wheres):
         return ["The documents are not in this copy of the folder, so files were not checked, "
                 "and a quotation only where its text is here."]
-    found = [f"{path}: in the client folder but not in the manifest" for path in present if path not in listed]
-    for path, doc in listed.items():
+    away = not present and any(path.startswith(files.CLIENT + "/") for path in [*listed, *wheres])  # a copy without it
+    found = ["The documents of the client folder are not in this copy of the folder, so they were not checked, "
+             "and a quotation only where its text is here."] * away
+    found += [f"{path}: in the client folder but not in the manifest" for path in present if path not in listed]
+    for path, doc in {} if away else listed.items():
         mark = files.fingerprint(deal, path)
         if mark != doc["fingerprint"]:
             found.append(f"{path}: {'missing' if mark is None else 'changed since it was filed'}")
     for sid, source in memory["sources"].items():
         mark = files.fingerprint(deal, source["where"]) if source.get("where") else None
-        if source.get("where") and mark is None:
+        if source.get("where") and mark is None and not (away and source["where"].startswith(files.CLIENT + "/")):
             found.append(f"{sid}: {source['where']} was not found in this copy of the folder")
         elif mark and source.get("fingerprint") not in (None, mark):
             found.append(f"{sid}: {source['where']} changed since it was recorded")
@@ -399,20 +488,48 @@ def quote_problems(deal, memory, only=None):
         if not fact.get("quote") or fact["state"] == "outdated" or (only is not None and fid not in only):
             continue
         if sid not in texts:
-            paths = [source.get("extract"), *filter(re.compile(r"\.(md|txt|html?)$", re.I).search, [source.get("where") or ""])]
+            paths = text_paths(source)
             try:
-                texts[sid] = [plain(text) for text in (files.read(deal, path) for path in paths if path) if text]
+                texts[sid] = [plain(text) for text in (files.read(deal, path) for path in paths) if text]
             except UnicodeDecodeError:
                 texts[sid] = found.append(f"{sid}: its text is not UTF-8, so its quotations were not checked") or []
-            if not any(paths):
+            if not paths:
                 found.append(f"{sid}: facts quote it, and it has no extract to check them against")
         if texts[sid] and not any(plain(fact["quote"]) in text for text in texts[sid]):
             found.append(f"{fid}: its quotation is not in the text of {sid}. Copy the words as the text has them, with nothing left out")
     return found
 
 
+def copied_quotes(deal, memory):
+    """Facts whose quotation is found only in the lines an assistant wrote out from a scan, between "[read from the page]"
+    and "[end]": it was compared with that transcription, not with the document."""
+    found, texts = [], {}
+    for fid, fact in memory["facts"].items():
+        sid = fact["source"]
+        if not fact.get("quote") or fact["state"] == "outdated":
+            continue
+        if sid not in texts:
+            try:
+                raw = [files.read(deal, path) or "" for path in text_paths(memory["sources"][sid])]
+            except UnicodeDecodeError:
+                raw = []  # `check` reports it
+            texts[sid] = [(plain(text), plain(READ.sub(" ", text))) for text in raw] if any(map(READ.search, raw)) else []
+        quote = plain(fact["quote"])
+        if any(quote in whole for whole, _ in texts[sid]) and not any(quote in rest for _, rest in texts[sid]):
+            found.append(f"{fid}, from {sid}, {fact.get('place') or 'no place given'}")
+    return found
+
+
 def check(args):
     memory, std = load(args.deal)
+    if args.page:  # one page or draft, and nothing else
+        given, known = args.page.replace("\\", "/"), [*pages.all_pages(args.deal), *pages.drafts(args.deal)]
+        known = {files.inside(args.deal, path): path for path in known}  # a path in any form: relative, with ./, or whole
+        page = next(filter(None, (known.get(files.inside(args.deal, path)) for path in (given, f"{files.WIKI}/{given}"))), None)
+        if page is None:
+            raise Refused(f"{args.page} is no page of the wiki and no draft. Give its path as check prints it.")
+        print("\n".join(f"- {line}" for line in pages.problems(args.deal, memory) if line.startswith(page + ":")) or "No problems found.")
+        return
     found = store.verify(memory) + std["notes"] + file_problems(args.deal, memory) + pages.problems(args.deal, memory)
     found += quote_problems(args.deal, memory)
     found += [f"{did}: the decision names nothing it rests on" for did, decision in memory["decisions"].items()
@@ -448,21 +565,21 @@ def adjust(args):
 
 
 def file_documents(args):
-    """Move each document to its place: the client folder if its kind has a slot in the data room, the internal sources
-    if not. A text extract made from it goes to the extracts. Then write the index of the client folder."""
+    """Move each document to its place: the client folder if the client supplied it and its kind has a slot in the data
+    room, the internal sources if not. A text extract made from it goes to the extracts. Then write the index of the client folder."""
     memory, std = load(args.deal)
     kinds = {kind["id"]: kind for kind in std["source_kinds"]}
     items, refused = given(args.filing), []
     items = items if isinstance(items, list) else [items]
     for item in items:
         if (not isinstance(item, dict) or item.get("kind") not in kinds or not isinstance(item.get("file"), str)
-                or not isinstance(item.get("extract", ""), str)):
-            raise Refused(f"a filing is a list, and each document in it needs a 'file' and a known 'kind': {item!r}\n"
-                          f"Known kinds: {', '.join(kinds)}")
+                or not isinstance(item.get("extract", ""), str) or not isinstance(item.get("from", "client"), str)):
+            raise Refused(f"a filing is a list, and each document in it needs a 'file' and a known 'kind', and may name "
+                          f"who it is 'from': {item!r}\nKnown kinds: {', '.join(kinds)}")
     manifest, made = files.read_json(args.deal, files.MANIFEST, {"documents": []}), []
     for item in items:
         name, extract = (item.get(key, "").replace("\\", "/").split("/")[-1] for key in ("file", "extract"))
-        slot = kinds[item["kind"]].get("slot")
+        slot = kinds[item["kind"]].get("slot") if item.get("from", "client").strip().casefold() == "client" else None  # not the client's: internal
         target, moved = f"{files.CLIENT if slot else 'Internal/sources'}/{name}", False
         try:
             if name in ("index.md", "manifest.json") and slot:
@@ -524,6 +641,14 @@ def upgrade(args):
     if files.read(args.deal, files.MEMORY) is None and files.read(args.deal, files.OLD_MEMORY) is not None:
         files.move(args.deal, files.OLD_MEMORY, files.MEMORY)
         print(f"Moved the record to {files.MEMORY}. It was in {files.OLD_MEMORY}.")
+    moved = [path for path in (files.BASE, files.INSTITUTION, files.DEAL_LAYER) if files.read(args.deal, path) is None
+             and files.read(args.deal, f"{files.OLD_STANDARD}/{path.split('/')[-1]}") is not None]
+    for path in moved:  # the standard, beside the record
+        files.move(args.deal, f"{files.OLD_STANDARD}/{path.split('/')[-1]}", path)
+    if moved:
+        left = files.listing(args.deal, files.OLD_STANDARD)
+        print(f"Moved {', '.join(path.split('/')[-1] for path in moved)} to Internal/record. They were in {files.OLD_STANDARD}, which "
+              + (f"still holds {', '.join(left)}." if left else "is empty now. The tool deletes nothing: remove that folder yourself."))
     reshelve(args.deal)
     memory, was = load(args.deal)
     new, old = files.packaged_standard(), memory["deal"]["standard"]
@@ -571,11 +696,10 @@ def doctor(args):
     print(f"Python {sys.version.split()[0]} on {sys.platform}.")
     if args.deal:
         memory = files.read_json(args.deal, files.MEMORY)
-        if memory is None:
-            old = files.read(args.deal, files.OLD_MEMORY) is not None
-            print(f"{args.deal} keeps its record where an earlier version of the tool put it. Move it with: upgrade <folder>"
-                  if old else f"{args.deal} holds no deal yet.")
+        if memory is None or older(args.deal):
+            print(older(args.deal) or f"{args.deal} holds no deal yet.")
             return
+        standard.effective(args.deal)  # refuses a folder whose standard is not there
         print(f"Deal {memory['deal']['name']}: revision {store.revision(memory)}, standard {memory['deal']['standard']}.")
         if memory["deal"]["standard"] != packaged:
             print("Note: the deal uses another version of the standard than this tool carries. `upgrade` brings it in line.")
@@ -606,10 +730,10 @@ def main(argv=None):
     sub.add_argument("changes", help="a JSON file, or - for standard input")
     sub.add_argument("--try", dest="dry", action="store_true", help="say what the set would record, and write nothing")
     command("show", show, "look something up").add_argument(
-        "what", nargs="+", help="an ID, 'log', 'sheet', 'kinds', 'claims', 'sample', 'facts', 'facts <IDs or words>', the name of a "
+        "what", nargs="+", help="an ID, 'log', 'sheet', 'kinds', 'claims', 'sample', 'facts', 'facts <IDs or words>', 'dated', 'text <source>', the name of a "
                                  "kind of record such as 'decisions', or words to search for")
     command("pages", refresh, "fill in the tool's parts of the wiki pages, and write the view for a browser")
-    command("check", check, "report what looks wrong")
+    command("check", check, "report what looks wrong").add_argument("page", nargs="?", help="only this page or draft")
     command("adjust", adjust, "adjust the standard for this deal").add_argument("adjustment", help="a JSON file, or -")
     command("file", file_documents, "file documents and index the client folder").add_argument("filing", help="a JSON file, or -")
     command("upgrade", upgrade, "put the standard that comes with the tool into the deal folder")

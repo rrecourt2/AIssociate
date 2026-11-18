@@ -112,7 +112,7 @@ const pages = {};
 for (const [path, raw] of Object.entries(data.pages)) {
   const top = /^---\n([\s\S]*?)\n---\n?/.exec(raw), text = top ? raw.slice(top[0].length) : raw;
   const title = (top && /^title:[ \t]*["']?(.*?\S)["']?[ \t]*$/m.exec(top[1]) || /^#\s+(.+)$/m.exec(text) || [0, path])[1];
-  const shelf = ["index.md", "sources.md", "checks.md", data.documents].includes(path) ? "" : path.includes("/") ? path.split("/")[0] : "other";
+  const shelf = ["index.md", "sources.md", "checks.md", data.documents, ...data.drafts].includes(path) ? "" : path.includes("/") ? path.split("/")[0] : "other";
   pages[path] = {title, text, shelf};
 }
 let here = "index.md";  // the page that is open
@@ -123,7 +123,7 @@ function resolve(from, href) {  // where a relative link on a page leads, as a p
     if (part === ".." && parts.length && parts[parts.length - 1] !== "..") parts.pop();
     else if (part && part !== ".") parts.push(part);
   }
-  return parts.join("/");
+  return parts.join("/").replace(/^\.\.\/wiki\//, "");  // a draft that links back into the wiki
 }
 
 function link(words, href) {  // another page opens in this view, a document or a website in a new tab
@@ -245,7 +245,8 @@ function menu() {  // the pages by shelf, or the pages that hold the words searc
   const shelves = [...new Set([...Object.keys(data.shelves), ...shown.map(path => pages[path].shelf)])].filter(Boolean);
   el("menu").innerHTML = words.length ? shown.map(path => entry(path)).join("") || "<p>No page holds these words.</p>"
     : entry("index.md", "Contents") + entry("sources.md", "Sources") + entry(data.documents, "Documents") +
-      shelves.map(shelf).join("") + (pages["checks.md"] ? "<h2>Checks</h2>" + entry("checks.md", "The due diligence list") : "");
+      shelves.map(shelf).join("") + (data.drafts.length ? "<h2>Drafts</h2>" + data.drafts.map(path => entry(path)).join("") : "") +
+      (pages["checks.md"] ? "<h2>Checks</h2>" + entry("checks.md", "The due diligence list") : "");
 }
 
 const GROUPS = {"To answer": ["open", "contested"], "Waiting": ["waiting"], "Answered": ["answered"],
@@ -261,7 +262,7 @@ function filters(rows) {  // on a page of checks: a mark on each state, and butt
   for (const tr of rows) {
     tr.dataset.group = Object.keys(GROUPS).find(name => GROUPS[name].includes(tr.cells[0].textContent.split(",")[0]));
     tr.cells[0].innerHTML = `<span class="state">${tr.cells[0].innerHTML}</span>`;
-    tr.classList.toggle("against", /\(against the claim\)/.test(tr.cells[3].textContent));
+    tr.classList.toggle("against", /\(against the claim\)/.test(tr.textContent));
     tr.dataset.count = tr.cells[2].textContent.split("; ").length;  // a row may stand for several subjects: one a line
     tr.cells[2].innerHTML = tr.cells[2].innerHTML.split("; ").join("<br>");
     const heads = [...tr.closest("table").querySelectorAll("th")].map(th => th.textContent);  // each cell carries the name of its

@@ -59,7 +59,7 @@ One per document, call, email or note. `title` and `kind` are required.
 ```
 
 - `file` is the path of the document in the deal folder, and `kind` a kind of source. The rest is optional.
-- The kind decides the folder, and `show kinds` names it, with what each kind is for. What the company itself published counts as the client's, also when nothing has been shared yet. Where no kind fits, use `other`. A page of the company's website, a news release and a broker's research report are each a `public_source`; a sustainability report is filed as an `annual_report`, the company's report on its governance as `board_composition`, and a notice filed with an exchange or a regulator as a `regulatory_document`. A public document of a kind that has a place in the client folder, such as a law or a rating agency's report, may be filed as that kind and then counts as such evidence. Filed as a `public_source` it stays in `Internal/sources/` and counts as supporting at most. Most kinds go to `Client folder/<file name>`, which the tool lists in `Client folder/index.md`: also an email with the client (`correspondence`), and a screening or a report the lender ordered. A call, the analyst's note, a press article and a public source go to `Internal/sources/`. What must stay inside the deal team is an `internal_memo`, which goes there too.
+- The kind decides the folder of a document from the client, and `show kinds` names it, with what each kind is for. What the company itself published counts as the client's, also when nothing has been shared yet. Where no kind fits, use `other`. A page of the company's website, a news release and a broker's research report are each a `public_source`; a sustainability report is filed as an `annual_report`, the company's report on its governance as `board_composition`, and a notice filed with an exchange or a regulator as a `regulatory_document`. A document the client did not supply carries `"from"`, such as `"public"` or `"lender"`. Leave it out, or give `"client"`, for a document the client supplied. Any other value is not the client's: it goes to `Internal/sources/` whatever its kind, and is not listed in the index of the client folder. So a law, a rating agency's report, a study or a screening the lender ordered keeps its true kind, and its kind still decides how its evidence counts. Most kinds from the client go to `Client folder/<file name>`, which the tool lists in `Client folder/index.md`: also an email with the client (`correspondence`). A call, the analyst's note, a press article and a public source go to `Internal/sources/`. What must stay inside the deal team is an `internal_memo`, which goes there too.
 - An `extract` goes to `Internal/sources/extracts/`. Give that path as `extract` on the source.
 - The tool never overwrites. Where a name is taken, it refuses that document: give it a name of its own and file it again. A folder that filing left empty can be removed.
 
@@ -67,9 +67,10 @@ One per document, call, email or note. `title` and `kind` are required.
 
 - **The original is the source**, and `where` names it. When you make an extract, keep the page numbers of the original and copy its tables in full.
 - **Where the extract and the original differ, the original is right.** Correct the extract, and say so in the `note` of the source.
-- **A PDF has no text to quote from.** Write its text to `Internal/sources/extracts/<name>.txt`, with the page numbers, and name that path as `extract` on the source.
+- **A PDF has no text to quote from.** Write its text to `Internal/sources/extracts/<name>.txt`, with a line such as `===== page 14 =====` where each page starts, and name that path as `extract` on the source. A form feed starts a page too.
+- **Read a long text by its pages.** `show <deal> text S-002 14` prints page 14 of the source's text, and `show <deal> text S-002 revenue 2025` each line that holds all the words, with its page. It saves loading the whole text.
 - **When the original comes later**, point the source at it: send its `id` with the new `where`, and the old text as `extract`.
-- **A scanned PDF cannot be searched.** A text of it read by machine may be filed as its extract. It finds the page, and it has reading errors. Read the page itself, as an image, before you record from it: render the page with what your host offers, and turn a page that is printed sideways. Write down what you read at once, because a host may not keep the image. Where the machine text is wrong on a page you read, correct that line in the extract, so that your quotation is found. Where it has lost a table, write the rows you read under the marker of that page, between a line `[read from the page]` and a line `[end]`. Say in `read` that the text was read by machine and which pages you read in the original: `"read": "machine text; pages 12 to 19 read in the original"`.
+- **A scanned PDF cannot be searched.** A text of it read by machine may be filed as its extract. It finds the page, and it has reading errors. Read the page itself, as an image, before you record from it: render the page with what your host offers, and turn a page that is printed sideways. Write down what you read at once, because a host may not keep the image. Where the machine text is wrong on a page you read, correct that line in the extract, so that your quotation is found. Where it has lost a table, write the rows you read under the marker of that page, between a line `[read from the page]` and a line `[end]`. A quotation found only between those lines is compared with what you wrote, not with the document: `status` lists such facts under "Quotations to compare with the page". Say in `read` that the text was read by machine and which pages you read in the original: `"read": "machine text; pages 12 to 19 read in the original"`.
 
 ## Facts
 
@@ -106,7 +107,14 @@ An admission against the speaker's own case is believed: "our margin fell in 202
 
 ### Tables, worked figures and readings
 
-- **From a table**, record each row you use as a fact of its own, with all its columns. A total that the table does not print is your inference.
+- **From a table**, record each row you use as a fact of its own, with all its columns. A total that the table does not print is your inference. `defaults` gives the fields the rows share: each new record of that table in the set takes a field from it where it gives none itself.
+
+  ```json
+  {"defaults": {"facts": {"source": "S-002", "about": "P-001", "said_by": "document", "as_of": "2025-12-31", "place": "page 22"}},
+   "facts": [{"statement": "Revenue was KES 4,060m in 2025.", "label": "Revenue", "value": 4060, "unit": "KES m", "quote": "Revenue 4,060"},
+             {"statement": "Borrowings were KES 1,300m at 31 December 2025.", "label": "Borrowings", "value": 1300, "unit": "KES m",
+              "quote": "Borrowings 1,300", "place": "page 31"}]}
+  ```
 - **A figure you worked out**, such as a ratio or a sum, is a fact of its own. Mark it `inference`, show the working and name the facts: "Borrowings were 0.32 times revenue in 2025: KES 1,300m (F-011) over KES 4,060m (F-008)." Name a fact of the same set by its `ref`: `(@rev)` becomes its ID, also in a `why`, a `reason` and a `decision`.
 - **A fact names one source.** A comparison between two documents is an inference that names a fact from each.
 - **An amount in an answer** is given in the unit of its fact, which the statement names.
@@ -129,7 +137,7 @@ When the analyst says that something is not to be said, set it on the deal: `{"d
 
 A subject is a party, a person, a facility, a contract, an asset, a project or a group. A link says how two subjects relate, and gives the role: whoever `borrows` is the borrower. `show kinds` says what each kind of link is for and where it counts. Read it before you choose one.
 
-- A subject needs a `kind`. Leave `name` empty for a role nobody holds yet, and say what is known in `note`.
+- A subject needs a `kind`. Leave `name` empty for a role nobody holds yet, and say what is known in `note`. Give a long name a `short` one, such as `"short": "Cedar"`: the lines of `status` and the page of checks use it.
 - A link needs `from`, `type` and `to`, and a `why`: why it matters for repayment. It starts as `proposed`. Set `state` to `confirmed` when a source confirms it, and to `ended` when it no longer holds. A link that is your inference stays `proposed`: say so in its `why`, and name the fact it rests on.
 - A new link brings the checks that fit the role, and the checks on the link itself. `status --for <ID>` shows them.
 - **A facility** is a loan that the lender is considering, and nothing else. `borrows`, `guarantees`, `supports` and `secures` count only when they point at one, and `status` says so where a link does not count.

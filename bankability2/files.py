@@ -10,10 +10,11 @@ OLD_MEMORY = "Internal/memory/memory.json"  # where it was kept before; `upgrade
 WIKI = "Internal/wiki"
 OUTPUTS = "Internal/outputs"
 EXTRACTS = "Internal/sources/extracts"
-BASE = "Internal/standard/base.json"
-INSTITUTION = "Internal/standard/institution.json"
-DEAL_LAYER = "Internal/standard/deal.json"
-INTERNAL_FOLDERS = ("sources", "record", "wiki", "standard", "outputs")
+BASE = "Internal/record/base.json"  # the standard this deal uses, in three layers beside the record
+INSTITUTION = "Internal/record/institution.json"
+DEAL_LAYER = "Internal/record/deal.json"
+OLD_STANDARD = "Internal/standard"  # where the three were kept before; `upgrade` moves them
+INTERNAL_FOLDERS = ("sources", "record", "wiki", "outputs")
 
 WRITTEN = []  # what this run wrote, for a host that has to save files itself
 
