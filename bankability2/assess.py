@@ -388,7 +388,7 @@ def next_list(memory, std, rows, in_folder=(), scope=None):
             return 1 + min(near(memory["links"][rid][end]) for end in ("from", "to"))
         return 0 if rid == DEAL else 1 if central(rid, memory, held) else 3
 
-    work.sort(key=lambda row: (order[row["due_by"]], near(row["for"]), -row["unlocks"]))
+    work.sort(key=lambda row: (not std["checks"][row["check"]].get("matters"), order[row["due_by"]], near(row["for"]), -row["unlocks"]))
 
     slot_of = {kind["id"]: kind.get("slot") for kind in std["source_kinds"]}
     filed = {slot_of.get(source["kind"]) for source in memory["sources"].values() if source["state"] == "current"} | set(in_folder)

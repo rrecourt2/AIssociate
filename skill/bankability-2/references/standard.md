@@ -64,6 +64,16 @@ The tool writes the page of checks, `Internal/wiki/checks.md`, on every `pages`.
 
 In the browser view, buttons choose which states show: to answer, waiting, answered, not relevant or off, all. Never edit this page. Send the analyst there when they ask what is left and whether it matters.
 
+**What matters for this deal.** The page lists every check, and most open checks are ordinary due diligence. Mark the ten to twenty the decision turns on, each with one sentence that says why, on the analyst's word or as your own reading, which you then say:
+
+```json
+{"do": "change", "target": "OBS_DEBT_008", "by": "assistant",
+ "set": {"matters": "The debt schedule decides how much room is left for a new loan."},
+ "reason": "Marked as material for this deal."}
+```
+
+The page of checks then starts with "What matters most": these checks with their state, their answer and the reason, and `status` lists them first. An answered check stays on the list, so the analyst sees what was decided. `"matters": null` takes the mark off. Review the marks when the stage changes or a large document comes in.
+
 ## Evidence and kinds of source
 
 Evidence has three strengths: `best`, `supporting`, and `stated` for what someone said. Each check lists under `evidence` which kinds of source count as which. A kind it does not list counts as the weakest. Nothing is demanded.

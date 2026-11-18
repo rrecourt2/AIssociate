@@ -210,7 +210,7 @@ function card(id) {  // what the record holds under an ID: a fact with its value
   el("card").hidden = false;
 }
 
-const bare = text => text.replace(/<!--.*?-->/g, " ").replace(/\]\([^)]*\)/g, "]").replace(/[*#|`>\[\]]+/g, " ")
+const bare = text => text.replace(/<!-- tool:begin sources -->[^]*?<!-- tool:end -->/g, " ").replace(/<!--.*?-->/g, " ").replace(/\]\([^)]*\)/g, "]").replace(/[*#|`>\[\]]+/g, " ")
   .replace(/\s+/g, " ");  // the words of a page without its Markdown, for the search
 const starts = word => new RegExp("(?<![\\p{L}\\p{N}])" + word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "iu");  // at the start of a word
 
@@ -218,7 +218,7 @@ function menu() {  // the pages by shelf, or the pages that hold the words searc
   const words = el("search").value.split(/\s+/).filter(Boolean);  // a page must hold each of them, at the start of a word
   const entry = (path, name) => {
     const text = bare(pages[path].text), hit = words.length ? text.search(starts(words[0])) : -1;
-    const near = hit < 0 ? "" : "<span>" + esc(text.slice(Math.max(0, hit - 30), hit)) + "<mark>" +
+    const near = hit < 0 ? "" : " <span>" + esc(text.slice(Math.max(0, hit - 30), hit)) + "<mark>" +
       esc(text.substr(hit, words[0].length)) + "</mark>" + esc(text.substr(hit + words[0].length, 50)) + "</span>";
     return `<a href="#${encoded(path)}"${path === here ? ' class="here"' : ""}>${esc(name || pages[path].title)}${near}</a>`;
   };

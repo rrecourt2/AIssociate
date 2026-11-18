@@ -349,7 +349,8 @@ def check_page(memory, std, rows, todo, where):
         else:
             note = f"until `{waits[0]}` is answered: {std['checks'][waits[0]]['question'][:80].rsplit(' ', 1)[0]} ..."
         found = [", ".join([row["state"], *row["flags"]]),
-                 f"{'Mitigant: ' * bool(check.get('mitigant'))}{check['question']} `{row['check']}`", name(row["for"]), note,
+                 f"{'Mitigant: ' * bool(check.get('mitigant'))}{check['question']} `{row['check']}`"
+                 + f" *{check.get('matters')}*" * bool(check.get("matters")), name(row["for"]), note,
                  ROUTES[route(check)] if row["state"] in (*ORDER[:2], "waiting") else "", std["stage_titles"][row["due_by"]]]
         return [" ".join(str(cell).replace("|", "/").split()) for cell in found]  # so that no cell ends early
 
@@ -363,14 +364,15 @@ def check_page(memory, std, rows, todo, where):
     counts, found, stage_of = tally(rows), claims(rows, memory, std), std["stage_ids"].index
     work = [row for row in rows if row["state"] == "open"]
     stages = [stage for stage in std["stage_ids"] if any(row["due_by"] == stage for row in work)]
-    lines = [f"# {memory['deal']['name']}: checks", "", "Every check of the standard as it stands for this opportunity, written by "
-             f"the tool from the record. The opportunity is at the stage {std['stage_titles'][memory['deal']['stage']]}. A check is "
-             "open when it can be answered now. It is waiting when an earlier answer or a name comes first, and not relevant when "
-             "an earlier answer made it so. It is contested when two facts answer it differently, and off when a decision or an "
-             "adjustment set it aside. An answer is thin when its evidence is weaker than this stage asks for, and old when it is "
-             "older.", "",
+    head = ["| State | Check | For | Answer, or what it waits for | Settled by | Ideally by |", "|---|---|---|---|---|---|"]
+    lines = [f"# {memory['deal']['name']}: checks", "", "Every check of the standard as it stands for this opportunity, at the stage "
+             f"{std['stage_titles'][memory['deal']['stage']]}. Open: it can be answered now. Waiting: an earlier answer or a name "
+             "comes first. Not relevant: an earlier answer made it so. Contested: two facts answer it differently. Off: a decision "
+             "or an adjustment set it aside. Thin or old: the evidence is weaker or older than this stage asks for.", "",
              "**" + ", ".join(f"{counts[state]} {state}" for state in ORDER if state in counts) + ".** Answers that go against "
              f"their claim: {sum(bool(row.get('against')) for row in rows)}."]
+    key = table(row for row in rows if std["checks"][row["check"]].get("matters"))  # what was marked for this deal, with why
+    lines += ["", "## What matters most", "", *head, *key] * bool(key)
     if work:
         lines += ["", "## What settles the open checks", "",
                   "| Settled by | " + " | ".join(std["stage_titles"][stage] for stage in stages) + " | All | Mostly about |",
@@ -384,9 +386,9 @@ def check_page(memory, std, rows, todo, where):
                          + f" | {len(due)} | " + ", ".join(f"{topic} {topics.count(topic)}" for topic in most) + " |")
     screened = dict.fromkeys(memory["links"].get(row["for"], {}).get("from", row["for"]) for row in work  # a link: who gives it
                              if route(std["checks"][row["check"]]) == "screening")
-    screened = [sid for sid in screened if memory["subjects"].get(sid, {}).get("kind") in ("party", "person", "group")]
-    lines += ["", "**Names for the screening:** " + ", ".join(map(name, screened)) + ". These are subjects of the record: add "
-              "the directors and managers that its facts name."] * bool(screened)
+    screened = [sid for sid in screened if memory["subjects"].get(sid, {}).get("kind") in ("party", "person")]
+    lines += ["", "**Names for the screening:** " + ", ".join(map(name, screened)) + "; and the directors and managers that "
+              "the facts about them name."] * bool(screened)
     for pillar in std["pillars"]:
         within = tally(row for row in rows if std["by_id"][row["indicator"]]["pillar"] == pillar["id"])
         lines += ["", f"## {pillar['title']}", "",
@@ -397,8 +399,7 @@ def check_page(memory, std, rows, todo, where):
             if ind["pillar"] == pillar["id"] and mine:
                 stands = "; ".join(f"{claim['stands']} for {name(claim['for'])}" for claim in found if claim["indicator"] == ind["id"])
                 lines += ["", f"### {ind['title']}", "", f"*{ind['claim']}*" + f" Where it stands: {stands}." * bool(stands), "",
-                          "| State | Check | For | Answer, or what it waits for | Settled by | Ideally by |", "|---|---|---|---|---|---|",
-                          *table(mine)]
+                          *head, *table(mine)]
     lines += ["", "## Documents that are not in the folder", "",
               *(f"- {doc['title']} ({doc['slot']}): {doc['why']}" for doc in todo["documents"])] * bool(todo["documents"])
     return "\n".join([*lines, ""])

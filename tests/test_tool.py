@@ -182,6 +182,12 @@ class Deal(unittest.TestCase):
         run("add", deal, self.handed({"decisions": [{"decision": "Kept.", "reason": "Small.", "about": "P-003", "rests_on": ["F-014"]}]}))
         run("pages", deal)  # a record that no page cites is in the view all the same, unless it is history
         self.assertIn('"D-003"', files.read(deal, "Internal/wiki/wiki.html"))
+        run("adjust", deal, self.handed({"do": "change", "target": "OBS_MARKET_001", "set": {"matters": "Milk is the market."},
+                                         "reason": "The decision turns on it."}))  # what matters for this deal comes first
+        run("pages", deal)
+        checks = files.read(deal, "Internal/wiki/checks.md")
+        self.assertLess(checks.index("## What matters most"), checks.index("`OBS_MARKET_001` *Milk is the market.*"))
+        self.assertIn("[OBS_MARKET_001:", run("status", deal)[1].split("### Checks to answer or strengthen")[1].splitlines()[1])
 
     def test_upgrade_brings_the_standard_of_the_tool(self):
         deal, newer = self.copy(), files.packaged_standard()
