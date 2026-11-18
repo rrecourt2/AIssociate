@@ -209,7 +209,8 @@ class Deal(unittest.TestCase):
         self.assertIn("- F-005 (outdated) about", run("show", self.deal, "facts", "F-005", "S-002")[1])  # named, so it shows
         self.assertNotIn("F-005", run("show", self.deal, "facts")[1])
         long = {"facts": {"F-1": {"state": "current", "about": "P-001", "statement": "x" * 400, "source": "S-001"}}}
-        self.assertIn("x" * 300 + " ...", fact_lines(long, ["P-001"])[0])  # a long statement is cut in a list
+        self.assertIn("x" * 300 + " ...", fact_lines(long, [])[0])  # a long statement is cut in the list of all facts
+        self.assertIn("x" * 400, fact_lines(long, ["P-001"])[0])  # and whole for the facts about one subject
         self.assertIn("x" * 400, fact_lines(long, ["F-1"])[0])  # and given in full when the fact is named
         self.assertIn('quote: "Revenue was KES 4,060m (2024: KES 3,720m)."', run("show", self.deal, "facts", "F-008")[1])
         self.assertIn("- OBS_REV_001: Does the party earn revenue from sales today? [yes/no]",  # an indicator lists its checks

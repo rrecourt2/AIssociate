@@ -29,6 +29,7 @@ An answer against a claim is believed whatever it rests on. A favourable answer 
 - **Not asked yet is not a no.** A test that asks whether something exists, such as a maintenance plan, is answered no when the company says there is none, or when the place that would hold it has been searched.
 - **One case can decide a test against the claim. A favourable answer needs the whole.** If a test asks about five years and the documents cover three, a bad year among the three decides it. Three good years do not: record the figures and ask for the rest.
 - **Read the open tests of a claim before you rely on it**, and answer those the record already decides.
+- **An answer that turns on your reading** of an accounting or a legal question is an inference. Say so in the fact, and list it in the working notes for the analyst to confirm.
 - **Some questions ask for description**: how the business earns its money (`OBS_BUSINESS_MODEL_001`), what is particular about it (`OBS_BUSINESS_MODEL_002`), what the project is (`OBS_FEAS_008`). Their answers feed the pages. Answer them early, and ask early what an owner owes and receives on its own account (`OBS_GROUP_011`, `OBS_GROUP_012`).
 
 ## Who is asked what

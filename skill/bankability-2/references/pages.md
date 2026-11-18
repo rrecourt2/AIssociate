@@ -26,9 +26,10 @@ The wiki has eight folders, each with a heading on the contents page.
 
 - **A page for each subject a reader would look up**: a plant, a project, a product, the market, a customer that matters, the family that owns the company. A subject earns a page when two or more sources bear on it, or when other pages keep mentioning it. If a long document changed only the page of the opportunity, it has not been taken in. A wiki ends up with about as many pages as the deal has sources. A page written to raise the count is filler.
 - **Not a page:** a check, a claim or a list of checks; a single figure; a document retold; a subject with nothing to say beyond its line on the contents page; an account of what was done.
-- **The history has a page of its own**, in `context/`: the founding, each plant and line, each change of owner or of capital, each with its date and its source. Where two sources differ, give both.
+- **The history has a page of its own**, in `context/`: the founding, each plant and line, each change of owner or of capital, each with its date and its source. Where two sources differ, give both. Dated events belong here: a page under `topics/` analyses, and links here for what happened when.
 - **Go beyond the company's own documents** for the market, the competitors, the country and the technology. A page in `context/` says who says so.
 - **A project or an asset gets a real page**: what it is, where, how big, at what cost, by when, who pays for which part, how far it has come, and what it adds to the business.
+- **A table across several subjects**, such as the plants with their capacity, goes on the page of the company or the group that holds them.
 - **One page for several subjects.** Name them all in `about`: `about: P-004, P-005, P-006` for a page on the three banks. On a page under `parties/` or `assets/`, a borrower or a guarantor named second needs no page of its own.
 - **To merge, remove or rename a page**, move what is worth keeping, add the subject's ID to the `about` of the page that now describes it, delete the old file, run `pages` and `check`, and repoint the links that `check` reports.
 
@@ -77,7 +78,7 @@ Parts 2 to 5 go under "What we know". On the page of the opportunity, write the 
 
 ## The working notes
 
-`work/working-notes.md`, with `about: DEAL`, says how to work on this deal. It has three parts and stays short:
+`work/working-notes.md`, with `about: DEAL`, says how to work on this deal. It has three parts and stays short. Take out what is done, also where a colleague wrote it:
 
 1. The analyst's standing instructions, in their words, with dates. An instruction on how to write goes here only, never into the record.
 2. Which page is the place for what.
@@ -111,7 +112,7 @@ Put the ID of the fact or the source in square brackets after the sentence it su
 
 `check` reads a page paragraph by paragraph. A list item and a table row each count as one. It reports:
 
-- **A number that no record cited in the same paragraph holds.** A fact holds a number in its statement, value, date or place, and a source in its title or date. Whole numbers below 10 are let through. Every other number counts, also a year and the day of a date. So cite a fact as of the date you name, and write a figure the way its fact gives it: KES 4,060m, not KES 4.06bn.
+- **A number that no record cited in the same paragraph holds.** A fact holds a number in its statement, value, date or place, and a source in its title or date. A question and a decision hold none. Decimals count: 16,415 is not 16,415.23. Whole numbers below 10 are let through. Every other number counts, also a year and the day of a date. So cite a fact as of the date you name, and write a figure the way its fact gives it: KES 4,060m, not KES 4.06bn.
 - **In a table**, give a figure its citation in its own row: `| Revenue | KES 4,060m | KES 3,480m | [F-008] [F-019] |`. The head row is not read.
 - **Only the record counts.** A number that is in a document and in no fact is reported even where you cite the source. Record the fact first.
 - **A citation that leads nowhere**, a link to a page that is not there, and a page with text and no citation at all.
@@ -140,6 +141,6 @@ Put the ID of the fact or the source in square brackets after the sentence it su
 5. Use "is" and "has".
 6. Give every number its unit, its date and the company it belongs to.
 7. Mark what you inferred.
-8. Write "not stated" or "not known" only for what you looked for in the original and did not find. Record that search as a fact with `nothing_found`, and cite it.
+8. Write "not stated" or "not known" only for what you looked for in the original and did not find. Record that search as a fact with `nothing_found`, and cite it. What nobody has looked for yet is open: say that it is asked, and cite the question.
 9. Link the first mention of another subject to its page: `[Cedar Foods Ltd](../parties/cedar-foods-ltd.md)`. Name a file in lower case with hyphens.
 10. On a page about people: no judgements of character.

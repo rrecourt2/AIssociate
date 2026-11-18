@@ -280,8 +280,8 @@ def fact_lines(memory, terms):
         line = (f"- {fid}{state} about {fact['about']}: {fact['statement']}{value if 'value' in fact else ''} "
                 f"({'; '.join(filter(None, where))})")
         named = fid in ids or any(re.search(rf"(?<!\w){re.escape(term)}(?!\w)", line, re.I) for term in words)
-        if named or (not terms and fact["state"] != "outdated"):  # a long statement is cut in a list
-            cut = fid not in ids and len(fact["statement"]) > 300
+        if named or (not terms and fact["state"] != "outdated"):  # a long statement is cut in the list of all facts
+            cut = not terms and len(fact["statement"]) > 300
             lines.append(line.replace(fact["statement"], fact["statement"][:300] + " ...") if cut else line)
     return lines
 
