@@ -5,7 +5,7 @@ The wiki gives the work its depth: what the business is, how it works, how its p
 ## How the wiki is read
 
 - **Every page starts with a lead that can stand alone.** The contents page, `Internal/wiki/index.md`, prints the first sentence of each page, and a reader opens the page only when that line says so.
-- **The tool writes the contents page**, folder by folder, the pages of a folder in the order of their file names. Name the files so that what belongs together sorts together: `lender-…`, `customer-…`. The tool also writes `sources.md`, which lists every source, and `checks.md`: see [standard](standard.md).
+- **The tool writes the contents page**, folder by folder, and puts what matters most first in each folder. First comes the page of a party or a project with a main role in the deal. Then come the pages that cite the most facts behind a marked check or behind an answer that goes against a claim, then the pages that cite the most of the record. The menu of the browser view has the same order, and it moves as the record and the marks do. The tool also writes `sources.md`, which lists every source, and `checks.md`: see [standard](standard.md).
 - **Say each thing once**, on the page it belongs to, and link to it from elsewhere.
 - **A person reads the same pages in a browser**, in `wiki.html`. A click on a citation shows the record with every field. So write a source's `note`, a link's `why` and a decision's `reason` for a reader.
 

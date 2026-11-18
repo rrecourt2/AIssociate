@@ -28,7 +28,8 @@ nav a { display: block; margin: 0 -0.5rem; padding: 0.25rem 0.5rem; border-radiu
 nav a:hover, nav a.here { background: var(--tint); } nav a.here { color: var(--mark); font-weight: 600; }
 nav a span { display: block; color: var(--soft); font-size: 0.8rem; font-weight: 400; }
 mark { background: none; color: var(--mark); font-weight: 600; }
-main { max-width: 46rem; margin-left: clamp(0rem, 5vw, 5rem); padding: 2.5rem 2.25rem 6rem; overflow-wrap: break-word; }
+main { max-width: 46rem; margin-left: clamp(0rem, 5vw, 5rem); padding: 2.5rem 2.25rem 6rem; overflow-wrap: break-word;
+  container-type: inline-size; }
 h1, h2, h3, h4 { font-weight: 600; line-height: 1.25; margin: 2.2rem 0 0.6rem; }
 h1 { font-size: 2rem; margin-top: 0; letter-spacing: -0.01em; }
 h2 { font-size: 1.3rem; } h3, h4 { font-size: 1.08rem; }
@@ -54,6 +55,7 @@ a.cite:hover { color: var(--mark); }
 #card dt { margin-top: 0.7rem; color: var(--soft); font-size: 0.75rem; }
 #card button { float: right; border: 0; background: none; color: var(--soft); font-size: 1.3rem; line-height: 1; cursor: pointer; }
 main.broad { max-width: 78rem; }
+.filters { position: sticky; top: 0; z-index: 1; margin: 0 -0.5rem 1rem; padding: 0.6rem 0.5rem 0.2rem; background: var(--paper); }
 .filters button { margin: 0 0.4rem 0.4rem 0; padding: 0.3rem 0.8rem; font: 0.82rem var(--plain); color: inherit; cursor: pointer;
   background: transparent; border: 1px solid var(--line); border-radius: 999px; }
 .filters button.on { background: var(--mark); border-color: var(--mark); color: var(--paper); }
@@ -63,19 +65,32 @@ tr[data-group="To answer"] .state { background: #f4e2b8; color: #5b4300; }
 tr[data-group="Answered"] .state { background: #d6ebda; color: #1d4d2b; }
 tr[data-group="Waiting"] .state { background: #dee6f0; color: #2b4462; }
 tr.against .state { background: #f4d3ce; color: #6d1e15; }
-.wide:has(.state) table { width: 100%; table-layout: fixed; }
-.wide:has(.state) th:nth-child(1) { width: 7rem; } .wide:has(.state) th:nth-child(3) { width: 16rem; }
-.wide:has(.state) th:nth-child(4) { width: 13rem; } .wide:has(.state) th:nth-child(5), .wide:has(.state) th:nth-child(6) { width: 6.5rem; }
-@media (max-width: 60rem) {
-  body { display: block; } main { margin: 0 auto; padding: 1.5rem 1.25rem 4rem; }
-  nav { position: static; height: auto; border: 0; border-bottom: 1px solid var(--line); }
-  #card { position: fixed; top: auto; bottom: 0; width: 100%; height: auto; max-height: 55vh; background: var(--paper);
-    border: 0; border-top: 1px solid var(--line); } }
-@media print { nav, #card { display: none; } body { display: block; } }
+.checks table { width: 100%; table-layout: fixed; }
+.checks th:nth-child(1) { width: 7rem; } .checks th:nth-child(3) { width: 17%; } .checks th:nth-child(4) { width: 21%; }
+.checks th:nth-child(5) { width: 7rem; } .checks th:nth-child(6) { width: 6.5rem; }
+@container (max-width: 62rem) {  /* no room for six columns: each check is a block, its cells under one another with their names */
+  .checks table, .checks tbody, .checks tr, .checks td { display: block; }
+  .checks tr { padding: 0.8rem 0; border-bottom: 1px solid var(--line); }
+  .checks td { max-width: 48rem; padding: 0.1rem 0; border: 0; }
+  .checks td:nth-child(2) { margin: 0.35rem 0; font-size: 0.95rem; }
+  .checks td:nth-child(n+3)::before { content: attr(data-label) ": "; color: var(--soft); }
+  .checks td:nth-child(n+5) { display: inline-block; margin-right: 1.5rem; }
+  .checks thead, .checks tr[hidden], .checks td[data-empty] { display: none; } }
+#toggle { display: none; }
+@media (max-width: 85rem) {  /* no room for a third column: the record that was asked for comes up from the foot */
+  #card { position: fixed; inset: auto 0 0 17rem; width: auto; height: auto; max-height: 50vh; z-index: 2; background: var(--paper);
+    border: 0; border-top: 1px solid var(--line); box-shadow: 0 -8px 24px rgb(0 0 0 / 0.1); } }
+@media (max-width: 60rem) {  /* a narrow window: the menu folds away above the page */
+  body { display: block; } main { margin: 0 auto; padding: 1.5rem 1.25rem 4rem; } #card { left: 0; }
+  nav { position: static; height: auto; padding: 1rem 1.25rem; border: 0; border-bottom: 1px solid var(--line); }
+  #toggle { display: block; float: right; padding: 0.3rem 0.8rem; font: inherit; color: inherit; cursor: pointer;
+    background: transparent; border: 1px solid var(--line); border-radius: 6px; }
+  nav:not(.open) #search, nav:not(.open) #menu { display: none; } }
+@media print { nav, #card, .filters { display: none; } body { display: block; } }
 </style>
 </head>
 <body>
-<nav><strong id="deal"></strong><small id="as-of"></small>
+<nav><button id="toggle" aria-expanded="false">Menu</button><strong id="deal"></strong><small id="as-of"></small>
   <input id="search" type="search" placeholder="Search the pages" aria-label="Search the pages"><div id="menu"></div></nav>
 <main id="page"></main>
 <aside id="card" hidden></aside>
@@ -249,6 +264,9 @@ function filters(rows) {  // on a page of checks: a mark on each state, and butt
     tr.classList.toggle("against", /\(against the claim\)/.test(tr.cells[3].textContent));
     tr.dataset.count = tr.cells[2].textContent.split("; ").length;  // a row may stand for several subjects: one a line
     tr.cells[2].innerHTML = tr.cells[2].innerHTML.split("; ").join("<br>");
+    const heads = [...tr.closest("table").querySelectorAll("th")].map(th => th.textContent);  // each cell carries the name of its
+    [...tr.cells].forEach((td, i) => td.textContent.trim() ? td.dataset.label = heads[i] : td.dataset.empty = "");  // column
+    tr.closest(".wide").classList.add("checks");
   }
   rows = rows.filter(tr => !marked(tr));
   const bar = document.createElement("p"), count = name => rows.filter(tr => name === "All" || tr.dataset.group === name)
@@ -285,6 +303,7 @@ function show() {  // open the page that the address names, or the contents page
   el("page").classList.toggle("broad", states.length > 0);
   if (states.length) filters(states);
   el("card").hidden = true;
+  document.querySelector("nav").classList.remove("open");
   document.title = `${pages[here].title} | ${data.name}`;
   menu();
   window.scrollTo(0, 0);
@@ -293,6 +312,7 @@ function show() {  // open the page that the address names, or the contents page
 el("deal").textContent = data.name;
 el("as-of").textContent = `The record at revision ${data.revision}`;
 el("search").addEventListener("input", menu);
+el("toggle").addEventListener("click", () => el("toggle").setAttribute("aria-expanded", document.querySelector("nav").classList.toggle("open")));
 document.addEventListener("click", event => {
   const cited = event.target.closest("a.cite");
   if (cited) card(cited.dataset.id);

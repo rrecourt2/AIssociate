@@ -188,6 +188,11 @@ class Deal(unittest.TestCase):
         checks = files.read(deal, "Internal/wiki/checks.md")
         self.assertLess(checks.index("## What matters most"), checks.index("`OBS_MARKET_001` *Milk is the market.*"))
         self.assertIn("[OBS_MARKET_001:", run("status", deal)[1].split("### Checks to answer or strengthen")[1].splitlines()[1])
+        for name, cites in (("a-plain", "S-001"), ("b-matters", "F-007")):  # F-007 answers a check against its claim
+            files.write(deal, f"Internal/wiki/context/{name}.md", f"---\ntitle: {name}\nabout: DEAL\n---\n\n# {name}\n\nA line [{cites}].\n")
+        run("pages", deal)  # on its shelf, the page that cites what matters comes before the one that does not
+        contents = files.read(deal, "Internal/wiki/index.md")
+        self.assertLess(contents.index("b-matters"), contents.index("a-plain"))
 
     def test_upgrade_brings_the_standard_of_the_tool(self):
         deal, newer = self.copy(), files.packaged_standard()

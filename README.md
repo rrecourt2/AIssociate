@@ -84,12 +84,12 @@ The record holds what is known: exact, sourced and written only by the tool. The
 
 ## Kept simple
 
-The tool is under 2,250 lines of Python in seven files. These rules hold, and `tests/test_audit.py` fails if the code breaks one:
+The tool is under 2,500 lines of Python in seven files. These rules hold, and `tests/test_audit.py` fails if the code breaks one:
 
 - Python standard library only.
 - No network access, no starting of other programs, no `eval`, no reading of environment variables, no deleting.
 - One module touches the disk. It writes through three functions, and each refuses a path outside the deal folder.
-- No function longer than 100 lines. The whole tool stays under 2,250 lines.
+- No function longer than 100 lines. The whole tool stays under 2,500 lines.
 
 [docs/audit.md](docs/audit.md) is the note for a security reviewer.
 

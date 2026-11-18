@@ -464,8 +464,20 @@ def refresh(deal, memory, std, rows, held):
     for path, ids in sorted(named, key=lambda page: page[0].split("/")[0] in BRIEF):  # what has no page of its own
         for rid in ids:  # is found on the first page that names it: a page about subjects before one about a topic
             where.setdefault(rid, path)
-    contents = {shelf: [] for shelf in SHELVES}
-    for path, text in sorted(pages.items()):
+    marks = " ".join(str(check.get("matters", "")) for check in std["checks"].values())  # the reason of a mark names facts too
+    heavy = set(ID.findall(marks)) | {fid for row in rows if row.get("against") or std["checks"][row["check"]].get("matters")
+                                      for fid in row.get("facts", [])}
+
+    def weight(page):
+        """Where a page stands on its shelf. First the page of a party or a project with a main role. Then the pages that
+        cite the most of what matters: the facts behind a marked check or behind an answer that goes against a claim.
+        Then the pages that cite the most of the record, then by name."""
+        cited, own = set(ID.findall(own_text(page[1]))), page[0][cut:].split("/")[0] not in BRIEF
+        main = own and any(rid == DEAL or held.get(rid, set()) & MAIN for rid in about(page[1]))
+        return not main, -len(heavy & cited), -len(cited), page[0]
+
+    contents, ordered = {shelf: [] for shelf in SHELVES}, sorted(pages.items(), key=weight)
+    for path, text in ordered:
         new = fill(text, "glance", glance(about(text), memory, std, rows, held, where, path[cut:]))
         values = key_values(about(text), memory, path[cut:])
         if values or BEGIN.format("values") in new:  # a page that has no key values gets no part for them
@@ -497,7 +509,7 @@ def refresh(deal, memory, std, rows, held):
     files.write(deal, f"{files.WIKI}/sources.md", sources)
     files.write(deal, f"{files.WIKI}/checks.md", checks)
     client = f"../../{files.CLIENT}/index.md"  # the index of the client folder, as a path from the wiki folder
-    texts = {"index.md": "\n".join(index), "sources.md": sources, **{path[cut:]: text for path, text in sorted(pages.items())},
+    texts = {"index.md": "\n".join(index), "sources.md": sources, **{path[cut:]: pages[path] for path, _ in ordered},
              client: documents(memory["deal"]["name"], listed, std), "checks.md": checks}
     cited = set(ID.findall(" ".join(text for path, text in texts.items() if path not in ("sources.md", "checks.md"))))
     past = {"facts": "outdated", "sources": "replaced", "links": "ended"}  # history goes in only where a page cites it

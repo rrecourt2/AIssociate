@@ -178,6 +178,8 @@ It is an opportunity until terms are on paper, and a deal from then on. The fold
 
 - **A page for each subject a reader would look up.** The wiki holds the larger context, also where no check asks for it: a plant, a machine, a project, a product, the history of the company, its market, a customer that matters. A subject earns a page when two or more sources bear on it or other pages keep mentioning it. As a guide there are about as many pages as sources, or somewhat more. Not a page: a check, a single figure, a document retold, an account of what was done. The tool creates a page only for the opportunity, for each borrower, repayment source, guarantor and sponsor, and for each financed project.
 - **The contents page is the map.** It gives the first sentence of every page. An assistant reads the contents page and the page of the opportunity first, and opens another page only when the task needs it. A long wiki is then no burden.
+- **What matters most comes first on each shelf**, in the contents page and in the menu of the view. The tool works the order out from the record: the page of a party or a project with a main role, then the pages that cite the most facts behind a marked check or behind an answer that goes against a claim. Nobody keeps the order by hand, and it moves when the record or the marks do.
+- **The view fits the window.** Where six columns of checks have no room, each check is a block with its cells under one another. In a narrow window the menu folds away above the page, and the record that a citation opens comes up from the foot.
 - **One page lists every source**: what it is, how far it was read, how many facts rest on it, and links to its original and its extract.
 - **One page lists every check**, as an add-on at the foot of the contents page: the due diligence list. The tool writes it from the record. It gives the open checks by what settles them and by stage, with the claims they are mostly about, the names for the screening, and then every check by pillar and claim, one row where a check stands the same for several subjects, with its state, its answer or what it waits for, what settles it and the stage it is ideally answered by. In the view for a browser, buttons choose which states show. A reader sees at once what is left and whether it matters.
 - **What matters is marked for the deal, with a reason.** Most open checks are ordinary due diligence. An adjustment can give a check a sentence that says why the decision turns on it. The page of checks starts with those checks, and `status` lists them first. The standard itself ranks nothing: what is material differs from deal to deal, and the reason is written down by whoever judged it.
@@ -364,7 +366,7 @@ These rules are checked by a test that fails when the code breaks one:
 - No network access, no starting of other programs, no `eval`, no reading of environment variables, no deleting.
 - One module touches the disk. It writes through three functions, and each refuses a path outside the deal folder.
 - No function longer than 100 lines.
-- The whole tool stays under 2,250 lines of Python, in at most seven files.
+- The whole tool stays under 2,500 lines of Python, in at most seven files.
 
 The view for a browser is one more file, `bankability2/wiki.html`: about 300 lines of HTML, CSS and plain JavaScript that load nothing from the network. A test checks that it names no address and no outside file.
 
