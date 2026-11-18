@@ -1,46 +1,24 @@
 # AIssociate
 
-**One record of a deal, and every document written from it.**
+The AIssociate plugin keeps one record of an investment deal, in which every fact carries its source. Everything written about the deal comes from that record: the wiki that colleagues read, and the documents the analyst asks for.
 
-AIssociate is a plugin for an AI assistant, built by an investment analyst for the work that surrounds a deal. It keeps the facts of a deal in one place, each with the document and the words it came from. The deal's wiki is written from that record, and so is the first draft of a memo when the analyst asks for one. It has been tried on three real companies, from public documents only, and not yet on a live deal.
+A plugin is a folder for an AI assistant. This one holds a guide that tells the assistant how to work on a deal, and a small program, the tool, that keeps the record. It is meant first for Microsoft Copilot Cowork, Microsoft's assistant for office work. It has been tried on three real companies, from public documents only, and not yet on a live deal.
 
 <p align="center"><img src="docs/images/wiki.png" alt="The wiki of the invented Cedar Foods deal in a browser: the page on the company, with one citation opened to show the fact and the words of the annual report behind it" width="100%"></p>
 
 ## The problem
 
-A deal is a few hundred facts, and much of the work is writing them down again.
+Much of the work on a deal is structuring the same information for one document after another: an early memo for approval in principle, the due diligence questionnaire (DDQ), an investment memorandum or financial proposal, and later the monitoring reports. They hold mostly the same facts, copied by hand from one into the next. Each copy is a chance for a figure to drift, and when a fact changes it is hard to know every place it was used.
 
-Take one fact, last year's revenue. On a single deal an analyst will:
+A reviewer asks where a number came from, and the analyst goes back through the PDFs. What is still to find out lives in someone's head. When the analyst is away, the deal has to be explained from the start. And a memo written to get a deal approved tends to lose what speaks against it.
 
-- read it in the annual report
-- type it into the screening note
-- type it into the concept note
-- type it again into the investment memorandum or the financial proposal
-- look for the page again when a reviewer asks where it came from
-- change it in each of those documents when the audited accounts arrive, and miss one
+An AI assistant helps with the reading: it gets through a two-hundred-page report in minutes. But next week it has forgotten it, and it will sometimes write a confident sentence that no document supports.
 
-None of that is analysis. It is the same information, restructured for one document after another. These are the problems that come with it:
-
-1. **The same facts are rewritten for every document.** Screening note, concept note, due diligence questionnaire (DDQ), investment memorandum, financial proposal, monitoring report. Each copy is a chance for a figure to drift.
-2. **Nobody can say where a number came from** without going back through the PDFs.
-3. **What is still missing lives in someone's head**, or in a spreadsheet that nobody keeps up to date.
-4. **An AI assistant forgets, and it invents.** It reads a two-hundred-page report in minutes. Next week it remembers none of it, and now and then it writes a figure that no document supports.
-5. **A memo argues for the deal.** What speaks against it tends to get lost on the way to approval.
-6. **Nobody else can pick up the deal.** When the analyst is away, it has to be explained from the start.
-7. **Deal documents cannot go to a new outside service**, and a bank should not have to trust software it cannot read.
-8. **Every institution works in its own way**, so a tool that prescribes one process gets in the way.
-
-Most of these are one problem. The facts of a deal have no home of their own. They live in whichever document was written last.
+These look like separate problems. Most of them come down to one: the facts of a deal have no home of their own. They live in whichever document was written last.
 
 ## How it works
 
-AIssociate gives the facts a home, in three steps.
-
-1. **The assistant reads the documents and proposes facts**, each with its source and, from a document, the words it comes from.
-2. **A small program, the tool, checks each fact and writes it into the record.** It refuses a fact without a source, and reports a quotation it cannot find in its document.
-3. **Everything else is written from the record.** The assistant writes the wiki: pages on the deal that a person reads in a browser, with every sentence cited. When the analyst asks for a memo, the assistant drafts it from the wiki and the record.
-
-All of it sits in one deal folder: the client's documents, the record and the wiki, kept wherever the institution keeps its files. The plugin itself is two things: a guide that tells the assistant how to work this way, and the tool. It is meant first for Microsoft Copilot Cowork, Microsoft's assistant for office work.
+AIssociate gives the facts a home. Each deal has a deal folder: the client's documents, the record and the wiki, kept wherever the institution keeps its files. The assistant reads the documents and proposes facts, each with its source and, from a document, the words it comes from. Only the tool writes them into the record. It refuses a fact without a source, and reports a quotation it cannot find in its document. From the record the assistant writes the wiki: pages on the deal that a person reads in a browser, where each fact cites the record. When the analyst asks for a memo, the assistant drafts it from the wiki and the record.
 
 ```mermaid
 flowchart LR
@@ -48,8 +26,8 @@ flowchart LR
   A -- "a fact with no source is refused" --> T["The tool checks and records"]
   S["The Bankability DDQ: what to find out"] --> T
   T --> R[("The record: facts, sources, a log of every change")]
-  R --> W["The wiki: pages a person reads, every sentence cited"]
-  W --> P["Memos the analyst asks for"]
+  R --> W["The wiki: pages a person reads, each fact cited"]
+  W --> P["Documents the analyst asks for"]
 ```
 
 The idea of a wiki that an assistant keeps comes from [a note by Andrej Karpathy](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
@@ -58,60 +36,56 @@ The idea of a wiki that an assistant keeps comes from [a note by Andrej Karpathy
 
 The example is Cedar Foods, an invented dairy in Kenya that asks for a loan of EUR 12m.
 
-### 1. The same facts are rewritten for every document
+### Figures drift from one document to the next
 
-A fact is recorded once, and every page and every draft cites it. Cedar's teaser puts revenue at about KES 4.1bn, and the audited accounts at KES 4,060m. The better source wins, so the assistant records the audited figure in place of the teaser's. The old fact stays, marked outdated, and every page that still cites it is reported until it is corrected.
+Cedar's teaser puts revenue at about KES 4.1bn, the audited accounts at KES 4,060m. The guide says the better source wins, so the assistant records the audited figure as replacing the teaser's. The old fact stays, marked outdated, and the log shows who replaced it. The tool's check reports every page and draft that still cites it. Two equal sources that disagree are both marked disputed.
 
-### 2. Nobody can say where a number came from
+### It is hard to say where a number came from
 
-On Cedar's page, the sentence on revenue ends with [F-008]. A click shows the fact: the annual report, note 5, and its words, "Revenue was KES 4,060m (2024: KES 3,720m)." That is the picture above. The tool compares each quotation with the text of its document, by plain comparison, and reports any it cannot find. No AI does this.
+On Cedar's page, a sentence on revenue ends with [F-008]. A click shows the fact: the annual report, note 5, and its words, "Revenue was KES 4,060m (2024: KES 3,720m)." The tool compares each quotation with the text of its document, by plain comparison, and reports any it cannot find. No AI does this.
 
-### 3. What is still missing lives in someone's head
+### What is still missing lives in someone's head
 
-The list is the Bankability DDQ, described below. For each of its checks, the tool knows whether it is answered, open, waiting for something else first, set aside or not relevant, and by which stage it is ideally answered. For Cedar, 241 checks can be answered now. That is ordinary due diligence, not 241 alarms. The assistant marks the few that would change the decision, each with its reason, and those come first on the list. On an open check it can also note what is missing, and who could give it.
+The list is the Bankability DDQ, below. For each of its checks, the questions it asks, the tool knows whether it is answered, open, waiting for something else first, set aside, or not relevant, and by which stage it is ideally answered. For Cedar, 241 checks can be answered now. That is ordinary due diligence, not 241 alarms. The assistant marks the few that would change the decision, each with its reason, and those come first on the list. On an open check it can also note what is missing, and who could give it.
 
-### 4. An AI assistant forgets, and it invents
+### The assistant forgets, and sometimes writes what no document says
 
-Each new conversation starts from the tool's summary and the wiki, so what is known about the deal does not rest on what the assistant remembers. The tool refuses a fact without a source. Had the assistant written "Profit was KES 512m" on Cedar's page, the tool would report that the paragraph "has 512, which no record cited in that paragraph holds."
+Each new conversation starts from the tool's summary and the pages, so what is known about the deal does not rest on what the assistant remembers. The tool refuses a fact without a source. Had the assistant written "Profit was KES 512m" on Cedar's page, the tool would report that the paragraph "has 512, which no record cited in that paragraph holds."
 
 The tool does not check meaning, so a true quotation read the wrong way gets through. Before a draft goes out, the tool picks ten facts and the assistant compares each with its document. A person still reads the pages.
 
-### 5. A memo argues for the deal
+### A memo tends to argue for the deal
 
 The DDQ is built on claims that could turn out false, such as "the margin has held". Cedar's CFO said on a call that the margin fell in 2025. A company's word against its own interest is believed, so that claim is marked challenged. So is the claim on currency: the loan would be in euros, and every sale is in shillings. Both are listed on Cedar's page, in the part the tool keeps. The CFO's word that the largest customer pays within 45 days is in Cedar's favour, so it is marked "own word", and no claim stands on it alone.
 
-### 6. Nobody else can pick up the deal
+### A deal is hard to hand over
 
-The assistant writes the wiki for someone who has never seen the deal, and the tool keeps part of each page. Cedar's page lists the two challenged claims, the open request for the milk contracts and the agreed action on covering the euro loan. A colleague who takes over starts there. A timeline in the wiki shows what was recorded, when and by whom.
+The assistant writes the wiki for someone who has never seen the deal, and the tool keeps part of each page. Cedar's page lists, in the part the tool keeps, the two challenged claims, the open request for the milk contracts and the agreed action on covering the euro loan. A colleague who takes over starts there. A timeline in the wiki shows what was recorded, when and by whom.
 
-### 7. Deal documents cannot go to a new outside service
+### A bank cannot send its deals to a new service
 
-They do not have to. The tool is about 2,500 lines of Python, a common programming language. It runs where the deal folder is, opens no network connection, and uses the institution's own assistant. A test in this repository fails if the code brings in anything that could reach the network or start another program, or grows too large. The details are under "For those who approve software", below.
+The tool is about 2,500 lines of Python, a common programming language. It runs where the deal folder is, opens no network connection, and uses the institution's own assistant. A test in this repository, the public home of the code, fails if the code brings in anything that could reach the network or start another program, or grows too large.
 
-### 8. Every institution works in its own way
+### Every institution works in its own way
 
-The tool does not prescribe a process. A check has a stage by which it is ideally answered, but a deal moves on with checks still open. An institution keeps its own ways in a file of its own. The invented one in the example gives the concept and approval stages its own names, CIP and FP, makes sanctions screening a check no deal may switch off, and lists the fields of its client system. For Cedar the analyst adds a check, with its reason: do the milk contracts cap the price?
+A check has a stage by which it is ideally answered, but a deal moves on with checks still open. An institution keeps its own ways in a file of its own. The invented one in the example renames two of the stages, makes sanctions screening a check no deal may switch off, and lists the fields of its client system. For Cedar the analyst adds a check, with its reason: do the milk contracts cap the price?
 
 ## The Bankability DDQ
 
-Every lender has a list of questions it wants answered before it lends: a due diligence questionnaire, or DDQ. The Bankability DDQ is one such list, written down and public. It is a starting point, and it is made to be adjusted.
+Every lender has a list of questions it wants answered before it lends. The Bankability DDQ is one such list of due diligence questions, written down and public. It is a starting point, and it is made to be adjusted.
 
 "Bankable" is what a lender calls a deal it can finance. The list writes down what has to be true for that, as claims, such as "No single customer's loss would stop the company from servicing its debt." Under each claim sit checks that try to disprove it. A check says what evidence would answer it, and by which stage of the deal it is ideally answered.
 
 Version 4.4.0 has 70 claims and 551 checks in nine topics: the opportunity; country, sector and market; the business; people and governance; cash flow and debt; liquidity and financial risks; environmental, social and impact matters; the links between parties; and the loan itself. Nothing is scored. An answer carries its reason. The tool says where each claim stands: stands, stands so far, not tested, contested or challenged. People decide.
 
-It can be adjusted at three levels:
-
-- **The institution** adds a layer of its own, in a file that stays inside its own walls: its stages, its own checks, the checks no deal may switch off, and the fields of its systems.
-- **The deal** can add a check, change one or set one aside, each time with a reason.
-- **The list itself** is plain text in [`standard/`](standard/README.md), where the files call it the standard. Anyone can change it and rebuild.
+An institution adjusts the list with a layer of its own, in a file that stays inside its own walls: its stages, its own checks, the checks no deal may switch off, and the fields of its systems. A deal can adjust it too, with a reason. The questions meant for the company make up the questionnaire that goes to it. In this repository the list is in the [`standard/`](standard/README.md) folder, and the tool's messages call it the standard.
 
 ## One record, many documents
 
 A memo is the analyst's document. When the analyst asks for one, the assistant drafts it from the wiki and the record, in the institution's own template where it has one. The guide covers three:
 
-- **The screening note**: whether the opportunity fits, its fatal flaws, what to do next.
-- **The concept note**: the opportunity in short, and the claims still to test.
+- **A first scan**: whether the opportunity fits, its fatal flaws, what to do next.
+- **The memo for approval in principle**: the opportunity in short, and the claims still to test.
 - **The financial proposal**, in some institutions the investment memorandum: for each claim that matters, what tested it and how strong the evidence is.
 
 Every number in a draft cites a fact, and the tool checks a draft as it checks a page. Drafts are saved beside the wiki, not in it. The tool also fills the entry sheets for the institution's systems: each field with its value and its fact, or "missing".
@@ -160,7 +134,7 @@ cp -r examples/cedar-foods/wiki/. "Cedar Foods/Internal/wiki/" && python3 -m ban
 python3 -m bankability2 check "Cedar Foods"
 ```
 
-`python3 -m bankability2 adjust "Cedar Foods" examples/cedar-foods/changes/4-adjust.json` adjusts the DDQ for this deal: it adds the check on the milk price, sets the checks on insurance aside until the term sheet is agreed, and notes on an open check what is still missing. Run `pages` again to see it in the wiki. The tests run with `python3 -m unittest discover -s tests`.
+`python3 -m bankability2 adjust "Cedar Foods" examples/cedar-foods/changes/4-adjust.json` adjusts the list for this deal: it adds the check on the milk price, sets the checks on insurance aside until the term sheet is agreed, and notes on an open check what is still missing. Run `pages` again to see it in the wiki. The tests run with `python3 -m unittest discover -s tests`.
 
 ## In this repository
 
@@ -168,7 +142,7 @@ python3 -m bankability2 check "Cedar Foods"
 |---|---|
 | [`skill/aissociate/`](skill/aissociate/SKILL.md) | The guide for the assistant |
 | `bankability2/` | The tool |
-| [`standard/`](standard/README.md) | The Bankability DDQ, which the files call the standard, with [FRAMEWORK.md](standard/FRAMEWORK.md) on how it is built |
+| [`standard/`](standard/README.md) | The Bankability DDQ, with [FRAMEWORK.md](standard/FRAMEWORK.md) on how it is built |
 | `examples/` | The invented deal and institution |
 | `tests/` | The tests, with the rules for reviewers |
 | [`docs/`](docs/design.md) | The design, and the note for a security reviewer |
