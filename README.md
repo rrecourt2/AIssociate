@@ -84,9 +84,9 @@ An institution adjusts the list with a layer of its own, in a file that stays in
 
 A memo is the analyst's document. When the analyst asks for one, the assistant drafts it from the wiki and the record, in the institution's own template where it has one. The guide covers three:
 
-- **A first scan**: whether the opportunity fits, its fatal flaws, what to do next.
+- **The screening note**: whether the opportunity fits, its fatal flaws, what to do next.
 - **The memo for approval in principle**: the opportunity in short, and the claims still to test.
-- **The financial proposal**, in some institutions the investment memorandum: for each claim that matters, what tested it and how strong the evidence is.
+- **The investment memorandum or financial proposal**: for each claim that matters, what tested it and how strong the evidence is.
 
 Every number in a draft cites a fact, and the tool checks a draft as it checks a page. Drafts are saved beside the wiki, not in it. The tool also fills the entry sheets for the institution's systems: each field with its value and its fact, or "missing".
 
