@@ -1,11 +1,11 @@
 ---
 name: aissociate
-description: AIssociate keeps the record of an investment deal in its deal folder, against the Bankability standard for due diligence. Use it whenever the analyst works on a deal, for reading documents, calls or emails, asking what is known or missing, deciding what to collect next, filling in the bank's systems, or drafting a scan, CIP or FP.
+description: AIssociate keeps the record of an investment deal in its deal folder, against the Bankability DDQ, an adjustable list of due diligence checks. Use it whenever the analyst works on a deal, for reading documents, calls or emails, asking what is known or missing, deciding what to collect next, filling in the bank's systems, or drafting a scan, CIP or FP.
 ---
 
 # AIssociate
 
-A deal folder holds everything known about one opportunity. A small tool keeps its record and checks it against the Bankability standard. You read, propose and write. The tool records, links and computes.
+A deal folder holds everything known about one opportunity. A small tool keeps its record and checks it against the Bankability DDQ, the adjustable list of checks that this guide calls the standard. You read, propose and write. The tool records, links and computes.
 
 ## The folder
 

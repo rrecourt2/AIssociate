@@ -1,6 +1,6 @@
 # The framework
 
-How the Bankability standard is organised, and why. The lists and the checks are in the other files. This page is the thinking behind them.
+How the Bankability DDQ, which the files call the standard, is organised, and why. The lists and the checks are in the other files. This page is the thinking behind them.
 
 ## 1. Start from repayment
 

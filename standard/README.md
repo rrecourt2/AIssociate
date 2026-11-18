@@ -1,6 +1,6 @@
-# The Bankability standard
+# The Bankability DDQ
 
-The Bankability standard says what a deal folder holds and what must be known about a deal. It is data only: lists, a data-room structure and checks. No meaning lives in code.
+The Bankability DDQ is an adjustable list of due diligence checks. The tool, the guide and the files here call it the standard. It says what a deal folder holds and what must be known about a deal. It is data only: lists, a data-room structure and checks. No meaning lives in code.
 
 Version 4.4.0 holds 70 indicators with 551 checks in nine pillars, a data room of 10 folders with 64 slots, and 82 kinds of source.
 

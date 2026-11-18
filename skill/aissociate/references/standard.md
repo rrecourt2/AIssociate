@@ -1,6 +1,6 @@
 # The standard
 
-`show <deal> <ID>` prints a check of the Bankability standard in full, or an indicator with its checks and the answer each takes. `status <deal> --for <pillar> --all` lists the checks of one pillar that are to answer: the pillars are `deal`, `environment`, `business`, `governance`, `cash_flow`, `liquidity`, `es_impact`, `links` and `facility`.
+`show <deal> <ID>` prints a check of the standard, the Bankability DDQ, in full, or an indicator with its checks and the answer each takes. `status <deal> --for <pillar> --all` lists the checks of one pillar that are to answer: the pillars are `deal`, `environment`, `business`, `governance`, `cash_flow`, `liquidity`, `es_impact`, `links` and `facility`.
 
 ## Claims
 
