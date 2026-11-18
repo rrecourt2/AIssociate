@@ -10,11 +10,13 @@ It comes as a plugin: a guide that tells the assistant how to work on a deal, an
 
 Much of the work on a deal is structuring the same information for one document after another: an early memo for approval in principle, the due diligence questionnaire (DDQ), an investment memorandum or financial proposal, and later the monitoring reports. They hold mostly the same facts, copied by hand from one into the next. Each copy is a chance for a figure to drift, and when a fact changes it is hard to know every place it was used.
 
-A reviewer asks where a number came from, and the analyst goes back through the PDFs. What is still to find out lives in someone's head. When the analyst is away, the deal has to be explained from the start. And a memo written to get a deal approved tends to lose what speaks against it.
+A reviewer asks where a number came from, and the analyst goes back through the PDFs. What is still to find out lives in someone's head. When the analyst is away, the deal has to be explained from the start.
+
+A credit memo is conclusive by design: it states what the analyst concluded and the evidence for it. That is its job. But a conclusion leaves most of the context behind: why a fact matters, what was tested and what was taken on trust, what was looked for and not found, what points the other way, and what would have to turn up for the conclusion to change. That context is what tells a reader how much weight a statement can bear, and it is the first thing lost when a deal is written up.
 
 An AI assistant helps with the reading: it gets through a two-hundred-page report in minutes. But next week it has forgotten it, and it will sometimes write a confident sentence that no document supports.
 
-These look like separate problems. Most of them come down to one: the facts of a deal have no home of their own. They live in whichever document was written last.
+These look like separate problems. Most of them come down to one: the facts of a deal, and the context around them, have no home of their own. They live in whichever document was written last.
 
 ## How it works
 
@@ -54,9 +56,9 @@ Each new conversation starts from the tool's summary and the pages, so what is k
 
 The tool does not check meaning, so a true quotation read the wrong way gets through. Before a draft goes out, the tool picks ten facts and the assistant compares each with its document. A person still reads the pages.
 
-### A memo tends to argue for the deal
+### A memo concludes, and the context is lost
 
-The DDQ is built on claims that could turn out false, such as "the margin has held". Cedar's CFO said on a call that the margin fell in 2025. A company's word against its own interest is believed, so that claim is marked challenged. So is the claim on currency: the loan would be in euros, and every sale is in shillings. Both are listed on Cedar's page, in the part the tool keeps. The CFO's word that the largest customer pays within 45 days is in Cedar's favour, so it is marked "own word", and no claim stands on it alone.
+The record and the wiki keep what a memo leaves out. The DDQ is built on claims that could turn out false, such as "the margin has held", and for each claim the tool shows where it stands and which answers go against it. Cedar's CFO said on a call that the margin fell in 2025. A company's word against its own interest is believed, so that claim is marked challenged. So is the claim on currency: the loan would be in euros, and every sale is in shillings. Both are listed on Cedar's page, in the part the tool keeps. The CFO's word that the largest customer pays within 45 days is in Cedar's favour, so it is marked "own word", and no claim stands on it alone. The memo itself can stay short and conclusive: the guide has the assistant put in it what is material for the decision, and leave the wider context to the wiki.
 
 ### A deal is hard to hand over
 
