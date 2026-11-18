@@ -1,6 +1,6 @@
 # Audit note
 
-For whoever reviews Bankability 2 before it is used inside an institution. Version 0.6.5, 18 November 2026.
+For whoever reviews Bankability 2 before it is used inside an institution. Version 0.6.6, 18 November 2026.
 
 ## What the tool is
 

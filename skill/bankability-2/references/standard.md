@@ -16,7 +16,7 @@ A claim, for each party or link it is made about:
 - is **challenged**: a test went against it. Each mitigant holds, fails or is not known.
 - is **contested**: two facts answer a test, or a question behind the claim, differently.
 
-A claim is to **look at again** when a source or an answer that bears on it came in after its tests were answered.
+A claim is to **look at again** when a source or an answer that bears on it came in after its tests were answered. Read the new source against the tests of the claim. Where an answer changes, record it. Where none does, say so in the fact that answers a test: send it again with a sentence that names the source and the date you read it against. The claim then counts as looked at.
 
 In `status`, the line of a pillar counts each claim once, at its worst among the parties it is made about. `show claims` gives each party its own line.
 
@@ -72,7 +72,7 @@ In the browser view, buttons choose which states show: to answer, waiting, answe
  "reason": "Marked as material for this deal."}
 ```
 
-The page of checks then starts with "What matters most": these checks with their state, their answer and the reason, and `status` lists them first. An answered check stays on the list, so the analyst sees what was decided. `"matters": null` takes the mark off. Review the marks when the stage changes or a large document comes in.
+The page of checks then starts with "What matters most": these checks with their state, their answer and the reason, and `status` lists the open ones first. An answered check stays on the list, so the analyst sees what was decided. `"matters": null` takes the mark off. Review the marks when the stage changes or a large document comes in.
 
 ## Evidence and kinds of source
 

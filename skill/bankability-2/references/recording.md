@@ -36,7 +36,7 @@ One per document, call, email or note. `title` and `kind` are required.
 - `where`: the path of the original in the deal folder.
 - `extract`: the path of a text extract of the original, if there is one.
 - `page_offset`: the page of the PDF less the page number printed on it. See "Quotations and places".
-- `date`, `about`, `sent_by`: the date the document bears or was published, or the date of the call, not the day you saved it; the subjects it is about; who it came from.
+- `date`, `about`, `sent_by`: the date the document bears or was published, or the date of the call, not the day you saved it and not the day a file was made; the subjects it is about; who it came from.
 - `read`: `full`, `part` or `none`, `extract` when you read the extract and not the original, or a few words for a scan (below). The pages that cite the source say so.
 - `map`: where things are, as `at` (page, note, minute), `topic` and `gist`. Add entries for the parts you may need again.
 - `note`: anything else. For what the analyst said: their words.

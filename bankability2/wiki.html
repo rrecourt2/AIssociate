@@ -238,6 +238,11 @@ const GROUPS = {"To answer": ["open", "contested"], "Waiting": ["waiting"], "Ans
 let chosen = "To answer";  // the states that show on the page of checks, kept while the reader looks at other pages
 
 function filters(rows) {  // on a page of checks: a mark on each state, and buttons that choose which states show
+  const marked = tr => {  // a row of the checks that were marked for this deal: it shows whatever is chosen, and is counted further down
+    let node = tr.closest(".wide");
+    while (node && !/^H[1-3]$/.test(node.tagName)) node = node.previousElementSibling;
+    return Boolean(node) && node.textContent === "What matters most";
+  };
   for (const tr of rows) {
     tr.dataset.group = Object.keys(GROUPS).find(name => GROUPS[name].includes(tr.cells[0].textContent.split(",")[0]));
     tr.cells[0].innerHTML = `<span class="state">${tr.cells[0].innerHTML}</span>`;
@@ -245,6 +250,7 @@ function filters(rows) {  // on a page of checks: a mark on each state, and butt
     tr.dataset.count = tr.cells[2].textContent.split("; ").length;  // a row may stand for several subjects: one a line
     tr.cells[2].innerHTML = tr.cells[2].innerHTML.split("; ").join("<br>");
   }
+  rows = rows.filter(tr => !marked(tr));
   const bar = document.createElement("p"), count = name => rows.filter(tr => name === "All" || tr.dataset.group === name)
     .reduce((sum, tr) => sum + Number(tr.dataset.count), 0);
   bar.className = "filters";
@@ -256,7 +262,10 @@ function filters(rows) {  // on a page of checks: a mark on each state, and butt
     for (const tr of rows) tr.hidden = name !== "All" && tr.dataset.group !== name;
     for (const wide of new Set(rows.map(tr => tr.closest(".wide")))) {  // a table with no row left goes, with its claim and its heading
       const empty = !wide.querySelector("tbody tr:not([hidden])");
-      for (let node = wide; node; node = node.previousElementSibling) { node.hidden = empty; if (node.tagName === "H3") break; }
+      for (let node = wide; node && !node.matches("h1, h2, .filters"); node = node.previousElementSibling) {
+        node.hidden = empty;  // never the title of the page, the heading of a part or the buttons themselves
+        if (node.tagName === "H3") break;
+      }
     }
   };
   bar.addEventListener("click", event => event.target.closest("button") && choose(event.target.closest("button").dataset.show));

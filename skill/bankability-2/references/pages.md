@@ -78,7 +78,7 @@ Parts 2 to 5 go under "What we know". On the page of the opportunity, write the 
 
 ## The working notes
 
-`work/working-notes.md`, with `about: DEAL`, says how to work on this deal. It has three parts and stays short. Take out what is done, also where a colleague wrote it:
+`work/working-notes.md`, with `about: DEAL`, says how to work on this deal. It has three parts and stays short, about 800 words. Take out what is done, also where a colleague wrote it:
 
 1. The analyst's standing instructions, in their words, with dates. An instruction on how to write goes here only, never into the record.
 2. Which page is the place for what.
