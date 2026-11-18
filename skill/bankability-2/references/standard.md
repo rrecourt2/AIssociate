@@ -16,7 +16,7 @@ A claim, for each party or link it is made about:
 - is **challenged**: a test went against it. Each mitigant holds, fails or is not known.
 - is **contested**: two facts answer a test, or a question behind the claim, differently.
 
-A claim is to **look at again** when a source or an answer that bears on it came in after its tests were answered. Read the new source against the tests of the claim. Where an answer changes, record it. Where none does, say so in the fact that answers a test: send it again with a sentence that names the source and the date you read it against. The claim then counts as looked at.
+A claim is to **look at again** when a source or an answer that bears on it came in after its tests were answered. Read the new source against the tests of the claim. Where an answer changes, record it. Where none does, record the answer to one of its tests again: a new fact with the same answer, which says what you read it against and when, and which `replaces` the old one. Then repoint what cites the old fact. The claim counts as looked at once one of its tests is answered by a fact recorded after the source came in. A question of the claim does not count.
 
 In `status`, the line of a pillar counts each claim once, at its worst among the parties it is made about. `show claims` gives each party its own line.
 
