@@ -1,8 +1,8 @@
 # AIssociate
 
-The AIssociate plugin keeps one record of an investment deal, in which every fact carries its source. Everything written about the deal comes from that record: the wiki that colleagues read, and the documents the analyst asks for.
+AIssociate is a structured tool that organises the information an investor needs on a deal: for due diligence, for monitoring, and for the documents written along the way. With it, an AI assistant keeps one record of the deal, in which every fact carries its source, and a wiki that serves as its memory of the deal. People can read the wiki too.
 
-A plugin is a folder for an AI assistant. This one holds a guide that tells the assistant how to work on a deal, and a small program, the tool, that keeps the record. It is meant first for Microsoft Copilot Cowork, Microsoft's assistant for office work. It has been tried on three real companies, from public documents only, and not yet on a live deal.
+It comes as a plugin: a guide that tells the assistant how to work on a deal, and a small program, the tool, that keeps the record. It is designed for Microsoft Copilot Cowork. This is an early version.
 
 <p align="center"><img src="docs/images/wiki.png" alt="The wiki of the invented Cedar Foods deal in a browser: the page on the company, with one citation opened to show the fact and the words of the annual report behind it" width="100%"></p>
 
@@ -18,7 +18,7 @@ These look like separate problems. Most of them come down to one: the facts of a
 
 ## How it works
 
-AIssociate gives the facts a home. Each deal has a deal folder: the client's documents, the record and the wiki, kept wherever the institution keeps its files. The assistant reads the documents and proposes facts, each with its source and, from a document, the words it comes from. Only the tool writes them into the record. It refuses a fact without a source, and reports a quotation it cannot find in its document. From the record the assistant writes the wiki: pages on the deal that a person reads in a browser, where each fact cites the record. When the analyst asks for a memo, the assistant drafts it from the wiki and the record.
+AIssociate gives the facts a home. Each deal has a deal folder: the client's documents, the record and the wiki, kept wherever the institution keeps its files. The assistant reads the documents and proposes facts, each with its source and, from a document, the words it comes from. Only the tool writes them into the record. It refuses a fact without a source, and reports a quotation it cannot find in its document. From the record the assistant writes the wiki: pages on the deal, where each fact cites the record. The wiki is first of all the assistant's memory. Each new conversation starts from it, so the assistant does not have to read everything again. People can open it in a browser too. When the analyst asks for a memo, the assistant drafts it from the wiki and the record.
 
 ```mermaid
 flowchart LR
@@ -26,7 +26,7 @@ flowchart LR
   A -- "a fact with no source is refused" --> T["The tool checks and records"]
   S["The Bankability DDQ: what to find out"] --> T
   T --> R[("The record: facts, sources, a log of every change")]
-  R --> W["The wiki: pages a person reads, each fact cited"]
+  R --> W["The wiki: the assistant's memory, each fact cited"]
   W --> P["Documents the analyst asks for"]
 ```
 
@@ -60,7 +60,7 @@ The DDQ is built on claims that could turn out false, such as "the margin has he
 
 ### A deal is hard to hand over
 
-The assistant writes the wiki for someone who has never seen the deal, and the tool keeps part of each page. Cedar's page lists, in the part the tool keeps, the two challenged claims, the open request for the milk contracts and the agreed action on covering the euro loan. A colleague who takes over starts there. A timeline in the wiki shows what was recorded, when and by whom.
+The wiki is the assistant's memory, but it is written so that someone who has never seen the deal can follow it, and the tool keeps part of each page. Cedar's page lists, in the part the tool keeps, the two challenged claims, the open request for the milk contracts and the agreed action on covering the euro loan. A colleague who takes over starts there, and so does the assistant in its next conversation. A timeline in the wiki shows what was recorded, when and by whom.
 
 ### A bank cannot send its deals to a new service
 
