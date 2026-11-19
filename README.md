@@ -2,7 +2,7 @@
 
 AIssociate is a structured tool that organises the information an investor needs on a deal: for due diligence, for monitoring, and for the documents written along the way. With it, an AI assistant keeps one record of the deal, in which every fact carries its source, and a wiki that serves as its memory of the deal. People can read the wiki too.
 
-It comes as a plugin: a guide that tells the assistant how to work on a deal, and a small program, the tool, that keeps the record. It is designed for Microsoft Copilot Cowork. This is an early version.
+It comes as a plugin: a guide that tells the AI assistant how to work on a deal, and a small program, the tool, that keeps the record. It is designed for Microsoft Copilot Cowork. This is an early version.
 
 <p align="center"><img src="docs/images/wiki.png" alt="The wiki of the invented Cedar Foods deal in a browser: the page on the company, with one citation opened to show the fact and the words of the annual report behind it" width="100%"></p>
 
