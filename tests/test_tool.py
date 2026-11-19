@@ -12,8 +12,8 @@ from unittest import mock
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 sys.path.insert(0, ROOT)
 
-from bankability2 import assess, files, pages, standard, store  # noqa: E402
-from bankability2.__main__ import fact_lines, main, plain  # noqa: E402
+from aissociate import assess, files, pages, standard, store  # noqa: E402
+from aissociate.__main__ import fact_lines, main, plain  # noqa: E402
 
 EXAMPLE = os.path.join(ROOT, "examples", "cedar-foods")
 

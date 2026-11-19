@@ -1,14 +1,12 @@
-# Bankability 2: design
+# AIssociate: design
 
-*AIssociate was called Bankability 2 while it was designed.*
-
-16 November 2026. This document describes Bankability 2 as it is built, and what is left for later. It gathers the decisions taken in the design interview of 13 and 14 November, and the owner's decisions after the three rounds of the trial on 15 and 16 November.
+16 November 2026. This document describes AIssociate as it is built, and what is left for later. It gathers the decisions taken in the design interview of 13 and 14 November, and the owner's decisions after the three rounds of the trial on 15 and 16 November.
 
 The tool has run on a made-up deal and, in three rounds, on the public documents of a real company. It has not been tried in Microsoft Copilot Cowork, and not on a live deal with an analyst.
 
 ## 1. What it is
 
-Bankability 2 keeps the record of an investment deal. It keeps everything that is shared about a deal in one folder, in a form that a person and any AI tool can pick up again later. It knows how the deal is structured, what is known, what is assumed and what is still missing, and it always says what to do and collect next.
+AIssociate keeps the record of an investment deal. It keeps everything that is shared about a deal in one folder, in a form that a person and any AI tool can pick up again later. It knows how the deal is structured, what is known, what is assumed and what is still missing, and it always says what to do and collect next.
 
 It is written for a development finance institution and for an investment analyst who works with an AI assistant. The first host is Microsoft Copilot Cowork.
 
@@ -24,7 +22,7 @@ It is built from scratch. It takes its standard and its lessons from the first B
 6. **Files in the deal folder.** Plain files that a person can read. No database and no server.
 7. **Simple first.** Little code, few tests, and anything not needed now left for later. A bank's security reviewer must be able to read all of it in an afternoon.
 8. **The standard is adjustable.** Anything in it can be changed or switched off.
-9. **Leave to the host what the host does.** Copilot reads documents, writes Word files, sends mail and remembers the user's preferences. Bankability 2 does none of that.
+9. **Leave to the host what the host does.** Copilot reads documents, writes Word files, sends mail and remembers the user's preferences. AIssociate does none of that.
 10. **A backbone, not a script.** The standard says where to look and keeps the record honest. It does not replace the analysis. A capable assistant follows the deal, not the list.
 
 ## 3. The pieces
@@ -372,7 +370,7 @@ These rules are checked by a test that fails when the code breaks one:
 - No function longer than 100 lines.
 - The whole tool stays under 2,600 lines of Python, in at most seven files.
 
-The view for a browser is one more file, `bankability2/wiki.html`: about 330 lines of HTML, CSS and plain JavaScript that load nothing from the network. A test checks that it names no address and no outside file.
+The view for a browser is one more file, `aissociate/wiki.html`: about 330 lines of HTML, CSS and plain JavaScript that load nothing from the network. A test checks that it names no address and no outside file.
 
 [audit.md](audit.md) says what the tool does, what it can touch and how to verify a release.
 
@@ -391,7 +389,7 @@ Designed, and deliberately not built yet:
 
 One thing comes before first use: a half-hour test in the tenant, with the made-up deal. Upload the zip and see that it is accepted. Ask for the Python version and a listing of the skill's folder. Attach the deal folder and run `status`. Run `pages` and see where the files land, and whether a file can be replaced where it is. Open `wiki.html` from Cowork, from OneDrive and from the synced folder. Start a second task and see that it begins empty. If saving many files proves unreliable, the wiki pages move inside the record file and the Markdown files become views.
 
-## 13. Not part of Bankability 2
+## 13. Not part of AIssociate
 
 - **Spreading.** A separate tool, perhaps later. The bank has its own.
 - **A website with the standard and an MCP for collecting data.** Possible later. The manifest and the rules in section 6.3 keep the way open.

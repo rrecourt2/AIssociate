@@ -1,5 +1,9 @@
 # Changes
 
+## Tool 0.10.0: the package renamed
+
+The Python package is now `aissociate`, so the command is `python3 -m aissociate`, and the skill's launcher is `scripts/run.py`. Nothing else changes, and the standard stays at 4.4.0. A deal folder made before works unchanged: nothing in it names the package.
+
 ## Tool 0.9.0 and standard 4.4.0: AIssociate
 
 Most of what follows came out of a worked example on a third real company, from its public documents only, and out of the owner's reading of its wiki. The tool and its guide are now AIssociate, the AIssociate plugin. The list of checks is the Bankability DDQ, which the files call the standard, now at 4.4.0: no check is added, dropped or asked differently, and none says any longer what settles it. The skill is in `skill/aissociate` and packs to `dist/aissociate.zip`. The Python package stays `bankability2` and the launcher `scripts/bk2.py`, so a deal folder made by 0.8.0 works unchanged.

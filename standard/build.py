@@ -1,6 +1,6 @@
 """Build the standard: check it, write the file the tool reads, write pages for a website.
 
-    python3 standard/build.py                 check, and write bankability2/standard.json
+    python3 standard/build.py                 check, and write aissociate/standard.json
     python3 standard/build.py --site DIR      also write one Markdown page per indicator and folder
 
 Needs PyYAML. The tool itself does not: it reads the JSON file.
@@ -14,9 +14,9 @@ import yaml
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
-from bankability2.standard import problems  # noqa: E402  the tool's own check of a standard
+from aissociate.standard import problems  # noqa: E402  the tool's own check of a standard
 
-JSON_PATH = os.path.join(HERE, "..", "bankability2", "standard.json")
+JSON_PATH = os.path.join(HERE, "..", "aissociate", "standard.json")
 TIERS = ("best", "supporting", "stated")
 
 

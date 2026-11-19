@@ -6,7 +6,7 @@
 
 ## Before you draft
 
-1. Run `status`, `show <deal> claims` and `check`. Repair what `check` reports until it says "No problems found."
+1. Run `status`, `show <deal> claims` and `check`. Repair what `check` reports until only what you cannot repair is left: in a copy of the folder, the line that files were not checked, and any note on the standard, which you tell the analyst about.
 2. For each claim the document leans on, read its open tests with `show <deal> <indicator>`, and answer those the record already decides.
 3. Read the contents page and the page of the opportunity, then the pages the document covers.
 4. Look up the facts you will lean on: `show <deal> facts <ID>`.
@@ -14,8 +14,8 @@
 ## What each document is
 
 - **A scan** says what the opportunity is and whether it fits. It may rest on what the client said. Say so.
-- **A CIP**, the concept note, describes the opportunity and lists what still needs testing: the claims that `show claims` gives as not tested, the "Assumptions and open points" of the pages, and the checks that are open or thin.
-- **An FP**, the financial proposal, concludes. It holds what is material for the decision, and leaves the wider context to the wiki. Lead each part with the conclusion, then the two or three facts it rests on. Go through the pillars in the order of `show claims`. For each claim that matters: what tested it, how strong the evidence is, and for a challenged claim what mitigates it or which action is agreed. Say where a claim stands in the tool's words: "Currency risk is challenged: the loan is in euros and all sales are in shillings [F-007, F-010]. No hedge is in place [D-002]."
+- **A CIP**, the concept note, describes the opportunity and lists what still needs testing: the claims that `show <deal> claims` gives as not tested, the "Assumptions and open points" of the pages, and the checks that are open or thin.
+- **An FP**, the financial proposal, concludes. It holds what is material for the decision, and leaves the wider context to the wiki. Lead each part with the conclusion, then the two or three facts it rests on. Go through the pillars in the order of `show <deal> claims`. For each claim that matters: what tested it, how strong the evidence is, and for a challenged claim what mitigates it or which action is agreed. Say where a claim stands in the tool's words: "Currency risk is challenged: the loan is in euros and all sales are in shillings [F-007, F-010]. No hedge is in place [D-002]."
 
 ## A default outline
 
@@ -47,6 +47,6 @@ If the amount, the currency, the tenor, the security or the borrower is not yet 
 - **Say who said what.** "The CFO said" is not "the accounts show". State what is not known.
 - **Do not quote the tool's counts** of claims or checks: they change with the next answer. Name the claims that matter and say where each stands. What an FP calls material and what the page of checks lists under "What matters most" are the same list. Before you finish, read the two side by side: every point the FP calls material has a marked check, and every marked check appears in the FP.
 - **Tell the analyst what the saved draft says.** Quote its lines. Do not write them again from what you remember.
-- **Save the draft as Markdown in `Internal/outputs`**, named for the document, the borrower and the version: `FP Cedar Foods v2 draft.md`. Put the title, the date and the version in top lines between two `---`, as on a page. `check` reads the draft as it reads the pages: the rules under "Citing" and "Writing" in [pages](pages.md) hold for a draft. A link from it to a page is a path from the draft: `../wiki/parties/cedar-foods-ltd.md`. Make the Word file with your own tools once `check` is clean. Take the citations out only if the analyst asks.
-- **Before a draft goes out, run `show <deal> sample`.** It prints ten facts that are not inferences, spread over the record, each whole with its quote. Compare each with the page of the source it names, and correct what differs: the fact first, then the pages and the draft. The ten change with every revision. Compare in the same way each fact that `status` lists under "Quotations to compare with the page".
+- **Save the draft as Markdown in `Internal/outputs`**, named for the document, the borrower and the version: `FP Cedar Foods v2 draft.md`. Put the title, the date and the version in top lines between two `---`, as on a page. `check` reads the draft as it reads the pages: the rules under "Citing" and "Writing" in [pages](pages.md) hold for a draft. A link from it to a page is a path from the draft: `../wiki/parties/cedar-foods-ltd.md`. Make the Word file with your own tools once `check` reports nothing you can repair. Take the citations out only if the analyst asks.
+- **Before a draft goes out, run `show <deal> sample`.** It prints ten facts that are not inferences, spread over the record, each whole with its quote. Compare each with the page of the source it names, and correct what differs: the fact first, then the pages and the draft. The sample moves on a little with every revision, so compare the facts you have not compared yet. Compare in the same way each fact that `status` lists under "Quotations to compare with the page".
 - **Move a draft that was sent**, or that a newer version replaced, to a sub-folder such as `Internal/outputs/sent`. `check` reads only the drafts directly in `Internal/outputs`.

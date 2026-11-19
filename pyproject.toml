@@ -3,7 +3,7 @@ requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "bankability2"
+name = "aissociate"
 description = "The tool of the AIssociate plugin: keeps the record of an investment deal against the Bankability DDQ."
 requires-python = ">=3.9"
 license = {text = "MIT"}
@@ -11,13 +11,13 @@ dependencies = []
 dynamic = ["version"]
 
 [project.scripts]
-bankability2 = "bankability2.__main__:main"
+aissociate = "aissociate.__main__:main"
 
 [tool.setuptools]
-packages = ["bankability2"]
+packages = ["aissociate"]
 
 [tool.setuptools.dynamic]
-version = {attr = "bankability2.__version__"}
+version = {attr = "aissociate.__version__"}
 
 [tool.setuptools.package-data]
-bankability2 = ["standard.json", "wiki.html"]
+aissociate = ["standard.json", "wiki.html"]

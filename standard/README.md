@@ -97,7 +97,7 @@ A condition is looked up for the same party or link the check is asked about, an
 python3 standard/build.py
 ```
 
-This checks the standard and writes `bankability2/standard.json`, the one file the tool reads. It needs PyYAML. The tool does not.
+This checks the standard and writes `aissociate/standard.json`, the one file the tool reads. It needs PyYAML. The tool does not.
 
 It refuses a standard in which an ID is used twice, a reference points at nothing, an assumption has no answer that can go against it, a reference point has no reason, a condition names an answer the check cannot have, a link counts for a kind of subject that does not exist, or a kind of subject is asked only an indicator that does not exist.
 

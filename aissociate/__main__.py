@@ -1,4 +1,4 @@
-"""The commands. Run as: python -m bankability2 <command> <deal folder>"""
+"""The commands. Run as: python -m aissociate <command> <deal folder>"""
 import argparse
 import datetime
 import json
@@ -722,7 +722,7 @@ def upgrade(args):
 
 def doctor(args):
     packaged = files.packaged_standard()["version"]
-    print(f"bankability2, the tool of AIssociate, version {__version__}, with standard {packaged}.")
+    print(f"The tool of AIssociate (aissociate), version {__version__}, with standard {packaged}.")
     print(f"Python {sys.version.split()[0]} on {sys.platform}.")
     if args.deal:
         memory = files.read_json(args.deal, files.MEMORY)
@@ -738,7 +738,7 @@ def doctor(args):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(prog="bankability2", description="Keeps the record of an investment deal.")
+    parser = argparse.ArgumentParser(prog="aissociate", description="Keeps the record of an investment deal.")
     commands = parser.add_subparsers(dest="command", required=True)
 
     def command(name, run, text, deal="deal"):

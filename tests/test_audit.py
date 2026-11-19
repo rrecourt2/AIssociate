@@ -6,7 +6,7 @@ import sys
 import tokenize
 import unittest
 
-PACKAGE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "bankability2")
+PACKAGE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "aissociate")
 ALLOWED_IMPORTS = {"argparse", "datetime", "hashlib", "json", "os", "re", "sys", "unicodedata"}
 FORBIDDEN_NAMES = {"eval", "exec", "compile", "__import__", "input", "breakpoint",
                    "getattr", "setattr", "delattr", "globals", "locals", "vars", "__builtins__"}

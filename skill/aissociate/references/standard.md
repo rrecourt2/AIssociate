@@ -4,23 +4,23 @@
 
 ## Claims
 
-The standard holds 70 claims in nine pillars. An indicator is one claim: what the lender relies on, in a sentence that can turn out false. Its checks try to disprove it. Start from the claims: `show claims` lists every claim that applies, and `show <indicator>` prints one with all its checks.
+The standard holds 70 claims in nine pillars. An indicator is one claim: what the lender relies on, in a sentence that can turn out false. Its checks try to disprove it. Start from the claims: `show <deal> claims` lists every claim that applies, and `show <deal> <indicator>` prints one with all its checks.
 
 A **question** opens the topic or describes it. A **test** has an assumption, and one answer goes against it. A **mitigant** is asked once a test has gone against the claim: what limits the damage.
 
 A claim, for each party or link it is made about:
 
 - is **not tested**: no test is answered, or the answers rest only on someone's own word.
-- **stands so far**: nothing speaks against it, and work is left. A test is open, or an answer rests on someone's own word, on evidence the check does not list as supporting or best, or on evidence that is weak (`thin`) or out of date (`old`) for this stage.
+- **stands so far**: nothing speaks against it, and work is left. A test is open, waits or is parked, or an answer rests on someone's own word, on evidence the check does not list as supporting or best, or on evidence that is weak (`thin`) or out of date (`old`) for this stage.
 - **stands**: every test is answered in its favour, on evidence the check lists as supporting or best.
 - is **challenged**: a test went against it. Each mitigant holds, fails or is not known.
-- is **contested**: two facts answer a test, or a question behind the claim, differently.
+- is **contested**: two facts answer a test, or a question behind the claim, differently, or the fact that answers one is disputed.
 
 A claim is to **look at again** when a source or an answer that bears on it came in after its tests were answered. Read the new source against the tests of the claim. Where an answer changes, record it. Where none does, send the fact that answers one of its tests again, with its `answers` as they are and a sentence added to its `statement` that says what you read it against and when. The claim counts as looked at once one of its tests is answered by a fact whose answers were sent after the source came in. A question of the claim does not count.
 
-In `status`, the line of a pillar counts each claim once, at its worst among the parties it is made about. `show claims` gives each party its own line.
+In `status`, the line of a pillar counts each claim once, at its worst among the parties it is made about. `show <deal> claims` gives each party its own line.
 
-An answer against a claim is believed whatever it rests on. A favourable answer to a test is **someone's own word** where it rests only on what a party says of itself (`said_by: client`), or only on evidence the check lists as `stated`, such as the notes of a call, whoever recorded it. A claim does not stand on that alone. The page of checks and `show <check>` mark such an answer `own word`. A question has no favourable answer, so it is not marked. So set `said_by` on every fact.
+An answer against a claim is believed whatever it rests on. A favourable answer to a test is **someone's own word** where it rests only on what a party says of itself (`said_by: client`), or only on evidence the check lists as `stated`, such as the notes of a call, whoever recorded it. A claim does not stand on that alone. The page of checks and `show <deal> <check>` mark such an answer `own word`. A question has no favourable answer, so it is not marked. So set `said_by` on every fact.
 
 ## Judgement
 
@@ -79,18 +79,18 @@ The page of checks then starts with "What matters most": one row for each of the
  "reason": "Only figures for the group exist. The company's own figures are asked in Q-004."}
 ```
 
-The note answers nothing and keeps the check on the list. It is shown beside the open check on the page of checks, in `status` where the check is among those listed (`--all` lists every one) and in `show <check>`, and no longer once the check is answered. A new note for the same check and subject replaces the old one. The records it names count as cited in the browser view and in `show <ID>`, which lists the check among what uses them, but not in `show <deal> uncited`, which is about the wiki's pages.
+The note answers nothing and keeps the check on the list. It is shown beside the open check on the page of checks, in `status` where the check is among those listed (`--all` lists every one) and in `show <deal> <check>`, and no longer once the check is answered. A new note for the same check and subject replaces the old one. The records it names count as cited in the browser view and in `show <ID>`, which lists the check among what uses them, but not in `show <deal> uncited`, which is about the wiki's pages.
 
 ## Evidence and kinds of source
 
-Evidence has three strengths: `best`, `supporting`, and `stated` for what someone said. Each check lists under `evidence` which kinds of source count as which. A kind it does not list counts as the weakest. Nothing is demanded.
+Evidence has three strengths: `best`, `supporting`, and `stated` for what someone said. Each check lists under `evidence` which kinds of source count as which. A kind it does not list counts as the weakest, but does not by itself make an answer someone's own word. Nothing is demanded.
 
-So choose the kind of a source for what the document is. An annual report that is not itself audited is `annual_report`, not `audited_annual_report`, and counts as supporting, as a `prospectus` does.
+So choose the kind of a source for what the document is. An annual report that is not itself audited is `annual_report`, not `audited_annual_report`, and counts as supporting where a check lists it, as a `prospectus` does.
 
 ## A decision that covers a check
 
 - **A gap with an agreed action**: a condition, a covenant or a task. Record a decision that `covers` the check and names the `owner` and the `due` date. Name in `about` the subject or the link the check is asked of, or leave `about` out to cover the check for everyone it is asked of.
-- **Settled for one subject**: one lender's ranking cannot matter here, or a customer is too small to count. Record a decision that `covers` the check, with the reason, and without an owner or a date. Name in `about` the subject or the link the check is asked of, as `show <check>` prints it: for a check on an owner's tie that is the `owns` link, not the owner. The check then shows as `off` there, and stays asked of the others. Where a fact already answers it, the answer stays and the decision shows beside it. Do this on the analyst's word. A check the institution has locked cannot be settled this way. `add` prints a `Note:` when a decision covers a check for a subject it is not asked of.
+- **Settled for one subject**: one lender's ranking cannot matter here, or a customer is too small to count. Record a decision that `covers` the check, with the reason, and without an owner or a date. Name in `about` the ID of the subject or the link the check is asked of: `show <deal> <check>` names it, and `show <deal> subjects` or `links` gives its ID. For a check on an owner's tie that is the `owns` link, not the owner. The check then shows as `off` there, and stays asked of the others. Where a fact already answers it, the answer stays and the decision shows beside it. Do this on the analyst's word. A check the institution has locked cannot be settled this way. `add` prints a `Note:` when a decision covers a check for a subject it is not asked of.
 - **A check that opens others is answered, not settled.** For a plant that carries little, answer `OBS_ASSET_007` no, and the checks on its condition fall away.
 
 ## Stages
@@ -119,7 +119,7 @@ The analyst adjusts the standard by saying so. You hand `adjust` a list. Every a
 - **`note`** on an open check what is missing for one subject: see "What is missing" above.
 - **`switch_off`** a check or an indicator. `not_now`: it comes back when the stage changes or when a check it follows gets a new answer. `not_for_this_deal`: it is off until a `switch_on`, which takes a `target` and a `reason`.
 
-The tool refuses an adjustment that touches what the institution has locked. An adjustment that should hold for every deal belongs in the institution's layer: tell the analyst.
+The tool refuses a `change` or a `switch_off` of what the institution has locked. An adjustment that should hold for every deal belongs in the institution's layer: tell the analyst.
 
 ## A newer standard, or an older folder
 
@@ -132,4 +132,4 @@ The tool refuses an adjustment that touches what the institution has locked. An 
 
 ## The institution's layer
 
-`Internal/record/institution.json` holds what the institution set for all its deals: its names for the stages, its own checks, what it locked, and the fields of its systems. Do not change it. `show sheet` prints each system with its fields: the value, the fact and the source, or **missing**. To fill a field, add its ID to a fact's `fills`.
+`Internal/record/institution.json` holds what the institution set for all its deals: its names for the stages, its own checks, what it locked, and the fields of its systems. Do not change it. `show <deal> sheet` prints each system with its fields: the value, the fact and the source, or **missing**. To fill a field, add its ID to a fact's `fills`.

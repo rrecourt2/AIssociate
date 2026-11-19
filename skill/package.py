@@ -7,7 +7,7 @@ import zipfile
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SKILL = os.path.join(ROOT, "skill", "aissociate")
-TOOL = os.path.join(ROOT, "bankability2")
+TOOL = os.path.join(ROOT, "aissociate")
 OUT = os.path.join(ROOT, "dist", "aissociate.zip")
 
 
@@ -15,7 +15,7 @@ def main():
     packed = []
     for folder, _, names in os.walk(SKILL):
         packed += [(os.path.join(folder, name), os.path.relpath(os.path.join(folder, name), SKILL)) for name in names]
-    packed += [(os.path.join(TOOL, name), f"scripts/bankability2/{name}")
+    packed += [(os.path.join(TOOL, name), f"scripts/aissociate/{name}")
                for name in os.listdir(TOOL) if name.endswith((".py", ".json", ".html"))]  # the code, the standard, the wiki view
     packed.append((os.path.join(ROOT, "LICENSE"), "LICENSE"))
     if len(packed) > 20:  # Copilot Cowork allows a skill 20 files

@@ -1,10 +1,10 @@
 # Audit note
 
-For whoever reviews AIssociate before it is used inside an institution. Version 0.9.0, 18 November 2026.
+For whoever reviews AIssociate before it is used inside an institution. Version 0.10.0, 19 November 2026.
 
 ## What the tool is
 
-AIssociate is a set of instructions for an AI assistant and a command-line program of 2,508 lines of Python in seven files, in the folder `bankability2`. The tool implements the Bankability DDQ, the adjustable list of checks that the files call the standard. It uses the Python standard library only. It has no installer, no service, no background process and no configuration file. Beside the code the folder holds two files of data: the standard, and the template of the view for a browser.
+AIssociate is a set of instructions for an AI assistant and a command-line program of 2,508 lines of Python in seven files, in the folder `aissociate`. The tool implements the Bankability DDQ, the adjustable list of checks that the files call the standard. It uses the Python standard library only. It has no installer, no service, no background process and no configuration file. Beside the code the folder holds two files of data: the standard, and the template of the view for a browser.
 
 It is run by a person or by an AI assistant, one command at a time, on one deal folder. Each command reads files in that folder, computes, prints text, and in some cases writes files in that folder. Then it ends.
 
@@ -12,7 +12,7 @@ It is run by a person or by an AI assistant, one command at a time, on one deal 
 
 | | |
 |---|---|
-| **Reads** | Files in the deal folder. A JSON file handed to a command. The two files that ship with the tool: the standard, `bankability2/standard.json`, and the template `bankability2/wiki.html`. |
+| **Reads** | Files in the deal folder. A JSON file handed to a command. The two files that ship with the tool: the standard, `aissociate/standard.json`, and the template `aissociate/wiki.html`. |
 | **Writes** | Text files in the deal folder: the record, the standard and the deal's layer of it, the manifest and the index of the client folder, the wiki pages, the contents page, the timeline, the view for a browser and the file that opens it. `doctor` writes one line to a file of its own, to show that writing works. |
 | **Moves** | Documents that are already in the deal folder, and a text extract made from one, to their place in it (`file` command only), one at a time. It never overwrites: a name that is taken is refused. If one is refused, the others are still moved and listed. The `upgrade` command moves the record and the standard of a folder made by an earlier version to their new place, and the wiki pages of a folder made before the shelves changed to theirs, repointing the links between those pages. It cannot delete, so a folder they leave stays, empty. |
 | **Never** | Opens a network connection. Starts another program. Reads an environment variable. Deletes a file. Runs text as code. Writes or moves anything outside the deal folder. |
@@ -28,7 +28,7 @@ All access to the disk is in one module, `files.py`, of about 120 lines. It chan
 
 ## The view for a browser
 
-The `pages` command writes `Internal/wiki/wiki.html`, so that a person can read the wiki in a browser, and `Wiki.html` at the top of the deal folder: a few lines that open it, with no script. It is one HTML file that loads nothing from the network: no script, style, font or picture from elsewhere. Its template, `bankability2/wiki.html`, is about 330 lines of HTML, CSS and plain JavaScript. Python only puts the data into it: the pages, the index of the documents and the record, as JSON in which every `<` is escaped so that no text can end the script it sits in. The Markdown files that the tool writes carry text from the record as it was written: the browser view escapes it, and a different Markdown reader that runs HTML would show it as HTML.
+The `pages` command writes `Internal/wiki/wiki.html`, so that a person can read the wiki in a browser, and `Wiki.html` at the top of the deal folder: a few lines that open it, with no script. It is one HTML file that loads nothing from the network: no script, style, font or picture from elsewhere. Its template, `aissociate/wiki.html`, is about 330 lines of HTML, CSS and plain JavaScript. Python only puts the data into it: the pages, the index of the documents and the record, as JSON in which every `<` is escaped so that no text can end the script it sits in. The Markdown files that the tool writes carry text from the record as it was written: the browser view escapes it, and a different Markdown reader that runs HTML would show it as HTML.
 
 The script runs in the reader's browser, not in the tool. It renders the pages as text, and it escapes what it takes from the pages and the record before it shows it. A link to a document or to a draft in `Internal/outputs` opens that file from the deal folder. The drafts are not in the view. The audit rules below read the Python only. A test checks that the template names no address and no outside file.
 
@@ -70,9 +70,9 @@ The folder has two halves. `Client folder` holds what the client shared, in one 
 python3 -m unittest discover -s tests
 ```
 
-This runs the audit rules above, runs the tool on a made-up deal, and checks that `bankability2/standard.json` is exactly what the standard's source builds to.
+This runs the audit rules above, runs the tool on a made-up deal, and checks that `aissociate/standard.json` is exactly what the standard's source builds to.
 
-The packed skill, `dist/aissociate.zip`, holds the same seven Python files, the standard, the template of the browser view, a short launcher (`scripts/bk2.py`), the instructions for the assistant and the licence: 16 files. Compare the files under `scripts/bankability2` with `bankability2/`.
+The packed skill, `dist/aissociate.zip`, holds the same seven Python files, the standard, the template of the browser view, a short launcher (`scripts/run.py`), the instructions for the assistant and the licence: 16 files. Compare the files under `scripts/aissociate` with `aissociate/`.
 
 ## Outside the tool
 
