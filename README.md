@@ -106,7 +106,7 @@ A memo is the analyst's document. When the analyst asks for one, the assistant d
 
 Every number in a draft cites a fact, and the tool checks a draft as it checks a page. Drafts are saved beside the wiki, not in it. The tool also fills the entry sheets for the institution's systems: each field with its value and its fact, or "missing".
 
-The questionnaire for the company has no set form yet. The tool lists the open checks, and more than half of the DDQ's checks carry a question worded for the company. Monitoring reports are not covered.
+The questionnaire for the company has no set form yet. The tool lists the open checks, and more than half of the DDQ's checks carry a question worded for the company. Monitoring reports can be written from the same record and wiki. There is no template for them yet.
 
 ## What it does not do
 
@@ -167,7 +167,7 @@ python3 -m bankability2 check "Cedar Foods"
 
 ## Future development
 
-The code base has been kept simple on purpose: just over 2,500 lines of Python, with no external packages. That is for security, because a small program with nothing added from outside is one a reviewer can read in full. It also leaves room to add complexity later, on a base that is understood. What is not there yet is named above: a view across a portfolio of deals, a set form for the questionnaire that goes to the company, and monitoring reports.
+The code base has been kept simple on purpose: just over 2,500 lines of Python, with no external packages. That is for security, because a small program with nothing added from outside is one a reviewer can read in full. It also leaves room to add complexity later, on a base that is understood.
 
 ## Licence
 
