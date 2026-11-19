@@ -167,6 +167,8 @@ python3 -m bankability2 check "Cedar Foods"
 
 ## Future development
 
+AIssociate is in active development, and much can still change. We are open to suggestions.
+
 The code base has been kept simple on purpose: just over 2,500 lines of Python, with no external packages. That is for security, because a small program with nothing added from outside is one a reviewer can read in full. It also leaves room to add complexity later, on a base that is understood.
 
 ## Licence
