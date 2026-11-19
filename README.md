@@ -1,6 +1,6 @@
 # AIssociate
 
-AIssociate is a structured tool that organises the information an investor needs on a deal: for due diligence, for monitoring, and for the documents written along the way. With it, an AI assistant keeps one record of the deal, in which every fact carries its source, and a wiki that serves as its memory of the deal. People can read the wiki too.
+AIssociate is a structured tool that organises the information an investor needs on a deal: for due diligence, for legal documentation, for monitoring, and for the documents written along the way. With it, an AI assistant keeps one record of the deal, in which every fact carries its source, and a wiki that serves as its memory of the deal. People can read the wiki too.
 
 It comes as a plugin: a guide that tells the assistant how to work on a deal, and a small program, the tool, that keeps the record. It is designed for Microsoft Copilot Cowork. This is an early version.
 
@@ -10,17 +10,19 @@ It comes as a plugin: a guide that tells the assistant how to work on a deal, an
 
 Much of the work on a deal is structuring the same information for one document after another: an early memo for approval in principle, the due diligence questionnaire (DDQ), an investment memorandum or financial proposal, and later the monitoring reports. They hold mostly the same facts, copied by hand from one into the next. Each copy is a chance for a figure to drift, and when a fact changes it is hard to know every place it was used.
 
-A reviewer asks where a number came from, and the analyst goes back through the PDFs. What is still to find out lives in someone's head. When the analyst is away, the deal has to be explained from the start.
+A reviewer asks where a number came from, and the analyst goes back through the PDFs. Two documents give different figures for the same thing, and the difference is noticed late, or smoothed over in the next draft. What is still to find out lives in someone's head. When the analyst is away, the deal has to be explained from the start.
 
 A credit memo is conclusive by design: it states what the analyst concluded and the evidence for it. That is its job. But a conclusion leaves most of the context behind: why a fact matters, what was tested and what was taken on trust, what was looked for and not found, what points the other way, and what would have to turn up for the conclusion to change. That context is what tells a reader how much weight a statement can bear, and it is the first thing lost when a deal is written up.
 
 An AI assistant helps with the reading: it gets through a two-hundred-page report in minutes. But next week it has forgotten it, and it will sometimes write a confident sentence that no document supports.
 
-These look like separate problems. Most of them come down to one: the facts of a deal, and the context around them, have no home of their own. They live in whichever document was written last.
+What is missing is a step in between. Between the source documents and the finished memo there is no place where the information of a deal is kept in order: where one document can be set against another, where an inconsistency is recorded and followed up, and where what is known can be held against what a policy requires.
 
 ## How it works
 
-AIssociate gives the facts a home. Each deal has a deal folder: the client's documents, the record and the wiki, kept wherever the institution keeps its files. The assistant reads the documents and proposes facts, each with its source and, from a document, the words it comes from. Only the tool writes them into the record. It refuses a fact without a source, and reports a quotation it cannot find in its document. From the record the assistant writes the wiki: pages on the deal, where each fact cites the record. The wiki is first of all the assistant's memory. Each new conversation starts from it, so the assistant does not have to read everything again. People can open it in a browser too. When the analyst asks for a memo, the assistant drafts it from the wiki and the record.
+AIssociate is that step in between. It follows the pattern of a wiki that an assistant keeps, described in [a note by Andrej Karpathy](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f): instead of going back to the raw documents for every question, the assistant builds and maintains a wiki that sits between the documents and the person, and that grows with each document it reads. AIssociate adds the structure that transaction work needs: a record in which every fact carries its source, so that documents that disagree are recorded and followed up, and a list of checks, so that what is known can be compared with what a lender's policies require, and the risks stand out.
+
+Each deal has a deal folder: the client's documents, the record and the wiki, kept wherever the institution keeps its files. The assistant reads the documents and proposes facts, each with its source and, from a document, the words it comes from. Only the tool writes them into the record. It refuses a fact without a source, and reports a quotation it cannot find in its document. From the record the assistant writes the wiki: pages on the deal, where each fact cites the record. The wiki is first of all the assistant's memory. Each new conversation starts from it, so the assistant does not have to read everything again. People can open it in a browser too. When the analyst asks for a memo, the assistant drafts it from the wiki and the record.
 
 ```mermaid
 flowchart LR
@@ -31,8 +33,6 @@ flowchart LR
   R --> W["The wiki: the assistant's memory, each fact cited"]
   W --> P["Documents the analyst asks for"]
 ```
-
-The idea of a wiki that an assistant keeps comes from [a note by Andrej Karpathy](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
 
 ## What it does about each problem
 
