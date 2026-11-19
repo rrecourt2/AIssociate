@@ -104,8 +104,6 @@ A document is the analyst's own. When the analyst asks for one, the AI assistant
 
 AIssociate is meant to be flexible. It gives structure where structure helps: in the record, in the checks and in the citations. Everywhere else it leaves room for the judgement and the creativity of the people and the AI assistants who do the work.
 
-The guide has outlines for three documents so far: the screening note, the memo for approval in principle, and the investment memorandum or financial proposal. For the questionnaire, the tool lists the open checks, and more than half of the DDQ's checks carry a question worded for the company. The tool also fills the entry sheets for the institution's systems: each field with its value and its fact, or "missing".
-
 ## What it does not do
 
 The tool is not an AI and does not read the documents. It gives no rating and takes no decision. It has no step for sign-off, which stays in the institution's own process. It does not make a weak deal bankable.
