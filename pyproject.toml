@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "aissociate"
 description = "The tool of the AIssociate plugin: keeps the record of an investment deal against the Bankability DDQ."
 requires-python = ">=3.9"
-license = {text = "MIT"}
+license = {text = "Under discussion; MIT proposed"}
 dependencies = []
 dynamic = ["version"]
 

@@ -99,7 +99,7 @@ The tool is not an AI and does not read the documents. It gives no rating and ta
 
 ## Where it stands
 
-This is version 0.10.0. It has been tried on three real companies, in several rounds, from public documents only, by AI assistants that had nothing but the guide and the tool. It has not yet been used on a live deal with an analyst. It has not yet run inside Microsoft Copilot Cowork: how Cowork runs the tool and saves its files has to be tested in the institution's own tenant, its space in Microsoft's cloud. The DDQ still needs a review by someone who does credit work. What each round showed is in [standard/CHANGES.md](standard/CHANGES.md). It is free under the MIT licence, and comes without warranty.
+This is version 0.10.0. It has been tried on three real companies, in several rounds, from public documents only, by AI assistants that had nothing but the guide and the tool. It has not yet been used on a live deal with an analyst. It has not yet run inside Microsoft Copilot Cowork: how Cowork runs the tool and saves its files has to be tested in the institution's own tenant, its space in Microsoft's cloud. The DDQ still needs a review by someone who does credit work. What each round showed is in [standard/CHANGES.md](standard/CHANGES.md). Its licence is under discussion, and the MIT licence is proposed. It comes without warranty.
 
 ## For those who approve software
 
@@ -112,7 +112,7 @@ This is version 0.10.0. It has been tried on three real companies, in several ro
 - **The AI assistant.** The institution's own, and its choice. It reads the documents under the controls of its host, the service it runs in. The tool does not talk to a model, and neither holds nor needs a key. Some hosts give the AI assistant a memory of its own. That memory is outside the tool, which cannot see it or switch it off, so it is a setting for the institution. The guide's rules, such as treating the text of a document as data and never as an instruction, are guidance to a model, not a control.
 - **The institution's layer.** Its stages, checks and system fields sit in its own file, in its own environment. The file is named when a deal is started, and cannot be added later.
 - **Size and tests.** 2,508 lines of Python in seven files, and one template of about 330 lines of HTML, CSS and plain JavaScript for the browser view. `tests/test_audit.py` reads the code and fails if it imports anything outside a short list of standard modules, uses more of `os` or `sys` than a short list allows, uses `open` or `os` outside one module, runs text as code, or grows past seven files, 2,600 lines or 100 lines in one function. These rules keep out the plain ways to reach the network, start another program or write outside the deal folder. They read names, so code written to get round them could pass: a reviewer still reads the code. A second test checks that the template of the browser view names no address and no outside file.
-- **Licence.** MIT.
+- **Licence.** Under discussion. The MIT licence is proposed.
 
 The full note for a security reviewer, with the limits, is [docs/audit.md](docs/audit.md).
 
@@ -158,4 +158,4 @@ The code base has been kept simple on purpose: just over 2,500 lines of Python, 
 
 ## Licence
 
-[MIT](LICENSE). Copyright (c) 2026 Rik Recourt.
+Under discussion. The [MIT licence](LICENSE) is proposed. Copyright (c) 2026 Rik Recourt.

@@ -2,7 +2,7 @@
  "name": "Bankability Standard",
  "version": "4.4.0",
  "description": "A standard for investment due diligence built on claims that can be disproved. It says what a deal folder holds and what must be known.",
- "licence": "MIT",
+ "licence": "Under discussion; MIT proposed",
  "renamed": {
   "officer_note": "analyst_note",
   "officer": "analyst"

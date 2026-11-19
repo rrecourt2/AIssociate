@@ -117,4 +117,4 @@ An institution or a deal does not edit these files. It adjusts the standard in i
 
 ## Licence
 
-MIT. See [LICENSE](../LICENSE).
+Under discussion. The MIT licence is proposed. See [LICENSE](../LICENSE).
