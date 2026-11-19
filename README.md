@@ -66,7 +66,7 @@ The wiki is the assistant's memory, but it is written so that someone who has ne
 
 ### A bank cannot send its deals to a new service
 
-The tool is about 2,500 lines of Python, a common programming language. It runs where the deal folder is, opens no network connection, and uses the institution's own assistant. A test in this repository, the public home of the code, fails if the code brings in anything that could reach the network or start another program, or grows too large.
+The tool is just over 2,500 lines of Python, a common programming language. It runs where the deal folder is, opens no network connection, and uses the institution's own assistant. A test in this repository, the public home of the code, fails if the code brings in anything that could reach the network or start another program, or grows too large.
 
 ### Every institution works in its own way
 
@@ -126,7 +126,7 @@ This is version 0.9.0. It has been tried on three real companies, in several rou
 - **Changes.** Every change is an entry in a log inside the record: who, when, what, and the earlier value. The wiki's timeline lists the same entries: when, by whom and what was recorded. Each entry is tied to the one before, so the tool's `check` command reports a record edited afterwards outside the tool. The log shows such an edit. It does not prevent it, and someone who rebuilds the ties leaves no trace, so the version history of the folder's storage is the control for that. The name in an entry is the one given with the change. The tool does not verify it. The log covers the record, not the text: the tool keeps no earlier text of a page or a draft, and the version history of the folder's storage has it.
 - **The assistant.** The institution's own, and its choice. It reads the documents under the controls of its host, the service it runs in. The tool does not talk to a model, and neither holds nor needs a key. Some hosts give the assistant a memory of its own. That memory is outside the tool, which cannot see it or switch it off, so it is a setting for the institution. The guide's rules, such as treating the text of a document as data and never as an instruction, are guidance to a model, not a control.
 - **The institution's layer.** Its stages, checks and system fields sit in its own file, in its own environment. The file is named when a deal is started, and cannot be added later.
-- **Size and tests.** About 2,500 lines of Python in seven files. `tests/test_audit.py` reads the code and fails if it imports anything outside a short list of standard modules, none of which can reach the network or start another program. It also fails if the code reads an environment variable, runs text as code, touches the disk outside one module, or grows past the size the test allows. The test reads the Python only. For the script of the browser view it checks that the template names no address and no outside file.
+- **Size and tests.** 2,508 lines of Python in seven files, and one template of about 330 lines of HTML, CSS and plain JavaScript for the browser view. `tests/test_audit.py` reads the code and fails if it imports anything outside a short list of standard modules, none of which can reach the network or start another program. It also fails if the code reads an environment variable, runs text as code, touches the disk outside one module, or grows past 2,600 lines. The test reads the Python only. For the script of the browser view it checks that the template names no address and no outside file.
 - **Licence.** MIT.
 
 The full note for a security reviewer, with the limits, is [docs/audit.md](docs/audit.md).
@@ -167,7 +167,7 @@ python3 -m bankability2 check "Cedar Foods"
 
 ## Future development
 
-The code base has been kept simple on purpose: about 2,500 lines of Python, with no external packages. That is for security, because a small program with nothing added from outside is one a reviewer can read in full. It also leaves room to add complexity later, on a base that is understood. What is not there yet is named above: a view across a portfolio of deals, a set form for the questionnaire that goes to the company, and monitoring reports.
+The code base has been kept simple on purpose: just over 2,500 lines of Python, with no external packages. That is for security, because a small program with nothing added from outside is one a reviewer can read in full. It also leaves room to add complexity later, on a base that is understood. What is not there yet is named above: a view across a portfolio of deals, a set form for the questionnaire that goes to the company, and monitoring reports.
 
 ## Licence
 

@@ -372,7 +372,7 @@ These rules are checked by a test that fails when the code breaks one:
 - No function longer than 100 lines.
 - The whole tool stays under 2,600 lines of Python, in at most seven files.
 
-The view for a browser is one more file, `bankability2/wiki.html`: about 300 lines of HTML, CSS and plain JavaScript that load nothing from the network. A test checks that it names no address and no outside file.
+The view for a browser is one more file, `bankability2/wiki.html`: about 330 lines of HTML, CSS and plain JavaScript that load nothing from the network. A test checks that it names no address and no outside file.
 
 [audit.md](audit.md) says what the tool does, what it can touch and how to verify a release.
 
