@@ -76,11 +76,23 @@ A check has a stage by which it is ideally answered, but a deal moves on with ch
 
 Every lender has a list of questions it wants answered before it lends. The Bankability DDQ is one such list of due diligence questions, written down and public. It is a starting point, and it is made to be adjusted.
 
-"Bankable" is what a lender calls a deal it can finance. The list writes down what has to be true for that, as claims, such as "No single customer's loss would stop the company from servicing its debt." Under each claim sit checks that try to disprove it. A check says what evidence would answer it, and by which stage of the deal it is ideally answered.
+**It works by falsification.** "Bankable" is what a lender calls a deal it can finance. The list writes down what has to be true for that, as claims, and under each claim sit checks that try to prove it wrong. A claim that has survived its tests is worth more than one that was never tested, and the list keeps the two apart.
 
-Version 4.4.0 has 70 claims and 551 checks in nine topics: the opportunity; country, sector and market; the business; people and governance; cash flow and debt; liquidity and financial risks; environmental, social and impact matters; the links between parties; and the loan itself. Nothing is scored. An answer carries its reason. The tool says where each claim stands: stands, stands so far, not tested, contested or challenged. People decide.
+Take currency risk. The claim reads: "A fall in the currency the party earns, against the currencies it owes and buys in, would not stop it from servicing its debt." The checks under it are of three kinds:
 
-An institution adjusts the list with a layer of its own, in a file that stays inside its own walls: its stages, its own checks, the checks no deal may switch off, and the fields of its systems. A deal can adjust it too, with a reason. The questions meant for the company make up the questionnaire that goes to it. In this repository the list is in the [`standard/`](standard/README.md) folder, and the tool's messages call it the standard.
+- **Questions** find out what applies. In which currencies does the company earn its revenue and pay its costs?
+- **Tests** can disprove the claim. Is more than about a tenth of its debt, the proposed loan included, owed in a currency other than the one it earns? Could it still service its debt after a fall as deep as the worst of the last ten years?
+- **Mitigants** are asked once a test has gone against the claim. Can it pass the rise on in its prices within a quarter? What share of the exposure is hedged, for how long, and with whom?
+
+Cedar earns shillings and asks for a loan in euros. A test goes against the claim, so it is marked challenged, and an action is agreed: Cedar is to propose how it will cover the euro loan. The tool says where each claim stands: stands, stands so far, not tested, contested or challenged. Nothing is scored. An answer carries its reason, and people decide.
+
+**It is a roadmap.** Each check carries the stage by which it is ideally answered. The list has nine stages: from the first lead and screening, through an early go or no-go, due diligence and approval, to legal documentation, disbursement, monitoring and exit. So at any point the tool can say what would ideally be known by now, and what comes next. A stage is a target and holds nothing back: a deal moves on with checks still open.
+
+**It connects to policies and procedures.** An institution adjusts the list with a layer of its own, in a file that stays inside its own walls: its names for the stages, its own checks for what its policies require, the checks no deal may switch off, and the fields of its systems. A deal can adjust the list too, with a reason.
+
+**It adds up across deals.** Every deal is held against the same claims, so the answers can be read across a portfolio. Take currency risk again: on which deals is the claim challenged, on which does a hedge cover it, and on which was it never tested? The tool does not make that table yet. It works on one deal at a time. But every deal keeps its record in the same form, so the table is a matter of reading the records together.
+
+Version 4.4.0 has 70 claims and 551 checks in nine topics: the opportunity; country, sector and market; the business; people and governance; cash flow and debt; liquidity and financial risks; environmental, social and impact matters; the links between parties; and the loan itself. The questions meant for the company make up the questionnaire that goes to it. In this repository the list is in the [`standard/`](standard/README.md) folder, and the tool's messages call it the standard.
 
 ## One record, many documents
 
