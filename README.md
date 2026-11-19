@@ -165,6 +165,10 @@ python3 -m bankability2 check "Cedar Foods"
 
 `python3 skill/package.py` packs the guide and the tool into `dist/aissociate.zip`.
 
+## Future development
+
+The code base has been kept simple on purpose: about 2,500 lines of Python, with no external packages. That is for security, because a small program with nothing added from outside is one a reviewer can read in full. It also leaves room to add complexity later, on a base that is understood. What is not there yet is named above: a view across a portfolio of deals, a set form for the questionnaire that goes to the company, and monitoring reports.
+
 ## Licence
 
 [MIT](LICENSE). Copyright (c) 2026 Rik Recourt.
