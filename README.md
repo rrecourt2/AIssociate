@@ -63,7 +63,7 @@ If the AI assistant wrote "Profit was KES 512m" on Cedar's page with no fact beh
 
 ## The Bankability DDQ
 
-Every lender has a list of questions it wants answered before it lends. The Bankability DDQ is one such list of due diligence questions, written down and public. It is a starting point, and it is made to be adjusted.
+Every lender has a list of questions it wants answered before it lends. The Bankability DDQ is one such list of due diligence questions, written down and public. It is a starting point, and it is made to be adjusted. It is meant to capture everything a credit rating needs, in finer detail than a rating usually goes into, which an AI assistant makes practical. It does not give the rating itself: that is for each lender to decide.
 
 **It works by falsification.** "Bankable" is what a lender calls a deal it can finance. The list writes down what has to be true for that, as claims, and under each claim sit checks that try to prove it wrong. A claim that has survived its tests is worth more than one that was never tested, and the list keeps the two apart.
 
